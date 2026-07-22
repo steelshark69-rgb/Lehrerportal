@@ -12,9 +12,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Deploy to Neocities
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      - name: Push to Neocities
+        uses: pveyes/neocities-action@v2
         with:
-          server: neocities.org
-          username: digisw
-          password: ${{ secrets.NEOCITIES_API_KEY }}
+          api_key: ${{ secrets.NEOCITIES_API_KEY }}
+          cleanup: false
