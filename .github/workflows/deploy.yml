@@ -17,8 +17,5 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install Neocities CLI
-        run: npm install -g neocities
-
-      - name: Deploy files
-        run: neocities push . --user ${{ secrets.NEOCITIES_API_KEY }} --exclude .git --exclude .github
+      - name: Push to Neocities
+        run: npx neocities push . --user ${{ secrets.NEOCITIES_API_KEY }} --exclude .git --exclude .github
