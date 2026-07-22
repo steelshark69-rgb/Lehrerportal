@@ -12,8 +12,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install Neocities
-        run: npm install -g neocities
-
-      - name: Push to Neocities
-        run: neocities push . --user ${{ secrets.NEOCITIES_API_KEY }} --exclude .git --exclude .github
+      - name: Deploy to Neocities
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: neocities.org
+          username: digisw
+          password: ${{ secrets.NEOCITIES_API_KEY }}
