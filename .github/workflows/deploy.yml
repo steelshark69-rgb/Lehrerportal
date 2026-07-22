@@ -12,8 +12,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Install Neocities
+        run: npm install -g neocities
+
       - name: Push to Neocities
-        uses: bcomnes/neocities-deployer-action@v2
-        with:
-          api_key: ${{ secrets.NEOCITIES_API_KEY }}
-          cleanup: false
+        run: neocities push . --user ${{ secrets.NEOCITIES_API_KEY }} --exclude .git --exclude .github
