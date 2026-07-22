@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lehrer-Dashboard | Referats-Beurteilung</title>
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+        /* Spezifische Dashboard-Styles */
+        .dashboard-header {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        .header-input {
+            flex: 1;
+            min-width: 250px;
+            background: white;
+            border: 2px solid #cbd5e1;
+            padding: 10px;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            outline: none;
+            font-family: inherit;
+        }
+        .header-input:focus { border-color: var(--primary); }
+
+        .category-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-top: 5px solid var(--primary);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .category-title {
+            margin-top: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .criterion-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .criterion-info {
+            flex: 2;
+            min-width: 250px;
+        }
+        .criterion-name { font-weight: bold; color: var(--text-main); }
+        .criterion-desc { font-size: 0.85rem; color: var(--text-muted); }
+        
+        .criterion-control {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            min-width: 200px;
+            justify-content: flex-end;
+        }
+        
+        /* Range Slider Styling */
+        input[type=range] {
+            flex: 1;
+            accent-color: var(--primary);
+            cursor: pointer;
+        }
+        .score-number {
+            width: 60px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            padding: 5px;
+            border: 2px solid #e2e8f0;
+            border-radius: 6px;
+            outline: none;
+        }
+        .score-number:focus { border-color: var(--primary); }
+        
+        /* Sticky Result Footer */
+        .result-footer {
+            position: sticky;
+            bottom: 0;
+            background: var(--text-main);
+            color: white;
+            padding: 1rem 2rem;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 -4px 10px rgba(0,0,0,0.15);
+            z-index: 100;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .result-points { font-size: 2rem; font-weight: bold; }
+        .result-grade {
+            font-size: 1.5rem;
+            font-weight: bold;
+            padding: 5px 15px;
+            border-radius: 6px;
+            background: rgba(255,255,255,0.1);
+        }
+        
+        .feedback-area {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            border: 2px solid #cbd5e1;
+            border-radius: 8px;
+            resize: vertical;
+            font-family: inherit;
+            font-size: 1rem;
+            outline: none;
+        }
+        .feedback-area:focus { border-color: var(--primary); }
+
+        /* Print Styles für den PDF-Export (Blendet UI-Elemente aus) */
+        @media print {
+            body { background: white; }
+            .back-nav, input[type=range], .result-footer button { display: none !important; }
+            .result-footer { position: static; box-shadow: none; color: black; background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 8px; margin-top: 2rem; }
+            .result-grade { background: white; border: 2px solid #e2e8f0; }
+            .score-number { border: none; font-size: 1.2rem; }
+            header p { display: none; }
+            .category-card { box-shadow: none; border-color: #cbd5e1; break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Beurteilungs-Dashboard</h1>
+    <p>Referate Informatik (5. Klasse AHS)</p>
+</header>
+
+<div class="back-nav">
+    <a href="../index.html" class="btn-back">← Zurück zur Übersicht</a>
+</div>
+
+<main style="padding-bottom: 100px;">
+    <div class="dashboard-header">
+        <input type="text" class="header-input" placeholder="Team (Namen der Schüler)..." id="team-name">
+        <input type="text" class="header-input" placeholder="Thema des Referats..." id="team-topic">
+    </div>
+
+    <div class="category-card">
+        <h3 class="category-title">
+            <span style="color: var(--primary);">1. Formale Kriterien & Termine</span>
+            <span style="font-size: 0.9rem; color: var(--text-muted);">Max. 20 Pkt.</span>
+        </h3>
+        
+        <div class="criterion-row">
+            <div class="criterion-info">
+                <div class="criterion-name">Fristgerechte Abgabe</div>
+                <div class="criterion-desc">Min. 3 Tage vorher abgegeben.</div>
+            </div>
+            <div class="criterion-control">
+                <input type="range" min="0" max="10" value="10" class="score-slider" oninput="syncInput(this)">
+                <input type="number" min="0" max="10" value="10" class="score-number" oninput="syncSlider(this)">
+            </div>
+        </div>
+        <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 5px 0;">
+        
+        <div class="criterion-row">
+            <div class="criterion-info">
+                <div class="criterion-name">Zeitmanagement</div>
+                <div class="criterion-desc">Mindestdauer 15 Min. eingehalten (Puffer +/- 2 Min).</div>
+            </div>
+            <div class="criterion-control">
+                <input type="range" min="0" max="5" value="5" class="score-slider" oninput="syncInput(this)">
+                <input type="number" min="0" max="5" value="5" class="score-number" oninput="syncSlider(this)">
+            </div>
+        </div>
+        <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 5px 0;">
+        
+        <div class="criterion-row">
+            <div class="criterion-info">
+                <div class="criterion-name">KI-Kennzeichnung</div>
+                <div class="criterion-desc">Nutzung von KI deklariert (Methoden-Nachweis).</div>
+            </div>
+            <div class="criterion-control">
+                <input type="range" min="0" max="5" value="5" class="score-slider" oninput="syncInput(this)">
+                <input type="number" min="0" max="5" value="5" class="score-number" oninput="syncSlider(this)">
+            </div>
+        </div>
+    </div>
+
+    <div class="category-card" style="border-top-color: var(--doc-blue);">
+        <h3 class="category-title">
+            <span style="color: var(--doc-blue);">2. Inhalt & Fachliche Qualität</span>
+            <span style="font-size: 0.9rem; color: var(--text-muted);">Max. 30 Pkt.</span>
+        </h3>
+        
+        <div class="criterion-row">
+            <div class="criterion-info">
+                <div class="criterion-name">Sachliche Richtigkeit</div>
+                <div class="criterion-desc">Korrekte Darstellung und Fachbegriffe.</div>
+            </div>
+            <div class="criterion-control">
+                <input type="range" min="0" max="10" value="10" class="score-slider" oninput="syncInput(this)">
+                <input type="number" min="0" max="10" value="10" class="score-number" oninput="syncSlider(this)">
+            </div>
+        </div>
+        <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 5px 0;">
+        
+        <div class="criterion-row">
+            <div class="criterion-info">
+                <div class="criterion-name">Struktur & Aufbau</div>
+                <div class="criterion-desc">Logische Abfolge (Roter Faden).</div>
+            </div>
+            <div class="criterion-control">
+                <input type="range" min="0" max="10" value="10" class="score-slider" oninput="syncInput(this)">
+                <input type="number" min="0" max="10" value="10" class="score-number" oninput="syncSlider(this)">
+            </div>
+        </div>
+        <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 5px 0;">
+        
+        <div class="criterion-row">
+            <div class="criterion-info">
+                <div class="criterion-name">Transferleistung</div>
+                <div class="criterion-desc">Eigene Erklärungen, Beispiele, Bezug zum Alltag/Unterricht.</div>
+            </div>
+            <div class="criterion-control">
+                <input type="range" min="0" max="10" value="10" class="score-slider" oninput="syncInput(this)">
+                <input type="number" min="0" max="10" value="10" class="score-number" oninput="syncSlider(this)">
+            </div>
+        </div>
+    </div>
+
+    <div class="category-card" style="border-top-color: var(--html-orange);">
+        <h3 class="category-title">
+            <span style="color: var(--html-orange);">3. Präsentation & Medieneinsatz</span>
+            <span style="font-size: 0.9rem; color: var(--text-muted);">Max. 25 Pkt.</span>
+        </h3>
+        
+        <div class="criterion-row">
+            <div class="criterion-info">
+                <div class="criterion-name">Gestaltung & Qualität</div>
+                <div class="criterion-desc">Gute Lesbarkeit, passende Grafiken (keine Textwüsten).</div>
+            </div>
+            <div class="criterion-control">
+                <input type="range" min="0" max="10" value="10" class="score-slider" oninput="syncInput(this)">
+                <input type="number" min="0" max="10" value="10" class="score-number" oninput="syncSlider(this)">
+            </div>
+        </div>
+        <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 5px 0;">
+        
+        <div class="criterion-row">
+            <div class="criterion-info">
+                <div class="criterion-name">Sprachliche Qualität</div>
+                <div class="criterion-desc">Korrekte Rechtschreibung auf Folien.</div>
+            </div>
+            <div class="criterion-control">
+                <input type="range" min="0" max="5" value="5" class="score-slider" oninput="syncInput(this)">
+                <input type="number" min="0" max="5" value="5" class="score-number" oninput="syncSlider(this)">
+            </div>
+        </div>
+        <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 5px 0;">
+        
+        <div class="criterion-row">
+            <div class="criterion-info">
+                <div class="criterion-name">Vortragsweise</div>
+                <div class="criterion-desc">Freies Sprechen, Teamwork, Blickkontakt.</div>
+            </div>
+            <div class="criterion-control">
+                <input type="range" min="0" max="10" value="10" class="score-slider" oninput="syncInput(this)">
+                <input type="number" min="0" max="10" value="10" class="score-number" oninput="syncSlider(this)">
+            </div>
+        </div>
+    </div>
+
+    <div class="category-card" style="border-top-color: var(--xls-green);">
+        <h3 class="category-title">
+            <span style="color: var(--xls-green);">4. Handout</span>
+            <span style="font-size: 0.9rem; color: var(--text-muted);">Max. 15 Pkt.</span>
+        </h3>
+        
+        <div class="criterion-row">
+            <div class="criterion-info">
+                <div class="criterion-name">Inhaltliche Qualität</div>
+                <div class="criterion-desc">Die wichtigsten Punkte kompakt zusammengefasst.</div>
+            </div>
+            <div class="criterion-control">
+                <input type="range" min="0" max="10" value="10" class="score-slider" oninput="syncInput(this)">
+                <input type="number" min="0" max="10" value="10" class="score-number" oninput="syncSlider(this)">
+            </div>
+        </div>
+        <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 5px 0;">
+        
+        <div class="criterion-row">
+            <div class="criterion-info">
+                <div class="criterion-name">Formale Korrektheit</div>
+                <div class="criterion-desc">Fehlerfrei, übersichtlich gelayoutet.</div>
+            </div>
+            <div class="criterion-control">
+                <input type="range" min="0" max="5" value="5" class="score-slider" oninput="syncInput(this)">
+                <input type="number" min="0" max="5" value="5" class="score-number" oninput="syncSlider(this)">
+            </div>
+        </div>
+    </div>
+
+    <div class="category-card" style="border-top-color: #64748b;">
+        <h3 class="category-title">
+            <span style="color: #64748b;">5. Quellenangaben</span>
+            <span style="font-size: 0.9rem; color: var(--text-muted);">Max. 10 Pkt.</span>
+        </h3>
+        
+        <div class="criterion-row">
+            <div class="criterion-info">
+                <div class="criterion-name">Vollständigkeit</div>
+                <div class="criterion-desc">Alle Bilder, Webseiten & Literatur sauber belegt.</div>
+            </div>
+            <div class="criterion-control">
+                <input type="range" min="0" max="10" value="10" class="score-slider" oninput="syncInput(this)">
+                <input type="number" min="0" max="10" value="10" class="score-number" oninput="syncSlider(this)">
+            </div>
+        </div>
+    </div>
+
+    <div class="category-card" style="border-top-color: var(--pdf-red); background: #fef2f2;">
+        <h3 class="category-title" style="color: var(--pdf-red);">Sonderabzüge & Individuelles Feedback</h3>
+        
+        <div class="criterion-row" style="background: white; padding: 10px; border-radius: 6px; border: 1px dashed var(--pdf-red); margin-bottom: 1rem;">
+            <div class="criterion-info">
+                <div class="criterion-name" style="color: var(--pdf-red);">Ausschlusskriterium: Video genutzt</div>
+                <div class="criterion-desc">Trotz Verbot wurde ein Video gezeigt. (Pauschalabzug -15 Pkt.)</div>
+            </div>
+            <div class="criterion-control" style="justify-content: flex-end;">
+                <input type="checkbox" id="penalty-video" onchange="calculateTotal()" style="width: 24px; height: 24px; cursor: pointer; accent-color: var(--pdf-red);">
+            </div>
+        </div>
+
+        <label style="font-weight: bold; font-size: 0.9rem; color: var(--text-main); margin-bottom: 5px; display: block;">Lehrer-Feedback / Begründung zur Note:</label>
+        <textarea class="feedback-area" placeholder="Zusätzliches Feedback für die Schüler eintragen..."></textarea>
+    </div>
+
+</main>
+
+<div class="result-footer">
+    <div style="display: flex; align-items: center; gap: 2rem; flex-wrap: wrap;">
+        <div>
+            <div style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; opacity: 0.8;">Gesamtpunkte</div>
+            <div class="result-points"><span id="total-points">100</span> / 100</div>
+        </div>
+        <div>
+            <div style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; opacity: 0.8;">Note</div>
+            <div class="result-grade" id="final-grade" style="color: var(--xls-green);">1 (Sehr Gut)</div>
+        </div>
+    </div>
+    
+    <button onclick="window.print()" style="background: white; color: var(--text-main); border: none; padding: 10px 20px; font-size: 1rem; font-weight: bold; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+        🖨️ Als PDF speichern
+    </button>
+</div>
+
+<script>
+    // Synchronisiert Slider -> Number Input
+    function syncInput(sliderElement) {
+        const numberInput = sliderElement.nextElementSibling;
+        numberInput.value = sliderElement.value;
+        calculateTotal();
+    }
+
+    // Synchronisiert Number Input -> Slider
+    function syncSlider(numberElement) {
+        const sliderInput = numberElement.previousElementSibling;
+        
+        // Grenzen absichern
+        let val = parseInt(numberElement.value);
+        let max = parseInt(numberElement.max);
+        let min = parseInt(numberElement.min);
+        
+        if(val > max) val = max;
+        if(val < min) val = min;
+        if(isNaN(val)) val = 0;
+        
+        numberElement.value = val;
+        sliderInput.value = val;
+        calculateTotal();
+    }
+
+    // Hauptberechnung
+    function calculateTotal() {
+        let total = 0;
+        
+        // Alle Punkte-Eingabefelder summieren
+        document.querySelectorAll('.score-number').forEach(input => {
+            total += parseInt(input.value) || 0;
+        });
+
+        // Abzug prüfen
+        const penaltyBox = document.getElementById('penalty-video');
+        if(penaltyBox.checked) {
+            total -= 15;
+        }
+
+        // Nicht unter 0 fallen lassen
+        total = Math.max(0, total);
+
+        // Anzeige aktualisieren
+        document.getElementById('total-points').innerText = total;
+
+        // Note berechnen (nach dem Schema)
+        const gradeBox = document.getElementById('final-grade');
+        if(total >= 88) {
+            gradeBox.innerText = "1 (Sehr Gut)";
+            gradeBox.style.color = "var(--xls-green)";
+        } else if (total >= 75) {
+            gradeBox.innerText = "2 (Gut)";
+            gradeBox.style.color = "var(--xls-green)";
+        } else if (total >= 63) {
+            gradeBox.innerText = "3 (Befriedigend)";
+            gradeBox.style.color = "var(--html-orange)";
+        } else if (total >= 50) {
+            gradeBox.innerText = "4 (Genügend)";
+            gradeBox.style.color = "var(--html-orange)";
+        } else {
+            gradeBox.innerText = "5 (Nicht Genügend)";
+            gradeBox.style.color = "var(--pdf-red)";
+        }
+    }
+</script>
+
+</body>
+</html>

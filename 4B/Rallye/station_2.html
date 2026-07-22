@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firewall 2 | Operation Zeugnis-Rettung</title>
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+        /* Hacker-Theme für die Rallye */
+        body {
+            background-color: #0f172a;
+            color: #f8fafc;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        
+        header {
+            background-color: #020617;
+            border-bottom: 1px solid #22c55e;
+        }
+        header h1 {
+            color: #22c55e;
+            text-shadow: 0 0 5px rgba(34, 197, 94, 0.5);
+        }
+        header p {
+            color: #4ade80;
+        }
+        .btn-back {
+            color: #94a3b8;
+            border-color: #334155;
+            font-family: sans-serif;
+        }
+        .btn-back:hover {
+            background-color: #1e293b;
+            color: #f8fafc;
+        }
+
+        .terminal-box {
+            background-color: #000000;
+            border: 2px solid #22c55e;
+            border-radius: 8px;
+            padding: 2rem;
+            color: #22c55e;
+            box-shadow: 0 0 20px rgba(34, 197, 94, 0.1);
+            margin-top: 2rem;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .terminal-header {
+            border-bottom: 1px dashed #22c55e;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .task-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .task-block {
+            background-color: #022c16; 
+            border: 1px solid #15803d;
+            padding: 1.5rem;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .task-content {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .task-title {
+            color: #86efac;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+
+        .task-math {
+            font-size: 1.2rem;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+        }
+
+        .task-input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .task-input {
+            background-color: #000000;
+            border: 1px solid #22c55e;
+            color: #22c55e;
+            padding: 10px;
+            font-size: 1.2rem;
+            font-family: 'Courier New', Courier, monospace;
+            width: 80px;
+            text-align: center;
+            border-radius: 4px;
+        }
+        .task-input:focus {
+            outline: none;
+            box-shadow: 0 0 10px rgba(34, 197, 94, 0.5);
+        }
+
+        .master-code-box {
+            background-color: #1e1b4b;
+            border: 2px solid #8b5cf6;
+            padding: 2rem;
+            border-radius: 4px;
+            text-align: center;
+            margin-bottom: 2rem;
+            box-shadow: 0 0 15px rgba(139, 92, 246, 0.3);
+        }
+
+        .master-code-input {
+            background-color: #000000;
+            border: 2px solid #8b5cf6;
+            color: #a78bfa;
+            padding: 15px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            font-family: 'Courier New', Courier, monospace;
+            width: 150px;
+            text-align: center;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+
+        .btn-hack {
+            display: block;
+            width: 100%;
+            text-align: center;
+            background-color: #000000;
+            color: #22c55e;
+            border: 2px solid #22c55e;
+            padding: 1.5rem;
+            font-size: 1.3rem;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-hack:hover {
+            background-color: #22c55e;
+            color: #000000;
+            box-shadow: 0 0 15px #22c55e;
+        }
+
+        .feedback-msg {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            min-height: 3rem;
+        }
+        
+        .sys-warning { color: #ef4444; }
+        .sys-success { color: #22c55e; }
+        .sys-alert { color: #eab308; } /* Gelb für "fast richtig" */
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>> FIREWALL_2 :: FUNKTIONEN</h1>
+    <p>Status: LOCKED // Verschlüsselung: Linearer Datenstrom</p>
+    <div class="back-nav">
+        <a href="start.html" class="btn-back">⬅ Verbindungsabbruch (Zurück)</a>
+    </div>
+</header>
+
+<main>
+    <div class="terminal-box">
+        <div class="terminal-header">
+            <span>root@phantom-server:~/firewall_2#</span>
+            <span>[DATENSTROM-ANALYSE AKTIV]</span>
+        </div>
+
+        <p style="margin-bottom: 2rem; line-height: 1.6; color: #86efac;">
+            <strong>SYSTEMNACHRICHT:</strong> Ich habe die Schlüsselwerte in 10 linearen Funktionen versteckt. Um den Master-Passcode zu generieren, musst du Folgendes tun:<br><br>
+            1. Repariere alle 10 Datenblöcke.<br>
+            2. Addiere alle 10 Ergebnisse zu einer Summe. Diese Summe ist dein Argument <strong><i>x</i></strong>.<br>
+            3. Setze dieses <i>x</i> in meine finale Hacker-Funktion <strong><i>f(x) = 3 &middot; x - 42</i></strong> ein.<br>
+            4. Der daraus resultierende Funktionswert ist der Code, der diese Firewall öffnet.
+        </p>
+
+        <div class="task-grid">
+            
+            <div class="task-block">
+                <div class="task-content">
+                    <div class="task-title">Block 01: Funktionswert</div>
+                    <div class="task-math"><i>f(x)</i> = 2<i>x</i> + 4</div>
+                    <div>Berechne den Funktionswert an der Stelle <i>x</i> = 3.</div>
+                </div>
+                <div class="task-input-wrapper">
+                    <label>Wert =</label>
+                    <input type="text" id="t1" class="task-input" autocomplete="off">
+                </div>
+            </div>
+
+            <div class="task-block">
+                <div class="task-content">
+                    <div class="task-title">Block 02: Parameter d</div>
+                    <div class="task-math"><i>f(x)</i> = -3<i>x</i> + 7</div>
+                    <div>Wie lautet der Startwert (y-Achsenabschnitt) <i>d</i> dieser Funktion?</div>
+                </div>
+                <div class="task-input-wrapper">
+                    <label><i>d</i> =</label>
+                    <input type="text" id="t2" class="task-input" autocomplete="off">
+                </div>
+            </div>
+
+            <div class="task-block">
+                <div class="task-content">
+                    <div class="task-title">Block 03: Steigung berechnen</div>
+                    <div class="task-math">P(0 | 2) und Q(1 | 5)</div>
+                    <div>Eine Gerade verläuft durch diese beiden Punkte. Wie groß ist ihre Steigung <i>k</i>?</div>
+                </div>
+                <div class="task-input-wrapper">
+                    <label><i>k</i> =</label>
+                    <input type="text" id="t3" class="task-input" autocomplete="off">
+                </div>
+            </div>
+
+            <div class="task-block">
+                <div class="task-content">
+                    <div class="task-title">Block 04: Die Nullstelle</div>
+                    <div class="task-math"><i>f(x)</i> = 4<i>x</i> - 8</div>
+                    <div>Bei welchem <i>x</i> schneidet die Funktion die x-Achse? (Tipp: <i>f(x)</i> = 0 setzen)</div>
+                </div>
+                <div class="task-input-wrapper">
+                    <label><i>x</i> =</label>
+                    <input type="text" id="t4" class="task-input" autocomplete="off">
+                </div>
+            </div>
+
+            <div class="task-block">
+                <div class="task-content">
+                    <div class="task-title">Block 05: Punktprobe I</div>
+                    <div class="task-math"><i>f(x)</i> = -2<i>x</i> + 5</div>
+                    <div>Der Punkt P(-2 | y) liegt genau auf dem Graphen. Berechne die fehlende y-Koordinate!</div>
+                </div>
+                <div class="task-input-wrapper">
+                    <label><i>y</i> =</label>
+                    <input type="text" id="t5" class="task-input" autocomplete="off">
+                </div>
+            </div>
+
+            <div class="task-block">
+                <div class="task-content">
+                    <div class="task-title">Block 06: Punktprobe II</div>
+                    <div class="task-math"><i>f(x)</i> = 0,5<i>x</i> - 1</div>
+                    <div>Ein Punkt Q(x | 3) liegt auf dem Graphen. Berechne die fehlende x-Koordinate!</div>
+                </div>
+                <div class="task-input-wrapper">
+                    <label><i>x</i> =</label>
+                    <input type="text" id="t6" class="task-input" autocomplete="off">
+                </div>
+            </div>
+
+            <div class="task-block">
+                <div class="task-content">
+                    <div class="task-title">Block 07: Direkte Proportionalität</div>
+                    <div class="task-math">5 kg Äpfel kosten 15 €</div>
+                    <div>Wie viel kosten 4 kg Äpfel bei dieser Zuordnung? (Nur die Zahl eingeben)</div>
+                </div>
+                <div class="task-input-wrapper">
+                    <label>Wert =</label>
+                    <input type="text" id="t7" class="task-input" autocomplete="off">
+                </div>
+            </div>
+
+            <div class="task-block">
+                <div class="task-content">
+                    <div class="task-title">Block 08: Parallele Geraden</div>
+                    <div class="task-math"><i>f(x)</i> = 4<i>x</i> - 2</div>
+                    <div>Eine Gerade <i>g(x)</i> verläuft <strong>parallel</strong> zu <i>f(x)</i>, geht aber durch den Punkt P(0 | 5). Welchen Funktionswert hat <i>g(x)</i> an der Stelle <i>x</i> = 2?</div>
+                </div>
+                <div class="task-input-wrapper">
+                    <label>Wert =</label>
+                    <input type="text" id="t8" class="task-input" autocomplete="off">
+                </div>
+            </div>
+
+            <div class="task-block">
+                <div class="task-content">
+                    <div class="task-title">Block 09: Schnittpunkt</div>
+                    <div class="task-math"><i>f(x)</i> = 2<i>x</i> + 1 &nbsp;&nbsp;|&nbsp;&nbsp; <i>g(x)</i> = -<i>x</i> + 10</div>
+                    <div>Berechne den Schnittpunkt der beiden Geraden. Welchen <strong>y-Wert</strong> hat der Schnittpunkt?</div>
+                </div>
+                <div class="task-input-wrapper">
+                    <label><i>y</i> =</label>
+                    <input type="text" id="t9" class="task-input" autocomplete="off">
+                </div>
+            </div>
+
+            <div class="task-block">
+                <div class="task-content">
+                    <div class="task-title">Block 10: Praxis</div>
+                    <div class="task-math">Telefontarif</div>
+                    <div>Ein Tarif kostet 5 € Grundgebühr und 0,10 € pro Minute. Die Rechnung beträgt am Ende 11 €. Wie viele Minuten (<i>x</i>) wurde telefoniert?</div>
+                </div>
+                <div class="task-input-wrapper">
+                    <label>Minuten =</label>
+                    <input type="text" id="t10" class="task-input" autocomplete="off">
+                </div>
+            </div>
+
+        </div>
+
+        <div class="master-code-box">
+            <h3 style="margin-top: 0; color: #a78bfa;">[ MASTER-PASSCODE EINGABE ]</h3>
+            <p style="color: #c4b5fd;">Summiere die Ergebnisse aus Block 01 bis 10 und nenne diese Summe <i>x</i>.<br>
+            Berechne nun: <strong><i>f(x) = 3 &middot; x - 42</i></strong></p>
+            <input type="text" id="finalCode" class="master-code-input" autocomplete="off" placeholder="CODE">
+        </div>
+
+        <button id="btnHack" class="btn-hack">> FIREWALL HACKEN</button>
+        
+        <div id="feedback" class="feedback-msg">
+            </div>
+
+    </div>
+</main>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Die geheimen Lösungszahlen für Block 1 bis 10
+        // (10, 7, 3, 2, 9, 8, 12, 13, 7, 60) -> Summe = 131
+        const correctAnswers = [10, 7, 3, 2, 9, 8, 12, 13, 7, 60];
+        
+        // Finaler Passcode: f(131) = 3 * 131 - 42 = 393 - 42 = 351
+        const targetPasscode = 351;
+        
+        const btnHack = document.getElementById("btnHack");
+        const feedback = document.getElementById("feedback");
+
+        btnHack.addEventListener("click", function() {
+            let blocksCorrect = true;
+            let errors = [];
+
+            // 1. Prüfe die 10 Datenblöcke
+            for(let i = 0; i < 10; i++) {
+                let inputField = document.getElementById("t" + (i + 1));
+                let inputVal = inputField.value.trim().replace(',', '.');
+                
+                if (inputVal === "") {
+                    blocksCorrect = false;
+                    errors.push(i + 1);
+                    continue;
+                }
+
+                let parsedVal = parseFloat(inputVal);
+                
+                if (parsedVal === correctAnswers[i]) {
+                    inputField.style.borderColor = "#22c55e"; // Grün
+                } else {
+                    blocksCorrect = false;
+                    errors.push(i + 1);
+                    inputField.style.borderColor = "#ef4444"; // Rot
+                }
+            }
+
+            // 2. Prüfe den Master-Passcode
+            let finalField = document.getElementById("finalCode");
+            let finalVal = parseFloat(finalField.value.trim().replace(',', '.'));
+            let codeCorrect = (finalVal === targetPasscode);
+
+            // 3. System-Feedback generieren
+            if (!blocksCorrect) {
+                // Ein oder mehrere Blöcke sind falsch
+                finalField.style.borderColor = "#8b5cf6"; // Reset
+                feedback.innerHTML = `<span class="sys-warning">ZUGRIFF VERWEIGERT.<br>Fehlerhafte Datenblöcke entdeckt: Block ${errors.join(", ")}.<br>Korrigiere die Blöcke, bevor du den Master-Code berechnest!</span>`;
+            } else if (blocksCorrect && !codeCorrect) {
+                // Blöcke richtig, aber Mastercode falsch berechnet
+                finalField.style.borderColor = "#ef4444"; // Rot
+                feedback.innerHTML = `<span class="sys-alert">WARNUNG: Alle Datenblöcke sind korrekt repariert! Aber dein Master-Passcode ist falsch.<br>Hast du die Summe richtig gebildet und in f(x) eingesetzt?</span>`;
+            } else if (blocksCorrect && codeCorrect) {
+                // ALLES RICHTIG
+                finalField.style.borderColor = "#22c55e";
+                btnHack.disabled = true;
+                btnHack.style.backgroundColor = "#22c55e";
+                btnHack.style.color = "#000000";
+                btnHack.innerHTML = "> HACK ERFOLGREICH <";
+                
+                feedback.innerHTML = `<span class="sys-success">ZUGRIFF GEWÄHRT. Master-Passcode [351] akzeptiert. Firewall 2 deaktiviert.<br>Verbindung zum Geometrie-Tresor wird hergestellt...</span>`;
+                
+                // Nach 3 Sekunden zur Station 3
+                setTimeout(function() {
+                    window.location.href = "station_3.html";
+                }, 3500);
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vier Gewinnt</title>
+    <style>
+        :root {
+            --player-1-color: #ff4136; /* Rot */
+            --player-2-color: #ffdc00; /* Gelb */
+            --board-color: #0074d9;    /* Blau */
+            --bg-color: #f4f4f4;
+            --text-color: #333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+            color: #222;
+        }
+
+        /* Status Anzeige */
+        #status {
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 20px;
+            background: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .player-indicator {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        /* Das Spielbrett */
+        #game-board {
+            background-color: var(--board-color);
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            display: grid;
+            grid-template-columns: repeat(7, 1fr); /* 7 Spalten */
+            gap: 8px;
+            max-width: 95vw;
+        }
+
+        /* Die Zellen (Löcher) */
+        .cell {
+            width: 50px;
+            height: 50px;
+            background-color: var(--bg-color); /* "Loch" Farbe */
+            border-radius: 50%;
+            cursor: pointer;
+            position: relative;
+            /* Innerer Schatten für Tiefe */
+            box-shadow: inset 0 5px 5px rgba(0,0,0,0.2); 
+            transition: background-color 0.3s ease;
+        }
+
+        /* Mobile Anpassung */
+        @media (max-width: 500px) {
+            .cell {
+                width: 11vw;
+                height: 11vw;
+            }
+            #game-board {
+                gap: 5px;
+                padding: 5px;
+            }
+        }
+
+        /* Spielsteine */
+        .cell.red {
+            background-color: var(--player-1-color);
+            box-shadow: inset 0 -3px 3px rgba(0,0,0,0.2);
+            animation: dropIn 0.3s cubic-bezier(0.5, 0, 0.5, 1);
+        }
+
+        .cell.yellow {
+            background-color: var(--player-2-color);
+            box-shadow: inset 0 -3px 3px rgba(0,0,0,0.2);
+            animation: dropIn 0.3s cubic-bezier(0.5, 0, 0.5, 1);
+        }
+
+        /* Animation für fallende Steine */
+        @keyframes dropIn {
+            0% { transform: translateY(-300%); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Hover Effekt um Spalte anzuzeigen */
+        .cell:hover::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(255,255,255,0.2);
+            border-radius: 50%;
+        }
+
+        /* Gewinner Anzeige */
+        .winner-modal {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: none; /* Standardmäßig versteckt */
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            animation: popIn 0.4s ease;
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        button {
+            background-color: var(--board-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background-color: #005bb5;
+        }
+
+        .reset-btn {
+            background-color: #555;
+            margin-top: 20px;
+        }
+        .reset-btn:hover { background-color: #333; }
+
+    </style>
+</head>
+<body>
+
+    <h1>Vier Gewinnt</h1>
+    
+    <div id="status">
+        <span id="player-indicator" class="player-indicator" style="background-color: var(--player-1-color);"></span>
+        <span id="status-text">Spieler 1 (Rot) ist dran</span>
+    </div>
+
+    <div id="game-board">
+        <!-- Das Grid wird per JS generiert -->
+    </div>
+
+    <button class="reset-btn" onclick="resetGame()">Neues Spiel</button>
+
+    <!-- Gewinner Modal -->
+    <div id="winner-modal" class="winner-modal">
+        <div class="modal-content">
+            <h2 id="winner-message">Gewonnen!</h2>
+            <button onclick="resetGame()">Nochmal spielen</button>
+        </div>
+    </div>
+
+    <script>
+        // Konfiguration
+        const ROWS = 6;
+        const COLS = 7;
+        const PLAYER_1 = 1; // Rot
+        const PLAYER_2 = 2; // Gelb
+        
+        let board = []; // Das Spielfeld Array
+        let currentPlayer = PLAYER_1;
+        let gameActive = true;
+
+        const boardElement = document.getElementById('game-board');
+        const statusText = document.getElementById('status-text');
+        const playerIndicator = document.getElementById('player-indicator');
+        const modal = document.getElementById('winner-modal');
+        const winnerMessage = document.getElementById('winner-message');
+
+        // Initialisierung
+        function initGame() {
+            gameActive = true;
+            currentPlayer = PLAYER_1;
+            board = [];
+            boardElement.innerHTML = ''; // Board leeren
+            modal.style.display = 'none';
+
+            // Leeres Board Array erstellen (6 Zeilen, 7 Spalten)
+            // Wir verwenden 0 für leer, 1 für Rot, 2 für Gelb
+            for (let r = 0; r < ROWS; r++) {
+                let row = [];
+                for (let c = 0; c < COLS; c++) {
+                    row.push(0);
+                }
+                board.push(row);
+            }
+
+            // HTML Grid rendern
+            // Wir iterieren über Zeilen und Spalten, erstellen aber flache Divs
+            // Wir speichern Daten-Attribute, um Spalte/Zeile zu identifizieren
+            for (let r = 0; r < ROWS; r++) {
+                for (let c = 0; c < COLS; c++) {
+                    const cell = document.createElement('div');
+                    cell.classList.add('cell');
+                    cell.dataset.row = r;
+                    cell.dataset.col = c;
+                    // Klick-Event auf die Zelle (löst Zug in der Spalte aus)
+                    cell.addEventListener('click', () => handleMove(c));
+                    boardElement.appendChild(cell);
+                }
+            }
+
+            updateStatusDisplay();
+        }
+
+        // Einen Zug machen
+        function handleMove(colIndex) {
+            if (!gameActive) return;
+
+            // Finde die unterste freie Zeile in der angeklickten Spalte
+            // Wir suchen von unten (ROWS-1) nach oben (0)
+            let placedRow = -1;
+            for (let r = ROWS - 1; r >= 0; r--) {
+                if (board[r][colIndex] === 0) {
+                    board[r][colIndex] = currentPlayer;
+                    placedRow = r;
+                    break;
+                }
+            }
+
+            // Wenn Spalte voll ist, abbrechen
+            if (placedRow === -1) return;
+
+            // UI aktualisieren
+            updateBoardUI(placedRow, colIndex);
+
+            // Sieg prüfen
+            if (checkWin(placedRow, colIndex)) {
+                endGame(false); // false = kein Unentschieden, also Sieg
+            } else if (checkDraw()) {
+                endGame(true); // Unentschieden
+            } else {
+                // Spieler wechseln
+                currentPlayer = currentPlayer === PLAYER_1 ? PLAYER_2 : PLAYER_1;
+                updateStatusDisplay();
+            }
+        }
+
+        // Visuelles Update einer einzelnen Zelle
+        function updateBoardUI(row, col) {
+            // Index im Grid berechnen: row * COLS + col
+            const index = row * COLS + col;
+            const cell = boardElement.children[index];
+            
+            if (currentPlayer === PLAYER_1) {
+                cell.classList.add('red');
+            } else {
+                cell.classList.add('yellow');
+            }
+        }
+
+        // Status Text und Farbe aktualisieren
+        function updateStatusDisplay() {
+            if (currentPlayer === PLAYER_1) {
+                statusText.textContent = "Spieler 1 (Rot) ist dran";
+                playerIndicator.style.backgroundColor = "var(--player-1-color)";
+            } else {
+                statusText.textContent = "Spieler 2 (Gelb) ist dran";
+                playerIndicator.style.backgroundColor = "var(--player-2-color)";
+            }
+        }
+
+        // Gewinnlogik
+        function checkWin(row, col) {
+            const player = board[row][col];
+
+            // Richtungen: [deltaRow, deltaCol]
+            // Horizontal, Vertikal, Diagonal /, Diagonal \
+            const directions = [
+                [0, 1],  // Horizontal
+                [1, 0],  // Vertikal
+                [1, 1],  // Diagonal runter rechts
+                [1, -1]  // Diagonal runter links
+            ];
+
+            for (let [dr, dc] of directions) {
+                let count = 1; // Der aktuelle Stein zählt schon
+
+                // In positive Richtung prüfen
+                for (let i = 1; i < 4; i++) {
+                    const r = row + dr * i;
+                    const c = col + dc * i;
+                    if (isValidPos(r, c) && board[r][c] === player) {
+                        count++;
+                    } else {
+                        break;
+                    }
+                }
+
+                // In negative Richtung prüfen
+                for (let i = 1; i < 4; i++) {
+                    const r = row - dr * i;
+                    const c = col - dc * i;
+                    if (isValidPos(r, c) && board[r][c] === player) {
+                        count++;
+                    } else {
+                        break;
+                    }
+                }
+
+                if (count >= 4) return true;
+            }
+            return false;
+        }
+
+        // Hilfsfunktion: Ist Position im Board?
+        function isValidPos(r, c) {
+            return r >= 0 && r < ROWS && c >= 0 && c < COLS;
+        }
+
+        // Unentschieden prüfen (Board voll)
+        function checkDraw() {
+            // Wenn die oberste Zeile voll ist, geht nichts mehr (vereinfacht)
+            // Oder wir prüfen einfach, ob alle Zellen != 0 sind.
+            // Schnellcheck: Prüfe oberste Reihe. Wenn alle voll, dann voll.
+            // Aber Achtung: Es könnte theoretisch sein, dass man gewinnt im letzten Zug.
+            // Daher wird Draw erst nach Win Check aufgerufen.
+            return board.every(row => row.every(cell => cell !== 0));
+        }
+
+        function endGame(isDraw) {
+            gameActive = false;
+            modal.style.display = 'flex';
+            if (isDraw) {
+                winnerMessage.textContent = "Unentschieden!";
+                winnerMessage.style.color = "#333";
+            } else {
+                const winnerName = currentPlayer === PLAYER_1 ? "Rot" : "Gelb";
+                const winnerColor = currentPlayer === PLAYER_1 ? "var(--player-1-color)" : "var(--player-2-color)";
+                winnerMessage.textContent = `${winnerName} hat gewonnen!`;
+                winnerMessage.style.color = winnerName === "Rot" ? "#cc0000" : "#bbaa00";
+            }
+        }
+
+        function resetGame() {
+            initGame();
+        }
+
+        // Start
+        initGame();
+
+    </script>
+</body>
+</html>

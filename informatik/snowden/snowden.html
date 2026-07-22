@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filmprojekt: SNOWDEN</title>
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        :root {
+            --it-primary: #107c41; /* Informatik Grün */
+            --it-dark: #064e3b;
+            --bg-gray: #f8fafc;
+            --nsa-dark: #0f172a;
+            --accent: #38bdf8;
+        }
+
+        body { 
+            background-color: var(--bg-gray); 
+            font-size: 1.15rem; /* Globale Schriftgröße erhöht */
+            line-height: 1.7; /* Besserer Zeilenabstand für Lesbarkeit */
+            color: #334155;
+        }
+        
+        .module-container { 
+            max-width: 1100px; /* Breiterer Container für die größeren Boxen */
+            margin: 0 auto; 
+            padding: 3rem 2rem; 
+        }
+        
+        /* Layouts */
+        .grid-2 { display: grid; grid-template-columns: 1fr; gap: 2rem; }
+        .grid-3 { display: grid; grid-template-columns: 1fr; gap: 2rem; }
+        @media(min-width: 800px) { 
+            .grid-2 { grid-template-columns: 1fr 1fr; }
+            .grid-3 { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        /* Hero / Intro */
+        .intro-box { 
+            background: white; 
+            border-radius: 12px; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05); 
+            padding: 2.5rem; /* Größere Box */
+            border-left: 6px solid var(--it-primary); 
+            margin-bottom: 2rem; 
+            font-size: 1.2rem; /* Größere Schrift */
+        }
+        
+        .profile-card { 
+            background: var(--nsa-dark); 
+            color: white; 
+            padding: 2.5rem; /* Größere Box */
+            border-radius: 12px; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            position: relative; 
+            overflow: hidden; 
+        }
+        .profile-watermark { position: absolute; top: -20px; right: -20px; font-size: 12rem; opacity: 0.05; transform: rotate(10deg); user-select: none; }
+
+        /* Glossary Cards */
+        .glossary-card { 
+            background: white; 
+            padding: 2rem; /* Größere Box */
+            border-radius: 8px; 
+            border: 1px solid #e2e8f0; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02); 
+            transition: 0.2s; 
+        }
+        .glossary-card:hover { border-color: var(--it-primary); transform: translateY(-3px); }
+        .glossary-card h4 { margin-top: 0; color: var(--it-dark); display: flex; align-items: center; gap: 10px; font-size: 1.4rem; /* Größere Überschrift */ }
+        .glossary-card p { font-size: 1.1rem; }
+
+        /* Metadata Special Box */
+        .metadata-box { 
+            background: #eff6ff; 
+            border: 1px dashed #93c5fd; 
+            border-radius: 8px; 
+            padding: 1.5rem; 
+            margin-top: 15px; 
+            font-size: 1.05rem; 
+        }
+        .metadata-row { display: flex; justify-content: space-between; border-bottom: 1px solid #dbeafe; padding: 6px 0; }
+
+        /* Programs Section */
+        .program-box { 
+            background: #fff1f2; 
+            border: 1px solid #fecdd3; 
+            padding: 2rem; /* Größere Box */
+            border-radius: 8px; 
+            border-left: 5px solid #e11d48; 
+            margin-bottom: 1.5rem; 
+        }
+        .program-box h4 { font-size: 1.3rem; margin-top: 0; color: #be123c; }
+        .program-box p { font-size: 1.1rem; margin-bottom: 0; }
+        
+        /* Assignment Area */
+        .assignment-area { 
+            background: white; 
+            border: 3px solid var(--it-primary); 
+            border-radius: 12px; 
+            padding: 3rem; /* Größere Box */
+            margin-top: 4rem; 
+            box-shadow: 0 10px 25px rgba(16, 124, 65, 0.1); 
+        }
+        
+        /* Größere Eingabefelder */
+        .assignment-select, #student-name { 
+            width: 100%; 
+            padding: 15px; 
+            font-size: 1.15rem; 
+            border: 2px solid #cbd5e1; 
+            border-radius: 6px; 
+            margin-bottom: 20px; 
+            outline: none; 
+            background: #f8fafc; 
+        }
+        .assignment-select:focus, #student-name:focus { border-color: var(--it-primary); }
+        
+        .assignment-textarea { 
+            width: 100%; 
+            min-height: 250px; /* Höheres Textfeld */
+            padding: 20px; 
+            font-size: 1.15rem; 
+            border: 2px solid #cbd5e1; 
+            border-radius: 6px; 
+            margin-bottom: 20px; 
+            outline: none; 
+            font-family: inherit; 
+            resize: vertical; 
+            line-height: 1.6;
+        }
+        .assignment-textarea:focus { border-color: var(--it-primary); }
+        
+        .btn-submit { 
+            background: var(--it-primary); 
+            color: white; 
+            border: none; 
+            padding: 18px 30px; /* Größerer Button */
+            font-size: 1.25rem; 
+            font-weight: bold; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            transition: 0.2s; 
+            width: 100%; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            gap: 12px; 
+        }
+        .btn-submit:hover { background: var(--it-dark); }
+
+        /* Listen Styling angepasst */
+        ul { padding-left: 1.5rem; margin-bottom: 1.5rem; }
+        li { margin-bottom: 0.5rem; }
+
+        /* Print Area (Hidden by default) */
+        #print-area { display: none; }
+
+        /* CSS for the Print/PDF Generation */
+        @media print {
+            body * { visibility: hidden; }
+            #print-area { display: block; position: absolute; left: 0; top: 0; width: 100%; padding: 20px; font-family: 'Helvetica', Arial, sans-serif; }
+            #print-area * { visibility: visible; }
+            
+            .print-header { border-bottom: 2px solid black; padding-bottom: 10px; margin-bottom: 20px; }
+            .print-title { font-size: 24pt; font-weight: bold; margin: 0; }
+            .print-subtitle { font-size: 12pt; color: #555; margin-top: 5px; }
+            .print-student { font-size: 14pt; margin-top: 20px; font-weight: bold; }
+            .print-task { font-size: 14pt; margin-top: 10px; background: #eee; padding: 10px; font-weight: bold; }
+            .print-notes { font-size: 12pt; margin-top: 20px; white-space: pre-wrap; line-height: 1.6; }
+        }
+    </style>
+</head>
+<body>
+
+<header style="background-color: var(--nsa-dark); color: white; padding: 4rem 1rem; text-align: center; border-bottom: 4px solid var(--it-primary);">
+    <div style="font-size: 4rem; margin-bottom: 15px;">👁️</div>
+    <h1 style="color: white; margin: 0; font-size: 3rem; letter-spacing: 2px;">Filmprojekt: SNOWDEN</h1>
+    <p style="color: #cbd5e1; margin-top: 15px; font-size: 1.4rem;">Massenüberwachung, Geheimdienste und das Recht auf Privatsphäre</p>
+</header>
+
+<div class="back-nav"><a href="../index.html" class="btn-back">← Zurück zur Übersicht</a></div>
+
+<main class="module-container">
+
+    <div class="grid-2" style="margin-bottom: 4rem;">
+        <div class="intro-box">
+            <h2 style="margin-top: 0; color: var(--it-dark); font-size: 1.8rem;">1. Stell dir vor...</h2>
+            <p>...jemand liest jede deiner WhatsApp-Nachrichten mit, weiß, wo du dich gerade befindest, welche YouTube-Videos du schaust und mit wem du befreundet bist. Und dieser "Jemand" ist nicht etwa ein Hacker, sondern der Geheimdienst eines Staates.</p>
+            <p>Genau darum geht es im Film <strong>"Snowden" (Regie: Oliver Stone, 2016)</strong>. Der Film erzählt die wahre Geschichte von Edward Snowden, der 2013 einen der größten Skandale der Geschichte aufdeckte: Die massenhafte, weltweite Überwachung von normalen Bürgern.</p>
+            
+            <h3 style="color: var(--it-dark); margin-top: 2rem; font-size: 1.5rem;">🎬 Wie der Film beginnt</h3>
+            <p style="font-size: 1.1rem;">Lass dich nicht verwirren: Der Film beginnt im Jahr 2013 in einem Hotelzimmer in Hongkong. Dort hat sich Snowden versteckt, um sich heimlich mit Journalisten zu treffen. Ausgehend von diesem Zimmer wird der Rest der Geschichte in Rückblenden (Flashbacks) erzählt.</p>
+        </div>
+
+        <div class="profile-card">
+            <div class="profile-watermark">TOP SECRET</div>
+            <div style="position: relative; z-index: 1;">
+                <h2 style="margin-top: 0; color: var(--accent); border-bottom: 2px solid #334155; padding-bottom: 15px; font-size: 1.8rem;">2. Wer ist Edward Snowden?</h2>
+                <ul style="list-style: none; padding: 0; line-height: 1.8; font-size: 1.2rem;">
+                    <li style="margin-bottom: 10px;">👤 <strong>Geboren:</strong> 1983</li>
+                    <li style="margin-bottom: 10px;">💻 <strong>Beruf:</strong> Hochbegabter Computerexperte</li>
+                    <li style="margin-bottom: 10px;">🏢 <strong>Arbeitgeber:</strong> Erst CIA, dann Systemadministrator für die NSA (National Security Agency).</li>
+                    <li style="margin-bottom: 10px;">🚨 <strong>Die Entdeckung:</strong> Er fand heraus, dass die NSA nicht nur Terroristen überwacht, sondern systematisch die Daten von Millionen unschuldigen Menschen sammelt.</li>
+                    <li>⚖️ <strong>Das Dilemma:</strong> Gut bezahlten Job behalten oder die Welt warnen und zum Staatsfeind werden? Er entschied sich, die Daten an Journalisten zu geben. Lebt heute im Exil.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <h2 style="color: var(--nsa-dark); border-bottom: 3px solid #e2e8f0; padding-bottom: 15px; font-size: 2rem;">3. Das IT-Glossar für den Film</h2>
+    <p style="margin-bottom: 2.5rem; color: #475569; font-size: 1.2rem;">Im Film fallen viele technische Fachbegriffe. Hier sind die wichtigsten, damit du der Handlung problemlos folgen kannst:</p>
+
+    <div class="grid-3">
+        <div class="glossary-card">
+            <h4>🦅 NSA & GCHQ</h4>
+            <p>Die <strong>NSA</strong> (National Security Agency) ist der US-Geheimdienst, der für die weltweite Überwachung elektronischer Kommunikation (Internet, Telefon) zuständig ist. Der <strong>GCHQ</strong> ist der britische Geheimdienst, der eng mit der NSA zusammenarbeitet.</p>
+        </div>
+
+        <div class="glossary-card">
+            <h4>📢 Whistleblower</h4>
+            <p>(Deutsch: Hinweisgeber). Eine Person, die geheime, illegale oder unethische Machenschaften aus ihrem Arbeitsumfeld an die Öffentlichkeit bringt, oft unter hohem persönlichem Risiko.</p>
+        </div>
+
+        <div class="glossary-card">
+            <h4>🔐 Verschlüsselung</h4>
+            <p>(Englisch: Encryption). Ein Verfahren, bei dem Daten mathematisch so umgewandelt werden, dass sie nur von Personen gelesen werden können, die den richtigen digitalen "Schlüssel" besitzen.</p>
+        </div>
+
+        <div class="glossary-card">
+            <h4>🦠 Spyware / Malware</h4>
+            <p>Schadsoftware, die heimlich auf Computern oder Smartphones installiert wird, um den Nutzer auszuspionieren (z. B. durch heimliches Aktivieren der Laptop-Webcam).</p>
+        </div>
+
+        <div class="glossary-card" style="grid-column: span 1; @media(min-width: 800px){ grid-column: span 2; } border-color: #93c5fd; background: #f8fafc;">
+            <h4>📊 Metadaten (Extrem Wichtig!)</h4>
+            <p>Metadaten sind <strong>"Daten über Daten"</strong>. Der Geheimdienst muss oft gar nicht den genauen Inhalt deiner Nachricht kennen, denn Metadaten verraten bereits alles über dein Leben.</p>
+            
+            <div class="metadata-box">
+                <strong style="font-size: 1.15rem; display: block; margin-bottom: 10px;">Beispiel: Du rufst nachts bei der Telefonseelsorge an.</strong>
+                <div class="metadata-row"><span><strong>Inhalt (Unbekannt):</strong></span> <span><em>Was</em> ihr besprochen habt.</span></div>
+                <div class="metadata-row"><span><strong>Metadaten (Bekannt):</strong></span> <span><em>Wer</em> angerufen hat (Deine Nummer).</span></div>
+                <div class="metadata-row"><span></span> <span><em>Wann</em> du angerufen hast (02:14 Uhr).</span></div>
+                <div class="metadata-row"><span></span> <span><em>Wie lange</em> ihr geredet habt (45 Minuten).</span></div>
+                <div class="metadata-row"><span></span> <span><em>Wo</em> du warst (GPS-Daten deines Handys).</span></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid-2" style="margin-top: 4rem;">
+        <div>
+            <h2 style="color: var(--nsa-dark); font-size: 1.8rem;">4. Die Überwachungsprogramme</h2>
+            <p style="color: #475569; margin-bottom: 2rem;">Snowden deckte mehrere geheime Software-Programme auf. Auf diese beiden solltest du im Film besonders achten:</p>
+            
+            <div class="program-box">
+                <h4>👁️ PRISM</h4>
+                <p>Ein Programm, das der NSA direkten Zugriff auf die Server der größten Tech-Giganten ermöglichte (darunter Google, Facebook, Apple, Microsoft). So konnten E-Mails, Fotos und Suchverläufe abgesaugt werden.</p>
+            </div>
+            
+            <div class="program-box">
+                <h4>🔍 XKeyscore</h4>
+                <p>Ein gigantisches Suchwerkzeug (wie ein privates Google für Spione). Snowden sagte: <em>"Ich konnte von meinem Schreibtisch aus die E-Mails von jedem lesen, vom Buchhalter bis zum Präsidenten."</em></p>
+            </div>
+        </div>
+
+        <div>
+            <h2 style="color: var(--nsa-dark); font-size: 1.8rem;">5. Sicherheit vs. Privatsphäre</h2>
+            <p style="color: #475569; margin-bottom: 2rem;">Die große philosophische Frage des Films:</p>
+            
+            <div style="background: #e2e8f0; padding: 2rem; border-radius: 8px; margin-bottom: 1.5rem; font-size: 1.15rem;">
+                <strong style="font-size: 1.3rem;">🛡️ Das Argument der Regierung:</strong><br>
+                "Wir müssen alle Daten sammeln, um Terroranschläge zu verhindern. Wer nichts zu verbergen hat, hat auch nichts zu befürchten."
+            </div>
+
+            <div style="background: var(--it-dark); color: white; padding: 2rem; border-radius: 8px; font-size: 1.15rem;">
+                <strong style="font-size: 1.3rem; color: #a7f3d0;">🕊️ Snowdens Antwort darauf:</strong><br>
+                "Massenüberwachung ist ein Eingriff in die Grundrechte. Zu sagen: <em>'Ich brauche keine Privatsphäre, weil ich nichts zu verbergen habe'</em> ist genau das Gleiche wie zu sagen: <em>'Ich brauche keine freie Meinungsäußerung, weil ich gerade nichts zu sagen habe.'</em>"
+            </div>
+        </div>
+    </div>
+
+    <div class="assignment-area">
+        <h2 style="margin-top: 0; color: var(--it-primary); text-align: center; font-size: 2rem;">📝 Deine Beobachtungsaufträge zum Film</h2>
+        <p style="text-align: center; color: #475569; margin-bottom: 2.5rem; font-size: 1.2rem;">Wähle <strong>einen</strong> der drei Aufträge aus und mache dir während oder direkt nach dem Film Notizen dazu. Am Ende generierst du daraus dein PDF für die Abgabe in der nächsten Informatikstunde.</p>
+
+        <label style="font-weight: bold; margin-bottom: 5px; display: block; color: var(--it-dark);">Schüler/in Name:</label>
+        <input type="text" id="student-name" placeholder="Dein Vor- und Nachname">
+
+        <label style="font-weight: bold; margin-bottom: 5px; display: block; color: var(--it-dark);">Wähle deinen Auftrag:</label>
+        <select id="task-select" class="assignment-select" onchange="updateTaskHint()">
+            <option value="0">-- Bitte wähle deinen Auftrag aus --</option>
+            <option value="Auftrag A: Die Technik">Auftrag A: Die Technik (Wie kommt die NSA an Daten? Webcams, Drohnen etc.)</option>
+            <option value="Auftrag B: Snowdens Verwandlung">Auftrag B: Snowdens Verwandlung (Welche Momente führten zum Umdenken?)</option>
+            <option value="Auftrag C: Nichts zu verbergen?">Auftrag C: Nichts zu verbergen? (Auswirkungen auf sein Privatleben & seine Freundin Lindsay)</option>
+        </select>
+
+        <div id="task-hint" style="background: #f0fdf4; border-left: 5px solid #10b981; padding: 1.5rem; margin-bottom: 20px; font-size: 1.15rem; display: none;"></div>
+
+        <label style="font-weight: bold; margin-bottom: 5px; display: block; color: var(--it-dark);">Deine Ausarbeitung:</label>
+        <textarea id="student-notes" class="assignment-textarea" placeholder="Deine Notizen, Gedanken und konkreten Beispiele aus dem Film..."></textarea>
+
+        <button class="btn-submit" onclick="generatePDF()">
+            <span style="font-size: 1.5rem;">🖨️</span> Abgabe: Als PDF speichern (Drucken)
+        </button>
+        <p id="error-msg" style="color: #ef4444; font-weight: bold; text-align: center; display: none; margin-top: 15px; font-size: 1.1rem;">Bitte fülle deinen Namen, wähle einen Auftrag und schreibe deine Notizen auf!</p>
+    </div>
+
+</main>
+
+<div id="print-area">
+    <div class="print-header">
+        <div class="print-title">Filmprojekt: SNOWDEN</div>
+        <div class="print-subtitle">Informatik 5. Klasse - Mag. Schweitzer</div>
+    </div>
+    <div class="print-student">Name: <span id="print-name-val"></span></div>
+    <div class="print-task">Gewählter Auftrag: <span id="print-task-val"></span></div>
+    <div class="print-notes" id="print-notes-val"></div>
+</div>
+
+<footer style="margin-top: 5rem; padding: 3rem 1rem; background-color: #f8fafc; border-top: 1px solid #e2e8f0; color: #64748b; font-size: 1.1rem; text-align: center;">
+    <strong>&copy; 2026 | GvP | Mag. Schweitzer | DSGVO-Konform (Keine Server-Uploads)</strong>
+</footer>
+
+<script>
+    const hints = {
+        "0": "",
+        "Auftrag A: Die Technik": "Achte darauf, wie die NSA im Film an Daten kommt. Welche Geräte werden gehackt oder überwacht? Welche Rolle spielen Webcams, Drohnen und soziale Netzwerke? Notiere dir 3-4 konkrete Beispiele.",
+        "Auftrag B: Snowdens Verwandlung": "Am Anfang ist Snowden ein loyaler Soldat. Am Ende opfert er sein Leben für die Wahrheit. Welche Schlüsselmomente im Film führen zu seinem Umdenken? Notiere die wichtigsten Ereignisse.",
+        "Auftrag C: Nichts zu verbergen?": "Achte auf die Szenen mit seiner Freundin Lindsay. Wie beeinträchtigt sein Wissen über die Überwachung sein Privatleben? Wie verändert er sein eigenes Verhalten am PC und zu Hause?"
+    };
+
+    function updateTaskHint() {
+        let select = document.getElementById('task-select').value;
+        let hintBox = document.getElementById('task-hint');
+        
+        if(select === "0") {
+            hintBox.style.display = "none";
+        } else {
+            hintBox.innerHTML = "<strong>TIPP:</strong> " + hints[select];
+            hintBox.style.display = "block";
+        }
+    }
+
+    function generatePDF() {
+        let name = document.getElementById('student-name').value.trim();
+        let task = document.getElementById('task-select').value;
+        let notes = document.getElementById('student-notes').value.trim();
+        let errorMsg = document.getElementById('error-msg');
+
+        if (name === "" || task === "0" || notes === "") {
+            errorMsg.style.display = "block";
+            return;
+        }
+
+        errorMsg.style.display = "none";
+
+        // Fill the hidden print area with the student's data
+        document.getElementById('print-name-val').innerText = name;
+        document.getElementById('print-task-val').innerText = task;
+        document.getElementById('print-notes-val').innerText = notes;
+
+        // Trigger the browser's native print dialog
+        setTimeout(() => {
+            alert("WICHTIG: Wähle im folgenden Druck-Fenster als Ziel 'Als PDF speichern' (Save to PDF) aus, um deine Abgabe als Datei auf dem PC zu speichern!");
+            window.print();
+        }, 300);
+    }
+</script>
+
+</body>
+</html>

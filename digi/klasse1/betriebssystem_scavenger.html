@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Betriebssystem Scavenger Hunt | Digitale Grundbildung</title>
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+        .hunt-container {
+            background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);
+            padding: 2rem;
+            border-radius: 10px;
+            color: white;
+            max-width: 800px;
+            margin: 2rem auto;
+        }
+        .task-card {
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            border-left: 4px solid #8b5cf6;
+        }
+        .task-card h3 {
+            margin-top: 0;
+            color: #8b5cf6;
+        }
+        .task-card.completed {
+            border-left-color: #10b981;
+            background: #dcfce7;
+        }
+        .task-card.completed h3 {
+            color: #065f46;
+        }
+        .task-list {
+            list-style: none;
+            padding: 0;
+        }
+        .task-item {
+            padding: 1rem;
+            margin: 0.5rem 0;
+            background: #f3f4f6;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .task-item:hover {
+            background: #e5e7eb;
+        }
+        .task-item.done {
+            background: #dcfce7;
+            text-decoration: line-through;
+        }
+        .checkbox {
+            margin-right: 1rem;
+        }
+        .step-box {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 1.5rem;
+            border-radius: 5px;
+            margin: 1rem 0;
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        .info-card {
+            background: white;
+            padding: 1rem;
+            border-radius: 5px;
+            border-left: 4px solid #8b5cf6;
+        }
+        .btn-container {
+            text-align: center;
+            margin: 2rem 0;
+        }
+        button {
+            padding: 12px 30px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background: #8b5cf6;
+            color: white;
+            transition: 0.2s;
+        }
+        button:hover {
+            background: #6d28d9;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>🔍 Betriebssystem Scavenger Hunt</h1>
+    <p>1. Klasse | Digitale Grundbildung</p>
+    <div class="back-nav">
+        <a href="index.html" class="btn-back">⬅ Zurück</a>
+    </div>
+</header>
+
+<main style="max-width: 900px; margin: 0 auto; padding: 2rem 1rem;">
+
+    <section style="background: #ede9fe; border-left: 4px solid #8b5cf6; padding: 1.5rem; border-radius: 5px; margin-bottom: 2rem;">
+        <h2>🎯 Entdecke dein Betriebssystem!</h2>
+        <p>Diese Aufgaben kannst du auf deinem Computer durchführen. Folge den Anweisungen und finde heraus, wie dein Betriebssystem funktioniert!</p>
+    </section>
+
+    <div class="hunt-container">
+        <h2 style="text-align: center; margin-top: 0;">🗺️ Deine Missionen</h2>
+        
+        <div class="task-card" id="task1">
+            <h3>✓ Mission 1: Systemeinstellungen öffnen</h3>
+            <div class="task-list">
+                <li class="task-item" onclick="toggleTask(this)">
+                    <span class="checkbox">☐</span>
+                    <strong>Windows:</strong> Drücke Win + I oder gehe zu Start → Einstellungen
+                </li>
+                <li class="task-item" onclick="toggleTask(this)">
+                    <span class="checkbox">☐</span>
+                    <strong>Mac:</strong> Klick auf  → Systemeinstellungen
+                </li>
+                <li class="task-item" onclick="toggleTask(this)">
+                    <span class="checkbox">☐</span>
+                    <strong>Linux:</strong> Öffne Einstellungen aus dem Menü
+                </li>
+                <li class="task-item" onclick="toggleTask(this)">
+                    <span class="checkbox">☐</span>
+                    Schau dir den Computernamen an - wie heißt dein PC?
+                </li>
+            </div>
+        </div>
+
+        <div class="task-card" id="task2">
+            <h3>✓ Mission 2: Festplatte auslesen</h3>
+            <div class="task-list">
+                <li class="task-item" onclick="toggleTask(this)">
+                    <span class="checkbox">☐</span>
+                    <strong>Windows:</strong> Öffne "Datei-Explorer" → Klick auf "Dieser PC"
+                </li>
+                <li class="task-item" onclick="toggleTask(this)">
+                    <span class="checkbox">☐</span>
+                    Schau dir deine Festplatte an - wie groß ist sie? Wie viel ist frei?
+                </li>
+                <li class="task-item" onclick="toggleTask(this)">
+                    <span class="checkbox">☐</span>
+                    Finde den Ordner "Benutzer" oder "Users"
+                </li>
+                <li class="task-item" onclick="toggleTask(this)">
+                    <span class="checkbox">☐</span>
+                    Schau in deine "Dokumente" oder "Downloads"
+                </li>
+            </div>
+        </div>
+
+        <div class="task-card" id="task3">
+            <h3>✓ Mission 3: Programme erkunden</h3>
+            <div class="task-list">
+                <li class="task-item" onclick="toggleTask(this)">
+                    <span class="checkbox">☐</span>
+                    <strong>Windows:</strong> Klick auf Start → zeige alle Apps
+                </li>
+                <li class="task-item" onclick="toggleTask(this)">
+                    <span class="checkbox">☐</span>
+                    Wie viele Programme sind installiert? (Zähle mindestens 10!)
+                </li>
+                <li class="task-item" onclick="toggleTask(this)">
+                    <span class="checkbox">☐</span>
+                    Finde: Notepad, Paint, Rechner (oder Mac-Äquivalente)
+                </li>
+                <li class="task-item" onclick="toggleTask(this)">
+                    <span class="checkbox">☐</span>
+                    Öffne die Datenträger-Bereinigung oder einen ähnliches Tool
+                </li>
+            </div>
+        </div>
+
+        <div class="task-card" id="task4">
+            <h3>✓ Mission 4: System-Informationen finden</h3>
+            <div class="task-list">
+                <li class="task-item" onclick="toggleTask(this)">
+                    <span class="checkbox">☐</span>
+                    Finde heraus: Welches OS hast du? (Windows 10/11, macOS, Linux?)
+                </li>
+                <li class="task-item" onclick="toggleTask(this)">
+                    <span class="checkbox">☐</span>
+                    Wie viel RAM hat dein Computer?
+                </li>
+                <li class="task-item" onclick="toggleTask(this)">
+                    <span class="checkbox">☐</span>
+                    Wie schnell ist deine CPU (Prozessor)?
+                </li>
+                <li class="task-item" onclick="toggleTask(this)">
+                    <span class="checkbox">☐</span>
+                    Wann wurde dein Computer das letzte Mal aktualisiert?
+                </li>
+            </div>
+        </div>
+
+        <div class="task-card" id="task5">
+            <h3>✓ Mission 5: Dateien organisieren</h3>
+            <div class="task-list">
+                <li class="task-item" onclick="toggleTask(this)">
+                    <span class="checkbox">☐</span>
+                    Erstelle einen neuen Ordner namens "Meine Schule"
+                </li>
+                <li class="task-item" onclick="toggleTask(this)">
+                    <span class="checkbox">☐</span>
+                    Erstelle darin Unterordner: "Deutsch", "Mathematik", "Englisch"
+                </li>
+                <li class="task-item" onclick="toggleTask(this)">
+                    <span class="checkbox">☐</span>
+                    Erstelle eine Text-Datei und speichere sie in "Deutsch"
+                </li>
+                <li class="task-item" onclick="toggleTask(this)">
+                    <span class="checkbox">☐</span>
+                    Lerne: Wie kopiert man Dateien? (Ctrl+C, Ctrl+V)
+                </li>
+            </div>
+        </div>
+
+        <div class="btn-container">
+            <button onclick="completedAllTasks()">✅ Alle Missionen abgeschlossen!</button>
+        </div>
+
+        <div id="successMessage" style="display: none; background: #dcfce7; border-left: 4px solid #10b981; padding: 1.5rem; border-radius: 5px; text-align: center;">
+            <h2 style="color: #065f46; margin-top: 0;">🎉 Glückwunsch!</h2>
+            <p style="color: #065f46; font-size: 1.1rem;">Du hast dein Betriebssystem erforscht!</p>
+        </div>
+    </div>
+
+    <section style="background: white; padding: 2rem; border-radius: 8px; margin-top: 2rem;">
+        <h2>🎓 Was hast du gelernt?</h2>
+        
+        <div class="info-grid">
+            <div class="info-card">
+                <h3>💻 Betriebssystem</h3>
+                <p>Das Programm, das deinen Computer kontrolliert - Windows, macOS, Linux</p>
+            </div>
+            <div class="info-card">
+                <h3>📁 Dateisystem</h3>
+                <p>Wie Dateien und Ordner organisiert sind</p>
+            </div>
+            <div class="info-card">
+                <h3>⚙️ Einstellungen</h3>
+                <p>Wo du deinen Computer anpassen kannst</p>
+            </div>
+            <div class="info-card">
+                <h3>🔧 Programme</h3>
+                <p>Programme sind auf der Festplatte gespeichert</p>
+            </div>
+        </div>
+
+        <div class="step-box">
+            <h3>💡 Nächste Schritte:</h3>
+            <ul>
+                <li>Backup deiner wichtigen Dateien machen!</li>
+                <li>Regelmäßig Datenträger-Bereinigung durchführen</li>
+                <li>System-Updates immer installieren</li>
+                <li>Viren-Scans regelmäßig ausführen</li>
+                <li>Passwort-Schutz für deinen Account einrichten</li>
+            </ul>
+        </div>
+    </section>
+
+</main>
+
+<footer style="margin-top: 5rem; padding: 2rem 1rem; background-color: #f8fafc; border-top: 1px solid #e2e8f0; color: #64748b; font-size: 0.9rem; text-align: center;">
+    &copy; 2026 | GvP | Mag. Schweitzer | Digitale Grundbildung
+</footer>
+
+<script>
+    function toggleTask(element) {
+        element.classList.toggle('done');
+        element.querySelector('.checkbox').textContent = element.classList.contains('done') ? '✓' : '☐';
+    }
+
+    function completedAllTasks() {
+        document.getElementById('successMessage').style.display = 'block';
+        document.getElementById('successMessage').scrollIntoView({ behavior: 'smooth' });
+    }
+</script>
+
+</body>
+</html>

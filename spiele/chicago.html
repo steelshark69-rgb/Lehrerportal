@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chicago Würfelspiel</title>
+    <link rel="stylesheet" href="../../main.css">
+    <style>
+        .game-container { max-width: 600px; margin: 20px auto; text-align: center; padding: 20px; border-radius: 8px; background: #f9f9f9; }
+        .dice-area { display: flex; justify-content: center; gap: 15px; margin: 20px 0; }
+        .die { width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; background: white; border: 2px solid #333; border-radius: 10px; font-size: 2rem; font-weight: bold; cursor: pointer; }
+        .die.kept { background: #ffcc00; border-color: #e6b800; }
+        .player-info { display: flex; justify-content: space-around; margin-top: 20px; }
+        .active-player { color: #d32f2f; font-weight: bold; text-decoration: underline; }
+        button { padding: 10px 20px; font-size: 1rem; cursor: pointer; background-color: #007bff; color: white; border: none; border-radius: 5px; }
+        button:disabled { background-color: #ccc; }
+    </style>
+</head>
+<body>
+
+<div class="game-container">
+    <h1>Chicago Würfelspiel</h1>
+    <h2 id="status-msg">Spieler 1 ist an der Reihe</h2>
+    <p id="sub-msg">Wurf <span id="roll-count">0</span> von <span id="max-rolls">3</span></p>
+
+    <div class="dice-area">
+        <div id="die-0" class="die" onclick="toggleKeep(0)">?</div>
+        <div id="die-1" class="die" onclick="toggleKeep(1)">?</div>
+        <div id="die-2" class="die" onclick="toggleKeep(2)">?</div>
+    </div>
+
+    <button id="roll-btn" onclick="rollDice()">Würfeln</button>
+    <button id="next-btn" onclick="nextTurn()" style="display:none;">Nächster Spieler</button>
+
+    <div class="player-info">
+        <div id="p0-ui" class="active-player">Spieler 1<br><span id="p0-score">0</span> Pkt</div>
+        <div id="p1-ui">Spieler 2<br><span id="p1-score">0</span> Pkt</div>
+        <div id="p2-ui">Spieler 3<br><span id="p2-score">0</span> Pkt</div>
+    </div>
+</div>
+
+<script>
+    let players = [{score: 0}, {score: 0}, {score: 0}];
+    let currentPlayer = 0;
+    let rolls = 0;
+    let maxRollsThisRound = 3;
+    let dice = [0, 0, 0];
+    let kept = [false, false, false];
+    let firstPlayerRolls = null;
+
+    function rollDice() {
+        if (rolls < maxRollsThisRound) {
+            for (let i = 0; i < 3; i++) {
+                if (!kept[i]) {
+                    dice[i] = Math.floor(Math.random() * 6) + 1;
+                    document.getElementById(`die-${i}`).innerText = dice[i];
+                }
+            }
+            rolls++;
+            document.getElementById('roll-count').innerText = rolls;
+
+            if (rolls === maxRollsThisRound) {
+                document.getElementById('roll-btn').disabled = true;
+                document.getElementById('next-btn').style.display = 'inline-block';
+            }
+        }
+    }
+
+    function toggleKeep(idx) {
+        if (rolls > 0 && rolls < maxRollsThisRound) {
+            kept[idx] = !kept[idx];
+            document.getElementById(`die-${idx}`).classList.toggle('kept');
+        }
+    }
+
+    function calculateScore(d) {
+        d.sort((a, b) => a - b);
+        // Chicago (1-1-1)
+        if (d[0] === 1 && d[1] === 1 && d[2] === 1) return 11;
+        // Strammer Max (1-2-3)
+        if (d[0] === 1 && d[1] === 2 && d[2] === 3) return 10;
+        // General (Drei Gleiche)
+        if (d[0] === d[1] && d[1] === d[2]) return 9;
+        // Straße
+        if ((d[1] === d[0]+1 && d[2] === d[1]+1)) return 8;
+        // Zwei Einser
+        let ones = d.filter(x => x === 1).length;
+        if (ones === 2) return 7;
+        // Einfache Summe (normiert auf kleinen Wert)
+        return (d[0] + d[1] + d[2]) / 20; 
+    }
+
+    function nextTurn() {
+        // Score berechnen und speichern
+        let points = calculateScore([...dice]);
+        players[currentPlayer].score += points;
+        document.getElementById(`p${currentPlayer}-score`).innerText = players[currentPlayer].score.toFixed(1);
+
+        // Rundenvorgabe durch den ersten Spieler
+        if (currentPlayer === 0) {
+            maxRollsThisRound = rolls;
+            firstPlayerRolls = rolls;
+        }
+
+        // Spielerwechsel
+        document.getElementById(`p${currentPlayer}-ui`).classList.remove('active-player');
+        currentPlayer++;
+
+        if (currentPlayer > 2) {
+            currentPlayer = 0;
+            maxRollsThisRound = 3; // Reset für neue Runde
+            alert("Runde beendet! Nächste Runde beginnt.");
+        }
+
+        // UI Reset für nächsten Spieler
+        rolls = 0;
+        kept = [false, false, false];
+        dice = [0, 0, 0];
+        for (let i = 0; i < 3; i++) {
+            document.getElementById(`die-${i}`).innerText = "?";
+            document.getElementById(`die-${i}`).classList.remove('kept');
+        }
+        document.getElementById('roll-count').innerText = "0";
+        document.getElementById('max-rolls').innerText = maxRollsThisRound;
+        document.getElementById('roll-btn').disabled = false;
+        document.getElementById('next-btn').style.display = 'none';
+        document.getElementById(`p${currentPlayer}-ui`).classList.add('active-player');
+        document.getElementById('status-msg').innerText = `Spieler ${currentPlayer + 1} ist an der Reihe`;
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speichermedien | Digitale Grundbildung</title>
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+        .storage-card {
+            background: white;
+            border-left: 4px solid #10b981;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .storage-card h3 {
+            color: #10b981;
+            margin-top: 0;
+        }
+        .storage-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        .comparison-table {
+            overflow-x: auto;
+            margin: 2rem 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        th {
+            background: #d1fae5;
+            color: #065f46;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background: #f0fdf4;
+        }
+        .capacity-bar {
+            width: 100%;
+            height: 30px;
+            background: #e5e7eb;
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        .capacity-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #10b981, #059669);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        .info-item {
+            background: #f0fdf4;
+            border-left: 4px solid #10b981;
+            padding: 1rem;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>💾 Speichermedien - Wo werden deine Daten gespeichert?</h1>
+    <p>1. Klasse | Digitale Grundbildung</p>
+    <div class="back-nav">
+        <a href="index.html" class="btn-back">⬅ Zurück</a>
+    </div>
+</header>
+
+<main style="max-width: 900px; margin: 0 auto; padding: 2rem 1rem;">
+
+    <section>
+        <h2>🗄️ Was sind Speichermedien?</h2>
+        <p>Speichermedien sind alle Geräte und Systeme, die Daten speichern. Es gibt verschiedene Arten mit unterschiedlichen Vor- und Nachteilen.</p>
+    </section>
+
+    <div class="storage-card">
+        <div class="storage-icon">💾</div>
+        <h3>Festplatte / SSD im Computer</h3>
+        <p><strong>Funktion:</strong> Speichert all deine Dateien dauerhaft - Betriebssystem, Programme, Fotos, Videos.</p>
+        <p><strong>Größe:</strong> Normalerweise 250 GB bis 2 TB (1 TB = 1.000 GB)</p>
+        <p><strong>Vorteile:</strong> Große Kapazität, schnell, dauerhaft</p>
+        <p><strong>Nachteile:</strong> Nur im Computer verfügbar</p>
+        <p><strong>Beispiel:</strong> Dein Laptop hat eine SSD mit 512 GB Speicher.</p>
+    </div>
+
+    <div class="storage-card">
+        <div class="storage-icon">🔌</div>
+        <h3>USB-Stick</h3>
+        <p><strong>Funktion:</strong> Tragbarer Speicher zum Mitnehmen - perfekt für Datenaustausch.</p>
+        <p><strong>Größe:</strong> 8 GB, 16 GB, 32 GB, 64 GB, 128 GB</p>
+        <p><strong>Vorteile:</strong> Klein, tragbar, kompatibel, günstig</p>
+        <p><strong>Nachteile:</strong> Kann verloren gehen, kann defekt gehen</p>
+        <p><strong>Beispiel:</strong> Hausaufgaben auf USB-Stick speichern und in der Schule abgeben.</p>
+    </div>
+
+    <div class="storage-card">
+        <div class="storage-icon">☁️</div>
+        <h3>Cloud-Speicher (Internet)</h3>
+        <p><strong>Funktion:</strong> Speichert deine Dateien auf Servern im Internet - von überall zugänglich!</p>
+        <p><strong>Anbieter:</strong> Google Drive, OneDrive, Dropbox, iCloud</p>
+        <p><strong>Größe:</strong> Kostenlos meist 15-50 GB, zahlbar bis mehrere TB</p>
+        <p><strong>Vorteile:</strong> Von überall erreichbar, automatische Backups, Zusammenarbeit</p>
+        <p><strong>Nachteile:</strong> Internet notwendig, Datenschutz/Sicherheit</p>
+        <p><strong>Beispiel:</strong> Google Classroom speichert deine Aufgaben automatisch in der Cloud.</p>
+    </div>
+
+    <div class="storage-card">
+        <div class="storage-icon">💿</div>
+        <h3>Externe Festplatte / USB-Festplatte</h3>
+        <p><strong>Funktion:</strong> Großer tragbarer Speicher für Backups und Archivierung.</p>
+        <p><strong>Größe:</strong> 1 TB, 2 TB, 4 TB, 8 TB</p>
+        <p><strong>Vorteile:</strong> Sehr große Kapazität, tragbar, günstig pro GB</p>
+        <p><strong>Nachteile:</strong> Größer und schwerer als USB-Stick, braucht Stromversorgung</p>
+        <p><strong>Beispiel:</strong> Videomontage-Projekt mit 50 GB Daten auf externe Festplatte speichern.</p>
+    </div>
+
+    <div class="storage-card">
+        <div class="storage-icon">💾</div>
+        <h3>Speicherkarte (SD-Karte)</h3>
+        <p><strong>Funktion:</strong> Kleine Karte für Kameras, Tablets und Handys.</p>
+        <p><strong>Größe:</strong> 32 GB, 64 GB, 128 GB, 256 GB</p>
+        <p><strong>Vorteile:</strong> Sehr klein und leicht, schnell</p>
+        <p><strong>Nachteile:</strong> Kann leicht verloren gehen, spezielle Leser nötig</p>
+        <p><strong>Beispiel:</strong> Digitalkamera speichert Fotos auf SD-Karte.</p>
+    </div>
+
+    <section>
+        <h2>📊 Vergleich der Speichermedien</h2>
+        <div class="comparison-table">
+            <table>
+                <tr>
+                    <th>Speichermedium</th>
+                    <th>Größe</th>
+                    <th>Tragbar</th>
+                    <th>Dauerhaft</th>
+                    <th>Kosten</th>
+                </tr>
+                <tr>
+                    <td><strong>💾 Festplatte im PC</strong></td>
+                    <td>250 GB - 2 TB</td>
+                    <td>❌ Nein</td>
+                    <td>✅ Ja</td>
+                    <td>💰 Hoch</td>
+                </tr>
+                <tr>
+                    <td><strong>🔌 USB-Stick</strong></td>
+                    <td>8 - 128 GB</td>
+                    <td>✅ Ja</td>
+                    <td>✅ Ja</td>
+                    <td>💰 Niedrig</td>
+                </tr>
+                <tr>
+                    <td><strong>☁️ Cloud-Speicher</strong></td>
+                    <td>15 - 100+ GB</td>
+                    <td>✅ Ja (Online)</td>
+                    <td>✅ Ja</td>
+                    <td>💰 Kostenlos/Abo</td>
+                </tr>
+                <tr>
+                    <td><strong>💿 Externe Festplatte</strong></td>
+                    <td>1 - 8 TB</td>
+                    <td>✅ Ja</td>
+                    <td>✅ Ja</td>
+                    <td>💰 Mittel</td>
+                </tr>
+                <tr>
+                    <td><strong>💾 SD-Karte</strong></td>
+                    <td>32 - 256 GB</td>
+                    <td>✅ Sehr klein</td>
+                    <td>✅ Ja</td>
+                    <td>💰 Mittel</td>
+                </tr>
+            </table>
+        </div>
+    </section>
+
+    <section>
+        <h2>🎯 Speicherplatz-Beispiele</h2>
+        <div class="info-grid">
+            <div class="info-item">
+                <strong>1 Foto:</strong> 2-5 MB
+            </div>
+            <div class="info-item">
+                <strong>1 Musik-Lied:</strong> 4-8 MB
+            </div>
+            <div class="info-item">
+                <strong>1 Video (5 Min.):</strong> 200-500 MB
+            </div>
+            <div class="info-item">
+                <strong>1 Film:</strong> 1-4 GB
+            </div>
+            <div class="info-item">
+                <strong>10.000 Fotos:</strong> 20-50 GB
+            </div>
+            <div class="info-item">
+                <strong>Ganzer Computer:</strong> 200-500 GB
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>💡 Wichtigste Regel: Immer Backups machen!</h2>
+        <div style="background: #dcfce7; border-left: 4px solid #10b981; padding: 1.5rem; border-radius: 5px; margin: 1rem 0;">
+            <p><strong>Backup = Sicherheitskopie!</strong></p>
+            <p>Wenn die Festplatte deines Computers kaputt geht, sind alle Daten weg! Darum: Speichere wichtige Dateien an mindestens zwei Orten:</p>
+            <ol>
+                <li>💾 Auf der Computer-Festplatte</li>
+                <li>☁️ In der Cloud (Google Drive, OneDrive)</li>
+                <li>🔌 Optional: Auf USB-Stick oder externer Festplatte</li>
+            </ol>
+        </div>
+    </section>
+
+</main>
+
+<footer style="margin-top: 5rem; padding: 2rem 1rem; background-color: #f8fafc; border-top: 1px solid #e2e8f0; color: #64748b; font-size: 0.9rem; text-align: center;">
+    &copy; 2026 | GvP | Mag. Schweitzer | Digitale Grundbildung
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Einheit 2: Asymmetrische Verschlüsselung</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            margin: 0;
+            color: #333;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            max-width: 800px;
+            width: 100%;
+            border-left: 10px solid #9b59b6; /* Lila für Asymmetrie */
+        }
+        h1 { margin-top: 0; color: #8e44ad; }
+        h2 { border-bottom: 2px solid #eee; padding-bottom: 10px; margin-top: 30px; color: #555; }
+        p { line-height: 1.6; color: #666; }
+        
+        .grid-box {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        @media (max-width: 600px) {
+            .grid-box { grid-template-columns: 1fr; }
+        }
+
+        .card {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #eee;
+        }
+
+        label { display: block; margin-bottom: 0.5rem; font-weight: bold; font-size: 0.9rem;}
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+        
+        button {
+            background-color: #9b59b6;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s;
+        }
+        button:hover { background-color: #8e44ad; }
+        button.secondary { background-color: #34495e; }
+        button.secondary:hover { background-color: #2c3e50; }
+
+        .key-display {
+            font-family: 'Courier New', monospace;
+            word-break: break-all;
+            background: #fff;
+            padding: 5px;
+            border: 1px dashed #ccc;
+            font-size: 0.85rem;
+            color: #e67e22;
+        }
+        
+        .private-warning {
+            color: #c0392b;
+            font-size: 0.8rem;
+            margin-top: 5px;
+        }
+
+        .icon { font-size: 1.5rem; margin-right: 5px; vertical-align: middle; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🔐 Public & Private Key</h1>
+    <p>Hier simulieren wir ein digitales Postfach. Du erstellst ein Schlüsselpaar. Den <b>Public Key</b> gibst du deinen Freunden, damit sie dir Nachrichten verschlüsseln können. Den <b>Private Key</b> behältst du, um sie zu lesen.</p>
+
+    <h2>1. Deine Identität erstellen</h2>
+    <div class="card">
+        <button onclick="generateKeys()">🔑 Schlüsselpaar generieren</button>
+        <div class="grid-box" style="margin-top: 15px;">
+            <div>
+                <label>Dein Public Key (Öffentlich):</label>
+                <div id="pubKeyDisplay" class="key-display">Noch nicht generiert...</div>
+                <button onclick="copyTo('pubKeyDisplay')" style="font-size: 0.8rem; margin-top:5px; padding:5px;">Kopieren</button>
+            </div>
+            <div>
+                <label>Dein Private Key (Geheim!):</label>
+                <div id="privKeyDisplay" class="key-display" style="color:#c0392b;">Noch nicht generiert...</div>
+                <div class="private-warning">Niemals teilen! Nur zum Entschlüsseln.</div>
+            </div>
+        </div>
+    </div>
+
+    <h2>2. Nachricht verschlüsseln (für den Absender)</h2>
+    <div class="card" style="background-color: #e8f6f3;">
+        <label>Nachricht:</label>
+        <input type="text" id="msgInput" placeholder="Hallo Welt">
+        
+        <label>Public Key des Empfängers einfügen:</label>
+        <input type="text" id="targetPubKey" placeholder="Hier den Public Key einfügen...">
+        
+        <button class="secondary" onclick="encryptMessage()">🔒 Verschlüsseln</button>
+        
+        <div style="margin-top: 10px;">
+            <label>Ergebnis (Geheimtext):</label>
+            <textarea id="cipherOutput" rows="2" readonly></textarea>
+        </div>
+    </div>
+
+    <h2>3. Nachricht entschlüsseln (für den Empfänger)</h2>
+    <div class="card" style="background-color: #fdedec;">
+        <label>Verschlüsselte Nachricht einfügen:</label>
+        <input type="text" id="cipherInput" placeholder="Geheimtext hierher...">
+        
+        <label>Dein Private Key zum Öffnen:</label>
+        <input type="text" id="myPrivKey" placeholder="Hier deinen Private Key einfügen...">
+        
+        <button class="secondary" onclick="decryptMessage()">🔓 Entschlüsseln</button>
+        
+        <div style="margin-top: 10px;">
+            <label>Klartext:</label>
+            <div id="decryptedOutput" class="key-display" style="color: #27ae60; font-weight: bold; min-height: 20px;"></div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // Einfache Simulation (NICHT SICHER - Nur für Unterrichtszwecke!)
+    // Wir nutzen Base64 und eine einfache Verschiebung basierend auf einer Zufallszahl
+    
+    let currentPair = {};
+
+    function generateKeys() {
+        // Wir simulieren ein Schlüsselpaar
+        // Der Public Key enthält eine ID, der Private Key die passende Gegen-ID
+        const id = Math.floor(Math.random() * 1000) + 1;
+        const pub = "PUB-" + btoa("USER" + id).substring(0, 10);
+        const priv = "PRIV-" + btoa("SECRET" + id).substring(0, 10); // Simulierter Private Key
+        
+        // Wir speichern die Zuordnung intern (in echt wäre das mathematisch verknüpft)
+        currentPair = { pub: pub, priv: priv, id: id };
+
+        document.getElementById('pubKeyDisplay').innerText = pub;
+        document.getElementById('privKeyDisplay').innerText = priv;
+        
+        // Automatisch ins Entschlüsselungsfeld eintragen (Convenience)
+        document.getElementById('myPrivKey').value = priv;
+    }
+
+    function encryptMessage() {
+        const msg = document.getElementById('msgInput').value;
+        const pubKey = document.getElementById('targetPubKey').value;
+        
+        if(!msg || !pubKey) {
+            alert("Bitte Nachricht und Public Key eingeben!");
+            return;
+        }
+
+        // Simulation: Wir hängen den Key an und kodieren es in Base64, damit es "kryptisch" aussieht
+        // In echt würde hier RSA-Mathematik passieren.
+        // Format: [PubKey-Hash]#[Base64Message]
+        
+        const fakeEncryption = btoa(encodeURIComponent(msg)).split('').reverse().join('');
+        const cipher = pubKey + "#" + fakeEncryption;
+        
+        document.getElementById('cipherOutput').value = cipher;
+    }
+
+    function decryptMessage() {
+        const cipher = document.getElementById('cipherInput').value;
+        const privKey = document.getElementById('myPrivKey').value;
+        
+        if(!cipher.includes("#")) {
+            document.getElementById('decryptedOutput').innerText = "❌ Fehler: Kein gültiges Format.";
+            return;
+        }
+
+        const parts = cipher.split("#");
+        const messagePubKey = parts[0];
+        const messageContent = parts[1];
+
+        // Didaktischer Check: Passt der Private Key zum Public Key der Nachricht?
+        // Wir prüfen hier sehr vereinfacht.
+        // Wenn wir das gerade generierte Paar nutzen:
+        let success = false;
+        
+        // Einfacher Check für die Demo:
+        // Wir tun so, als ob es mathematisch geprüft wird.
+        // Wenn der User seinen generierten Private Key nutzt und die Nachricht mit SEINEM Public Key verschlüsselt wurde.
+        
+        // Für den Unterrichts-Effekt: Wir prüfen einfach, ob Text da ist.
+        // Damit es realistisch wirkt: Wenn der Private Key "falsch" aussieht, Fehler.
+        
+        if (privKey.startsWith("PRIV-")) {
+             try {
+                // Umkehrung der "Verschlüsselung"
+                const reversed = messageContent.split('').reverse().join('');
+                const clearText = decodeURIComponent(atob(reversed));
+                document.getElementById('decryptedOutput').innerText = "✅ " + clearText;
+             } catch (e) {
+                 document.getElementById('decryptedOutput').innerText = "❌ Müll (Falscher Schlüssel?)";
+             }
+        } else {
+            document.getElementById('decryptedOutput').innerText = "❌ Ungültiger Private Key.";
+        }
+    }
+
+    function copyTo(id) {
+        const text = document.getElementById(id).innerText;
+        navigator.clipboard.writeText(text);
+        alert("Kopiert: " + text);
+    }
+</script>
+
+</body>
+</html>

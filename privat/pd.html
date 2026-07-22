@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Lehrer Dashboard 26/27</title>
+    <!-- 
+        DSGVO Konform: Keine externen CDNs. 
+        Gemäß deiner Ordnerstruktur kannst du dieses CSS auch in deine /style.css verschieben.
+    -->
+    <style>
+        :root {
+            --bg-color: #f4f7f8;
+            --card-bg: #ffffff;
+            --primary-color: #0056b3;
+            --text-main: #333333;
+            --text-muted: #666666;
+            --border-color: #e0e0e0;
+            --accent-green: #28a745;
+            --nav-bg: #ffffff;
+            --nav-active: #0056b3;
+            --nav-inactive: #888888;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #121212;
+                --card-bg: #1e1e1e;
+                --primary-color: #4da3ff;
+                --text-main: #e0e0e0;
+                --text-muted: #aaaaaa;
+                --border-color: #333333;
+                --nav-bg: #1e1e1e;
+                --nav-active: #4da3ff;
+            }
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            padding-bottom: 80px; /* Space for bottom nav */
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        header {
+            background-color: var(--card-bg);
+            padding: 20px 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+        
+        header p {
+            margin: 5px 0 0 0;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .container {
+            padding: 15px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .view-section {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .view-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            font-size: 1.25rem;
+            margin-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        /* Forms & Inputs */
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 1rem;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            box-sizing: border-box;
+            transition: border-color 0.2s;
+        }
+
+        .input-group input:focus, .input-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .row {
+            display: flex;
+            gap: 10px;
+        }
+        .row .input-group {
+            flex: 1;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 15px;
+            width: 100%;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 123, 255, 0.2);
+            transition: transform 0.1s, opacity 0.2s;
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+            opacity: 0.9;
+        }
+
+        .result-box {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: rgba(40, 167, 69, 0.1);
+            border-left: 4px solid var(--accent-green);
+            border-radius: 8px;
+        }
+
+        .result-box .value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--accent-green);
+        }
+
+        .result-box .label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* Bottom Navigation for Pixel 10 Pro */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: var(--nav-bg);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            padding-bottom: calc(10px + env(safe-area-inset-bottom));
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--nav-inactive);
+            text-decoration: none;
+            font-size: 0.75rem;
+            font-weight: 500;
+            cursor: pointer;
+            padding: 5px 20px;
+            border-radius: 12px;
+            transition: all 0.2s;
+        }
+
+        .nav-item.active {
+            color: var(--nav-active);
+        }
+
+        .nav-item svg {
+            width: 24px;
+            height: 24px;
+            margin-bottom: 4px;
+            fill: currentColor;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>AHS Dashboard</h1>
+        <p>SJ 2026/27 | Linz, OÖ</p>
+    </header>
+
+    <div class="container">
+        
+        <!-- Ansicht: Schultage -->
+        <div id="view-days" class="view-section active">
+            <div class="card">
+                <h2>Verbleibende Schultage</h2>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">
+                    Berechnet die aktiven Unterrichtstage. Feiertage und Ferien für Oberösterreich (SJ 26/27) werden automatisch abgezogen.
+                </p>
+                
+                <div class="input-group">
+                    <label>Von (Startdatum)</label>
+                    <input type="date" id="dateStart" value="">
+                </div>
+                
+                <div class="input-group">
+                    <label>Bis (Letzter Schultag OÖ)</label>
+                    <input type="date" id="dateEnd" value="2027-07-09">
+                </div>
+
+                <button class="btn-primary" onclick="calculateDays()">Tage berechnen</button>
+
+                <div class="result-box" id="daysResultBox" style="display: none;">
+                    <div class="value" id="daysValue">0</div>
+                    <div class="label">Netto-Schultage verbleibend</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ansicht: Gehalt -->
+        <div id="view-salary" class="view-section">
+            <div class="card">
+                <h2>Gehaltsrechner & Stunden</h2>
+                <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: -5px;">
+                    Deine Eingaben werden lokal auf diesem Gerät gespeichert.
+                </p>
+                
+                <div class="input-group">
+                    <label>Abrechnungsmonat</label>
+                    <select id="salaryMonth">
+                        <option value="9">September</option>
+                        <option value="10">Oktober</option>
+                        <option value="11">November (inkl. Sonderzahlung)</option>
+                        <option value="12">Dezember</option>
+                        <option value="1">Jänner</option>
+                        <option value="2">Februar</option>
+                        <option value="3">März</option>
+                        <option value="4">April</option>
+                        <option value="5">Mai (inkl. Sonderzahlung)</option>
+                        <option value="6">Juni</option>
+                        <option value="7">Juli</option>
+                        <option value="8">August</option>
+                    </select>
+                </div>
+
+                <!-- Aufklappbares Menü für die Stundensätze -->
+                <details style="margin-bottom: 20px; border: 1px solid var(--border-color); padding: 12px; border-radius: 10px; background: rgba(0,0,0,0.02);">
+                    <summary style="font-weight: 600; cursor: pointer; color: var(--primary-color); outline: none;">
+                        ⚙️ Stundensätze & Grundgehalt anpassen
+                    </summary>
+                    <div style="margin-top: 15px;">
+                        <div class="input-group">
+                            <label>Grundgehalt (€)</label>
+                            <input type="number" id="rate_grund" step="0.01" value="4138.20">
+                        </div>
+                        <div class="row">
+                            <div class="input-group">
+                                <label>Satz Fächer A OS (€)</label>
+                                <input type="number" id="rate_f_a" step="0.01" value="46.18">
+                            </div>
+                            <div class="input-group">
+                                <label>Satz Fächer C US (€)</label>
+                                <input type="number" id="rate_f_c" step="0.01" value="35.95">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-group">
+                                <label>Satz Mehrleistung (€)</label>
+                                <input type="number" id="rate_mehr" step="0.01" value="53.80">
+                            </div>
+                            <div class="input-group">
+                                <label>Satz Einzel Sup. (€)</label>
+                                <input type="number" id="rate_sup" step="0.01" value="50.82">
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label>Sonderzahlung (13./14.) (€)</label>
+                            <input type="number" id="rate_sonder" step="0.01" value="2069.10">
+                        </div>
+                    </div>
+                </details>
+
+                <h3 style="font-size: 1.05rem; color: var(--text-main); margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 5px;">
+                    Geleistete Stunden (in diesem Monat)
+                </h3>
+
+                <div class="row">
+                    <div class="input-group">
+                        <label>Stunden Fächer A</label>
+                        <input type="number" id="h_f_a" step="0.5" value="0">
+                    </div>
+                    <div class="input-group">
+                        <label>Stunden Fächer C</label>
+                        <input type="number" id="h_f_c" step="0.5" value="0">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-group">
+                        <label>Mehrleistungen</label>
+                        <input type="number" id="h_mehr" step="0.5" value="0">
+                    </div>
+                    <div class="input-group">
+                        <label>Einzel Sup.</label>
+                        <input type="number" id="h_sup" step="0.5" value="0">
+                    </div>
+                </div>
+
+                <div class="input-group" id="sonderzahlung-group" style="display: none;">
+                    <label style="color: var(--accent-green); font-weight: bold;">
+                        ✓ Sonderzahlung wird diesem Monat automatisch angerechnet.
+                    </label>
+                </div>
+
+                <button class="btn-primary" onclick="calculateAndSaveSalary()">Berechnen & Speichern</button>
+
+                <div class="result-box" id="salaryResultBox" style="display: none;">
+                    <div class="value" id="salaryValue">0,00 €</div>
+                    <div class="label">Berechnetes Bruttogehalt</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <div class="nav-item active" onclick="switchTab('view-days', this)">
+            <svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7v-5z"/></svg>
+            Schultage
+        </div>
+        <div class="nav-item" onclick="switchTab('view-salary', this)">
+            <svg viewBox="0 0 24 24"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>
+            Gehalt
+        </div>
+    </nav>
+
+    <script>
+        // Setze heutiges Datum als Standard
+        document.getElementById('dateStart').valueAsDate = new Date();
+
+        // OÖ Feiertage & Ferien SJ 2026/27
+        const holidaysOOE = [
+            { start: '2026-10-26', end: '2026-10-26', name: 'Nationalfeiertag' },
+            { start: '2026-11-02', end: '2026-11-02', name: 'Allerseelen' },
+            { start: '2026-12-08', end: '2026-12-08', name: 'Maria Empfängnis' },
+            { start: '2026-12-24', end: '2027-01-06', name: 'Weihnachtsferien' },
+            { start: '2027-02-15', end: '2027-02-21', name: 'Semesterferien OÖ' },
+            { start: '2027-03-20', end: '2027-03-29', name: 'Osterferien' },
+            { start: '2027-05-01', end: '2027-05-01', name: 'Staatsfeiertag' },
+            { start: '2027-05-06', end: '2027-05-06', name: 'Christi Himmelfahrt' },
+            { start: '2027-05-07', end: '2027-05-07', name: 'Schulautonom (Fenstertag)' },
+            { start: '2027-05-15', end: '2027-05-17', name: 'Pfingsten' },
+            { start: '2027-05-27', end: '2027-05-27', name: 'Fronleichnam' },
+            { start: '2027-05-28', end: '2027-05-28', name: 'Schulautonom (Fenstertag)' },
+            { start: '2027-07-10', end: '2027-09-12', name: 'Sommerferien' }
+        ];
+
+        function switchTab(tabId, navElement) {
+            // Verstecke alle Views
+            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+            // Zeige gewählte View
+            document.getElementById(tabId).classList.add('active');
+            
+            // Optik in der Navigation anpassen
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            navElement.classList.add('active');
+        }
+
+        function calculateDays() {
+            const startInput = document.getElementById('dateStart').value;
+            const endInput = document.getElementById('dateEnd').value;
+            
+            if (!startInput || !endInput) return;
+
+            const startDate = new Date(startInput);
+            const endDate = new Date(endInput);
+            
+            let current = new Date(startDate);
+            let schoolDaysCount = 0;
+
+            // Schleife durch jeden Tag
+            while (current <= endDate) {
+                let dayOfWeek = current.getDay(); // 0 = So, 6 = Sa
+                
+                // Wochenenden überspringen
+                if (dayOfWeek !== 0 && dayOfWeek !== 6) {
+                    let isHoliday = false;
+                    
+                    // Ferien/Feiertage prüfen
+                    for (let h of holidaysOOE) {
+                        let hStart = new Date(h.start);
+                        let hEnd = new Date(h.end);
+                        hStart.setHours(0,0,0,0);
+                        hEnd.setHours(23,59,59,999);
+                        
+                        if (current >= hStart && current <= hEnd) {
+                            isHoliday = true;
+                            break;
+                        }
+                    }
+
+                    if (!isHoliday) {
+                        schoolDaysCount++;
+                    }
+                }
+                
+                // Einen Tag hochzählen
+                current.setDate(current.getDate() + 1);
+            }
+
+            document.getElementById('daysValue').innerText = schoolDaysCount;
+            document.getElementById('daysResultBox').style.display = 'block';
+        }
+
+        // --- GEHALTSRECHNER & LOCAL STORAGE LOGIK ---
+        const STORE_KEY = 'ahs_dashboard_salary_data';
+        
+        // Standardwerte (werden beim ersten Start geladen)
+        let salaryData = {
+            rates: { grund: 4138.20, f_a: 46.18, f_c: 35.95, mehr: 53.80, sup: 50.82, sonder: 2069.10 },
+            months: {} // Hier landen später die Einträge pro Monat, z.B. { "9": { h_f_a: 2, h_f_c: 0, ... } }
+        };
+
+        function loadSalaryData() {
+            const saved = localStorage.getItem(STORE_KEY);
+            if (saved) {
+                try {
+                    salaryData = JSON.parse(saved);
+                } catch (e) {
+                    console.error("Fehler beim Laden der Gehaltsdaten", e);
+                }
+            }
+            
+            // Stundensätze aus dem Speicher ins HTML schreiben
+            document.getElementById('rate_grund').value = salaryData.rates.grund;
+            document.getElementById('rate_f_a').value = salaryData.rates.f_a;
+            document.getElementById('rate_f_c').value = salaryData.rates.f_c;
+            document.getElementById('rate_mehr').value = salaryData.rates.mehr;
+            document.getElementById('rate_sup').value = salaryData.rates.sup;
+            document.getElementById('rate_sonder').value = salaryData.rates.sonder;
+            
+            // Monatswerte laden
+            updateMonthInputs();
+        }
+
+        function updateMonthInputs() {
+            const month = document.getElementById('salaryMonth').value;
+            // Falls der Monat noch nicht existiert, setze alle Stunden auf 0
+            const monthData = salaryData.months[month] || { h_f_a: 0, h_f_c: 0, h_mehr: 0, h_sup: 0 };
+            
+            document.getElementById('h_f_a').value = monthData.h_f_a;
+            document.getElementById('h_f_c').value = monthData.h_f_c;
+            document.getElementById('h_mehr').value = monthData.h_mehr;
+            document.getElementById('h_sup').value = monthData.h_sup;
+            
+            // Wenn man den Monat wechselt, Ergebnisbox kurz ausblenden
+            document.getElementById('salaryResultBox').style.display = 'none';
+        }
+
+        function checkSonderzahlung() {
+            const val = document.getElementById('salaryMonth').value;
+            const szGroup = document.getElementById('sonderzahlung-group');
+            if(val === "11" || val === "5") {
+                szGroup.style.display = 'block';
+            } else {
+                szGroup.style.display = 'none';
+            }
+        }
+
+        // Event-Listener für das Dropdown-Menü
+        document.getElementById('salaryMonth').addEventListener('change', function(e) {
+            updateMonthInputs();
+            checkSonderzahlung();
+        });
+
+        function calculateAndSaveSalary() {
+            const month = document.getElementById('salaryMonth').value;
+            
+            // 1. Raten aus den Inputs lesen und im Objekt aktualisieren
+            salaryData.rates = {
+                grund: parseFloat(document.getElementById('rate_grund').value) || 0,
+                f_a: parseFloat(document.getElementById('rate_f_a').value) || 0,
+                f_c: parseFloat(document.getElementById('rate_f_c').value) || 0,
+                mehr: parseFloat(document.getElementById('rate_mehr').value) || 0,
+                sup: parseFloat(document.getElementById('rate_sup').value) || 0,
+                sonder: parseFloat(document.getElementById('rate_sonder').value) || 0
+            };
+
+            // 2. Geleistete Stunden für DIESEN Monat speichern
+            salaryData.months[month] = {
+                h_f_a: parseFloat(document.getElementById('h_f_a').value) || 0,
+                h_f_c: parseFloat(document.getElementById('h_f_c').value) || 0,
+                h_mehr: parseFloat(document.getElementById('h_mehr').value) || 0,
+                h_sup: parseFloat(document.getElementById('h_sup').value) || 0
+            };
+
+            // 3. Im LocalStorage des Browsers speichern
+            localStorage.setItem(STORE_KEY, JSON.stringify(salaryData));
+
+            // 4. Bruttogehalt berechnen: Grundgehalt + (Stunden * jeweiliger Satz)
+            let total = salaryData.rates.grund;
+            total += salaryData.months[month].h_f_a * salaryData.rates.f_a;
+            total += salaryData.months[month].h_f_c * salaryData.rates.f_c;
+            total += salaryData.months[month].h_mehr * salaryData.rates.mehr;
+            total += salaryData.months[month].h_sup * salaryData.rates.sup;
+
+            // 5. Sonderzahlung ergänzen falls November (11) oder Mai (5)
+            if (month === "11" || month === "5") {
+                total += salaryData.rates.sonder;
+            }
+
+            // 6. Formatiert ausgeben
+            const formatted = new Intl.NumberFormat('de-AT', { style: 'currency', currency: 'EUR' }).format(total);
+            document.getElementById('salaryValue').innerText = formatted;
+            document.getElementById('salaryResultBox').style.display = 'block';
+        }
+
+        // Beim initialen Laden der Seite ausführen
+        document.addEventListener('DOMContentLoaded', () => {
+            loadSalaryData();
+            checkSonderzahlung();
+        });
+    </script>
+</body>
+</html>

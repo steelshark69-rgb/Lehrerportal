@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excel | ZÄHLENWENN & SUMMEWENN</title>
+    <style>
+        :root {
+            --excel-green: #107c41;
+            --excel-green-dark: #0b5c30;
+            --excel-header: #e1dfdd;
+            --excel-border: #d2d2d2;
+            --bg-color: #f3f4f6;
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+            --card-bg: #ffffff;
+            --highlight-blue: #0ea5e9;
+            --highlight-red: #ef4444;
+            --highlight-green: #10b981;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: var(--excel-green);
+            color: white;
+            padding: 3rem 1rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 1rem auto 0;
+        }
+
+        main {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        h2 {
+            color: var(--excel-green-dark);
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 0.5rem;
+            margin-top: 2.5rem;
+        }
+
+        .syntax-box {
+            background: #ffffff;
+            border: 2px solid var(--excel-green);
+            padding: 2rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+
+        .syntax-box code {
+            font-size: 1.5rem;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 1.5rem;
+            word-wrap: break-word;
+        }
+
+        .syntax-part {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            margin: 0 0.2rem;
+            color: white;
+        }
+
+        /* Farbcodes für ZÄHLENWENN / SUMMEWENN */
+        .part-range { background-color: var(--highlight-blue); }
+        .part-criteria { background-color: var(--highlight-red); }
+        .part-sumrange { background-color: var(--highlight-green); }
+
+        .explanation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .exp-card {
+            padding: 1.5rem;
+            border-radius: 8px;
+            color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .exp-card h3 { margin-top: 0; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 0.5rem; }
+
+        .excel-mockup {
+            background: white;
+            border: 1px solid var(--excel-border);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 2rem 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            font-family: 'Calibri', 'Segoe UI', sans-serif;
+            max-width: 800px;
+        }
+
+        .excel-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .excel-table th, .excel-table td {
+            border: 1px solid var(--excel-border);
+            padding: 0.75rem;
+            text-align: center;
+        }
+
+        .excel-table th {
+            background-color: var(--excel-header);
+            color: var(--text-main);
+            font-weight: normal;
+            font-size: 0.9rem;
+            user-select: none;
+        }
+
+        .excel-table .row-number {
+            background-color: var(--excel-header);
+            width: 30px;
+            color: var(--text-main);
+        }
+
+        .cell-formula {
+            font-family: 'Consolas', monospace;
+            font-weight: bold;
+            font-size: 0.95rem;
+        }
+
+        .important-note {
+            background: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+            font-size: 1.05rem;
+        }
+
+        .code-snippet {
+            display: inline-block;
+            background: #f1f5f9;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-weight: bold;
+            color: var(--excel-green-dark);
+            border: 1px solid #cbd5e1;
+        }
+
+        .back-btn-container {
+            text-align: center;
+            margin-top: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .back-btn {
+            display: inline-block;
+            background-color: var(--excel-green);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .back-btn:hover {
+            background-color: var(--excel-green-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 1rem;
+            border-top: 1px solid #e5e7eb;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Excel: ZÄHLENWENN & SUMMEWENN</h1>
+        <p>Bringe Excel bei, große Datenmengen intelligent auszuwerten. Zähle oder addiere nur das, was für dich gerade wichtig ist!</p>
+    </header>
+
+    <main>
+        <section>
+            <h2>Die Funktion: ZÄHLENWENN</h2>
+            <p>Stell dir vor, du hast eine Liste mit 500 Schülern und willst wissen, wie viele davon in Linz wohnen. Du könntest alle per Hand zählen – oder du nutzt <strong>ZÄHLENWENN</strong>. Diese Funktion durchsucht einen Bereich und zählt nur die Zellen, die eine bestimmte Bedingung erfüllen.</p>
+
+            <div class="syntax-box">
+                <code>=ZÄHLENWENN(<span class="syntax-part part-range">Bereich</span> ; <span class="syntax-part part-criteria">Suchkriterium</span>)</code>
+                
+                <div class="explanation-grid">
+                    <div class="exp-card part-range">
+                        <h3>1. Der Bereich</h3>
+                        <p>WO soll Excel suchen? Markiere alle Zellen, die überprüft werden sollen.<br><em>Beispiel: B2:B20</em></p>
+                    </div>
+                    <div class="exp-card part-criteria">
+                        <h3>2. Das Suchkriterium</h3>
+                        <p>WAS soll gezählt werden? Nach welchem Wort oder welcher Zahl suchst du?<br><em>Beispiel: "Ja" oder ">10"</em></p>
+                    </div>
+                </div>
+            </div>
+
+            <p><strong>Praxis-Beispiel:</strong> Wir wollen wissen, wie viele Schüler ihre Hausübung gemacht haben (also wie oft "Ja" in Spalte B steht).</p>
+
+            <div class="excel-mockup">
+                <table class="excel-table">
+                    <tr>
+                        <th style="width: 30px;"></th>
+                        <th>A</th>
+                        <th>B</th>
+                        <th>C</th>
+                    </tr>
+                    <tr>
+                        <th class="row-number">1</th>
+                        <td><strong>Name</strong></td>
+                        <td><strong>Hausübung?</strong></td>
+                        <td><strong>Auswertung</strong></td>
+                    </tr>
+                    <tr>
+                        <th class="row-number">2</th>
+                        <td>Max</td>
+                        <td>Ja</td>
+                        <td rowspan="4" style="vertical-align: middle;">
+                            <span style="font-size: 0.85rem; color: var(--text-muted);">Wie viele haben ein Ja?</span><br>
+                            <span class="cell-formula">=ZÄHLENWENN(<span style="color:var(--highlight-blue)">B2:B5</span>; <span style="color:var(--highlight-red)">"Ja"</span>)</span>
+                            <br><br>
+                            <strong>Ergebnis: <span style="font-size: 1.5rem; color: var(--excel-green);">3</span></strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="row-number">3</th>
+                        <td>Lisa</td>
+                        <td>Nein</td>
+                    </tr>
+                    <tr>
+                        <th class="row-number">4</th>
+                        <td>Tom</td>
+                        <td>Ja</td>
+                    </tr>
+                    <tr>
+                        <th class="row-number">5</th>
+                        <td>Anna</td>
+                        <td>Ja</td>
+                    </tr>
+                </table>
+            </div>
+            
+            <div class="important-note">
+                <strong>⚠️ Anführungszeichen nicht vergessen!</strong><br>
+                Genau wie bei der WENN-Funktion müssen Wörter (z.B. <span class="code-snippet">"Ja"</span>) immer in Anführungszeichen stehen. Bei ZÄHLENWENN und SUMMEWENN müssen aber <strong>auch Vergleichsoperatoren</strong> in Anführungszeichen gesetzt werden! Willst du alle Noten zählen, die größer als 2 sind, schreibst du: <span class="code-snippet">">2"</span>.
+            </div>
+        </section>
+
+        <hr style="border: 0; border-top: 2px dashed #e5e7eb; margin: 3rem 0;">
+
+        <section>
+            <h2>Die Funktion: SUMMEWENN</h2>
+            <p><strong>SUMMEWENN</strong> geht einen Schritt weiter. Sie zählt nicht nur ab, wie oft etwas vorkommt, sondern sie <strong>rechnet die Werte zusammen</strong>. Das ist perfekt, um Ausgaben für bestimmte Kategorien (z.B. Kino, Essen, Kleidung) zusammenzurechnen.</p>
+
+            <div class="syntax-box">
+                <code>=SUMMEWENN(<span class="syntax-part part-range">Suchbereich</span> ; <span class="syntax-part part-criteria">Suchkriterium</span> ; <span class="syntax-part part-sumrange">Summenbereich</span>)</code>
+                
+                <div class="explanation-grid">
+                    <div class="exp-card part-range">
+                        <h3>1. Suchbereich</h3>
+                        <p>In welcher Spalte stehen die Kategorien/Wörter, nach denen du suchst?<br><em>Beispiel: A2:A5</em></p>
+                    </div>
+                    <div class="exp-card part-criteria">
+                        <h3>2. Suchkriterium</h3>
+                        <p>Welches genaue Wort suchst du in diesem Bereich?<br><em>Beispiel: "Kino"</em></p>
+                    </div>
+                    <div class="exp-card part-sumrange">
+                        <h3>3. Summenbereich</h3>
+                        <p>In welcher Spalte stehen die Euro-Beträge, die zusammengezählt werden sollen?<br><em>Beispiel: B2:B5</em></p>
+                    </div>
+                </div>
+            </div>
+
+            <p><strong>Praxis-Beispiel:</strong> Wir haben unser Taschengeld ausgegeben und wollen berechnen, wie viel Euro wir insgesamt nur für das Kino bezahlt haben.</p>
+
+            <div class="excel-mockup">
+                <table class="excel-table">
+                    <tr>
+                        <th style="width: 30px;"></th>
+                        <th>A</th>
+                        <th>B</th>
+                        <th>C</th>
+                    </tr>
+                    <tr>
+                        <th class="row-number">1</th>
+                        <td><strong>Kategorie</strong></td>
+                        <td><strong>Ausgabe in €</strong></td>
+                        <td><strong>Auswertung</strong></td>
+                    </tr>
+                    <tr>
+                        <th class="row-number">2</th>
+                        <td>Kino</td>
+                        <td>12</td>
+                        <td rowspan="4" style="vertical-align: middle;">
+                            <span style="font-size: 0.85rem; color: var(--text-muted);">Wie viel € fürs Kino?</span><br>
+                            <span class="cell-formula">=SUMMEWENN(<span style="color:var(--highlight-blue)">A2:A5</span>; <span style="color:var(--highlight-red)">"Kino"</span>; <span style="color:var(--highlight-green)">B2:B5</span>)</span>
+                            <br><br>
+                            <strong>Ergebnis: <span style="font-size: 1.5rem; color: var(--excel-green);">27</span></strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="row-number">3</th>
+                        <td>Eis</td>
+                        <td>4</td>
+                    </tr>
+                    <tr>
+                        <th class="row-number">4</th>
+                        <td>Kino</td>
+                        <td>15</td>
+                    </tr>
+                    <tr>
+                        <th class="row-number">5</th>
+                        <td>Buch</td>
+                        <td>10</td>
+                    </tr>
+                </table>
+            </div>
+            <p><strong>Wie Excel hier rechnet:</strong> Es schaut in Spalte A. Bei Zeile 2 und Zeile 4 findet es das Wort "Kino". Daraufhin wandert es rüber in Spalte B, nimmt die 12 € und die 15 € und summiert sie auf 27 €.</p>
+        </section>
+
+        <div class="back-btn-container">
+            <a href="../index.html" class="back-btn">⬅ Zurück zur Übersicht</a>
+        </div>
+    </main>
+
+    <footer>
+        &copy; 2026 | GvP | Mag. Schweitzer | Mathematik & Informatik
+    </footer>
+
+</body>
+</html>

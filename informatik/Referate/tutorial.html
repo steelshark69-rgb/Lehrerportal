@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutorial | Das perfekte Referat</title>
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+        /* Spezifische Styles für die Checkliste */
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .checklist-item:hover {
+            border-color: var(--primary);
+            background: #f8fafc;
+        }
+        .checklist-item.checked {
+            background: #f0fdf4;
+            border-color: var(--xls-green);
+            opacity: 0.8;
+        }
+        .checklist-item.checked .item-text {
+            text-decoration: line-through;
+            color: var(--text-muted);
+        }
+        .checkbox-custom {
+            width: 24px;
+            height: 24px;
+            border: 2px solid #cbd5e1;
+            border-radius: 6px;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+        .checklist-item.checked .checkbox-custom {
+            background: var(--xls-green);
+            border-color: var(--xls-green);
+        }
+        
+        .progress-container {
+            width: 100%;
+            height: 12px;
+            background: #e2e8f0;
+            border-radius: 6px;
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            background: var(--primary);
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Das perfekte Referat</h1>
+    <p>Präsentations-Hacks, richtiges Zitieren und der KI-Methodennachweis</p>
+</header>
+
+<div class="back-nav">
+    <a href="../index.html" class="btn-back">← Zurück zum Portal</a>
+</div>
+
+<main>
+    <section class="subject-group">
+        <div class="subject-header">
+            <span class="subject-badge bg-info">Design & Vortrag</span>
+            <h2 style="margin: 0; color: var(--primary);">Wie präsentiere ich richtig?</h2>
+        </div>
+        <p>Gute Folien sind wie Verkehrsschilder: Sie unterstützen dich, aber sie lenken das Publikum nicht von *dir* (dem Fahrer) ab.</p>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+            <div style="background: var(--card-bg); border-left: 5px solid var(--doc-blue); padding: 1.5rem; border-radius: 8px;">
+                <h4 style="margin-top: 0; color: var(--doc-blue);">📏 Die 6x6 Regel</h4>
+                <p style="font-size: 0.95rem; margin-bottom: 0;">Vermeide Textwüsten! Deine Mitschüler können entweder dir zuhören ODER lesen. Beides gleichzeitig geht nicht. <br><br><strong>Tipp:</strong> Maximal 6 Zeilen pro Folie, maximal 6 Wörter pro Zeile. Nutze Stichwörter, keine ganzen Sätze!</p>
+            </div>
+            <div style="background: var(--card-bg); border-left: 5px solid var(--xls-green); padding: 1.5rem; border-radius: 8px;">
+                <h4 style="margin-top: 0; color: var(--xls-green);">👀 Der Blickkontakt</h4>
+                <p style="font-size: 0.95rem; margin-bottom: 0;">Lies nicht von den Folien an der Wand ab! Drehe der Klasse niemals den Rücken zu. <br><br><strong>Tipp:</strong> Schreibe dir Moderationskarten (Karteikarten in A6). Die geben dir Sicherheit in den Händen und bewahren dich vor Blackouts.</p>
+            </div>
+            <div style="background: var(--card-bg); border-left: 5px solid var(--html-orange); padding: 1.5rem; border-radius: 8px;">
+                <h4 style="margin-top: 0; color: var(--html-orange);">🖼️ Bilder sagen mehr...</h4>
+                <p style="font-size: 0.95rem; margin-bottom: 0;">Ein gutes, passendes Bild prägt sich viel besser ein als reiner Text. <strong>Ersetze Text durch Grafiken</strong>, wo immer es geht.<br><br><em>Achtung: Videos sind in diesem Referat verboten! Beschreibe Prozesse lieber Schritt für Schritt.</em></p>
+            </div>
+        </div>
+
+        <div style="background: #fef2f2; border: 1px dashed var(--pdf-red); padding: 1rem 1.5rem; border-radius: 8px;">
+            <h4 style="margin-top: 0; color: var(--pdf-red);">🚨 Notfall-Tipp: Was tun beim Blackout?</h4>
+            <ul style="margin-bottom: 0; font-size: 0.95rem;">
+                <li><strong>Ruhe bewahren:</strong> Eine kurze Pause von 3 Sekunden wirkt auf das Publikum oft wie eine bewusste Kunstpause. Hol tief Luft.</li>
+                <li><strong>Ehrlich sein:</strong> Sag einfach: <em>"Jetzt habe ich kurz den Faden verloren."</em> Schau auf deine Karteikarte, lies den letzten Satz leise und setze neu an. Das kostet absolut keine Punkte!</li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="subject-group">
+        <div class="subject-header">
+            <span class="subject-badge bg-math">Zitieren</span>
+            <h2 style="margin: 0; color: var(--primary);">Quellenangaben & KI-Nachweis</h2>
+        </div>
+        <p>Im Internet gehört uns nichts einfach so. Wer fremde Texte, Bilder oder Künstliche Intelligenz nutzt, muss das ehrlich angeben. Sonst ist es ein Plagiat!</p>
+
+        <h3 style="color: var(--text-main);">1. Bilder richtig zitieren</h3>
+        <p>Die Angabe "Quelle: Google Bilder" ist <strong>falsch</strong>! Google ist nur die Suchmaschine. Du musst die tatsächliche Website angeben, auf der das Bild liegt.</p>
+        <div style="background: #f1f5f9; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.95rem; margin-bottom: 2rem;">
+            ✅ <strong>Richtig:</strong> Abb. 1: Mainboard, via hardware-wissen.de (Abruf: 12.10.2026)<br>
+            ❌ <strong>Falsch:</strong> Bild von Google / Wikipedia
+        </div>
+
+        <h3 style="color: var(--text-main);">2. Der KI-Methodennachweis (WICHTIG!)</h3>
+        <p>Ihr dürft ChatGPT, Canva Magic Design oder ähnliche Tools nutzen, um Ideen zu sammeln oder die Struktur zu planen. Aber ihr müsst am Ende der Präsentation (letzte Folie) oder auf dem Handout genau angeben, <strong>wofür</strong> ihr die KI genutzt habt.</p>
+        
+        <div style="background: white; border: 2px solid var(--doc-blue); border-radius: 8px; padding: 1.5rem;">
+            <h4 style="margin-top: 0; color: var(--doc-blue);">Beispiel für die letzte Folie: "Methoden-Nachweis"</h4>
+            <ul style="margin-bottom: 0; line-height: 1.6;">
+                <li><em>Recherche & Struktur:</em> ChatGPT 4o (Prompt: "Erstelle eine Gliederung für ein 15-minütiges Schulreferat über Phishing")</li>
+                <li><em>Bilder & Layout:</em> Generiert mit Canva Magic Presentation</li>
+                <li><em>Texte & Erklärungen:</em> Selbst formuliert, mit eigenen Beispielen aus dem Unterricht ergänzt.</li>
+            </ul>
+        </div>
+        <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 10px;">Wenn ihr diesen Nachweis einbaut, gibt es keinen Punkteabzug für die KI-Nutzung. Fehlt er, und die KI-Nutzung ist offensichtlich, verliert ihr Punkte im Bereich "Formale Kriterien"!</p>
+    </section>
+
+    <section class="subject-group" id="labor">
+        <div class="subject-header">
+            <span class="subject-badge bg-info">Vorbereitung</span>
+            <h2 style="margin: 0; color: var(--primary);">Die ultimative Referats-Checkliste</h2>
+        </div>
+        <p>Geht diese Liste mit eurem Teampartner durch, <strong>bevor</strong> ihr die Präsentation abgebt. Klickt auf die erledigten Punkte, um den Fortschrittsbalken zu füllen!</p>
+
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+
+        <div id="checklist-container">
+            </div>
+
+        <div id="readyMessage" style="display: none; text-align: center; margin-top: 2rem; padding: 1.5rem; background: var(--xls-green); color: white; border-radius: 8px; font-weight: bold; font-size: 1.2rem; animation: fadeIn 0.5s;">
+            🚀 Hervorragend! Ihr seid bestens auf euer Referat vorbereitet! Viel Erfolg!
+        </div>
+    </section>
+</main>
+
+<footer>
+    <p>Informatik 5. Klasse AHS | Prof. Schweitzer</p>
+</footer>
+
+<script>
+    // Die Checklisten-Punkte
+    const checklistItems = [
+        "Sind wir bei genau 15 Minuten Vortragszeit? (Unbedingt zu Hause stoppen!)",
+        "Sprechen beide Teampartner ungefähr gleich lang?",
+        "Haben wir alle Videos von den Folien gelöscht?",
+        "Sind auf den Folien nur Stichwörter und keine ganzen Sätze?",
+        "Haben wir Karteikarten für den Vortrag geschrieben?",
+        "Ist das Handout auf 1 Seite (max. Vorder- und Rückseite) zusammengefasst?",
+        "Sind alle Bildquellen auf der letzten Folie angegeben (nicht nur 'Google')?",
+        "Ist der KI-Methodennachweis auf der letzten Folie enthalten?",
+        "Ist das Referat fristgerecht (min. 3 Tage vor Termin) abgegeben worden?"
+    ];
+
+    const container = document.getElementById('checklist-container');
+    let checkedCount = 0;
+
+    // Render Checklist
+    checklistItems.forEach((item, index) => {
+        const div = document.createElement('div');
+        div.className = 'checklist-item';
+        div.onclick = () => toggleCheck(div, index);
+        
+        div.innerHTML = `
+            <div class="checkbox-custom" id="check-${index}"></div>
+            <span class="item-text" style="font-size: 1.05rem;">${item}</span>
+        `;
+        container.appendChild(div);
+    });
+
+    function toggleCheck(element, index) {
+        const isChecked = element.classList.contains('checked');
+        const checkbox = document.getElementById(`check-${index}`);
+        
+        if (isChecked) {
+            element.classList.remove('checked');
+            checkbox.innerHTML = '';
+            checkedCount--;
+        } else {
+            element.classList.add('checked');
+            checkbox.innerHTML = '✓';
+            checkedCount++;
+        }
+        
+        updateProgress();
+    }
+
+    function updateProgress() {
+        const percentage = (checkedCount / checklistItems.length) * 100;
+        document.getElementById('progressBar').style.width = percentage + '%';
+        
+        if (percentage === 100) {
+            document.getElementById('readyMessage').style.display = 'block';
+        } else {
+            document.getElementById('readyMessage').style.display = 'none';
+        }
+    }
+</script>
+
+</body>
+</html>

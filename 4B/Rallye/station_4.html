@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firewall 4 | Operation Zeugnis-Rettung</title>
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+        /* Hacker-Theme für die finale Station */
+        body {
+            background-color: #0f172a;
+            color: #f8fafc;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        
+        header {
+            background-color: #020617;
+            border-bottom: 1px solid #22c55e;
+        }
+        header h1 {
+            color: #22c55e;
+            text-shadow: 0 0 5px rgba(34, 197, 94, 0.5);
+        }
+        header p {
+            color: #4ade80;
+        }
+        .btn-back {
+            color: #94a3b8;
+            border-color: #334155;
+            font-family: sans-serif;
+        }
+        .btn-back:hover {
+            background-color: #1e293b;
+            color: #f8fafc;
+        }
+
+        .terminal-box {
+            background-color: #000000;
+            border: 2px solid #22c55e;
+            border-radius: 8px;
+            padding: 2rem;
+            color: #22c55e;
+            box-shadow: 0 0 20px rgba(34, 197, 94, 0.1);
+            margin-top: 2rem;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .terminal-header {
+            border-bottom: 1px dashed #22c55e;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .task-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .task-block {
+            background-color: #022c16; 
+            border: 1px solid #15803d;
+            padding: 1.5rem;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .task-content {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .task-title {
+            color: #86efac;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+
+        .task-math {
+            font-size: 1.2rem;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+            background: #064e3b;
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .task-input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .task-input {
+            background-color: #000000;
+            border: 1px solid #22c55e;
+            color: #22c55e;
+            padding: 10px;
+            font-size: 1.2rem;
+            font-family: 'Courier New', Courier, monospace;
+            width: 80px;
+            text-align: center;
+            border-radius: 4px;
+        }
+        .task-input:focus {
+            outline: none;
+            box-shadow: 0 0 10px rgba(34, 197, 94, 0.5);
+        }
+
+        .master-code-box {
+            background-color: #1e1b4b;
+            border: 2px solid #8b5cf6;
+            padding: 2rem;
+            border-radius: 4px;
+            text-align: center;
+            margin-bottom: 2rem;
+            box-shadow: 0 0 15px rgba(139, 92, 246, 0.3);
+        }
+
+        .master-code-input {
+            background-color: #000000;
+            border: 2px solid #8b5cf6;
+            color: #a78bfa;
+            padding: 15px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            font-family: 'Courier New', Courier, monospace;
+            width: 150px;
+            text-align: center;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+
+        .btn-hack {
+            display: block;
+            width: 100%;
+            text-align: center;
+            background-color: #000000;
+            color: #22c55e;
+            border: 2px solid #22c55e;
+            padding: 1.5rem;
+            font-size: 1.3rem;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-hack:hover {
+            background-color: #22c55e;
+            color: #000000;
+            box-shadow: 0 0 15px #22c55e;
+        }
+
+        .feedback-msg {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            min-height: 3rem;
+        }
+        
+        .sys-warning { color: #ef4444; }
+        .sys-success { color: #22c55e; }
+        .sys-alert { color: #eab308; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>> FIREWALL_4 :: STATISTIK & ABWEICHUNG</h1>
+    <p>Status: LOCKED // Verschlüsselung: Datenrauschen</p>
+    <div class="back-nav">
+        <a href="start.html" class="btn-back">⬅ Verbindungsabbruch (Zurück)</a>
+    </div>
+</header>
+
+<main>
+    <div class="terminal-box">
+        <div class="terminal-header">
+            <span>root@phantom-server:~/firewall_4#</span>
+            <span>[LETZTE VERTEIDIGUNGSLINIE]</span>
+        </div>
+
+        <p style="margin-bottom: 2rem; line-height: 1.6; color: #86efac;">
+            <strong>SYSTEMNACHRICHT:</strong> Dies ist meine schwerste Firewall. Das Datenrauschen ist massiv. Du musst Streuungsmaße, Varianz und Standardabweichung beherrschen, um die Logfiles zu bereinigen.
+        </p>
+
+        <div class="task-grid">
+            
+            <div class="task-block">
+                <div class="task-content">
+                    <div class="task-title">Block 01: Datenstrom-Durchschnitt</div>
+                    <div class="task-math">Paketgrößen: 12, 15, 18, 22, 28</div>
+                    <div>Berechne das arithmetische Mittel (Durchschnitt) dieser Daten.</div>
+                </div>
+                <div class="task-input-wrapper">
+                    <label>Wert =</label>
+                    <input type="text" id="t1" class="task-input" autocomplete="off">
+                </div>
+            </div>
+
+            <div class="task-block">
+                <div class="task-content">
+                    <div class="task-title">Block 02: Ungeordnete Pakete (Median)</div>
+                    <div class="task-math">Latenzen: 45, 12, 8, 19, 21, 15</div>
+                    <div>Bestimme den Median (Zentralwert) dieser Liste. (Vorsicht: Sortieren nicht vergessen!)</div>
+                </div>
+                <div class="task-input-wrapper">
+                    <label>Wert =</label>
+                    <input type="text" id="t2" class="task-input" autocomplete="off">
+                </div>
+            </div>
+
+            <div class="task-block">
+                <div class="task-content">
+                    <div class="task-title">Block 03: Häufigste Signatur (Modus)</div>
+                    <div class="task-math">Pings: 4, 2, 4, 3, 4, 1, 5, 3</div>
+                    <div>Welcher Wert ist der Modus der Datenreihe?</div>
+                </div>
+                <div class="task-input-wrapper">
+                    <label>Wert =</label>
+                    <input type="text" id="t3" class="task-input" autocomplete="off">
+                </div>
+            </div>
+
+            <div class="task-block">
+                <div class="task-content">
+                    <div class="task-title">Block 04: Boxplot Streuung</div>
+                    <div class="task-math">1. Quartil = 14, 3. Quartil = 36</div>
+                    <div>Wie groß ist der Interquartilsabstand (die "Länge" der Box im Boxplot)?</div>
+                </div>
+                <div class="task-input-wrapper">
+                    <label>Wert =</label>
+                    <input type="text" id="t4" class="task-input" autocomplete="off">
+                </div>
+            </div>
+
+            <div class="task-block">
+                <div class="task-content">
+                    <div class="task-title">Block 05: Datenverlust (Umkehraufgabe)</div>
+                    <div class="task-math">Mittelwert = 20</div>
+                    <div>Der Mittelwert von exakt <strong>fünf</strong> Werten ist 20. Vier dieser Werte konnten gerettet werden: 15, 25, 18, 22. Wie lautet der fünfte Wert?</div>
+                </div>
+                <div class="task-input-wrapper">
+                    <label>Wert =</label>
+                    <input type="text" id="t5" class="task-input" autocomplete="off">
+                </div>
+            </div>
+
+            <div class="task-block">
+                <div class="task-content">
+                    <div class="task-title">Block 06: Injektions-Korrektur</div>
+                    <div class="task-math">Alter Mittelwert = 50</div>
+                    <div>Ein Datensatz aus <strong>10 Werten</strong> hat einen Mittelwert von 50. Nun wird ein fälschlich eingetragener Wert (100) gelöscht und durch die Zahl 50 ersetzt. Berechne den <strong>neuen</strong> Mittelwert!</div>
+                </div>
+                <div class="task-input-wrapper">
+                    <label>Wert =</label>
+                    <input type="text" id="t6" class="task-input" autocomplete="off">
+                </div>
+            </div>
+
+            <div class="task-block">
+                <div class="task-content">
+                    <div class="task-title">Block 07: Streuung I (Varianz)</div>
+                    <div class="task-math">Werte: 3, 6, 9</div>
+                    <div>Berechne die Varianz (mittlere quadratische Abweichung) dieses Datensatzes.</div>
+                </div>
+                <div class="task-input-wrapper">
+                    <label>Wert =</label>
+                    <input type="text" id="t7" class="task-input" autocomplete="off">
+                </div>
+            </div>
+
+            <div class="task-block">
+                <div class="task-content">
+                    <div class="task-title">Block 08: Streuung II (Rückrechnung)</div>
+                    <div class="task-math">Varianz (<i>s<sup>2</sup></i>) = 144</div>
+                    <div>Die Varianz eines Datensatzes beträgt exakt 144. Wie groß ist die Standardabweichung (<i>s</i>)?</div>
+                </div>
+                <div class="task-input-wrapper">
+                    <label>Wert =</label>
+                    <input type="text" id="t8" class="task-input" autocomplete="off">
+                </div>
+            </div>
+
+            <div class="task-block">
+                <div class="task-content">
+                    <div class="task-title">Block 09: Streuung III (Standardabweichung)</div>
+                    <div class="task-math">Werte: 5, 5, 15, 15</div>
+                    <div>Berechne zuerst den Mittelwert, dann die Varianz und ziehe am Ende die Wurzel, um die <strong>Standardabweichung</strong> zu erhalten.</div>
+                </div>
+                <div class="task-input-wrapper">
+                    <label>Wert =</label>
+                    <input type="text" id="t9" class="task-input" autocomplete="off">
+                </div>
+            </div>
+
+            <div class="task-block">
+                <div class="task-content">
+                    <div class="task-title">Block 10: Grenzwerte</div>
+                    <div class="task-math">Spannweite = 48</div>
+                    <div>Die Spannweite eines Datensatzes beträgt 48. Das Minimum ist 12. Welchen Wert hat das Maximum?</div>
+                </div>
+                <div class="task-input-wrapper">
+                    <label>Wert =</label>
+                    <input type="text" id="t10" class="task-input" autocomplete="off">
+                </div>
+            </div>
+
+        </div>
+
+        <div class="master-code-box">
+            <h3 style="margin-top: 0; color: #a78bfa;">[ MASTER-PASSCODE EINGABE ]</h3>
+            <p style="color: #c4b5fd;">
+            Um das letzte Passwort zu erzeugen, musst du deine eigenen 10 Ergebnisse statistisch auswerten!<br><br>
+            1. Berechne das <strong>arithmetische Mittel</strong> deiner 10 erarbeiteten Werte aus den Blöcken.<br>
+            2. Berechne die <strong>Spannweite</strong> (Maximalwert minus Minimalwert) deiner 10 Werte.<br>
+            3. <strong>Multipliziere</strong> das Mittel mit der Spannweite. Das Produkt ist dein Master-Passcode.
+            </p>
+            <input type="text" id="finalCode" class="master-code-input" autocomplete="off" placeholder="CODE">
+        </div>
+
+        <button id="btnHack" class="btn-hack">> LETZTE FIREWALL HACKEN</button>
+        
+        <div id="feedback" class="feedback-msg">
+            </div>
+
+    </div>
+</main>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Lösungszahlen für Block 1 bis 10
+        // (19, 17, 4, 22, 20, 45, 6, 12, 5, 60)
+        const correctAnswers = [19, 17, 4, 22, 20, 45, 6, 12, 5, 60];
+        
+        // --- Code Logik ---
+        // Summe = 210 -> Mittelwert = 210 / 10 = 21
+        // Min = 4, Max = 60 -> Spannweite = 56
+        // Passcode: 21 * 56 = 1176
+        const targetPasscode = 1176;
+        
+        const btnHack = document.getElementById("btnHack");
+        const feedback = document.getElementById("feedback");
+
+        btnHack.addEventListener("click", function() {
+            let blocksCorrect = true;
+            let errors = [];
+
+            // 1. Prüfe die 10 Datenblöcke
+            for(let i = 0; i < 10; i++) {
+                let inputField = document.getElementById("t" + (i + 1));
+                let inputVal = inputField.value.trim().replace(',', '.');
+                
+                if (inputVal === "") {
+                    blocksCorrect = false;
+                    errors.push(i + 1);
+                    continue;
+                }
+
+                let parsedVal = parseFloat(inputVal);
+                
+                if (parsedVal === correctAnswers[i]) {
+                    inputField.style.borderColor = "#22c55e"; // Grün
+                } else {
+                    blocksCorrect = false;
+                    errors.push(i + 1);
+                    inputField.style.borderColor = "#ef4444"; // Rot
+                }
+            }
+
+            // 2. Prüfe den Master-Passcode
+            let finalField = document.getElementById("finalCode");
+            let finalVal = parseFloat(finalField.value.trim().replace(',', '.'));
+            let codeCorrect = (finalVal === targetPasscode);
+
+            // 3. System-Feedback generieren
+            if (!blocksCorrect) {
+                finalField.style.borderColor = "#8b5cf6"; 
+                feedback.innerHTML = `<span class="sys-warning">ZUGRIFF VERWEIGERT.<br>Der Abweichungs-Filter meldet Fehler in Block: ${errors.join(", ")}.<br>Korrigiere diese Blöcke und beachte die korrekten Formeln für Varianz!</span>`;
+            } else if (blocksCorrect && !codeCorrect) {
+                finalField.style.borderColor = "#ef4444";
+                feedback.innerHTML = `<span class="sys-alert">WARNUNG: Die Blöcke sind sauber, aber der Master-Code ist falsch!<br>Hast du den Mittelwert und die Spannweite deiner 10 Lösungen richtig berechnet und multipliziert?</span>`;
+            } else if (blocksCorrect && codeCorrect) {
+                finalField.style.borderColor = "#22c55e";
+                btnHack.disabled = true;
+                btnHack.style.backgroundColor = "#22c55e";
+                btnHack.style.color = "#000000";
+                btnHack.innerHTML = "> SYSTEM ENTSCHLÜSSELT <";
+                
+                feedback.innerHTML = `<span class="sys-success">ZUGRIFF GEWÄHRT. Master-Passcode [1176] akzeptiert. Alle Firewalls deaktiviert.<br>Stelle Originaldaten wieder her...</span>`;
+                
+                // Nach 3 Sekunden zur Abschluss-Seite
+                setTimeout(function() {
+                    window.location.href = "erfolg.html";
+                }, 3500);
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

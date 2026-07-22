@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hardware & EVA - Das große Abschluss-Quiz</title>
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+        :root {
+            --it-primary: #107c41; 
+            --it-dark: #064e3b;
+            --bg-gray: #f8fafc;
+            --border-color: #e2e8f0;
+        }
+
+        body { background-color: var(--bg-gray); }
+        .module-container { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem; }
+        
+        /* Quiz Styles */
+        .quiz-card { background: white; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid var(--border-color); border-left: 5px solid var(--it-primary); box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+        .quiz-question { font-size: 1.1rem; font-weight: bold; color: #1e293b; margin-top: 0; margin-bottom: 1rem; }
+        .quiz-options { display: flex; flex-direction: column; gap: 8px; }
+        .quiz-option { display: flex; align-items: center; padding: 10px; border: 2px solid var(--border-color); border-radius: 6px; cursor: pointer; transition: 0.2s; }
+        .quiz-option:hover { background: #f1f5f9; }
+        .quiz-option.selected { border-color: var(--it-primary); background: #f0fdf4; font-weight: bold; }
+        
+        .quiz-feedback { margin-top: 10px; font-weight: bold; display: none; padding: 10px; border-radius: 6px; }
+        .feedback-correct { background: #d1fae5; color: #065f46; border: 1px solid #10b981; }
+        .feedback-wrong { background: #fee2e2; color: #991b1b; border: 1px solid #ef4444; }
+
+        /* Research Styles */
+        .research-section { margin-top: 4rem; border-top: 4px solid #3b82f6; padding-top: 2rem; }
+        .research-card { background: white; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid #bfdbfe; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+        .research-textarea { width: 100%; min-height: 80px; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; margin-top: 10px; font-family: inherit; resize: vertical; outline: none; }
+        .research-textarea:focus { border-color: #3b82f6; }
+
+        .btn-check { background: var(--it-primary); color: white; border: none; padding: 15px 30px; font-size: 1.2rem; font-weight: bold; border-radius: 6px; cursor: pointer; width: 100%; transition: 0.2s; }
+        .btn-check:hover { background: var(--it-dark); }
+        
+        /* Ticket Styles */
+        .ticket-container { display: none; background: linear-gradient(135deg, #1e293b, #107c41); color: white; padding: 3rem; border-radius: 16px; text-align: center; margin-top: 2rem; box-shadow: 0 10px 25px rgba(16, 124, 65, 0.4); position: relative; overflow: hidden; }
+        .ticket-watermark { position: absolute; top: -20px; right: -20px; font-size: 8rem; opacity: 0.1; transform: rotate(15deg); }
+    </style>
+</head>
+<body>
+
+<header style="background-color: var(--it-primary); color: white; padding: 3rem 1rem; text-align: center;">
+    <div style="font-size: 3rem; margin-bottom: 10px;">🏆</div>
+    <h1 style="margin: 0; font-size: 2.5rem; color: white;">Das große Abschluss-Quiz</h1>
+    <p style="color: #dcfce7; margin-top: 10px; font-size: 1.2rem;">Hardware, EVA-Architektur und Systemaufbau</p>
+</header>
+
+<div class="back-nav"><a href="../index.html" class="btn-back">← Zurück zur Übersicht</a></div>
+
+<main class="module-container">
+
+    <div style="background: #fffbeb; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #f59e0b; margin-bottom: 3rem;">
+        <strong>🎯 Dein Arbeitsauftrag:</strong>
+        <p style="margin-bottom: 0; margin-top: 5px;">Teil 1 besteht aus 20 kniffligen Multiple-Choice-Fragen zu den vorherigen Modulen. Erst wenn du alle 20 Fragen richtig beantwortet hast, kannst du dein Zertifikat generieren. Teil 2 ist eine Internet-Recherche, die du direkt in die Textfelder eintippen kannst.</p>
+    </div>
+
+    <h2 style="color: var(--it-dark); font-size: 2rem; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;">Teil 1: Der Wissenstest (20 Fragen)</h2>
+    
+    <div id="quiz-container">
+        </div>
+
+    <div style="text-align: center; margin-top: 2rem;">
+        <button class="btn-check" onclick="checkAllAnswers()">Alle 20 Antworten auswerten!</button>
+        <p id="quiz-global-feedback" style="font-weight: bold; margin-top: 15px; font-size: 1.2rem;"></p>
+    </div>
+
+    <div id="ticket-section" style="margin-top: 2rem; background: white; border: 2px solid var(--it-primary); padding: 2rem; border-radius: 8px; text-align: center; display: none;">
+        <h3 style="color: var(--it-dark); margin-top: 0;">Zertifikat freigeschaltet!</h3>
+        <input type="text" id="student-name" style="width: 250px; padding: 10px; font-size: 1rem; border: 2px solid #cbd5e1; border-radius: 4px; margin-bottom: 10px; outline: none;" placeholder="Dein Vor- und Nachname">
+        <br>
+        <button class="btn-check" style="width: auto; padding: 10px 24px;" onclick="generateTicket()">Zertifikat erstellen</button>
+    </div>
+
+    <div id="certificate" class="ticket-container">
+        <div class="ticket-watermark">100%</div>
+        <h2 style="margin: 0; color: #a7f3d0;">HARDWARE MASTER</h2>
+        <div style="font-size: 2rem; font-weight: bold; margin: 1rem 0;">ABSCHLUSS-QUIZ BESTANDEN</div>
+        <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px; font-family: monospace; font-size: 1.2rem; text-align: left; display: inline-block;">
+            <span style="color: #6ee7b7;">Name:</span> <span id="cert-name"></span><br>
+            <span style="color: #6ee7b7;">Ergebnis:</span> 20/20 Fragen korrekt<br>
+            <span style="color: #6ee7b7;">Zeit:</span> <span id="cert-date"></span><br>
+            <span style="color: #6ee7b7;">Hash:</span> <span id="cert-hash" style="color: #cbd5e1; font-size: 0.9rem;"></span>
+        </div>
+        <p style="margin-top: 20px; font-weight: bold;">Bitte zeige diesen Bildschirm jetzt Prof. Schweitzer.</p>
+    </div>
+
+
+    <section class="research-section">
+        <h2 style="color: #1e3a8a; font-size: 2rem; border-bottom: 2px solid #bfdbfe; padding-bottom: 10px;">Teil 2: Internet-Recherche (10 Aufgaben)</h2>
+        <p style="color: #475569; margin-bottom: 2rem;">Öffne einen neuen Tab in deinem Browser (z.B. Wikipedia oder Google). Recherchiere die folgenden Fachbegriffe und notiere die Antworten in eigenen, kurzen Sätzen in das jeweilige Feld.</p>
+
+        <div id="research-container">
+            </div>
+    </section>
+
+</main>
+
+<footer style="margin-top: 5rem; padding: 2rem 1rem; background-color: #e2e8f0; color: #64748b; font-size: 0.9rem; text-align: center;">
+    <div style="max-width: 800px; margin: 0 auto 2rem auto; text-align: left; background: white; padding: 1.5rem; border: 1px solid #cbd5e1; border-radius: 8px;">
+        <h4 style="margin-top: 0; color: #334155;">Datenschutzhinweis (DSGVO)</h4>
+        <p style="margin-bottom: 0;">Alles passiert lokal in deinem Browser. Die Antworten in den Textfeldern werden <strong>nicht</strong> gespeichert oder an einen Server gesendet. Schließt du die Seite, sind die Texte weg.</p>
+    </div>
+    <strong>&copy; 2026 | GvP | Mag. Schweitzer | Informatik 5. Klasse</strong>
+</footer>
+
+<script>
+    // --- TEIL 1: DIE 20 MULTIPLE CHOICE FRAGEN ---
+    // Aufbau: q = Frage, options = Array von Antworten, correctIndex = Index der richtigen Antwort (0-3)
+    const mcQuestions = [
+        {
+            q: "Wofür steht der Buchstabe 'V' im EVA-Prinzip der Informatik?",
+            options: [
+                "Verschlüsselung", 
+                "Verarbeitung", 
+                "Verteilung von Netzwerkpaketen an verschiedene Router", 
+                "Validierung"
+            ],
+            correctIndex: 1
+        },
+        {
+            q: "Welche Maßeinheit wird typischerweise verwendet, um die Geschwindigkeit (Taktfrequenz) eines Prozessors (CPU) anzugeben?",
+            options: [
+                "Megabyte pro Sekunde (MB/s)", 
+                "Gigahertz (GHz)", 
+                "Nanometer (nm)", 
+                "Frames per Second (FPS)"
+            ],
+            correctIndex: 1
+        },
+        {
+            q: "Was ist das entscheidende Merkmal des Arbeitsspeichers (RAM)?",
+            options: [
+                "Er speichert Daten dauerhaft ab, weshalb er auch als Festspeicher bezeichnet wird.", 
+                "Er ist extrem schnell, verliert jedoch alle gespeicherten Daten sofort, wenn der Strom abgeschaltet wird.", 
+                "Er ist ein optisches Speichermedium, ähnlich wie eine DVD oder Blu-ray.", 
+                "Er ist ausschließlich für die Berechnung von 3D-Grafiken zuständig."
+            ],
+            correctIndex: 1
+        },
+        {
+            q: "Welches der folgenden Geräte ist ein klassisches Eingabegerät (Input) im Sinne des EVA-Prinzips?",
+            options: [
+                "Ein hochauflösender Laserdrucker", 
+                "Ein Mikrofon", 
+                "Ein Kopfhörer mit integriertem Verstärker", 
+                "Ein moderner LED-Monitor"
+            ],
+            correctIndex: 1
+        },
+        {
+            q: "Was passiert höchstwahrscheinlich (Bottleneck-Effekt), wenn ein PC eine extrem schnelle High-End-CPU, aber nur 2 GB Arbeitsspeicher (RAM) besitzt?",
+            options: [
+                "Die CPU muss ständig auf Daten warten, weil das 'Kurzzeitgedächtnis' zu klein ist. Das System ruckelt.", 
+                "Die Grafikkarte übernimmt automatisch die fehlende Speicherkapazität.", 
+                "Der PC wird extrem heiß, weil die CPU die fehlenden 2 GB RAM physisch kompensieren muss.", 
+                "Das System läuft perfekt, da die CPU ohnehin die wichtigste Komponente ist."
+            ],
+            correctIndex: 0
+        },
+        {
+            q: "Was ist ein 'Aktor' in einem IT-System?",
+            options: [
+                "Ein Schadprogramm, das unbemerkt im Hintergrund agiert.", 
+                "Ein besonders schneller Speicherchip, der direkt auf dem Mainboard verlötet ist.", 
+                "Ein Gerät oder Bauteil, das digitale Befehle in physische Bewegungen umsetzt (z.B. ein Motor).", 
+                "Die Schnittstelle zwischen dem Monitor und der Grafikkarte."
+            ],
+            correctIndex: 2
+        },
+        {
+            q: "Warum fügt man dem klassischen EVA-Prinzip oft noch ein 'S' (EVA-S) hinzu?",
+            options: [
+                "Weil moderne Systeme zwingend eine Soundkarte (S) benötigen.", 
+                "Um die Speicherung (Storage) zu berücksichtigen, da Daten sonst nach der Verarbeitung sofort verloren wären.", 
+                "Weil das System sonst nicht sicher (Security) vor Hackerangriffen ist.", 
+                "S steht für Synchronisation, was bei Multi-Core-Prozessoren zwingend notwendig ist."
+            ],
+            correctIndex: 1
+        },
+        {
+            q: "Aus welchen zwei logischen Hauptbestandteilen besteht das Innere einer CPU unter anderem?",
+            options: [
+                "Kondensator und Widerstand", 
+                "Rechenwerk (ALU) und Steuerwerk", 
+                "Grafikchip und Soundchip", 
+                "Primärspeicher und Sekundärspeicher"
+            ],
+            correctIndex: 1
+        },
+        {
+            q: "Auf welcher Komponente speichert dein Computer das Betriebssystem (z.B. Windows) dauerhaft ab, damit es beim Neustart noch da ist?",
+            options: [
+                "Im Prozessor (CPU)", 
+                "Im Arbeitsspeicher (RAM)", 
+                "Auf dem Festspeicher (SSD oder HDD)", 
+                "Direkt auf dem Motherboard im BIOS-Chip"
+            ],
+            correctIndex: 2
+        },
+        {
+            q: "Warum ist das EVA-Prinzip so universell in der Informatik?",
+            options: [
+                "Weil es nur auf Computern mit dem Windows-Betriebssystem angewendet werden kann.", 
+                "Weil jede Programmiersprache zwingend Variablen vorschreibt, die mit E, V und A beginnen.", 
+                "Weil es für nahezu alle digitalen Automaten gilt, von der Waschmaschine bis zum Supercomputer.", 
+                "Weil es die einzige Möglichkeit ist, eine Festplatte fehlerfrei zu formatieren."
+            ],
+            correctIndex: 2
+        },
+        {
+            q: "Welche Hardware-Konfiguration ist für einen reinen Office-PC (nur Word, Excel, E-Mails) am sinnvollsten?",
+            options: [
+                "Eine extrem teure Grafikkarte (RTX 4090) und ein schwacher Prozessor.", 
+                "Eine solide, günstige CPU mit integrierter Grafik und 8-16 GB RAM.", 
+                "32 GB RAM, keine SSD, dafür drei Grafikkarten.", 
+                "Eine Wasserkühlung für die CPU und ein 1000-Watt-Netzteil."
+            ],
+            correctIndex: 1
+        },
+        {
+            q: "Was ist die Hauptaufgabe einer GPU (Graphics Processing Unit)?",
+            options: [
+                "Sie kühlt den Prozessor, wenn er bei 3D-Spielen zu heiß wird.", 
+                "Sie ist darauf spezialisiert, riesige Mengen an Bilddaten und 3D-Geometrie parallel zu berechnen.", 
+                "Sie speichert hochauflösende Filme dauerhaft ab, damit die SSD nicht überfüllt wird.", 
+                "Sie wandelt den Strom aus der Steckdose in für den PC nutzbare Spannung um."
+            ],
+            correctIndex: 1
+        },
+        {
+            q: "Ein Smart-Home-Thermometer misst 22 Grad und schickt diesen Wert an die Zentrale. Welchem Schritt des EVA-Prinzips entspricht das?",
+            options: [
+                "Eingabe (Analog-Digital-Wandlung durch den Sensor)", 
+                "Verarbeitung (Berechnung der Temperatur)", 
+                "Ausgabe (Heizung wird abgestellt)", 
+                "Speicherung (Temperatur wird archiviert)"
+            ],
+            correctIndex: 0
+        },
+        {
+            q: "Wie spiegelt sich das EVA-Prinzip beim Schreiben von Software-Code wider?",
+            options: [
+                "Ein Programm darf maximal aus drei Zeilen Code bestehen.", 
+                "Eine Funktion nimmt Parameter an (E), berechnet etwas (V) und liefert einen Wert zurück (A).", 
+                "Der Code muss immer in drei verschiedenen Dateien gespeichert werden.", 
+                "Man muss vor dem Programmieren immer den Computer neu starten."
+            ],
+            correctIndex: 1
+        },
+        {
+            q: "Der PC lässt sich einschalten, die Lüfter drehen sich, man hört den Windows-Startsound aus den Boxen, aber der Monitor bleibt komplett schwarz. Wo liegt der Fehler laut EVA-Prinzip am ehesten?",
+            options: [
+                "Bei der Eingabe (Tastatur defekt).", 
+                "Bei der Speicherung (SSD gelöscht).", 
+                "Bei der Ausgabe (Monitor oder Kabel defekt).", 
+                "Beim Betriebssystem (Windows hat einen Virus)."
+            ],
+            correctIndex: 2
+        },
+        {
+            q: "Was versteht man unter 'Digital-Analog-Wandlung' im Rahmen der Ausgabe (A)?",
+            options: [
+                "Den Prozess, bei dem ein Mensch eine Taste auf der Tastatur drückt.", 
+                "Das Speichern einer Datei auf einem USB-Stick.", 
+                "Die Übersetzung von maschinellem Binärcode (Nullen und Einsen) in etwas, das der Mensch wahrnehmen kann (z.B. Schallwellen am Lautsprecher).", 
+                "Das Umwandeln einer alten Videokassette in eine MP4-Datei."
+            ],
+            correctIndex: 2
+        },
+        {
+            q: "Ein Programm stürzt ab und du hast die letzten 10 Minuten nicht auf 'Speichern' geklickt. Warum ist die Arbeit weg?",
+            options: [
+                "Weil das Dokument nur im flüchtigen RAM lag und noch nicht auf die SSD (Langzeitspeicher) geschrieben wurde.", 
+                "Weil die Grafikkarte überhitzt ist und das Bild gelöscht hat.", 
+                "Weil die Tastatur die letzten Anschläge nicht schnell genug an den Prozessor gesendet hat.", 
+                "Weil Hacker das Programm blockiert haben."
+            ],
+            correctIndex: 0
+        },
+        {
+            q: "Welche Aussage über den Zusammenhang von Hardware-Komponenten ist wahr?",
+            options: [
+                "Je größer die Festplatte, desto schneller berechnet die CPU komplexe Mathe-Aufgaben.", 
+                "Eine schnelle Grafikkarte bringt bei modernen 3D-Spielen nichts, wenn der RAM extrem klein ist (Flaschenhals).", 
+                "Der Arbeitsspeicher (RAM) kann durch eine größere SSD vollständig ersetzt werden.", 
+                "Die CPU ist die einzige Komponente, die Strom benötigt."
+            ],
+            correctIndex: 1
+        },
+        {
+            q: "Was passiert, wenn du ein Programm (z.B. Word) durch einen Doppelklick öffnest?",
+            options: [
+                "Die Daten werden vom Prozessor direkt in den Monitor kopiert.", 
+                "Die CPU erstellt eine neue, leere SSD-Partition für das Programm.", 
+                "Die Programm-Daten werden vom langsamen Festspeicher (SSD/HDD) in den schnellen Arbeitsspeicher (RAM) geladen.", 
+                "Das Programm wird sofort dauerhaft gelöscht, um Platz für neue Eingaben zu machen."
+            ],
+            correctIndex: 2
+        },
+        {
+            q: "Was ist ein wesentlicher Unterschied zwischen SSDs und älteren HDDs (Festplatten)?",
+            options: [
+                "SSDs haben keine mechanischen, beweglichen Teile mehr und sind dadurch viel schneller und stoßfester.", 
+                "HDDs können Daten auch ohne Strom speichern, SSDs verlieren alle Daten beim Ausschalten.", 
+                "HDDs sind wesentlich moderner, kleiner und teurer als SSDs.", 
+                "SSDs werden ausschließlich für die Bildausgabe verwendet."
+            ],
+            correctIndex: 0
+        }
+    ];
+
+    // Array für die Auswahl der User speichern
+    let userAnswers = new Array(mcQuestions.length).fill(null);
+
+    function renderQuiz() {
+        const container = document.getElementById('quiz-container');
+        
+        mcQuestions.forEach((qObj, index) => {
+            let card = document.createElement('div');
+            card.className = 'quiz-card';
+            
+            let questionTitle = document.createElement('p');
+            questionTitle.className = 'quiz-question';
+            questionTitle.innerText = `Frage ${index + 1}: ${qObj.q}`;
+            card.appendChild(questionTitle);
+
+            let optionsDiv = document.createElement('div');
+            optionsDiv.className = 'quiz-options';
+
+            qObj.options.forEach((optText, optIndex) => {
+                let optBtn = document.createElement('div');
+                optBtn.className = 'quiz-option';
+                optBtn.innerText = optText;
+                
+                // Klick-Event für die Option
+                optBtn.onclick = function() {
+                    // Alle in dieser Frage deselektieren
+                    let siblings = optionsDiv.querySelectorAll('.quiz-option');
+                    siblings.forEach(s => s.classList.remove('selected'));
+                    // Diese selektieren
+                    optBtn.classList.add('selected');
+                    userAnswers[index] = optIndex;
+                };
+
+                optionsDiv.appendChild(optBtn);
+            });
+
+            card.appendChild(optionsDiv);
+
+            // Feedback Element für später
+            let fbDiv = document.createElement('div');
+            fbDiv.id = `fb-q${index}`;
+            fbDiv.className = 'quiz-feedback';
+            card.appendChild(fbDiv);
+
+            container.appendChild(card);
+        });
+    }
+
+    function checkAllAnswers() {
+        let allCorrect = true;
+        let globalFb = document.getElementById('quiz-global-feedback');
+        
+        // Prüfen, ob alle Fragen beantwortet wurden
+        if (userAnswers.includes(null)) {
+            globalFb.innerText = "Bitte beantworte zuerst alle 20 Fragen, bevor du auf Auswerten klickst!";
+            globalFb.style.color = "#ef4444";
+            return;
+        }
+
+        // Antworten auswerten
+        mcQuestions.forEach((qObj, index) => {
+            let fbDiv = document.getElementById(`fb-q${index}`);
+            if (userAnswers[index] === qObj.correctIndex) {
+                fbDiv.innerText = "✅ Richtig!";
+                fbDiv.className = 'quiz-feedback feedback-correct';
+                fbDiv.style.display = 'block';
+            } else {
+                fbDiv.innerText = "❌ Falsch! Überlege dir diese Frage nochmal.";
+                fbDiv.className = 'quiz-feedback feedback-wrong';
+                fbDiv.style.display = 'block';
+                allCorrect = false;
+            }
+        });
+
+        if (allCorrect) {
+            globalFb.innerText = "🎉 Wahnsinn! Alle 20 Fragen sind richtig. Du hast das Zertifikat freigeschaltet!";
+            globalFb.style.color = "#10b981";
+            document.getElementById('ticket-section').style.display = "block";
+        } else {
+            globalFb.innerText = "Es sind noch Fehler dabei. Suche die rot markierten Fragen und verbessere sie!";
+            globalFb.style.color = "#ef4444";
+            document.getElementById('ticket-section').style.display = "none";
+        }
+    }
+
+    function generateTicket() {
+        let name = document.getElementById('student-name').value.trim();
+        if (name === "") {
+            alert("Bitte gib deinen Namen ein!");
+            return;
+        }
+        document.getElementById('cert-name').innerText = name;
+        let now = new Date();
+        document.getElementById('cert-date').innerText = now.toLocaleDateString('de-AT') + " | " + now.toLocaleTimeString('de-AT');
+        document.getElementById('cert-hash').innerText = "HW-" + (name.length * 20) + "-FINAL";
+        
+        document.getElementById('certificate').style.display = "block";
+        document.getElementById('certificate').scrolltoView({ behavior: 'smooth' });
+    }
+
+
+    // --- TEIL 2: DIE 10 RECHERCHE AUFGABEN ---
+    const researchTasks = [
+        "1. Wer war John von Neumann und was besagt die nach ihm benannte 'Von-Neumann-Architektur' bei Computern?",
+        "2. Was beschreibt das sogenannte 'Mooresche Gesetz' (Moore's Law) und ist es heute noch uneingeschränkt gültig?",
+        "3. Jedes Mainboard hat ein kleines Betriebssystem vorinstalliert. Wofür stehen die Abkürzungen 'BIOS' und 'UEFI'?",
+        "4. Erkläre in zwei Sätzen den grundlegenden, physikalischen Unterschied im inneren Aufbau zwischen einer HDD (Festplatte) und einer SSD.",
+        "5. Welche zentrale Aufgabe hat das sogenannte 'Motherboard' (Mainboard) in einem Computer?",
+        "6. Was bedeutet der englische Begriff 'Overclocking' (Übertakten) bei einer CPU oder GPU und welche Gefahr birgt es?",
+        "7. Nenne die aktuell zwei größten und bekanntesten Hersteller von Desktop-Prozessoren (CPUs) auf dem Weltmarkt.",
+        "8. Was macht das Netzteil (PSU) im Computer und warum achten Profis beim Kauf auf eine '80-Plus-Zertifizierung'?",
+        "9. Ein Prozessor hat nicht nur Kerne und GHz, sondern auch einen 'Cache'. Was ist der L1/L2/L3-Cache einer CPU?",
+        "10. Was ist der genaue technische Unterschied zwischen dem normalen RAM (Arbeitsspeicher) und dem VRAM (Video-RAM)?"
+    ];
+
+    function renderResearch() {
+        const container = document.getElementById('research-container');
+        researchTasks.forEach(task => {
+            let card = document.createElement('div');
+            card.className = 'research-card';
+            
+            let label = document.createElement('div');
+            label.style.fontWeight = "bold";
+            label.style.color = "#1e3a8a";
+            label.innerText = task;
+            
+            let textarea = document.createElement('textarea');
+            textarea.className = 'research-textarea';
+            textarea.placeholder = "Dein Recherche-Ergebnis hier eintippen...";
+            
+            card.appendChild(label);
+            card.appendChild(textarea);
+            container.appendChild(card);
+        });
+    }
+
+    // Init beim Start
+    window.onload = function() {
+        renderQuiz();
+        renderResearch();
+    };
+
+</script>
+</body>
+</html>

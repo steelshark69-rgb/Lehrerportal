@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Präsentation & Quiz: Bauplan des Internets</title>
+    <link rel="stylesheet" href="../../style.css">
+    
+    <style>
+        :root {
+            --it-primary: #107c41; /* Informatik Grün */
+            --it-dark: #064e3b;
+            --step-color: #0ea5e9;
+        }
+
+        /* PDF Container */
+        .pdf-container {
+            margin: 2rem 0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            background: #cbd5e1;
+        }
+
+        /* Quiz Layout */
+        .quiz-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        @media (min-width: 768px) {
+            .quiz-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        .quiz-question { 
+            background: #f1f5f9; 
+            padding: 1.5rem; 
+            border-radius: 8px; 
+            border-left: 4px solid var(--it-primary); 
+            position: relative;
+        }
+        
+        .slide-badge {
+            position: absolute;
+            top: -10px;
+            right: 15px;
+            background: var(--it-dark);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .quiz-select { 
+            padding: 10px; 
+            font-size: 0.95rem; 
+            border: 2px solid #cbd5e1; 
+            border-radius: 4px; 
+            width: 100%; 
+            margin-top: 10px; 
+            cursor: pointer; 
+            outline: none;
+        }
+        .quiz-select:focus { border-color: var(--it-primary); }
+        
+        .btn-check { 
+            background: var(--it-primary); 
+            color: white; 
+            border: none; 
+            padding: 8px 16px; 
+            font-size: 0.95rem; 
+            font-weight: bold; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            margin-top: 10px; 
+            transition: 0.2s;
+        }
+        .btn-check:hover { background: var(--it-dark); }
+        
+        /* Global Feedback Styles */
+        .feedback { display: none; font-weight: bold; margin-top: 1.5rem; padding: 15px; border-radius: 4px; font-size: 1.1rem; text-align: center; border: 1px solid transparent; }
+        .fb-correct { background: #d1fae5 !important; color: #065f46 !important; border-color: #10b981 !important; }
+        .fb-wrong { background: #fee2e2 !important; color: #991b1b !important; border-color: #ef4444 !important; }
+        .fb-warning { background: #fffbeb !important; color: #92400e !important; border-color: #f59e0b !important; }
+
+        /* Ticket Styles */
+        .ticket-container {
+            display: none;
+            background: linear-gradient(135deg, #0f172a, #107c41);
+            color: white;
+            padding: 3rem;
+            border-radius: 16px;
+            text-align: center;
+            margin-top: 3rem;
+            box-shadow: 0 10px 25px rgba(16, 124, 65, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+        .ticket-watermark { position: absolute; top: -20px; right: -20px; font-size: 8rem; opacity: 0.1; transform: rotate(15deg); }
+        .ticket-score { font-size: 2.5rem; font-weight: bold; margin: 1rem 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        .ticket-details { background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px; font-family: monospace; font-size: 1.2rem; text-align: left; display: inline-block; }
+    </style>
+</head>
+<body>
+
+<header style="background-color: var(--it-primary); color: white; padding: 2rem 1rem; text-align: center;">
+    <h1 style="margin: 0; color: white;">Der unsichtbare Bauplan des Internets</h1>
+    <p style="margin-top: 10px; color: #dcfce7; font-size: 1.1rem;">Präsentation & 14-Stufen-Security-Check</p>
+</header>
+
+<div class="back-nav">
+    <a href="../index.html" class="btn-back">← Zurück zur Übersicht</a>
+</div>
+
+<main style="max-width: 1000px; margin: 0 auto; padding: 0 1.5rem;">
+
+    <div style="background: #fffbeb; border-left: 4px solid #f59e0b; padding: 1.5rem; border-radius: 4px; margin-top: 2rem;">
+        <strong>🎯 Dein Arbeitsauftrag:</strong>
+        <p style="margin-bottom: 0;">Lies dir die 14 Folien der Präsentation aufmerksam durch. Scrolle danach nach unten und beantworte zu jeder Folie die passende Sicherheitsfrage. Wenn du alle 14 Fragen meisterst, kannst du dein Zertifikat für Prof. Schweitzer generieren!</p>
+    </div>
+
+    <div class="pdf-container">
+        <object data="The_Internet_Blueprint.pdf" type="application/pdf" width="100%" height="700px">
+            <div style="padding: 3rem 2rem; text-align: center; background: #f8fafc;">
+                <h3 style="color: #334155; margin-top: 0;">📄 Präsentation ansehen</h3>
+                <p style="color: #475569; margin-bottom: 20px;">Dein Browser (oder Smartphone) blockiert die direkte Anzeige von PDF-Dateien. Klicke auf den Button, um die Präsentation zu öffnen.</p>
+                <a href="The_Internet_Blueprint.pdf" target="_blank" style="display: inline-block; background: var(--it-primary); color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold;">
+                    Präsentation in neuem Tab öffnen
+                </a>
+            </div>
+        </object>
+    </div>
+
+    <h2 style="color: var(--it-dark); margin-top: 3rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">Der Security-Check (14 Fragen)</h2>
+    
+    <div class="quiz-grid">
+        <div class="quiz-question" id="q1-box">
+            <div class="slide-badge">Folie 1</div>
+            <p><strong>1. Was ist das Internet laut der Titelfolie?</strong></p>
+            <select id="q1-ans" class="quiz-select">
+                <option value="0">-- Bitte wählen --</option>
+                <option value="wrong1">Das größte Videonetzwerk der Welt.</option>
+                <option value="correct">Das größte Logistiknetzwerk der Menschheit.</option>
+                <option value="wrong2">Eine rein physische Kabelverbindung.</option>
+            </select>
+        </div>
+
+        <div class="quiz-question" id="q2-box">
+            <div class="slide-badge">Folie 2</div>
+            <p><strong>2. Worauf basiert das Internet hauptsächlich?</strong></p>
+            <select id="q2-ans" class="quiz-select">
+                <option value="0">-- Bitte wählen --</option>
+                <option value="correct">Auf einer Design-Philosophie und universellen Protokollen.</option>
+                <option value="wrong1">Auf persönlichen Bekanntschaften der Geräte.</option>
+                <option value="wrong2">Ausschließlich auf Kupferkabeln.</option>
+            </select>
+        </div>
+
+        <div class="quiz-question" id="q3-box">
+            <div class="slide-badge">Folie 3</div>
+            <p><strong>3. Womit löst das Internet das Adressierungs-Problem?</strong></p>
+            <select id="q3-ans" class="quiz-select">
+                <option value="0">-- Bitte wählen --</option>
+                <option value="wrong1">Mit dem World Wide Web (WWW).</option>
+                <option value="wrong2">Mit Postleitzahlen.</option>
+                <option value="correct">Mit dem Internet Protocol (IP).</option>
+            </select>
+        </div>
+
+        <div class="quiz-question" id="q4-box">
+            <div class="slide-badge">Folie 4</div>
+            <p><strong>4. Wie sind IPv4-Adressen aufgebaut?</strong></p>
+            <select id="q4-ans" class="quiz-select">
+                <option value="0">-- Bitte wählen --</option>
+                <option value="correct">Streng hierarchisch (Land -> Subnetzwerk -> Gerät).</option>
+                <option value="wrong1">Völlig zufällig generiert bei jedem Neustart.</option>
+                <option value="wrong2">Alphabetisch nach dem Namen des Nutzers.</option>
+            </select>
+        </div>
+
+        <div class="quiz-question" id="q5-box">
+            <div class="slide-badge">Folie 5</div>
+            <p><strong>5. Welche visuelle Analogie wird für die Kapazität von IPv6 verwendet?</strong></p>
+            <select id="q5-ans" class="quiz-select">
+                <option value="0">-- Bitte wählen --</option>
+                <option value="wrong1">Sterne am Nachthimmel.</option>
+                <option value="correct">Jedes Sandkorn auf der Erde.</option>
+                <option value="wrong2">Ein überfüllter Raum.</option>
+            </select>
+        </div>
+
+        <div class="quiz-question" id="q6-box">
+            <div class="slide-badge">Folie 6</div>
+            <p><strong>6. Was macht das DNS (Domain Name System)?</strong></p>
+            <select id="q6-ans" class="quiz-select">
+                <option value="0">-- Bitte wählen --</option>
+                <option value="wrong1">Es speichert alle Bilder des Internets.</option>
+                <option value="correct">Es übersetzt menschliche Worte in maschinelle Zahlen (IPs).</option>
+                <option value="wrong2">Es schützt den PC vor Viren.</option>
+            </select>
+        </div>
+
+        <div class="quiz-question" id="q7-box">
+            <div class="slide-badge">Folie 7</div>
+            <p><strong>7. Kennt ein einzelner DNS-Server das gesamte Internet?</strong></p>
+            <select id="q7-ans" class="quiz-select">
+                <option value="0">-- Bitte wählen --</option>
+                <option value="wrong1">Ja, Google besitzt den einzigen Haupt-Server.</option>
+                <option value="correct">Nein, die Anfragen werden dezentral in Zonen aufgeteilt.</option>
+                <option value="wrong2">Ja, aber nur für europäische Webseiten.</option>
+            </select>
+        </div>
+
+        <div class="quiz-question" id="q8-box">
+            <div class="slide-badge">Folie 8</div>
+            <p><strong>8. Was passiert beim "DNS-Spoofing"?</strong></p>
+            <select id="q8-ans" class="quiz-select">
+                <option value="0">-- Bitte wählen --</option>
+                <option value="wrong1">Der PC stürzt sofort ab und löscht Daten.</option>
+                <option value="correct">Nutzer werden unsichtbar auf betrügerische Websites umgeleitet.</option>
+                <option value="wrong2">Das Internet wird für einige Stunden extrem langsam.</option>
+            </select>
+        </div>
+
+        <div class="quiz-question" id="q9-box">
+            <div class="slide-badge">Folie 9</div>
+            <p><strong>9. Warum nutzt das Internet keine "direkten Verbindungen" (Kabel) zwischen Sender und Empfänger?</strong></p>
+            <select id="q9-ans" class="quiz-select">
+                <option value="0">-- Bitte wählen --</option>
+                <option value="correct">Sie wären viel zu ineffizient und fehleranfällig.</option>
+                <option value="wrong1">Weil direkte Kabel zu viel Strom verbrauchen.</option>
+                <option value="wrong2">Weil es gesetzlich verboten ist.</option>
+            </select>
+        </div>
+
+        <div class="quiz-question" id="q10-box">
+            <div class="slide-badge">Folie 10</div>
+            <p><strong>10. Wie reisen Daten (wie ein Bild) durch das Internet?</strong></p>
+            <select id="q10-ans" class="quiz-select">
+                <option value="0">-- Bitte wählen --</option>
+                <option value="wrong1">Am Stück, genau wie ein physischer Brief.</option>
+                <option value="correct">Zerlegt in Tausende kleine Pakete, die unabhängig voneinander reisen.</option>
+                <option value="wrong2">Nur wenn Sender und Empfänger gleichzeitig online sind.</option>
+            </select>
+        </div>
+
+        <div class="quiz-question" id="q11-box">
+            <div class="slide-badge">Folie 11</div>
+            <p><strong>11. Nach welchem Kriterium wählen Router den Pfad für ein Paket?</strong></p>
+            <select id="q11-ans" class="quiz-select">
+                <option value="0">-- Bitte wählen --</option>
+                <option value="wrong1">Immer nach der kürzesten geografischen Distanz.</option>
+                <option value="correct">Immer nach dem zeitlich schnellsten Pfad.</option>
+                <option value="wrong2">Zufällig, um Hacker zu verwirren.</option>
+            </select>
+        </div>
+
+        <div class="quiz-question" id="q12-box">
+            <div class="slide-badge">Folie 12</div>
+            <p><strong>12. Warum braucht es am Zielort eine Qualitätskontrolle?</strong></p>
+            <select id="q12-ans" class="quiz-select">
+                <option value="0">-- Bitte wählen --</option>
+                <option value="wrong1">Um zu prüfen, ob die Datei einen Virus enthält.</option>
+                <option value="wrong2">Um das Bild farblich zu korrigieren.</option>
+                <option value="correct">Weil Pakete unterschiedliche Routen nehmen und außer der Reihe ankommen.</option>
+            </select>
+        </div>
+
+        <div class="quiz-question" id="q13-box">
+            <div class="slide-badge">Folie 13</div>
+            <p><strong>13. Was macht das TCP-Protokoll, wenn ein Datenpaket fehlt?</strong></p>
+            <select id="q13-ans" class="quiz-select">
+                <option value="0">-- Bitte wählen --</option>
+                <option value="correct">Es fordert das fehlende Teil automatisch neu an.</option>
+                <option value="wrong1">Es löscht die gesamte Datei und bricht ab.</option>
+                <option value="wrong2">Es zeigt das Bild einfach mit einem Pixelfehler an.</option>
+            </select>
+        </div>
+
+        <div class="quiz-question" id="q14-box">
+            <div class="slide-badge">Folie 14</div>
+            <p><strong>14. Wodurch wird das Internet "nahezu unzerstörbar" (skalierbar)?</strong></p>
+            <select id="q14-ans" class="quiz-select">
+                <option value="0">-- Bitte wählen --</option>
+                <option value="wrong1">Weil Satelliten aus dem Weltall alles steuern.</option>
+                <option value="wrong2">Weil Regierungen alle Server beschützen.</option>
+                <option value="correct">Durch seine Fehlertoleranz und immer neue Ausweichrouten über Router.</option>
+            </select>
+        </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 2rem;">
+        <button class="btn-check" style="width: 100%; max-width: 600px; padding: 15px; font-size: 1.2rem;" onclick="evaluateQuiz()">Gesamtes Quiz auswerten</button>
+        <div id="global-quiz-feedback" class="feedback"></div>
+    </div>
+
+    <div id="ticket-generator-section" style="margin-top: 3rem; background: #f0fdf4; border: 2px solid var(--it-primary); padding: 2rem; border-radius: 8px; text-align: center; display: none;">
+        <h3 style="color: var(--it-dark); margin-top: 0;">Zertifikat freigeschaltet!</h3>
+        <p>Du hast alle Fragen gemeistert. Hol dir jetzt dein Ticket.</p>
+        
+        <input type="text" id="student-name" style="width: 250px; padding: 10px; font-size: 1rem; border: 2px solid #cbd5e1; border-radius: 4px; margin-bottom: 10px; outline: none;" placeholder="Dein Vor- und Nachname">
+        <br>
+        <button class="btn-check" style="font-size: 1.1rem; padding: 12px 24px;" onclick="generateTicket()">Zertifikat erstellen</button>
+        <p id="ticket-error" style="color: #ef4444; font-weight: bold; display: none; margin-top: 15px;">Bitte gib zuerst deinen Namen ein!</p>
+    </div>
+
+    <div id="certificate" class="ticket-container">
+        <div class="ticket-watermark">14/14</div>
+        <h2 style="margin: 0; color: #a7f3d0;">MASTER OF PROTOCOLS</h2>
+        <div class="ticket-score">100% KORREKT</div>
+        <div class="ticket-details">
+            <span style="color: #6ee7b7;">Name:</span> <span id="cert-name"></span><br>
+            <span style="color: #6ee7b7;">Thema:</span> Bauplan des Internets<br>
+            <span style="color: #6ee7b7;">Folien:</span> Alle 14 verstanden<br>
+            <span style="color: #6ee7b7;">Zeit:</span> <span id="cert-date"></span><br>
+            <span style="color: #6ee7b7;">Code:</span> <span id="cert-hash" style="color: #cbd5e1; font-size: 0.9rem;"></span>
+        </div>
+        <p style="margin-top: 25px; font-size: 1rem; font-weight: bold; color: #f1f5f9;">Bitte zeige diesen Bildschirm jetzt Prof. Schweitzer.</p>
+    </div>
+
+</main>
+
+<footer style="margin-top: 5rem; padding: 2rem 1rem; background-color: #f8fafc; border-top: 1px solid #e2e8f0; color: #64748b; font-size: 0.9rem;">
+    <div style="max-width: 800px; margin: 0 auto 2rem auto; text-align: left; background: white; padding: 1.5rem; border: 1px solid #cbd5e1; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+        <h4 style="margin-top: 0; color: #334155; font-size: 1.1rem;">Datenschutzhinweis (DSGVO)</h4>
+        <p style="margin-bottom: 10px; line-height: 1.5;">Die Nutzung dieses Portals ist absolut datenschutzkonform. Es werden keine Eingaben an einen Server gesendet. Die Quiz-Auswertung und das Zertifikat werden rein lokal in deinem Browser erzeugt.</p>
+    </div>
+    <div style="text-align: center; font-weight: bold;">
+        &copy; 2026 | GvP | Mag. Schweitzer | Mathematik & Informatik
+    </div>
+</footer>
+
+<script>
+    let allQuestionsCorrect = false;
+
+    function evaluateQuiz() {
+        let globalFeedback = document.getElementById('global-quiz-feedback');
+        let ticketSection = document.getElementById('ticket-generator-section');
+        let unansweredCount = 0;
+        let errorCount = 0;
+
+        // 1. Prüfen, ob alle Fragen beantwortet wurden & Fehler zählen
+        for (let i = 1; i <= 14; i++) {
+            let selectElement = document.getElementById('q' + i + '-ans');
+            if (selectElement.value === '0') {
+                unansweredCount++;
+            } else if (selectElement.value !== 'correct') {
+                errorCount++;
+            }
+        }
+
+        // 2. Wenn Fragen fehlen -> Abbrechen
+        if (unansweredCount > 0) {
+            globalFeedback.innerHTML = `⚠️ Halt! Du hast noch ${unansweredCount} Fragen nicht beantwortet. Bitte wähle überall eine Antwort aus.`;
+            globalFeedback.className = "feedback fb-warning";
+            globalFeedback.style.display = "block";
+            ticketSection.style.display = "none";
+            allQuestionsCorrect = false;
+            return;
+        }
+
+        // 3. Wenn alles befüllt ist -> Auswerten
+        if (errorCount === 0) {
+            globalFeedback.innerHTML = "✅ Perfekt! Alle 14 Fragen sind richtig beantwortet.";
+            globalFeedback.className = "feedback fb-correct";
+            globalFeedback.style.display = "block";
+            ticketSection.style.display = "block"; // Zertifikat-Bereich freischalten
+            allQuestionsCorrect = true;
+        } else {
+            globalFeedback.innerHTML = `❌ Das stimmt noch nicht ganz. Du hast ${errorCount} Frage(n) falsch beantwortet. (Tipp: Die falschen Antworten werden absichtlich nicht markiert!)`;
+            globalFeedback.className = "feedback fb-wrong";
+            globalFeedback.style.display = "block";
+            ticketSection.style.display = "none";
+            allQuestionsCorrect = false;
+        }
+    }
+
+    function generateTicket() {
+        let name = document.getElementById('student-name').value.trim();
+        let errorMsg = document.getElementById('ticket-error');
+        
+        if (!allQuestionsCorrect || name === "") {
+            errorMsg.style.display = "block";
+            return;
+        }
+
+        errorMsg.style.display = "none";
+        
+        // Ticket befüllen
+        document.getElementById('cert-name').innerText = name;
+        
+        let now = new Date();
+        let timeString = now.toLocaleDateString('de-AT') + " | " + now.toLocaleTimeString('de-AT');
+        document.getElementById('cert-date').innerText = timeString;
+
+        let hash = "NET-" + (name.length * 14) + "-" + now.getHours() + now.getMinutes() + "-V1";
+        document.getElementById('cert-hash').innerText = hash;
+
+        // Einblenden & Hinscrollen
+        document.getElementById('certificate').style.display = "block";
+        document.getElementById('certificate').scrolltoView({ behavior: 'smooth' });
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Quiz: Der unsichtbare Bauplan des Internets</title>
+    
+    <!-- Externe Bibliotheken (CDN) -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <style>
+        /* CSS Styling - Optimiert für iOS/Safari & Touch */
+        :root {
+            --primary-color: #0056b3;
+            --bg-color: #f4f7f6;
+            --text-color: #333333;
+            --success-color: #28a745;
+            --error-color: #dc3545;
+            --box-bg: #ffffff;
+        }
+
+        * { 
+            box-sizing: border-box; 
+            -webkit-tap-highlight-color: transparent; /* Entfernt grauen Touch-Hintergrund auf iOS */
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        #app-container {
+            width: 100%;
+            max-width: 600px;
+            background: var(--box-bg);
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        h1, h2 { 
+            text-align: center; 
+            margin-top: 0;
+        }
+
+        /* Verhindert Input-Zoom auf iOS (mind. 16px font-size) */
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px; 
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            min-height: 44px; /* Touch Target Minimum */
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        button {
+            width: 100%;
+            min-height: 48px; /* Touch Target Minimum */
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 12px;
+            transition: transform 0.1s;
+        }
+
+        /* Keine Hover-Effekte für Mobile, nur Active */
+        button:active { 
+            transform: scale(0.98); 
+            opacity: 0.9;
+        }
+
+        .option-btn {
+            background-color: #e9ecef;
+            color: var(--text-color);
+            text-align: left;
+            padding: 14px;
+            margin-bottom: 10px;
+            border: 2px solid transparent;
+        }
+
+        .option-btn.correct {
+            background-color: #d4edda;
+            border-color: var(--success-color);
+            color: #155724;
+        }
+
+        .option-btn.wrong {
+            background-color: #f8d7da;
+            border-color: var(--error-color);
+            color: #721c24;
+        }
+
+        #timer-container {
+            position: sticky;
+            top: 0;
+            background: var(--box-bg);
+            padding: 10px 0;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            border-bottom: 2px solid #eee;
+            margin-bottom: 20px;
+            display: none;
+            z-index: 10;
+        }
+
+        #feedback-text {
+            text-align: center;
+            font-weight: bold;
+            min-height: 24px;
+            margin: 15px 0;
+        }
+
+        .hidden { display: none !important; }
+
+        /* Spinner Animation */
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        #capture-area {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="app-container">
+    
+    <!-- START SCREEN -->
+    <div id="screen-start">
+        <h1>Quiz: Der Bauplan des Internets</h1>
+        <label for="student-name">Vorname & 1. Buchstabe Nachname:</label>
+        <input type="text" id="student-name" placeholder="z.B. Anna K." autocomplete="off">
+        
+        <div style="text-align: center; margin-bottom: 20px; color: #555;">
+            <p><strong>Umfang:</strong> 20 Fragen (Leicht, Mittel, Schwer)</p>
+            <p><strong>Zeitlimit:</strong> 10:00 Minuten <br><small>(Globaler Timer: 30 Sek/Frage)</small></p>
+        </div>
+        
+        <button onclick="startQuiz()">Quiz jetzt starten</button>
+    </div>
+
+    <!-- TIMER BAR -->
+    <div id="timer-container">Zeit: <span id="time-display">10:00</span></div>
+
+    <!-- QUESTION SCREEN -->
+    <div id="screen-question" class="hidden">
+        <h3 id="question-title" style="margin-top: 0;"></h3>
+        <div id="options-wrapper"></div>
+        <div id="feedback-text"></div>
+        <button id="btn-next" class="hidden" onclick="loadNextQuestion()">Weiter zur nächsten Frage</button>
+    </div>
+
+    <!-- RESULT SCREEN -->
+    <div id="screen-result" class="hidden">
+        <h2>Dein Ergebnis</h2>
+        
+        <div id="capture-area">
+            <h3 id="res-name" style="margin-top: 0;"></h3>
+            <p id="res-score" style="font-size: 1.2rem; font-weight: bold;"></p>
+            <p id="res-grade" style="font-size: 1.2rem; color: var(--primary-color); font-weight: bold;"></p>
+            <p id="res-timeout" style="color: var(--error-color); font-weight: bold;"></p>
+        </div>
+
+        <div id="processing-status" style="text-align: center;">
+            <div id="loading-spinner" class="spinner"></div>
+            <p id="status-message" style="font-weight: bold;">Verarbeite Ergebnisse & Sende Email...</p>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // 1. INIT EMAILJS (Syntax Version 3.x)
+    emailjs.init("HnZ28X9AihlD5y9XH");
+
+    // 2. DATEN: 20 Fragen (5 Leicht, 10 Mittel, 5 Schwer)
+    const rawQuestions = [
+        // LEICHT (5)
+        { q: "Was beschreibt das Internet am besten?", a: ["Eine Design-Philosophie", "Ein reines Kabelnetzwerk", "Ein zentraler Großrechner", "Eine physische Fabrik"], c: 0 },
+        { q: "Welches Protokoll löst das Adressierungs-Problem im Internet?", a: ["IP (Internet Protocol)", "HTTP", "USB", "PDF"], c: 0 },
+        { q: "Wie viele Bit umfasst eine IPv4-Adresse?", a: ["32-Bit", "16-Bit", "64-Bit", "128-Bit"], c: 0 },
+        { q: "Was ist die Hauptaufgabe des DNS (Domain Name System)?", a: ["Es fungiert als Telefonbuch des Internets", "Es verschlüsselt Passwörter", "Es speichert große Dateien", "Es blockiert Computerviren"], c: 0 },
+        { q: "Was macht TCP, wenn ein Datenpaket auf dem Weg verloren geht?", a: ["Es fordert das Paket neu an", "Es ignoriert den Fehler", "Es bricht das Internet ab", "Es löscht den gesamten Download"], c: 0 },
+        
+        // MITTEL (10)
+        { q: "Wie ist eine IPv4-Adresse logisch aufgebaut?", a: ["Streng hierarchisch (Land/Region -> Subnetz -> Gerät)", "Alphabetisch nach Benutzernamen", "Zufällig bei jeder Verbindung", "Nach geografischer Entfernung zum Server"], c: 0 },
+        { q: "Welche Aussage trifft auf die Kapazität von IPv6 zu?", a: ["Über 340 Undezillionen Adressen", "Exakt 4 Milliarden Adressen", "Sie ist bereits heute vollständig aufgebraucht", "Maximal 100.000 Geräte weltweit"], c: 0 },
+        { q: "Welche Gefahr besteht beim sogenannten 'DNS-Spoofing'?", a: ["Nutzer werden unsichtbar auf betrügerische Websites umgeleitet", "Der Computer schaltet sich sofort aus", "Das W-LAN Kabel wird physisch durchtrennt", "Dateien auf dem Desktop werden gelöscht"], c: 0 },
+        { q: "Warum nutzt das Internet keine direkten, festen Leitungen zwischen zwei Computern?", a: ["Weil direkte Leitungen ineffizient und fehleranfällig wären", "Weil Kupferkabel zu teuer sind", "Weil das Gesetz es verbietet", "Weil Server nur nachts arbeiten"], c: 0 },
+        { q: "Nach welcher Logik wählen Router den Weg für Datenpakete?", a: ["Immer den zeitlich schnellsten Pfad", "Immer die kürzeste geografische Distanz", "Immer den billigsten Pfad", "Alphabetisch nach Servernamen"], c: 0 },
+        { q: "Wie werden große Dateien (z.B. Bilder oder Videos) für den Transport vorbereitet?", a: ["Sie werden in Tausende kleine Pakete zerlegt", "Sie werden in einem einzigen Stück versendet", "Sie werden in Textdokumente umgewandelt", "Sie werden ausgedruckt und gescannt"], c: 0 },
+        { q: "Wie verhalten sich die einzelnen Datenpakete einer Datei auf ihrer Reise?", a: ["Sie reisen unabhängig voneinander und nehmen unterschiedliche Routen", "Sie bleiben immer zwingend zusammen in einer Reihe", "Sie warten aufeinander an jedem Knotenpunkt", "Sie können nur über denselben Router fließen"], c: 0 },
+        { q: "Ab wann gibt das TCP (Transmission Control Protocol) eine Datei für den Nutzer frei?", a: ["Erst bei 100% Vollständigkeit aller Pakete", "Sobald das erste Paket ankommt", "Wenn 50% der Daten geladen sind", "Nach exakt 10 Sekunden Wartezeit"], c: 0 },
+        { q: "Was veranschaulicht das PDF als Analogie für die Anzahl der IPv6-Adressen?", a: ["Jedes Sandkorn auf der Erde", "Ein überfüllter Raum", "Die Sterne im Universum", "Wassertropfen im Ozean"], c: 0 },
+        { q: "Wer oder was speichert die finale IP-Adresse, nachdem eine DNS-Hierarchie durchlaufen wurde?", a: ["Der lokale DNS speichert sie (Gefunden, gespeichert und verbunden)", "Die Anfrage wird sofort wieder gelöscht", "Der Nutzer muss sich die IP aufschreiben", "Ein Drucker gibt die IP aus"], c: 0 },
+
+        // SCHWER (5)
+        { q: "Was ist der fundamentale Grund für das 'Geheimnis der Skalierbarkeit' des Internets?", a: ["Seine Fehlertoleranz durch dezentrale Protokolle", "Die Verwendung von extra dicken Glasfaserkabeln", "Die zentrale Steuerung durch einen Mega-Server", "Dass IP-Adressen Geld kosten"], c: 0 },
+        { q: "Was bedeutet es, dass kein einzelner DNS-Server das gesamte Internet kennt?", a: ["Anfragen werden dezentral in Zonen aufgeteilt", "Das Internet ist kaputt", "Man kann nur lokale Webseiten aufrufen", "Google hat das DNS abgeschaltet"], c: 0 },
+        { q: "Wie nennt das Dokument die Router in einer bildlichen Metapher?", a: ["Intelligente Verkehrspolizisten", "Strenge Lagerverwalter", "Unsichtbare Briefträger", "Schnelle Space-Shuttles"], c: 0 },
+        { q: "Was bewirkt jeder NEUE Router, der zum Netzwerk hinzugefügt wird?", a: ["Er schafft neue Ausweichrouten und macht das System unzerstörbarer", "Er macht das Internet langsamer, weil es mehr Stationen gibt", "Er verbraucht alle verbleibenden IPv4 Adressen", "Er zwingt TCP zum Neustart"], c: 0 },
+        { q: "Welches Protokoll übernimmt im Analogie-Bild die Rolle des 'strengen Lagerverwalters'?", a: ["TCP", "IP", "DNS", "HTTP"], c: 0 }
+    ];
+
+    // 3. GLOBALE VARIABLEN
+    let questions = [];
+    let currentQuestionIndex = 0;
+    let score = 0;
+    let timerInterval;
+    const TOTAL_TIME = 20 * 30; // 600 Sekunden (10 Minuten)
+    let timeLeft = TOTAL_TIME;
+    let quizActive = false;
+    let timeoutOccurred = false;
+
+    // 4. HILFSFUNKTIONEN (Shuffle Array)
+    function shuffleArray(array) {
+        let currentIndex = array.length, randomIndex;
+        while (currentIndex != 0) {
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex--;
+            [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+        }
+        return array;
+    }
+
+    // 5. QUIZ LOGIK
+    function startQuiz() {
+        const nameInput = document.getElementById('student-name').value.trim();
+        if (nameInput.length < 2) {
+            alert("Bitte gib deinen Namen ein.");
+            return;
+        }
+
+        // Bereite Fragen vor: Shuffle Fragen & Shuffle Antworten pro Frage
+        questions = shuffleArray([...rawQuestions]).map(q => {
+            // Finde den korrekten Antwort-String vor dem Shuffle
+            let correctText = q.a[q.c];
+            let shuffledOptions = shuffleArray([...q.a]);
+            // Finde den neuen Index der korrekten Antwort
+            let newCorrectIndex = shuffledOptions.indexOf(correctText);
+            return { question: q.q, options: shuffledOptions, correctIndex: newCorrectIndex };
+        });
+
+        // UI umschalten
+        document.getElementById('screen-start').classList.add('hidden');
+        document.getElementById('timer-container').style.display = 'block';
+        document.getElementById('screen-question').classList.remove('hidden');
+
+        quizActive = true;
+        startTimer();
+        renderQuestion();
+    }
+
+    function startTimer() {
+        updateTimerUI();
+        timerInterval = setInterval(() => {
+            timeLeft--;
+            updateTimerUI();
+
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                timeoutOccurred = true;
+                quizActive = false;
+                showResults(); // Sofortiger Abbruch bei Time-out
+            }
+        }, 1000);
+    }
+
+    function updateTimerUI() {
+        let m = Math.floor(timeLeft / 60);
+        let s = timeLeft % 60;
+        document.getElementById('time-display').innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
+    }
+
+    function renderQuestion() {
+        document.getElementById('btn-next').classList.add('hidden');
+        document.getElementById('feedback-text').innerText = "";
+        
+        const q = questions[currentQuestionIndex];
+        document.getElementById('question-title').innerText = `Frage ${currentQuestionIndex + 1} von ${questions.length}: ${q.question}`;
+        
+        const optionsWrapper = document.getElementById('options-wrapper');
+        optionsWrapper.innerHTML = "";
+
+        q.options.forEach((opt, index) => {
+            const btn = document.createElement('button');
+            btn.className = "option-btn";
+            btn.innerText = opt;
+            btn.onclick = () => handleAnswer(index, btn);
+            optionsWrapper.appendChild(btn);
+        });
+    }
+
+    function handleAnswer(selectedIndex, clickedBtn) {
+        // Verhindern, dass mehrfach geklickt wird
+        if (!document.getElementById('btn-next').classList.contains('hidden')) return;
+
+        const correctIndex = questions[currentQuestionIndex].correctIndex;
+        const allBtns = document.getElementById('options-wrapper').children;
+
+        if (selectedIndex === correctIndex) {
+            clickedBtn.classList.add('correct');
+            score++;
+            document.getElementById('feedback-text').innerText = "Richtig! ✓";
+            document.getElementById('feedback-text').style.color = "var(--success-color)";
+        } else {
+            clickedBtn.classList.add('wrong');
+            allBtns[correctIndex].classList.add('correct');
+            document.getElementById('feedback-text').innerText = "Leider falsch! ✗";
+            document.getElementById('feedback-text').style.color = "var(--error-color)";
+        }
+
+        document.getElementById('btn-next').classList.remove('hidden');
+    }
+
+    function loadNextQuestion() {
+        currentQuestionIndex++;
+        if (currentQuestionIndex < questions.length) {
+            renderQuestion();
+        } else {
+            // Alle Fragen beantwortet
+            clearInterval(timerInterval);
+            quizActive = false;
+            showResults();
+        }
+    }
+
+    // 6. ERGEBNISSE & VERARBEITUNG
+    function calculateGrade(percent) {
+        if (percent >= 90) return "Sehr gut aufgepasst";
+        if (percent >= 78) return "Gut aufgepasst";
+        if (percent >= 64) return "Befriedigend aufgepasst";
+        if (percent >= 50) return "Genügend aufgepasst";
+        return "Nicht genügend aufgepasst";
+    }
+
+    function showResults() {
+        document.getElementById('screen-question').classList.add('hidden');
+        document.getElementById('timer-container').style.display = 'none';
+        document.getElementById('screen-result').classList.remove('hidden');
+
+        const studentName = document.getElementById('student-name').value.trim();
+        const percent = Math.round((score / questions.length) * 100);
+        const gradeStr = calculateGrade(percent);
+
+        document.getElementById('res-name').innerText = "Name: " + studentName;
+        document.getElementById('res-score').innerText = `Erreichte Punkte: ${score} / ${questions.length} (${percent}%)`;
+        document.getElementById('res-grade').innerText = "Bewertung: " + gradeStr;
+        
+        if (timeoutOccurred) {
+            document.getElementById('res-timeout').innerText = "Hinweis: Die Zeit ist abgelaufen!";
+        }
+
+        processResultData(studentName, score, questions.length, gradeStr, timeoutOccurred);
+    }
+
+    async function processResultData(name, score, maxScore, grade, isTimeout) {
+        try {
+            // 6.1 Screenshot generieren & Auto-Download
+            const captureArea = document.getElementById('capture-area');
+            const canvas = await html2canvas(captureArea, { scale: 2 });
+            const imgData = canvas.toDataURL("image/png");
+            
+            const dlLink = document.createElement('a');
+            dlLink.download = `Quiz_InternetBauplan_${name.replace(/\s+/g, '_')}.png`;
+            dlLink.href = imgData;
+            dlLink.click();
+
+            // 6.2 EmailJS Payload & Versand im Hintergrund
+            const emailParams = {
+                quiz_name: "Quiz: Der unsichtbare Bauplan des Internets",
+                from_name: name,
+                score: `${score} / ${maxScore}`,
+                message: `Note: ${grade} | Zeit abgelaufen: ${isTimeout ? 'Ja' : 'Nein'}`
+            };
+
+            // STRICT METHOD: emailjs.send
+            await emailjs.send("service_qoofink", "template_cu0x1bc", emailParams);
+
+            // 6.3 Success UI
+            document.getElementById('loading-spinner').style.display = 'none';
+            const statusMsg = document.getElementById('status-message');
+            statusMsg.innerText = "Fertig! Screenshot geladen & Ergebnisse gesendet.";
+            statusMsg.style.color = "var(--success-color)";
+
+        } catch (error) {
+            document.getElementById('loading-spinner').style.display = 'none';
+            document.getElementById('status-message').innerText = "Es gab einen Fehler bei der Verarbeitung.";
+            document.getElementById('status-message').style.color = "var(--error-color)";
+            // Debugging Alert wie gefordert
+            alert("Fehler: " + (error.text || error.message || error));
+        }
+    }
+</script>
+
+</body>
+</html>

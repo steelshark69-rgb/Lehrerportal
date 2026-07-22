@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber-Detektiv Spiel | Digitale Grundbildung</title>
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+        .game-container {
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+            padding: 2rem;
+            border-radius: 10px;
+            color: white;
+            max-width: 900px;
+            margin: 2rem auto;
+        }
+        .scenario-box {
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        .scenario-text {
+            background: #f9fafb;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1rem 0;
+            line-height: 1.6;
+            border-left: 4px solid #6366f1;
+        }
+        .vulnerabilities {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        .vuln-btn {
+            padding: 1rem;
+            border: 2px solid #e5e7eb;
+            background: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.2s;
+            text-align: left;
+            font-size: 0.95rem;
+            color: #333;
+        }
+        .vuln-btn:hover {
+            border-color: #6366f1;
+            background: #eef2ff;
+        }
+        .vuln-btn.selected {
+            border-color: #6366f1;
+            background: #eef2ff;
+            font-weight: bold;
+        }
+        .vuln-btn.correct {
+            background: #dcfce7;
+            border-color: #10b981;
+            color: #065f46;
+        }
+        .vuln-btn.wrong {
+            background: #fee2e2;
+            border-color: #ef4444;
+            color: #991b1b;
+        }
+        .feedback {
+            background: white;
+            padding: 1rem;
+            border-radius: 5px;
+            margin-top: 1rem;
+            display: none;
+            border-left: 4px solid #6366f1;
+        }
+        .feedback.show {
+            display: block;
+        }
+        .score {
+            text-align: center;
+            margin: 2rem 0;
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>🕵️ Cyber-Detektiv Spiel</h1>
+    <p>2. Klasse | Digitale Grundbildung</p>
+    <div class="back-nav">
+        <a href="index.html" class="btn-back">⬅ Zurück</a>
+    </div>
+</header>
+
+<main style="max-width: 1000px; margin: 0 auto; padding: 2rem 1rem;">
+
+    <section style="background: #eef2ff; border-left: 4px solid #6366f1; padding: 1.5rem; border-radius: 5px; margin-bottom: 2rem;">
+        <h2>🔍 Finde die Sicherheitslücken!</h2>
+        <p>In jedem Szenario gibt es 2-3 Sicherheitsprobleme. Kannst du alle finden? Klick auf die Probleme!</p>
+    </section>
+
+    <div class="game-container">
+        <h2 style="text-align: center; margin-top: 0;">🎯 Sicherheitslücken-Jagd</h2>
+        
+        <div id="gameContainer"></div>
+
+        <div class="score">
+            ✓ Richtig: <span id="score">0</span> | ✗ Falsch: <span id="wrong">0</span>
+        </div>
+    </div>
+
+    <section style="background: white; padding: 2rem; border-radius: 8px; margin-top: 2rem;">
+        <h2>🚨 Häufige Sicherheitslücken</h2>
+        
+        <div style="background: #fee2e2; padding: 1.5rem; border-radius: 5px; margin: 1rem 0;">
+            <h3 style="margin-top: 0; color: #991b1b;">❌ Password-Sicherheit</h3>
+            <ul>
+                <li>Schwache Passwörter (12345, admin, Dein Name)</li>
+                <li>Passwort auf Post-It notiert</li>
+                <li>Gleiches Passwort überall benutzt</li>
+                <li>Passwort dem Freund gesagt</li>
+            </ul>
+        </div>
+
+        <div style="background: #fee2e2; padding: 1.5rem; border-radius: 5px; margin: 1rem 0;">
+            <h3 style="margin-top: 0; color: #991b1b;">❌ Datenschutz</h3>
+            <ul>
+                <li>Private Daten online geteilt (Adresse, Telefon)</li>
+                <li>Kamera nicht abgeklebt</li>
+                <li>Alte Apps mit vollen Berechtigungen</li>
+                <li>Öffentliches WiFi ohne VPN nutzen</li>
+            </ul>
+        </div>
+
+        <div style="background: #fee2e2; padding: 1.5rem; border-radius: 5px; margin: 1rem 0;">
+            <h3 style="margin-top: 0; color: #991b1b;">❌ Phishing & Betrug</h3>
+            <ul>
+                <li>Links von Fremden anklicken</li>
+                <li>Verdächtige E-Mails öffnen</li>
+                <li>Persönliche Daten an Fremde geben</li>
+                <li>Auf "Glückspiel-Gewinn" klicken</li>
+            </ul>
+        </div>
+
+        <div style="background: #dcfce7; padding: 1.5rem; border-radius: 5px; margin: 1rem 0;">
+            <h3 style="margin-top: 0; color: #065f46;">✅ Sicherheitsmaßnahmen</h3>
+            <ul>
+                <li>Starke, einzigartige Passwörter</li>
+                <li>2-Faktor-Authentifizierung aktivieren</li>
+                <li>Regelmäßig Updates installieren</li>
+                <li>Antivirus-Software nutzen</li>
+                <li>Suspekte E-Mails melden und löschen</li>
+                <li>Nur auf sicheren (HTTPS) Websites einkaufen</li>
+                <li>Mit Freunden über Cybersicherheit sprechen</li>
+            </ul>
+        </div>
+    </section>
+
+</main>
+
+<footer style="margin-top: 5rem; padding: 2rem 1rem; background-color: #f8fafc; border-top: 1px solid #e2e8f0; color: #64748b; font-size: 0.9rem; text-align: center;">
+    &copy; 2026 | GvP | Mag. Schweitzer | Digitale Grundbildung
+</footer>
+
+<script>
+    const scenarios = [
+        {
+            scenario: "Alex checkt seine E-Mails am Schulcomputer:",
+            situation: "Der PC hat noch die Anmeldedaten von 5 anderen Schülern gespeichert (Autofill). Alex erhält eine Mail von 'bank-austria@sicherung.com' mit der Bitte sein Passwort zu bestätigen. Auf seinem Schreibtisch liegt ein Post-It mit seinem Passwort: 'Alex123'",
+            vulnerabilities: [
+                { text: "E-Mail von falscher Absender-Adresse", correct: true },
+                { text: "Passwort auf Post-It notiert", correct: true },
+                { text: "Mehrere Benutzer haben Zugriff auf den PC", correct: true },
+                { text: "Alex ist um 14 Uhr in der Schule", correct: false }
+            ]
+        },
+        {
+            scenario: "Sarah nutzt Instagram auf dem Handy:",
+            situation: "Sarahs Profil ist öffentlich sichtbar. Sie hat ihre Adresse und Telefonnummer im Bio-Text stehen. Auf ihren letzten Fotos kann man mit Geotagging sehen, genau wo sie war. Sie nutzt das gleiche Passwort überall (Facebook, Instagram, Gmail)",
+            vulnerabilities: [
+                { text: "Profil öffentlich sichtbar", correct: true },
+                { text: "Persönliche Daten im Bio-Text", correct: true },
+                { text: "Standortinformationen geteilt", correct: true },
+                { text: "Sarah hat 500 Follower", correct: false }
+            ]
+        },
+        {
+            scenario: "Tom surft im öffentlichen WiFi des Cafés:",
+            situation: "Das WiFi hat kein Passwort und ist von jedermann erreichbar. Tom loggt sich in sein E-Banking ein und zahlt eine Rechnung. Sein Passwort ist 'password123'. Später erhält er eine verdächtige SMS: 'Klick hier um dein Amazon-Konto zu bestätigen'",
+            vulnerabilities: [
+                { text: "Banking im offenen WiFi ohne VPN", correct: true },
+                { text: "Schwaches Passwort (password123)", correct: true },
+                { text: "Auf verdächtige SMS-Links klicken", correct: true },
+                { text: "Tom sitzt in einem Café", correct: false }
+            ]
+        },
+        {
+            scenario: "Jana erhält eine Chat-Nachricht von einem Unbekannten:",
+            situation: "Der Unbekannte behauptet von Instagram zu sein und fordert sie auf, ihre Kontodaten zu bestätigen. Er schickt einen Link 'instagram-verify.net'. Janas Kamera ist nicht abgeklebt und sie hat der Instagram-App erlaubt, auf ihre Kamera zuzugreifen.",
+            vulnerabilities: [
+                { text: "Verdächtige URL (fake Domain)", correct: true },
+                { text: "Aufforderung persönliche Daten zu geben", correct: true },
+                { text: "Kamera nicht abgeklebt", correct: true },
+                { text: "Jana antwortet dem Unbekannten", correct: false }
+            ]
+        }
+    ];
+
+    let currentScenario = 0;
+    let score = 0;
+    let wrong = 0;
+    let scenarioAnswered = false;
+
+    function loadScenario() {
+        const s = scenarios[currentScenario];
+        let html = `
+            <div class="scenario-box">
+                <h3 style="margin-top: 0; color: #6366f1;">Szenario ${currentScenario + 1} von ${scenarios.length}</h3>
+                <div style="font-weight: bold; font-size: 1.1rem; color: #1f2937;">${s.scenario}</div>
+                <div class="scenario-text">${s.situation}</div>
+                
+                <p style="font-weight: bold; margin-top: 1.5rem;">🔍 Finde die Sicherheitslücken:</p>
+                <div class="vulnerabilities">
+        `;
+        
+        s.vulnerabilities.forEach((vuln, index) => {
+            html += `<button class="vuln-btn" onclick="checkVuln(${index})">${vuln.text}</button>`;
+        });
+        
+        html += `
+                </div>
+                <div class="feedback" id="feedback"></div>
+                <button onclick="nextScenario()" style="width: 100%; padding: 12px; background: #6366f1; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 1.5rem; display: none;" id="nextBtn">Nächstes Szenario →</button>
+            </div>
+        `;
+        
+        document.getElementById('gameContainer').innerHTML = html;
+        scenarioAnswered = false;
+    }
+
+    function checkVuln(index) {
+        const s = scenarios[currentScenario];
+        const btns = document.querySelectorAll('.vuln-btn');
+        const btn = btns[index];
+        
+        if (s.vulnerabilities[index].correct) {
+            btn.classList.add('correct');
+            score++;
+        } else {
+            btn.classList.add('wrong');
+            wrong++;
+        }
+        
+        document.getElementById('score').textContent = score;
+        document.getElementById('wrong').textContent = wrong;
+        
+        // Disable all buttons
+        btns.forEach(b => b.style.pointerEvents = 'none');
+        
+        if (currentScenario === scenarios.length - 1) {
+            setTimeout(() => showFinalScore(), 1000);
+        } else {
+            document.getElementById('nextBtn').style.display = 'block';
+        }
+    }
+
+    function nextScenario() {
+        currentScenario++;
+        loadScenario();
+    }
+
+    function showFinalScore() {
+        let totalVuln = scenarios.reduce((sum, s) => sum + s.vulnerabilities.filter(v => v.correct).length, 0);
+        let message = score === totalVuln ? '🌟 Perfekt gefunden!' : score >= totalVuln * 0.8 ? '👍 Sehr gut!' : '✓ Guter Anfang!';
+        
+        document.getElementById('gameContainer').innerHTML = `
+            <div class="scenario-box" style="text-align: center;">
+                <h2 style="margin-top: 0;">${message}</h2>
+                <p style="font-size: 1.2rem;">${score} von ${totalVuln} Sicherheitslücken gefunden!</p>
+                <button onclick="location.reload()" style="padding: 12px 30px; background: #6366f1; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 1rem;">Nochmal spielen</button>
+            </div>
+        `;
+    }
+
+    loadScenario();
+</script>
+
+</body>
+</html>

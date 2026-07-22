@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz: Betriebssysteme</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --success: #22c55e;
+            --error: #ef4444;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: var(--bg); 
+            color: var(--text); 
+            margin: 0; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background: var(--card-bg);
+            width: 100%;
+            max-width: 600px;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+
+        h1 { margin-top: 0; color: var(--primary); }
+        .hidden { display: none !important; }
+
+        /* Start Screen */
+        input[type="text"] {
+            width: 100%;
+            padding: 12px 16px;
+            margin: 20px 0;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+        }
+        input[type="text"]:focus { border-color: var(--primary); }
+
+        button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            width: 100%;
+        }
+        button:hover { background: var(--primary-hover); }
+        button:disabled { background: var(--border); cursor: not-allowed; }
+
+        /* Quiz Phase */
+        .progress-container {
+            height: 8px;
+            background: var(--border);
+            border-radius: 4px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        #progress-bar {
+            height: 100%;
+            background: var(--primary);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .difficulty-tag {
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            padding: 4px 12px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        .diff-leicht { background: #dcfce7; color: #166534; }
+        .diff-mittel { background: #fef9c3; color: #854d0e; }
+        .diff-schwer { background: #fee2e2; color: #991b1b; }
+
+        #question-text { font-size: 1.25rem; font-weight: 600; margin-bottom: 1.5rem; text-align: left; }
+
+        .options-grid { display: grid; gap: 12px; margin-bottom: 20px; }
+        .option-btn {
+            background: white;
+            border: 2px solid var(--border);
+            color: var(--text);
+            text-align: left;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: 500;
+        }
+        .option-btn:hover:not(:disabled) { border-color: var(--primary); background: #f0f7ff; }
+        
+        /* Feedback Styles */
+        .correct { background: var(--success) !important; border-color: var(--success) !important; color: white !important; }
+        .wrong { background: var(--error) !important; border-color: var(--error) !important; color: white !important; }
+        .correct-outline { border: 2px solid var(--success) !important; color: var(--success) !important; font-weight: 700; }
+
+        /* Result Screen */
+        .grade-box { font-size: 1.5rem; font-weight: 700; margin: 20px 0; }
+        #status-msg { font-size: 0.9rem; color: var(--text-light); margin-top: 10px; }
+        .screenshot-btn { background: #64748b; margin-top: 20px; }
+    </style>
+</head>
+<body>
+
+<div class="container" id="quiz-container">
+    <div id="start-screen">
+        <h1>Betriebssysteme</h1>
+        <p>Willkommen zum Quiz für die 5. Klasse AHS.</p>
+        <input type="text" id="student-name" placeholder="Dein Name..." autocomplete="off">
+        <button id="start-btn">Quiz starten</button>
+    </div>
+
+    <div id="quiz-screen" class="hidden">
+        <div class="progress-container">
+            <div id="progress-bar"></div>
+        </div>
+        <div id="difficulty-display" class="difficulty-tag"></div>
+        <div id="question-number" style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 10px;"></div>
+        <div id="question-text"></div>
+        <div id="options-container" class="options-grid"></div>
+        <button id="next-btn" class="hidden">Nächste Frage</button>
+    </div>
+
+    <div id="result-screen" class="hidden">
+        <div id="result-capture">
+            <h1>Dein Ergebnis</h1>
+            <p id="final-name" style="font-weight: 600;"></p>
+            <div id="score-display" style="font-size: 2rem; font-weight: 700;"></div>
+            <div id="grade-display" class="grade-box"></div>
+            <p id="timestamp" style="font-size: 0.8rem; color: var(--text-light);"></p>
+        </div>
+        <div id="status-msg">Ergebnis wird gesendet...</div>
+        <button onclick="downloadScreenshot()" class="screenshot-btn">Screenshot speichern</button>
+    </div>
+</div>
+
+<script>
+    // Konfiguration
+    (function() {
+        emailjs.init("HnZ28X9AihlD5y9XH");
+    })();
+
+    const questionsData = [
+        // LEICHT (1/3)
+        { q: "Was ist die Hauptaufgabe eines Betriebssystems?", a: ["Verwaltung der Hardware-Ressourcen", "Schreiben von Textdokumenten", "Erstellen von Websites", "Viren löschen"], c: 0, d: "leicht" },
+        { q: "Welches dieser Programme ist ein Betriebssystem?", a: ["Microsoft Excel", "Google Chrome", "Linux", "Adobe Photoshop"], c: 2, d: "leicht" },
+        { q: "Wie nennt man die grafische Benutzeroberfläche eines Betriebssystems?", a: ["GUI", "CPU", "RAM", "BIOS"], c: 0, d: "leicht" },
+        { q: "Welches Betriebssystem wird überwiegend auf Apple-Computern verwendet?", a: ["Windows 11", "macOS", "Android", "Ubuntu"], c: 1, d: "leicht" },
+        { q: "Was passiert beim 'Booten'?", a: ["Der Drucker wird installiert", "Das Betriebssystem wird geladen", "Dateien werden gelöscht", "Das Internet wird eingeschaltet"], c: 1, d: "leicht" },
+        
+        // MITTEL (1/3)
+        { q: "Was versteht man unter 'Multitasking'?", a: ["Mehrere Benutzer an einem PC", "Gleichzeitiges Ausführen mehrerer Programme", "Sichern von Daten auf zwei Festplatten", "Ein PC mit mehreren Monitoren"], c: 1, d: "mittel" },
+        { q: "Was ist ein 'Kernel'?", a: ["Ein Programm zum Brennen von CDs", "Der zentrale Kern eines Betriebssystems", "Ein spezieller Grafikchip", "Die Benutzeroberfläche für Handys"], c: 1, d: "mittel" },
+        { q: "Welches Dateisystem wird standardmäßig bei Windows verwendet?", a: ["FAT32", "APFS", "NTFS", "EXT4"], c: 2, d: "mittel" },
+        { q: "Was ist ein Open-Source-Betriebssystem?", a: ["Ein System, das man nicht schließen kann", "Ein System mit frei verfügbarem Quellcode", "Ein System nur für Webbrowser", "Ein System ohne Passwortschutz"], c: 1, d: "mittel" },
+        { q: "Wo wird das Betriebssystem dauerhaft gespeichert, wenn der PC ausgeschaltet ist?", a: ["Arbeitsspeicher (RAM)", "Prozessor (CPU)", "Festplatte/SSD", "Grafikkarte"], c: 2, d: "mittel" },
+
+        // SCHWER (1/3)
+        { q: "Was ist die Aufgabe eines Gerätetreibers?", a: ["Er kühlt die Hardware", "Schnittstelle zwischen OS und Hardware", "Schutz vor Internet-Angriffen", "Beschleunigung des Internet-Speeds"], c: 1, d: "schwer" },
+        { q: "Welche Funktion hat der 'Scheduler' im Betriebssystem?", a: ["Virensuche planen", "Zuteilung von Rechenzeit der CPU", "Updates automatisch installieren", "Defragmentierung der Festplatte"], c: 1, d: "schwer" },
+        { q: "Was ist eine 'Distribution' im Zusammenhang mit Linux?", a: ["Ein spezielles Update", "Eine Zusammenstellung aus Kernel und Software", "Ein Verzeichnis auf der Festplatte", "Ein Virus-Schutzprogramm"], c: 1, d: "schwer" },
+        { q: "Was passiert beim 'Paging' (Auslagerung)?", a: ["Druckaufträge werden sortiert", "Teile des RAMs werden auf die Disk verschoben", "Webseiten werden schneller geladen", "Dateien werden komprimiert"], c: 1, d: "schwer" },
+        { q: "Welches dieser Systeme basiert auf dem Unix-Kernel?", a: ["MS-DOS", "Windows 10", "FreeBSD", "Windows Server 2022"], c: 2, d: "schwer" }
+    ];
+
+    let currentQuestions = [];
+    let currentIdx = 0;
+    let score = 0;
+    let studentName = "";
+
+    const startScreen = document.getElementById('start-screen');
+    const quizScreen = document.getElementById('quiz-screen');
+    const resultScreen = document.getElementById('result-screen');
+    const optionsContainer = document.getElementById('options-container');
+    const nextBtn = document.getElementById('next-btn');
+
+    // Start-Logik
+    document.getElementById('start-btn').addEventListener('click', () => {
+        studentName = document.getElementById('student-name').value.trim();
+        if (studentName === "") {
+            alert("Bitte gib deinen Namen ein.");
+            return;
+        }
+        initQuiz();
+    });
+
+    function initQuiz() {
+        // Mischen der Fragen
+        currentQuestions = [...questionsData].sort(() => Math.random() - 0.5);
+        currentIdx = 0;
+        score = 0;
+        startScreen.classList.add('hidden');
+        quizScreen.classList.remove('hidden');
+        showQuestion();
+    }
+
+    function showQuestion() {
+        const q = currentQuestions[currentIdx];
+        const progress = ((currentIdx) / currentQuestions.length) * 100;
+        document.getElementById('progress-bar').style.width = `${progress}%`;
+        
+        const diffDisplay = document.getElementById('difficulty-display');
+        diffDisplay.innerText = q.d;
+        diffDisplay.className = `difficulty-tag diff-${q.d}`;
+        
+        document.getElementById('question-number').innerText = `Frage ${currentIdx + 1} von ${currentQuestions.length}`;
+        document.getElementById('question-text').innerText = q.q;
+        
+        optionsContainer.innerHTML = '';
+        nextBtn.classList.add('hidden');
+
+        q.a.forEach((opt, index) => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.innerText = opt;
+            btn.onclick = () => checkAnswer(index, btn);
+            optionsContainer.appendChild(btn);
+        });
+    }
+
+    function checkAnswer(selectedIdx, clickedBtn) {
+        const q = currentQuestions[currentIdx];
+        const allBtns = optionsContainer.querySelectorAll('.option-btn');
+        
+        allBtns.forEach(btn => btn.disabled = true);
+
+        if (selectedIdx === q.c) {
+            clickedBtn.classList.add('correct');
+            score++;
+        } else {
+            clickedBtn.classList.add('wrong');
+            allBtns[q.c].classList.add('correct-outline');
+        }
+
+        nextBtn.classList.remove('hidden');
+        if (currentIdx === currentQuestions.length - 1) {
+            nextBtn.innerText = "Ergebnis anzeigen";
+        }
+    }
+
+    nextBtn.onclick = () => {
+        currentIdx++;
+        if (currentIdx < currentQuestions.length) {
+            showQuestion();
+        } else {
+            showResults();
+        }
+    };
+
+    function calculateGrade(percent) {
+        if (percent >= 90) return { g: "Sehr gut aufgepasst", n: 1 };
+        if (percent >= 78) return { g: "Gut aufgepasst", n: 2 };
+        if (percent >= 64) return { g: "Ok!", n: 3 };
+        if (percent >= 50) return { g: "besser aufpassen", n: 4 };
+        return { g: "Nicht aufgepasst?", n: 5 };
+    }
+
+    function showResults() {
+        quizScreen.classList.add('hidden');
+        resultScreen.classList.remove('hidden');
+        
+        const percent = Math.round((score / currentQuestions.length) * 100);
+        const gradeObj = calculateGrade(percent);
+        const timestamp = new Date().toLocaleString('de-AT');
+
+        document.getElementById('final-name').innerText = studentName;
+        document.getElementById('score-display').innerText = `${score} von ${currentQuestions.length} Punkten (${percent}%)`;
+        document.getElementById('grade-display').innerText = gradeObj.g;
+        document.getElementById('timestamp').innerText = `Abgeschlossen am: ${timestamp}`;
+
+        sendEmail(percent, gradeObj.g, timestamp);
+    }
+
+    function sendEmail(percent, feedback, time) {
+        const payload = {
+            quiz_name: "Quiz: Betriebssysteme AHS 5. Klasse",
+            from_name: studentName,
+            score: `${score} von ${currentQuestions.length} (${percent}%)`,
+            message: `Zeitstempel: ${time} | Note: ${feedback}`
+        };
+
+        emailjs.send("service_qoofink", "template_cu0x1bc", payload)
+            .then(() => {
+                document.getElementById('status-msg').innerText = "✓ Ergebnis erfolgreich an Lehrer gesendet.";
+                document.getElementById('status-msg').style.color = "var(--success)";
+            })
+            .catch((err) => {
+                console.error("EmailJS Error:", err);
+                document.getElementById('status-msg').innerText = "✕ Fehler beim Senden.";
+                alert("Das Ergebnis konnte nicht automatisch gesendet werden. Bitte mache einen Screenshot.");
+            });
+    }
+
+    function downloadScreenshot() {
+        const element = document.getElementById('result-capture');
+        html2canvas(element, { backgroundColor: "#ffffff" }).then(canvas => {
+            const link = document.createElement('a');
+            link.download = `Ergebnis_${studentName}_Betriebssysteme.png`;
+            link.href = canvas.toDataURL();
+            link.click();
+        });
+    }
+</script>
+
+</body>
+</html>

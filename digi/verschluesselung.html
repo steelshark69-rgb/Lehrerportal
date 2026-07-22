@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kryptografie: Von Caesar bis WhatsApp</title>
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+        /* Spezifische Kryptografie-Styles */
+        :root {
+            --crypto-dark: #1e293b;
+            --crypto-gold: #eab308;
+            --crypto-blue: #3b82f6;
+            --crypto-green: #10b981;
+        }
+
+        .crypto-box {
+            background: white;
+            border: 2px solid var(--crypto-dark);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .input-area {
+            width: 100%;
+            padding: 12px;
+            font-size: 1.1rem;
+            border: 2px solid #cbd5e1;
+            border-radius: 8px;
+            outline: none;
+            font-family: monospace;
+            margin-bottom: 1rem;
+            box-sizing: border-box;
+            background: #f8fafc;
+        }
+        
+        .input-area:focus { border-color: var(--crypto-blue); }
+
+        .output-area {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.3rem;
+            background: var(--crypto-dark);
+            color: var(--crypto-gold);
+            border-radius: 8px;
+            font-family: monospace;
+            letter-spacing: 2px;
+            word-wrap: break-word;
+            box-sizing: border-box;
+        }
+
+        .shift-slider {
+            width: 100%;
+            accent-color: var(--crypto-blue);
+            margin: 10px 0;
+            cursor: pointer;
+        }
+
+        .analogy-card {
+            background: #f0f9ff;
+            border-left: 5px solid var(--crypto-blue);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+        
+        .crack-box {
+            background: #fef2f2;
+            border-left: 5px solid #ef4444;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+        }
+        
+        .crack-box h4 {
+            margin-top: 0;
+            color: #ef4444;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <header style="background: var(--crypto-dark); color: white; padding: 3rem 1.5rem; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+        <h1 style="margin: 0; color: var(--crypto-gold);">Kryptografie</h1>
+        <p style="font-size: 1.2rem; opacity: 0.9;">Die Kunst, Geheimnisse zu bewahren – von den Römern bis ins Internet.</p>
+    </header>
+
+    <div class="back-nav">
+        <a href="../index.html" class="btn-back">← Zurück zur Übersicht</a>
+    </div>
+
+    <main style="max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem;">
+
+        <p style="font-size: 1.1rem; line-height: 1.8;">Das Wort Kryptografie kommt aus dem Griechischen und bedeutet <em>"verborgenes Schreiben"</em>. Schon vor Jahrtausenden wollten Feldherren und Könige Nachrichten verschicken, die der Feind nicht lesen konnte. Heute nutzen wir Verschlüsselung jeden Tag, wenn wir im Internet surfen, auf WhatsApp chatten oder mit Karte bezahlen.</p>
+
+        <section class="subject-group" style="margin-top: 3rem;">
+            <div class="subject-header">
+                <span class="subject-badge" style="background: var(--crypto-dark); color: white;">Die Antike</span>
+                <h2 style="margin: 0; color: var(--crypto-dark);">1. Die Caesar-Verschlüsselung</h2>
+            </div>
+            
+            <p>Der römische Feldherr Julius Caesar nutzte eine der ältesten und einfachsten Methoden der Welt: Er verschob jeden Buchstaben im Alphabet um eine bestimmte Anzahl von Stellen. Wenn die Verschiebung <strong>+3</strong> ist, wird aus einem <strong>A</strong> ein <strong>D</strong>, aus einem <strong>B</strong> ein <strong>E</strong>, und so weiter.</p>
+
+            
+
+            <div class="crypto-box">
+                <h3 style="margin-top: 0; color: var(--crypto-blue);">🔓 Interaktives Caesar-Labor</h3>
+                <p>Tippe eine geheime Nachricht ein und verschiebe den Regler, um zu sehen, wie der Geheimtext (Chiffrat) entsteht!</p>
+                
+                <input type="text" id="caesar-input" class="input-area" placeholder="Schreibe eine Nachricht..." oninput="updateCaesar()">
+                
+                <div style="display: flex; justify-content: space-between; font-weight: bold; color: var(--crypto-dark);">
+                    <span>Verschiebung (Schlüssel):</span>
+                    <span id="caesar-shift-display" style="color: var(--crypto-blue); font-size: 1.2rem;">+3</span>
+                </div>
+                <input type="range" id="caesar-slider" class="shift-slider" min="1" max="25" value="3" oninput="updateCaesar()">
+                
+                <div style="margin-top: 1.5rem; font-weight: bold; color: var(--text-muted);">Dein Geheimtext:</div>
+                <div id="caesar-output" class="output-area"></div>
+            </div>
+
+            <div class="crack-box">
+                <h4>🏴‍☠️ Wie wurde Caesar geknackt?</h4>
+                <p>Die Caesar-Verschlüsselung ist heute extrem unsicher. Es gibt nur 25 mögliche Schlüssel, die ein Computer in Millisekunden stur durchprobieren kann (<strong>Brute-Force</strong>).</p>
+                <p>Aber schon lange vor den Computern fanden kluge Köpfe im 9. Jahrhundert einen Trick: Die <strong>Häufigkeitsanalyse</strong>. In der deutschen Sprache ist das "E" der mit Abstand häufigste Buchstabe. Zählt man in einem langen Geheimtext alle Buchstaben und das "H" kommt am häufigsten vor, ist die Wahrscheinlichkeit extrem hoch, dass das E einfach zu einem H verschoben wurde (also +3). Schon ist der Code geknackt, ganz ohne raten!</p>
+                
+            </div>
+        </section>
+
+        <section class="subject-group" style="margin-top: 4rem;">
+            <div class="subject-header">
+                <span class="subject-badge" style="background: var(--crypto-dark); color: white;">Die Neuzeit</span>
+                <h2 style="margin: 0; color: var(--crypto-dark);">2. Die Vigenère-Verschlüsselung</h2>
+            </div>
+            
+            <p>Weil Caesar durch die Häufigkeitsanalyse so leicht zu knacken war, erfand man im 16. Jahrhundert eine bessere Methode. Bei der <em>Vigenère-Chiffre</em> wird nicht das ganze Wort um dieselbe Zahl verschoben, sondern man benutzt ein <strong>Passwort (Schlüsselwort)</strong>.</p>
+            <p>Jeder Buchstabe deines Textes wird mit dem entsprechenden Buchstaben deines Passworts verschoben. Das "A" im Passwort bedeutet keine Verschiebung (+0), das "B" bedeutet +1, das "C" +2, usw. Dadurch wird derselbe Buchstabe (z.B. "E") im Text jedes Mal in einen anderen Geheim-Buchstaben verwandelt! Die Häufigkeitsanalyse funktionierte plötzlich nicht mehr.</p>
+
+            <div class="crypto-box">
+                <h3 style="margin-top: 0; color: var(--crypto-blue);">🔑 Vigenère-Labor</h3>
+                <input type="text" id="vigenere-input" class="input-area" placeholder="Schreibe eine Nachricht..." oninput="updateVigenere()">
+                
+                <label style="font-weight: bold; color: var(--crypto-dark); display: block; margin-bottom: 5px;">Dein Schlüsselwort (Passwort):</label>
+                <input type="text" id="vigenere-key" class="input-area" placeholder="z.B. INFORMATIK" value="INFORMATIK" oninput="updateVigenere()">
+                
+                <div style="margin-top: 1rem; font-weight: bold; color: var(--text-muted);">Dein Geheimtext:</div>
+                <div id="vigenere-output" class="output-area"></div>
+            </div>
+
+            <div class="crack-box">
+                <h4>🏴‍☠️ Wie wurde Vigenère geknackt?</h4>
+                <p>Die Vigenère-Chiffre galt über 300 Jahre lang als absolut unknackbar ("Le Chiffre Indéchiffrable"). Doch im 19. Jahrhundert fand der Computervordenker Charles Babbage (und später Friedrich Kasiski) eine Schwachstelle: Die <strong>Mustersuche</strong>.</p>
+                <p>Wenn ein häufiges Wort wie "DER" zufällig mehrmals mit genau denselben Buchstaben des Passworts verschlüsselt wird, entsteht im Geheimtext exakt dieselbe Buchstabenfolge. Zählt man den Abstand zwischen diesen doppelten Mustern, kann man die <strong>Länge des Passworts</strong> erraten!</p>
+                <p>Weiß der Hacker erst einmal, dass das Passwort z.B. 5 Buchstaben lang ist, zerfällt die ach so sichere Vigenère-Verschlüsselung plötzlich einfach in 5 kleine Caesar-Verschlüsselungen. Und diese kann man dann wieder einzeln mit der Häufigkeitsanalyse knacken.</p>
+                
+            </div>
+        </section>
+
+        <section class="subject-group" style="margin-top: 4rem;">
+            <div class="subject-header">
+                <span class="subject-badge" style="background: var(--crypto-dark); color: white;">Computerzeitalter</span>
+                <h2 style="margin: 0; color: var(--crypto-dark);">3. Das Public-Key-Verfahren</h2>
+            </div>
+
+            <p>Caesar und Vigenère sind <strong>symmetrische</strong> Verfahren. Das bedeutet: Wer den Text verschlüsselt, nutzt denselben Schlüssel wie der, der ihn entschlüsselt. <br>Das Problem im Internet: Wenn du mir eine geheime Nachricht schicken willst, musst du mir vorher das Passwort verraten. Wenn ein Hacker das Passwort auf dem Weg abfängt, kann er alles lesen!</p>
+            
+            <p>Die geniale Erfindung der Informatik war die <strong>asymmetrische Verschlüsselung (Public Key)</strong>. Hierbei gibt es <em>zwei</em> Schlüssel!</p>
+
+            
+
+[Image of asymmetric cryptography public private key]
+
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 1.5rem;">
+                <div style="background: #fdf4ff; border: 1px solid #f5d0fe; padding: 1.5rem; border-radius: 8px;">
+                    <h4 style="color: #c026d3; margin-top: 0; font-size: 1.2rem;">🔓 Der Public Key (Öffentlicher Schlüssel)</h4>
+                    <p>Ist wie ein <strong>offenes Vorhängeschloss</strong>. Du darfst dieses Vorhängeschloss jedem auf der Welt geben. Jeder kann seine Nachricht in eine Kiste legen und dein Schloss zudrücken. Zum Verschließen (Zuschnappen) braucht man nämlich keinen Schlüssel!</p>
+                </div>
+                <div style="background: #f0fdf4; border: 1px solid #bbf7d0; padding: 1.5rem; border-radius: 8px;">
+                    <h4 style="color: #16a34a; margin-top: 0; font-size: 1.2rem;">🗝️ Der Private Key (Privater Schlüssel)</h4>
+                    <p>Das ist der echte Schlüssel, der das Schloss wieder aufbekommt. <strong>Er verlässt niemals deinen Computer!</strong> Nur du ganz allein kannst die Kisten öffnen, die andere mit deinem Vorhängeschloss zugeschnappt haben.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="subject-group" style="margin-top: 4rem;">
+            <div class="subject-header">
+                <span class="subject-badge" style="background: var(--crypto-green); color: white;">Heute</span>
+                <h2 style="margin: 0; color: var(--crypto-green);">4. Ende-zu-Ende-Verschlüsselung (E2EE)</h2>
+            </div>
+            
+            <p>Genau nach diesem Prinzip (dem Vorhängeschloss) arbeiten heute Messenger wie WhatsApp oder Signal. Man nennt das <strong>Ende-zu-Ende-Verschlüsselung</strong>.</p>
+            
+            
+
+            <div class="analogy-card" style="border-left-color: var(--crypto-green);">
+                <ol style="line-height: 1.8; margin-bottom: 0;">
+                    <li>Du willst deiner Freundin eine WhatsApp-Nachricht schreiben.</li>
+                    <li>Dein Handy holt sich vollautomatisch ihr "offenes Vorhängeschloss" (Public Key) vom WhatsApp-Server.</li>
+                    <li>Dein Handy sperrt die Nachricht mit ihrem Schloss zu. Der Geheimtext reist durchs Internet.</li>
+                    <li><strong>Das Wichtige:</strong> Selbst WhatsApp oder Hacker, die den Text abfangen, sehen nur Buchstabensalat. Niemand kann das Schloss öffnen!</li>
+                    <li>Erst wenn die Nachricht auf dem Handy deiner Freundin ankommt, wird sie mit ihrem privaten Schlüssel (Private Key) aufgesperrt und lesbar gemacht.</li>
+                </ol>
+            </div>
+        </section>
+
+    </main>
+
+    <footer style="text-align: center; padding: 2rem; color: #64748b; font-size: 0.9rem; margin-top: 2rem; border-top: 1px solid #e2e8f0;">
+        Digitale Grundbildung / Informatik | Kryptografie
+    </footer>
+
+    <script>
+        // --- Caesar Chiffre ---
+        function updateCaesar() {
+            const text = document.getElementById('caesar-input').value;
+            const shift = parseInt(document.getElementById('caesar-slider').value);
+            document.getElementById('caesar-shift-display').innerText = "+" + shift;
+            
+            let result = '';
+            for (let i = 0; i < text.length; i++) {
+                let charCode = text.charCodeAt(i);
+                
+                // Großbuchstaben
+                if (charCode >= 65 && charCode <= 90) {
+                    result += String.fromCharCode(((charCode - 65 + shift) % 26) + 65);
+                } 
+                // Kleinbuchstaben
+                else if (charCode >= 97 && charCode <= 122) {
+                    result += String.fromCharCode(((charCode - 97 + shift) % 26) + 97);
+                } 
+                // Leerzeichen und Sonderzeichen bleiben gleich
+                else {
+                    result += text.charAt(i);
+                }
+            }
+            
+            const outputArea = document.getElementById('caesar-output');
+            if(text.length === 0) {
+                outputArea.innerText = "Warte auf Eingabe...";
+                outputArea.style.opacity = 0.5;
+            } else {
+                outputArea.innerText = result;
+                outputArea.style.opacity = 1;
+            }
+        }
+
+        // --- Vigenère Chiffre ---
+        function updateVigenere() {
+            const text = document.getElementById('vigenere-input').value;
+            let key = document.getElementById('vigenere-key').value.toUpperCase();
+            const outputArea = document.getElementById('vigenere-output');
+
+            // Wenn kein Schlüssel da ist oder Text leer ist
+            if (key.length === 0 || !/[A-Z]/.test(key)) {
+                outputArea.innerText = "Bitte ein gültiges Schlüsselwort eingeben (nur Buchstaben).";
+                outputArea.style.opacity = 0.5;
+                return;
+            }
+
+            // Filtere alle Nicht-Buchstaben aus dem Key
+            key = key.replace(/[^A-Z]/g, '');
+
+            let result = '';
+            let keyIndex = 0;
+
+            for (let i = 0; i < text.length; i++) {
+                let charCode = text.charCodeAt(i);
+                let isUpper = (charCode >= 65 && charCode <= 90);
+                let isLower = (charCode >= 97 && charCode <= 122);
+
+                if (isUpper || isLower) {
+                    let base = isUpper ? 65 : 97;
+                    let shift = key.charCodeAt(keyIndex % key.length) - 65; // A=0, B=1, etc.
+                    
+                    result += String.fromCharCode(((charCode - base + shift) % 26) + base);
+                    keyIndex++;
+                } else {
+                    result += text.charAt(i);
+                }
+            }
+
+            if(text.length === 0) {
+                outputArea.innerText = "Warte auf Eingabe...";
+                outputArea.style.opacity = 0.5;
+            } else {
+                outputArea.innerText = result;
+                outputArea.style.opacity = 1;
+            }
+        }
+
+        // Init beim Laden
+        window.onload = function() {
+            updateCaesar();
+            updateVigenere();
+        };
+    </script>
+</body>
+</html>

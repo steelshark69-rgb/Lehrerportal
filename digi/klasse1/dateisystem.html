@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dateisystem - Ordner & Dateien | Digitale Grundbildung</title>
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+        .file-tree {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            margin: 1.5rem 0;
+            line-height: 1.8;
+            overflow-x: auto;
+        }
+        .file-tree code {
+            color: #22c55e;
+            font-size: 0.95rem;
+        }
+        .concept-box {
+            background: #f0fdf4;
+            border-left: 4px solid #10b981;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>📁 Das Dateisystem - Ordner & Dateien</h1>
+    <p>1. Klasse | Digitale Grundbildung</p>
+    <div class="back-nav">
+        <a href="../index.html" class="btn-back">⬅ Zurück</a>
+    </div>
+</header>
+
+<main style="max-width: 900px; margin: 0 auto; padding: 2rem 1rem;">
+
+    <section>
+        <h2>Was ist das Dateisystem?</h2>
+        <p>Das <strong>Dateisystem</strong> ist die Art und Weise, wie ein Computer Dateien und Ordner organisiert und speichert. Es ist wie ein großer Aktenschrank für deinen Computer!</p>
+    </section>
+
+    <section>
+        <h2>Wichtige Begriffe</h2>
+
+        <div class="concept-box">
+            <h3>📄 Datei</h3>
+            <p>Eine <strong>Datei</strong> ist eine gespeicherte Informationseinheit. Sie enthält Daten wie Text, Bilder, Videos oder Code.</p>
+            <p><strong>Beispiele:</strong> document.docx, photo.jpg, video.mp4, program.exe</p>
+            <p><strong>Jede Datei hat:</strong></p>
+            <ul>
+                <li><strong>Name:</strong> z.B. "Mathe-Hausaufgabe"</li>
+                <li><strong>Dateityp/Erweiterung:</strong> z.B. ".docx" (Word), ".pdf", ".jpg"</li>
+                <li><strong>Größe:</strong> in Byte, KB, MB, GB</li>
+            </ul>
+        </div>
+
+        <div class="concept-box">
+            <h3>📁 Ordner (Verzeichnis)</h3>
+            <p>Ein <strong>Ordner</strong> ist ein Container, der Dateien und andere Ordner enthält.</p>
+            <p><strong>Beispiel:</strong> Ein Ordner "Schule" kann einen Unterordner "Mathematik" enthalten, der wiederum Dateien wie "Hausaufgaben.docx" enthält.</p>
+            <p><strong>Vorteile:</strong> Organisiert den Computer, macht das Finden von Dateien leicht</p>
+        </div>
+
+        <div class="concept-box">
+            <h3>🔗 Pfad</h3>
+            <p>Ein <strong>Pfad</strong> ist die Route zu einer Datei oder einem Ordner.</p>
+            <p><strong>Beispiel Windows:</strong> C:\Benutzer\DeinName\Dokumente\Schule\Mathematik\Hausaufgaben.docx</p>
+            <p><strong>Beispiel Mac/Linux:</strong> /Users/DeinName/Documents/School/Math/homework.docx</p>
+        </div>
+    </section>
+
+    <section>
+        <h2>Typische Dateisystem-Struktur</h2>
+        <div class="file-tree">
+            <code>C:\ (Festplatte)<br>
+├── Windows (Betriebssystem)<br>
+├── Program Files (installierte Programme)<br>
+├── Users (Benutzerordner)<br>
+│   └── DeinName<br>
+│       ├── Desktop (was du auf dem Bildschirm siehst)<br>
+│       ├── Dokumente (deine Dateien)<br>
+│       │   ├── Schule<br>
+│       │   │   ├── Mathematik<br>
+│       │   │   │   └── Hausaufgaben.docx<br>
+│       │   │   └── Deutsch<br>
+│       │   │       └── Aufsatz.docx<br>
+│       │   └── Fotos<br>
+│       │       └── Urlaub2023.jpg<br>
+│       ├── Downloads (Dateien aus dem Internet)<br>
+│       └── Musik (MP3-Dateien)<br>
+└── Weitere Systemordner</code>
+        </div>
+    </section>
+
+    <section>
+        <h2>Dateitypen und Erweiterungen</h2>
+
+        <table style="width: 100%; border-collapse: collapse; margin: 1.5rem 0;">
+            <tr style="background: #e0f2fe; border-bottom: 2px solid #3b82f6;">
+                <th style="padding: 1rem; text-align: left; border: 1px solid #3b82f6;">Erweiterung</th>
+                <th style="padding: 1rem; text-align: left; border: 1px solid #3b82f6;">Dateityp</th>
+                <th style="padding: 1rem; text-align: left; border: 1px solid #3b82f6;">Beispiele</th>
+            </tr>
+            <tr style="border-bottom: 1px solid #e0e7ff;">
+                <td style="padding: 1rem; border: 1px solid #e0e7ff;"><strong>.docx, .doc</strong></td>
+                <td style="padding: 1rem; border: 1px solid #e0e7ff;">Textdokument</td>
+                <td style="padding: 1rem; border: 1px solid #e0e7ff;">Briefe, Aufsätze</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #e0e7ff;">
+                <td style="padding: 1rem; border: 1px solid #e0e7ff;"><strong>.pdf</strong></td>
+                <td style="padding: 1rem; border: 1px solid #e0e7ff;">PDF-Dokument</td>
+                <td style="padding: 1rem; border: 1px solid #e0e7ff;">Schulbücher, Formulare</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #e0e7ff;">
+                <td style="padding: 1rem; border: 1px solid #e0e7ff;"><strong>.xlsx, .xls</strong></td>
+                <td style="padding: 1rem; border: 1px solid #e0e7ff;">Tabellenkalkulation</td>
+                <td style="padding: 1rem; border: 1px solid #e0e7ff;">Excel, Noten</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #e0e7ff;">
+                <td style="padding: 1rem; border: 1px solid #e0e7ff;"><strong>.jpg, .png</strong></td>
+                <td style="padding: 1rem; border: 1px solid #e0e7ff;">Bild</td>
+                <td style="padding: 1rem; border: 1px solid #e0e7ff;">Fotos, Screenshots</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #e0e7ff;">
+                <td style="padding: 1rem; border: 1px solid #e0e7ff;"><strong>.mp3, .wav</strong></td>
+                <td style="padding: 1rem; border: 1px solid #e0e7ff;">Audiodatei</td>
+                <td style="padding: 1rem; border: 1px solid #e0e7ff;">Musik, Podcasts</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #e0e7ff;">
+                <td style="padding: 1rem; border: 1px solid #e0e7ff;"><strong>.mp4, .avi</strong></td>
+                <td style="padding: 1rem; border: 1px solid #e0e7ff;">Videodatei</td>
+                <td style="padding: 1rem; border: 1px solid #e0e7ff;">Videos, Filme</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #e0e7ff;">
+                <td style="padding: 1rem; border: 1px solid #e0e7ff;"><strong>.exe</strong></td>
+                <td style="padding: 1rem; border: 1px solid #e0e7ff;">Programm</td>
+                <td style="padding: 1rem; border: 1px solid #e0e7ff;">Installierbare Software</td>
+            </tr>
+            <tr>
+                <td style="padding: 1rem; border: 1px solid #e0e7ff;"><strong>.zip</strong></td>
+                <td style="padding: 1rem; border: 1px solid #e0e7ff;">Archiv</td>
+                <td style="padding: 1rem; border: 1px solid #e0e7ff;">Mehrere Dateien komprimiert</td>
+            </tr>
+        </table>
+    </section>
+
+    <section>
+        <h2>Tipps für gute Dateiorganisation</h2>
+        <ul style="font-size: 1.1rem; line-height: 1.8;">
+            <li>✅ <strong>Sinnvolle Ordnerstruktur:</strong> Nach Fächer, Projekten oder Themen organisieren</li>
+            <li>✅ <strong>Aussagekräftige Namen:</strong> "Mathematik_Schularbeit_Mai2026" statt "Datei1"</li>
+            <li>✅ <strong>Keine unnötigen Dateien:</strong> Alte Dateien archivieren oder löschen</li>
+            <li>✅ <strong>Regelmäßig Backups machen:</strong> Wichtige Dateien sichern!</li>
+            <li>❌ <strong>Nicht zu viel auf dem Desktop:</strong> Übersichtlichkeit halten</li>
+        </ul>
+    </section>
+
+    <section style="background: #dbeafe; padding: 1.5rem; border-radius: 8px; margin-top: 2rem;">
+        <h3>💡 Merksatz</h3>
+        <p><strong>Ordner = Aktenschrank | Dateien = Dokumente</strong></p>
+        <p>Gute Ordnung spart Zeit beim Suchen!</p>
+    </section>
+
+</main>
+
+<footer style="text-align: center; padding: 2rem; color: #64748b; font-size: 0.9rem;">
+    &copy; 2026 | GvP | Mag. Schweitzer | Digitale Grundbildung
+</footer>
+
+</body>
+</html>

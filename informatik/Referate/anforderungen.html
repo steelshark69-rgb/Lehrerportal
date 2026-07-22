@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bewertungsschema | Referat Informatik</title>
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+        /* Spezifische Styles für das Bewertungsraster */
+        .rubric-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+            border: 1px solid #e2e8f0;
+        }
+        .rubric-table th, .rubric-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+            line-height: 1.5;
+        }
+        .rubric-table th {
+            background-color: #f8fafc;
+            font-weight: bold;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+        }
+        .rubric-group {
+            background-color: var(--primary);
+            color: white;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        .rubric-group td {
+            border-bottom: none;
+        }
+        .points-col {
+            text-align: center !important;
+            font-weight: bold;
+            color: var(--primary);
+            width: 100px;
+            font-size: 1.1rem;
+        }
+        .rubric-table tr:hover:not(.rubric-group) {
+            background-color: #f1f5f9;
+        }
+
+        /* Notenschlüssel */
+        .grade-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+            margin-bottom: 3rem;
+        }
+        .grade-card {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .grade-card.grade-1 { border-color: var(--xls-green); }
+        .grade-card.grade-5 { border-color: var(--pdf-red); }
+        
+        .grade-number {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--text-main);
+            margin-bottom: 5px;
+        }
+        .grade-points {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Bewertungsschema Referat</h1>
+    <p>Transparente Kriterien für deine Präsentation in Informatik (5. Klasse AHS)</p>
+</header>
+
+<div class="back-nav">
+    <a href="../index.html" class="btn-back">← Zurück zur Übersicht</a>
+</div>
+
+<main>
+    <div style="background: white; border: 1px dashed #cbd5e1; padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem; display: flex; flex-wrap: wrap; gap: 2rem; justify-content: space-between;">
+        <div style="flex: 1; min-width: 250px;">
+            <span style="color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase; font-weight: bold;">Team</span>
+            <div style="border-bottom: 1px solid var(--text-main); height: 25px; margin-top: 5px;"></div>
+        </div>
+        <div style="flex: 1; min-width: 250px;">
+            <span style="color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase; font-weight: bold;">Thema</span>
+            <div style="border-bottom: 1px solid var(--text-main); height: 25px; margin-top: 5px;"></div>
+        </div>
+    </div>
+
+    <section class="subject-group">
+        <h2 style="color: var(--primary); margin-bottom: 1rem; margin-top: 0;">Der Bewertungsraster (Max. 100 Punkte)</h2>
+        
+        <table class="rubric-table">
+            <tr>
+                <th>Kriterium</th>
+                <th>Beschreibung</th>
+                <th class="points-col">Punkte</th>
+            </tr>
+
+            <tr class="rubric-group">
+                <td colspan="2">1. Formale Kriterien & Termine <span style="font-weight: normal; font-size: 0.9rem; opacity: 0.8; margin-left: 10px;">(Pflichtpunkte – leicht zu erreichen, bei Versäumnis kritisch)</span></td>
+                <td class="points-col" style="color: white;">20</td>
+            </tr>
+            <tr>
+                <td><strong>Fristgerechte Abgabe</strong></td>
+                <td>Präsentation & Handout wurden <strong>mindestens 3 Tage vor dem Termin</strong> abgegeben.</td>
+                <td class="points-col">10</td>
+            </tr>
+            <tr>
+                <td><strong>Zeitmanagement</strong></td>
+                <td>Mindestdauer von <strong>15 Minuten</strong> wurde eingehalten (Puffer: +/- 2 Min).</td>
+                <td class="points-col">5</td>
+            </tr>
+            <tr>
+                <td><strong>KI-Kennzeichnung</strong></td>
+                <td>Alle KI-generierten Inhalte (Texte, Bilder, Folien-Layouts) sind klar als solche deklariert.</td>
+                <td class="points-col">5</td>
+            </tr>
+
+            <tr class="rubric-group">
+                <td colspan="2">2. Inhalt & Fachliche Qualität <span style="font-weight: normal; font-size: 0.9rem; opacity: 0.8; margin-left: 10px;">(Fokus liegt auf der Aufbereitung der Infos)</span></td>
+                <td class="points-col" style="color: white;">30</td>
+            </tr>
+            <tr>
+                <td><strong>Sachliche Richtigkeit</strong></td>
+                <td>Korrekte Darstellung der Informatik-Konzepte und Fachbegriffe.</td>
+                <td class="points-col">10</td>
+            </tr>
+            <tr>
+                <td><strong>Struktur & Aufbau</strong></td>
+                <td>Logische Abfolge (Einleitung, Hauptteil, Zusammenfassung/Fazit).</td>
+                <td class="points-col">10</td>
+            </tr>
+            <tr>
+                <td><strong>Transferleistung</strong></td>
+                <td>Eigene Erklärungen (trotz KI-Nutzung!), passende Beispiele, Bezug zum Alltag oder zum Unterricht.</td>
+                <td class="points-col">10</td>
+            </tr>
+
+            <tr class="rubric-group">
+                <td colspan="2">3. Präsentation & Medieneinsatz</td>
+                <td class="points-col" style="color: white;">25</td>
+            </tr>
+            <tr>
+                <td><strong>Gestaltung & Qualität</strong></td>
+                <td>Angemessene Textmenge pro Folie (nicht überladen), gute Lesbarkeit, hochwertige Grafiken.<br><strong style="color: var(--pdf-red);">Achtung: Keine Videos!</strong></td>
+                <td class="points-col">10</td>
+            </tr>
+            <tr>
+                <td><strong>Sprachliche Qualität</strong></td>
+                <td>Korrekte Rechtschreibung und Grammatik auf den Folien.</td>
+                <td class="points-col">5</td>
+            </tr>
+            <tr>
+                <td><strong>Vortragsweise</strong></td>
+                <td>Freies Sprechen, faire Einbeziehung beider Teampartner, guter Blickkontakt zur Klasse.</td>
+                <td class="points-col">10</td>
+            </tr>
+
+            <tr class="rubric-group">
+                <td colspan="2">4. Handout <span style="font-weight: normal; font-size: 0.9rem; opacity: 0.8; margin-left: 10px;">(Ein kompaktes Begleitmaterial für die Mitschüler)</span></td>
+                <td class="points-col" style="color: white;">15</td>
+            </tr>
+            <tr>
+                <td><strong>Inhaltliche Qualität</strong></td>
+                <td>Die wichtigsten Punkte des Vortrags sind prägnant zusammengefasst.</td>
+                <td class="points-col">10</td>
+            </tr>
+            <tr>
+                <td><strong>Formale Korrektheit</strong></td>
+                <td>Fehlerfreie Rechtschreibung, ordentliches Layout, gute Übersichtlichkeit.</td>
+                <td class="points-col">5</td>
+            </tr>
+
+            <tr class="rubric-group">
+                <td colspan="2">5. Quellenangaben & Belege</td>
+                <td class="points-col" style="color: white;">10</td>
+            </tr>
+            <tr>
+                <td><strong>Vollständigkeit</strong></td>
+                <td>Alle verwendeten Internetquellen, KI-Tools, Literatur und Bilder sind sauber am Ende aufgelistet.</td>
+                <td class="points-col">10</td>
+            </tr>
+            
+            <tr style="background: #f1f5f9;">
+                <td colspan="2" style="text-align: right; font-size: 1.2rem; font-weight: bold; text-transform: uppercase;">Gesamtpunktzahl:</td>
+                <td class="points-col" style="font-size: 1.3rem;">100</td>
+            </tr>
+        </table>
+    </section>
+
+    <section class="subject-group">
+        <h2 style="color: var(--primary); margin-bottom: 1rem; margin-top: 0;">Punkteschlüssel</h2>
+        <div class="grade-grid">
+            <div class="grade-card grade-1">
+                <div class="grade-number" style="color: var(--xls-green);">Sehr Gut (1)</div>
+                <div class="grade-points">100 - 88 Pkt.</div>
+            </div>
+            <div class="grade-card">
+                <div class="grade-number">Gut (2)</div>
+                <div class="grade-points">87 - 75 Pkt.</div>
+            </div>
+            <div class="grade-card">
+                <div class="grade-number">Befriedigend (3)</div>
+                <div class="grade-points">74 - 63 Pkt.</div>
+            </div>
+            <div class="grade-card">
+                <div class="grade-number">Genügend (4)</div>
+                <div class="grade-points">62 - 50 Pkt.</div>
+            </div>
+            <div class="grade-card grade-5">
+                <div class="grade-number" style="color: var(--pdf-red);">Nicht Genügend (5)</div>
+                <div class="grade-points">&lt; 50 Pkt.</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="subject-group" style="background: transparent; padding: 0; box-shadow: none;">
+        <h2 style="color: var(--text-main); margin-bottom: 1.5rem;">⚠️ Wichtige Spielregeln (Bitte genau lesen!)</h2>
+        
+        <div style="display: flex; flex-direction: column; gap: 1rem;">
+            
+            <div style="background: #fef2f2; border-left: 5px solid var(--pdf-red); padding: 1.5rem; border-radius: 8px;">
+                <h4 style="margin: 0 0 0.5rem 0; color: var(--pdf-red); font-size: 1.1rem;">Ausschlusskriterium: Keine Videos!</h4>
+                <p style="margin: 0; color: var(--text-main);">Videos sind in diesem Referat ausdrücklich untersagt. Wurde trotz Verbot ein Video eingebunden, erfolgt ein <strong>Pauschalabzug von 15 Punkten</strong> (oder die direkte Herabstufung um eine Note).</p>
+            </div>
+
+            <div style="background: #f0f9ff; border-left: 5px solid var(--doc-blue); padding: 1.5rem; border-radius: 8px;">
+                <h4 style="margin: 0 0 0.5rem 0; color: var(--doc-blue); font-size: 1.1rem;">Nutzung von Künstlicher Intelligenz (KI)</h4>
+                <p style="margin: 0; color: var(--text-main);">Die Nutzung von KI (z.B. ChatGPT, Gamma etc.) wird <strong>nicht bestraft</strong>, solange sie deinen Lernprozess unterstützt! Bedingung: Sie muss am Ende des Handouts bzw. der Präsentation in einem kurzen "Methoden-Nachweis" ehrlich erklärt werden.<br><em>(Beispiel: "Die Gliederung wurde mit Hilfe von ChatGPT erstellt, das Folien-Design mit Canva-Magic-Design generiert.")</em></p>
+            </div>
+
+            <div style="background: #fffbeb; border-left: 5px solid var(--html-orange); padding: 1.5rem; border-radius: 8px;">
+                <h4 style="margin: 0 0 0.5rem 0; color: var(--html-orange); font-size: 1.1rem;">Zeitunterschreitung</h4>
+                <p style="margin: 0; color: var(--text-main);">Bei <strong>weniger als 13 Minuten Vortragszeit</strong> wird die Note in den Bereichen "Inhalt" und "Zeitmanagement" massiv gekürzt. Die in der 5. Klasse geforderte fachliche Tiefe kann in so kurzer Zeit in der Regel nicht erreicht werden.</p>
+            </div>
+
+        </div>
+    </section>
+
+</main>
+
+<footer>
+    <p>Informatik 5. Klasse AHS | Prof. Schweitzer</p>
+</footer>
+
+</body>
+</html>

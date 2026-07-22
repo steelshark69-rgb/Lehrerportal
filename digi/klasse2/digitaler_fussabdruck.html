@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digitaler Fußabdruck Quiz | Digitale Grundbildung</title>
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+        .quiz-container {
+            background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);
+            padding: 2rem;
+            border-radius: 10px;
+            color: white;
+            max-width: 800px;
+            margin: 2rem auto;
+        }
+        .quiz-card {
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+            padding: 2rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        .question {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            color: #1f2937;
+        }
+        .answer-btn {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            background: #e5e7eb;
+            border: 2px solid #999;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: left;
+            font-size: 1rem;
+            transition: 0.2s;
+        }
+        .answer-btn:hover {
+            background: #d1d5db;
+        }
+        .answer-btn.correct {
+            background: #dcfce7;
+            border-color: #10b981;
+            color: #065f46;
+            font-weight: bold;
+        }
+        .answer-btn.wrong {
+            background: #fee2e2;
+            border-color: #ef4444;
+            color: #991b1b;
+            font-weight: bold;
+        }
+        .explanation {
+            background: #ede9fe;
+            border-left: 4px solid #8b5cf6;
+            padding: 1rem;
+            margin-top: 1rem;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>📍 Digitaler Fußabdruck Quiz</h1>
+    <p>2. Klasse | Digitale Grundbildung</p>
+    <div class="back-nav">
+        <a href="index.html" class="btn-back">⬅ Zurück</a>
+    </div>
+</header>
+
+<main style="max-width: 900px; margin: 0 auto; padding: 2rem 1rem;">
+
+    <section style="background: #ede9fe; border-left: 4px solid #8b5cf6; padding: 1.5rem; border-radius: 5px; margin-bottom: 2rem;">
+        <h2>👣 Was ist dein digitaler Fußabdruck?</h2>
+        <p>Alles was du online tust, hinterlässt Spuren: Posts, Fotos, Likes, Kommentare. Das nennt man digitalen Fußabdruck!</p>
+    </section>
+
+    <div class="quiz-container">
+        <h2 style="text-align: center; margin-top: 0;">❓ Quiz: Dein digitaler Fußabdruck</h2>
+        
+        <div class="quiz-card" id="quizContainer">
+            <div id="quizContent"></div>
+            <button id="nextBtn" onclick="nextQuestion()" style="width: 100%; display: none; margin-top: 1rem; padding: 12px; background: #8b5cf6; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">Nächste Frage →</button>
+            <button id="restartBtn" onclick="restartQuiz()" style="width: 100%; display: none; margin-top: 1rem; padding: 12px; background: #8b5cf6; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">🔄 Nochmal spielen</button>
+        </div>
+    </div>
+
+    <section style="background: white; padding: 2rem; border-radius: 8px; margin-top: 2rem;">
+        <h2>🎯 Dein digitaler Fußabdruck besteht aus:</h2>
+        
+        <div style="background: #ede9fe; padding: 1.5rem; border-radius: 5px; margin: 1rem 0;">
+            <h3 style="margin-top: 0;">📱 Social Media</h3>
+            <ul>
+                <li>Posts und Stories auf Instagram, TikTok, Snapchat</li>
+                <li>Likes, Kommentare, Reaktionen</li>
+                <li>Follower und Freundeslisten</li>
+                <li>Getaggte Fotos</li>
+            </ul>
+        </div>
+
+        <div style="background: #ede9fe; padding: 1.5rem; border-radius: 5px; margin: 1rem 0;">
+            <h3 style="margin-top: 0;">🔍 Suchverlauf</h3>
+            <ul>
+                <li>Was du bei Google suchst</li>
+                <li>YouTube-Verlauf und Watchlist</li>
+                <li>Besuchte Webseiten</li>
+                <li>Gekaufte Produkte (Amazon, etc.)</li>
+            </ul>
+        </div>
+
+        <div style="background: #ede9fe; padding: 1.5rem; border-radius: 5px; margin: 1rem 0;">
+            <h3 style="margin-top: 0;">🗣️ Online-Kommunikation</h3>
+            <ul>
+                <li>E-Mails (Gmail speichert alles!)</li>
+                <li>WhatsApp/Messenger-Nachrichten (bei Cloud-Backup)</li>
+                <li>Kommentare auf Websites</li>
+                <li>Forum-Beiträge</li>
+            </ul>
+        </div>
+
+        <div style="background: #ede9fe; padding: 1.5rem; border-radius: 5px; margin: 1rem 0;">
+            <h3 style="margin-top: 0;">📸 Fotos & Metadaten</h3>
+            <ul>
+                <li>Hochgeladene Bilder</li>
+                <li>Standort-Informationen (GPS)</li>
+                <li>Zeitstempel wann das Foto gemacht wurde</li>
+                <li>Kamera-Modell und andere Metadaten</li>
+            </ul>
+        </div>
+    </section>
+
+    <section style="background: #fee2e2; border-left: 4px solid #ef4444; padding: 1.5rem; border-radius: 5px; margin-top: 2rem;">
+        <h2>⚠️ Warum ist das ein Problem?</h2>
+        <ul>
+            <li><strong>🔒 Deine Daten sind wertvoll:</strong> Firmen kaufen und verkaufen deine Daten</li>
+            <li><strong>🎯 Targeted Advertising:</strong> Du wirst mit gezielten Werbungen überschwemmt</li>
+            <li><strong>👨‍💼 Arbeitgeber sehen es:</strong> Peinliche Fotos können deine Zukunft beeinflussen!</li>
+            <li><strong>🚨 Cyberstalking:</strong> Unbekannte können dich im Internet verfolgen</li>
+            <li><strong>🛡️ Hackerangriffe:</strong> Je mehr über dich online ist, desto leichter können Hacker dich finden</li>
+        </ul>
+    </section>
+
+    <section style="background: #dcfce7; border-left: 4px solid #10b981; padding: 1.5rem; border-radius: 5px; margin-top: 2rem;">
+        <h2>✅ So reduzierst du deinen Fußabdruck</h2>
+        <ol style="line-height: 1.8;">
+            <li><strong>Private Profile:</strong> Instagram/TikTok auf privat stellen</li>
+            <li><strong>Regelmäßig löschen:</strong> Alte Posts und Fotos löschen</li>
+            <li><strong>Vorsichtig mit Standort:</strong> GPS-Daten vor dem Upload entfernen</li>
+            <li><strong>Keine persönlichen Infos:</strong> Adresse, Telefonnummer, Schule nicht posten!</li>
+            <li><strong>Suchverlauf löschen:</strong> Regelmäßig Google-Suchverlauf bereinigen</li>
+            <li><strong>Browser-Einstellungen:</strong> Cookies blockieren, Tracking verhindern</li>
+            <li><strong>Datenschutzeinstellungen:</strong> Bei jeder App überprüfen was sie sieht</li>
+            <li><strong>Zwei-Faktor-Authentifizierung:</strong> Extra Schutz für Social Media</li>
+        </ol>
+    </section>
+
+</main>
+
+<footer style="margin-top: 5rem; padding: 2rem 1rem; background-color: #f8fafc; border-top: 1px solid #e2e8f0; color: #64748b; font-size: 0.9rem; text-align: center;">
+    &copy; 2026 | GvP | Mag. Schweitzer | Digitale Grundbildung
+</footer>
+
+<script>
+    const questions = [
+        {
+            question: "Was ist dein digitaler Fußabdruck?",
+            answers: [
+                { text: "Nur deine Instagram Posts", correct: false },
+                { text: "Alle Spuren die du online hinterlässt: Posts, Bilder, Suchverlauf, etc.", correct: true },
+                { text: "Deine Fußabdrücke aus echten Fotos", correct: false },
+                { text: "Nur deine Passwörter", correct: false }
+            ]
+        },
+        {
+            question: "Wer kann deinen digitalen Fußabdruck sehen?",
+            answers: [
+                { text: "Nur du", correct: false },
+                { text: "Facebook-Mitarbeiter", correct: false },
+                { text: "Firmen, Google, Facebook, deine Kontakte und möglicherweise Hacker", correct: true },
+                { text: "Niemand", correct: false }
+            ]
+        },
+        {
+            question: "Welcher Fußabdruck bleibt am längsten online?",
+            answers: [
+                { text: "Screenshots von Snapchat", correct: false },
+                { text: "Posts auf privaten Profilen", correct: false },
+                { text: "Gelöschte Instagram Stories", correct: false },
+                { text: "Öffentliche Posts - diese können für immer online sein", correct: true }
+            ]
+        },
+        {
+            question: "Warum solltest du keine Fotos mit GPS-Daten posten?",
+            answers: [
+                { text: "GPS ist langsam", correct: false },
+                { text: "Fremde können deinen genauen Standort sehen", correct: true },
+                { text: "Das kostet extra Speicherplatz", correct: false },
+                { text: "Das ist völlig sicher", correct: false }
+            ]
+        },
+        {
+            question: "Was solltest du NICHT in Social Media posten?",
+            answers: [
+                { text: "Fotos mit Freunden", correct: false },
+                { text: "Hobby und Interessen", correct: false },
+                { text: "Deine Adresse, Telefonnummer, Schulname", correct: true },
+                { text: "Alles ist ok zu posten", correct: false }
+            ]
+        },
+        {
+            question: "Wie lange speichert Google deine Suchanfragen?",
+            answers: [
+                { text: "1 Tag", correct: false },
+                { text: "Für immer (bis du löschst)", correct: true },
+                { text: "Nur während der Google-Sitzung", correct: false },
+                { text: "30 Tage", correct: false }
+            ]
+        }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+    let answered = false;
+
+    function loadQuestion() {
+        const q = questions[currentQuestion];
+        let html = `
+            <div class="question">Frage ${currentQuestion + 1} von ${questions.length}</div>
+            <p style="font-size: 1.1rem; margin-bottom: 1.5rem;">${q.question}</p>
+        `;
+        
+        q.answers.forEach((answer, index) => {
+            html += `<button class="answer-btn" onclick="checkAnswer(${index})">${answer.text}</button>`;
+        });
+        
+        document.getElementById('quizContent').innerHTML = html;
+        document.getElementById('nextBtn').style.display = 'none';
+        answered = false;
+    }
+
+    function checkAnswer(index) {
+        if (answered) return;
+        answered = true;
+        
+        const q = questions[currentQuestion];
+        const btns = document.querySelectorAll('.answer-btn');
+        
+        btns.forEach((btn, i) => {
+            if (q.answers[i].correct) {
+                btns[i].classList.add('correct');
+            }
+        });
+        
+        if (q.answers[index].correct) {
+            score++;
+            btns[index].classList.add('correct');
+        } else {
+            btns[index].classList.add('wrong');
+        }
+        
+        if (currentQuestion < questions.length - 1) {
+            document.getElementById('nextBtn').style.display = 'block';
+        } else {
+            document.getElementById('restartBtn').style.display = 'block';
+            showScore();
+        }
+    }
+
+    function nextQuestion() {
+        currentQuestion++;
+        loadQuestion();
+    }
+
+    function showScore() {
+        let message = score === questions.length ? '🌟 Perfekt!' : score >= questions.length - 1 ? '👍 Sehr gut!' : '✓ Gut gemacht!';
+        let html = `
+            <div style="text-align: center; padding: 2rem;">
+                <h2>${message}</h2>
+                <p style="font-size: 1.2rem;">${score} von ${questions.length} Fragen richtig!</p>
+            </div>
+        `;
+        document.getElementById('quizContent').innerHTML = html;
+    }
+
+    function restartQuiz() {
+        currentQuestion = 0;
+        score = 0;
+        answered = false;
+        document.getElementById('restartBtn').style.display = 'none';
+        loadQuestion();
+    }
+
+    loadQuestion();
+</script>
+
+</body>
+</html>

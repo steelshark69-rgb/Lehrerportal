@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#2563eb">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>pd-Schema Finanz-Tracker</title>
+    
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js for visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Hide scrollbar for clean mobile look */
+        ::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+        }
+
+        /* Bottom Navigation safe area for modern phones */
+        .pb-safe {
+            padding-bottom: env(safe-area-inset-bottom, 20px);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Modal Overlay */
+        #modalOverlay {
+            backdrop-filter: blur(4px);
+        }
+
+        /* Styling for the native month input */
+        input[type="month"]::-webkit-calendar-picker-indicator {
+            filter: invert(1);
+            opacity: 0.8;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body class="text-gray-800 h-screen flex flex-col overflow-hidden">
+
+    <!-- Header -->
+    <header class="bg-blue-600 text-white pt-8 pb-4 px-6 shadow-md z-10 flex-shrink-0">
+        <div class="flex justify-between items-center mb-2">
+            <div>
+                <h1 class="text-xl font-bold">Mein Budget</h1>
+                <p class="text-blue-200 text-xs">pd-Schema Finanz-Tracker</p>
+            </div>
+            <div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-xl">
+                <i class="fa-solid fa-wallet"></i>
+            </div>
+        </div>
+        <!-- Month Selector -->
+        <div class="mt-2 bg-blue-700/50 rounded-xl p-2 flex items-center justify-between">
+            <label for="month-selector" class="text-sm font-medium text-blue-100 flex-1"><i class="fa-regular fa-calendar mr-2"></i>Abrechnungsmonat</label>
+            <input type="month" id="month-selector" class="bg-transparent border-none text-white font-bold text-right outline-none focus:ring-0 w-36" onchange="changeMonth(this.value)">
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 overflow-y-auto p-4 pb-24 relative">
+        
+        <!-- TAB 1: EINNAHMEN (Income) -->
+        <section id="tab-einnahmen" class="tab-content active space-y-4">
+            <div class="bg-white rounded-2xl shadow-sm p-5 border border-gray-100">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-lg font-semibold text-gray-700"><i class="fa-solid fa-coins text-yellow-500 mr-2"></i>Gehaltsrechner</h2>
+                    <span id="income-month-label" class="text-xs font-semibold bg-gray-100 text-gray-500 px-2 py-1 rounded-md">Monat</span>
+                </div>
+                
+                <div class="space-y-4">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm text-gray-500 mb-1">Grundgehalt (€)</label>
+                            <input type="number" id="input-base-salary" step="0.01" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all" onchange="calculateIncome()">
+                        </div>
+                        <div>
+                            <label class="block text-sm text-gray-500 mb-1">Echtstunden (max. 22)</label>
+                            <input type="number" id="input-base-hours" max="22" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all" onchange="calculateIncome()">
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm text-gray-500 mb-1">Fächerzul. C (h)</label>
+                            <input type="number" id="input-fac-c" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all" onchange="calculateIncome()">
+                        </div>
+                        <div>
+                            <label class="block text-sm text-gray-500 mb-1">Fächerzul. A (h)</label>
+                            <input type="number" id="input-fac-a" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all" onchange="calculateIncome()">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm text-gray-500 mb-1">MDL / Überstd.</label>
+                            <input type="number" id="input-mdl" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all" onchange="calculateIncome()">
+                        </div>
+                        <div>
+                            <label class="block text-sm text-gray-500 mb-1">Sonstiges (€)</label>
+                            <input type="number" id="input-other" step="0.01" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all" onchange="calculateIncome()">
+                        </div>
+                    </div>
+
+                    <div class="pt-2 border-t border-gray-100">
+                        <label class="block text-sm text-gray-500 mb-1 text-purple-600 font-medium">Sonderzahlung (vierteljährlich)</label>
+                        <input type="number" id="input-special" step="0.01" placeholder="z.B. Urlaubsgeld Anteil" class="w-full bg-purple-50 border border-purple-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all" onchange="calculateIncome()">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Card -->
+            <div class="bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl shadow-lg p-5 text-white">
+                <div class="text-sm text-gray-300 mb-1">Geschätztes Netto-Gehalt</div>
+                <div class="text-3xl font-bold mb-4" id="display-net">€ 0,00</div>
+                
+                <div class="border-t border-gray-700 pt-3 space-y-2 text-sm">
+                    <div class="flex justify-between">
+                        <span class="text-gray-400">Brutto gesamt (inkl. Sonderz.)</span>
+                        <span id="display-gross">€ 0,00</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-400">davon Grundgehalt</span>
+                        <span id="display-base">€ 0,00</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-400">davon Fächer/MDL/Sonstiges</span>
+                        <span id="display-bonuses" class="text-green-400">€ 0,00</span>
+                    </div>
+                    <div class="flex justify-between font-semibold">
+                        <span class="text-purple-300">Sonderzahlung (Brutto)</span>
+                        <span id="display-special" class="text-purple-300">€ 0,00</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: AUSGABEN (Expenses) -->
+        <section id="tab-ausgaben" class="tab-content space-y-4">
+            
+            <!-- Fixkosten Block -->
+            <div class="bg-white rounded-2xl shadow-sm p-4 border border-gray-100">
+                <div class="flex justify-between items-center mb-3">
+                    <h3 class="font-semibold text-gray-700"><i class="fa-solid fa-house-lock text-indigo-500 mr-2"></i>Monatliche Fixkosten</h3>
+                    <span id="fixkosten-total" class="font-bold text-indigo-600">€ 0,00</span>
+                </div>
+                <div id="fixkosten-list" class="space-y-2 max-h-64 overflow-y-auto pr-1">
+                    <!-- Dynamic Fixkosten Items Go Here -->
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="grid grid-cols-2 gap-4">
+                <button onclick="document.getElementById('cameraInput').click()" class="bg-indigo-50 border border-indigo-100 text-indigo-700 rounded-2xl p-4 flex flex-col items-center justify-center gap-2 shadow-sm active:bg-indigo-100 transition-colors">
+                    <i class="fa-solid fa-camera text-2xl"></i>
+                    <span class="text-sm font-semibold">Beleg scannen</span>
+                </button>
+                <input type="file" id="cameraInput" accept="image/*" capture="environment" class="hidden" onchange="handleImageUpload(event)">
+                
+                <button onclick="toggleManualExpense()" class="bg-white border border-gray-100 text-gray-700 rounded-2xl p-4 flex flex-col items-center justify-center gap-2 shadow-sm active:bg-gray-50 transition-colors">
+                    <i class="fa-solid fa-pen-to-square text-2xl"></i>
+                    <span class="text-sm font-semibold">Manuell eintragen</span>
+                </button>
+            </div>
+
+            <!-- Manual Expense Form (Hidden by default) -->
+            <div id="manual-expense-form" class="hidden bg-white rounded-2xl shadow-sm p-5 border border-gray-100 mb-4 transition-all">
+                <div class="flex justify-between items-center mb-3">
+                    <h3 class="font-semibold text-gray-700">Neue Ausgabe</h3>
+                    <button onclick="toggleManualExpense()" class="text-gray-400"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div class="space-y-3">
+                    <input type="text" id="exp-desc" placeholder="Beschreibung (z.B. Billa)" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <div class="flex gap-3">
+                        <input type="number" id="exp-amount" placeholder="Betrag (€)" step="0.01" class="w-1/2 bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        <select id="exp-cat" class="w-1/2 bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <option value="Lebensmittel">Lebensmittel</option>
+                            <option value="Transport">Transport</option>
+                            <option value="Freizeit">Freizeit</option>
+                            <option value="Schule/Beruf">Schule/Beruf</option>
+                            <option value="Wohnen">Sonstiges</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs text-gray-500 mb-1 ml-1">Datum der Ausgabe</label>
+                        <input type="date" id="exp-date" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    </div>
+                    <button onclick="addManualExpense()" class="w-full bg-indigo-600 text-white font-semibold py-3 rounded-xl shadow-md active:bg-indigo-700 transition-colors mt-2">
+                        Speichern
+                    </button>
+                </div>
+            </div>
+
+            <!-- Expense List -->
+            <div>
+                <h3 class="font-semibold text-gray-700 mb-3 ml-1 flex justify-between items-end">
+                    <span>Variable Ausgaben</span>
+                    <span id="expense-list-month" class="text-xs text-indigo-500 bg-indigo-50 px-2 py-1 rounded"></span>
+                </h3>
+                <div id="expense-list" class="space-y-2">
+                    <!-- Dynamic Items Go Here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: DASHBOARD (Analytics) -->
+        <section id="tab-dashboard" class="tab-content space-y-4">
+            
+            <div class="grid grid-cols-2 gap-4">
+                <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex flex-col justify-center">
+                    <span class="text-xs text-gray-500 mb-1">Sparrate (Netto - Ausgaben)</span>
+                    <span id="dash-savings" class="text-xl font-bold text-green-500">€ 0,00</span>
+                </div>
+                <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex flex-col justify-center">
+                    <span class="text-xs text-gray-500 mb-1">Ausgaben Gesamt</span>
+                    <span id="dash-expenses" class="text-xl font-bold text-red-500">€ 0,00</span>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-sm p-4 border border-gray-100">
+                <h3 class="text-sm font-semibold text-gray-700 mb-4">Ausgaben nach Kategorie</h3>
+                <div class="relative h-48 w-full flex justify-center">
+                    <canvas id="expenseChart"></canvas>
+                </div>
+            </div>
+
+             <div class="bg-white rounded-2xl shadow-sm p-4 border border-gray-100">
+                <h3 class="text-sm font-semibold text-gray-700 mb-4">Einnahmen Trend (Letzte 4 Monate)</h3>
+                <div class="relative h-48 w-full">
+                    <canvas id="incomeChart"></canvas>
+                </div>
+            </div>
+            
+            <button onclick="exportData()" class="w-full text-center text-xs text-gray-400 mt-4 underline decoration-gray-300">Daten als Backup exportieren (JSON)</button>
+        </section>
+
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="bg-white border-t border-gray-200 fixed bottom-0 w-full z-20 pb-safe shadow-[0_-5px_15px_-10px_rgba(0,0,0,0.1)] flex-shrink-0">
+        <div class="flex justify-around items-center h-16">
+            <button onclick="switchTab('einnahmen', this)" class="nav-btn text-blue-600 flex flex-col items-center justify-center w-full h-full space-y-1">
+                <i class="fa-solid fa-money-bill-wave text-xl"></i>
+                <span class="text-[10px] font-medium">Einnahmen</span>
+            </button>
+            <button onclick="switchTab('ausgaben', this)" class="nav-btn text-gray-400 hover:text-indigo-600 flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors">
+                <i class="fa-solid fa-cart-shopping text-xl"></i>
+                <span class="text-[10px] font-medium">Ausgaben</span>
+            </button>
+            <button onclick="switchTab('dashboard', this)" class="nav-btn text-gray-400 hover:text-purple-600 flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors">
+                <i class="fa-solid fa-chart-pie text-xl"></i>
+                <span class="text-[10px] font-medium">Dashboard</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Custom Modal/Toast overlay -->
+    <div id="modalOverlay" class="fixed inset-0 bg-gray-900/40 z-50 hidden flex-col items-center justify-center p-4">
+        
+        <!-- Loading Scanner Modal -->
+        <div id="scannerModal" class="hidden bg-white rounded-3xl shadow-2xl p-6 w-full max-w-sm flex-col items-center text-center">
+            <div class="w-16 h-16 border-4 border-indigo-100 border-t-indigo-600 rounded-full animate-spin mb-4"></div>
+            <h3 class="text-lg font-bold text-gray-800">KI analysiert Beleg...</h3>
+            <p class="text-sm text-gray-500 mt-2">Extrahiere Händler, Datum und Betrag.</p>
+        </div>
+
+        <!-- Success Message Modal -->
+        <div id="messageModal" class="hidden bg-white rounded-3xl shadow-2xl p-6 w-full max-w-sm flex-col items-center text-center transform transition-all">
+            <div id="modalIcon" class="w-16 h-16 bg-green-100 text-green-500 rounded-full flex items-center justify-center text-3xl mb-4">
+                <i class="fa-solid fa-check"></i>
+            </div>
+            <h3 id="modalTitle" class="text-xl font-bold text-gray-800 mb-2">Titel</h3>
+            <p id="modalText" class="text-gray-600 mb-6">Text</p>
+            <button onclick="closeModal()" class="w-full bg-gray-900 text-white font-semibold py-3 rounded-xl active:bg-gray-800 transition-colors">
+                Verstanden
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // --- CONSTANTS FOR PD-SCHEMA ---
+        const FULL_TIME_HOURS = 22;
+        const RATE_FAC_C = 34.80; 
+        const RATE_FAC_A = 44.70; 
+        const RATE_MDL = 52.08;
+        const ESTIMATED_NET_FACTOR = 0.65; 
+        const ESTIMATED_NET_FACTOR_SPECIAL = 0.75; 
+
+        const CATEGORY_COLORS = {
+            'Lebensmittel': '#34D399', 
+            'Wohnen': '#60A5FA',       
+            'Transport': '#FBBF24',    
+            'Freizeit': '#A78BFA',     
+            'Schule/Beruf': '#F87171'  
+        };
+
+        const defaultFixedCosts = [
+            { id: 'fc1', name: 'Miete', amount: 730.00, cat: 'Wohnen' },
+            { id: 'fc2', name: 'Strom', amount: 41.00, cat: 'Wohnen' },
+            { id: 'fc3', name: 'Fernwärme', amount: 60.00, cat: 'Wohnen' },
+            { id: 'fc4', name: 'Internet', amount: 35.00, cat: 'Wohnen' },
+            { id: 'fc5', name: 'Handy', amount: 10.00, cat: 'Wohnen' },
+            { id: 'fc6', name: 'Haushaltsversicherung', amount: 7.25, cat: 'Wohnen' },
+            { id: 'fc7', name: 'Autoversicherung', amount: 115.00, cat: 'Transport' },
+            { id: 'fc8', name: 'Fitness', amount: 29.90, cat: 'Freizeit' },
+            { id: 'fc9', name: 'Kontoführung', amount: 15.00, cat: 'Wohnen' },
+            { id: 'fc10', name: 'Gis', amount: 15.42, cat: 'Wohnen' },
+            { id: 'fc11', name: 'Tanken', amount: 100.00, cat: 'Transport' },
+            { id: 'fc12', name: 'Google', amount: 20.00, cat: 'Freizeit' }
+        ];
+
+        const defaultIncomeConfig = {
+            baseSalary: 4006.00,
+            baseHours: 22,
+            facC: 14,
+            facA: 4,
+            mdl: 0,
+            other: 0,
+            special: 0
+        };
+
+        // --- GLOBAL STATE ---
+        let appState = {
+            fixedCosts: [],
+            months: {} // Format: "YYYY-MM": { incomeConfig: {}, expenses: [], calculatedNet: 0 }
+        };
+        let currentMonth = "";
+
+        // --- INITIALIZATION ---
+        window.onload = () => {
+            // Set input date to today as default for new expenses
+            document.getElementById('exp-date').valueAsDate = new Date();
+            
+            loadDataFromStorage();
+            
+            // Set current month to today's month if not set
+            const today = new Date();
+            const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`;
+            
+            // Sync Header UI Month
+            document.getElementById('month-selector').value = todayStr;
+            changeMonth(todayStr);
+        };
+
+        // --- PERSISTENCE (GEDÄCHTNIS) ---
+        function loadDataFromStorage() {
+            const saved = localStorage.getItem('pdFinanzTrackerData');
+            if (saved) {
+                try {
+                    const parsed = JSON.parse(saved);
+                    appState.fixedCosts = parsed.fixedCosts || defaultFixedCosts;
+                    appState.months = parsed.months || {};
+                } catch (e) {
+                    console.error("Laden fehlgeschlagen, nutze Standardwerte", e);
+                    appState.fixedCosts = [...defaultFixedCosts];
+                }
+            } else {
+                appState.fixedCosts = [...defaultFixedCosts];
+            }
+        }
+
+        function saveDataToStorage() {
+            localStorage.setItem('pdFinanzTrackerData', JSON.stringify(appState));
+        }
+
+        // --- MONTH MANAGEMENT ---
+        function getLatestIncomeConfigBefore(targetMonthStr) {
+            // Find the most recent month before the target to inherit settings
+            const sortedMonths = Object.keys(appState.months).sort();
+            const pastMonths = sortedMonths.filter(m => m < targetMonthStr);
+            if (pastMonths.length > 0) {
+                const latestPastMonth = pastMonths[pastMonths.length - 1];
+                return { ...appState.months[latestPastMonth].incomeConfig, special: 0 }; // Inherit all but special payment
+            }
+            return { ...defaultIncomeConfig };
+        }
+
+        function changeMonth(monthStr) {
+            currentMonth = monthStr;
+            document.getElementById('income-month-label').innerText = formatMonthYear(monthStr);
+            document.getElementById('expense-list-month').innerText = formatMonthYear(monthStr);
+            
+            // Ensure data structure exists for this month
+            if (!appState.months[currentMonth]) {
+                appState.months[currentMonth] = {
+                    incomeConfig: getLatestIncomeConfigBefore(currentMonth),
+                    expenses: [],
+                    calculatedNet: 0
+                };
+            }
+
+            // Populate Einnahmen Inputs
+            const cfg = appState.months[currentMonth].incomeConfig;
+            document.getElementById('input-base-salary').value = cfg.baseSalary;
+            document.getElementById('input-base-hours').value = cfg.baseHours;
+            document.getElementById('input-fac-c').value = cfg.facC;
+            document.getElementById('input-fac-a').value = cfg.facA;
+            document.getElementById('input-mdl').value = cfg.mdl;
+            document.getElementById('input-other').value = cfg.other;
+            document.getElementById('input-special').value = cfg.special;
+
+            // Re-render everything
+            calculateIncome();
+            renderFixedCosts();
+            renderExpenseList();
+            
+            // Update Date picker to selected month
+            const expDateInput = document.getElementById('exp-date');
+            const [y, m] = currentMonth.split('-');
+            const firstDay = new Date(y, m - 1, 2); // Avoid timezone issues
+            expDateInput.value = firstDay.toISOString().split('T')[0];
+        }
+
+        function formatMonthYear(monthStr) {
+            if(!monthStr) return "";
+            const [y, m] = monthStr.split('-');
+            const date = new Date(y, m - 1, 1);
+            return date.toLocaleDateString('de-AT', { month: 'long', year: 'numeric' });
+        }
+
+        // --- NAVIGATION ---
+        function switchTab(tabId, btnElement) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(el => {
+                el.classList.remove('text-blue-600', 'text-indigo-600', 'text-purple-600');
+                el.classList.add('text-gray-400');
+            });
+
+            document.getElementById(`tab-${tabId}`).classList.add('active');
+            
+            if(tabId === 'einnahmen') btnElement.classList.replace('text-gray-400', 'text-blue-600');
+            if(tabId === 'ausgaben') btnElement.classList.replace('text-gray-400', 'text-indigo-600');
+            if(tabId === 'dashboard') {
+                btnElement.classList.replace('text-gray-400', 'text-purple-600');
+                updateDashboard();
+            }
+        }
+
+        // --- INCOME LOGIC ---
+        function calculateIncome() {
+            if(!currentMonth) return;
+
+            // Read from DOM
+            const baseSalary100 = parseFloat(document.getElementById('input-base-salary').value) || 0;
+            const baseHours = Math.min(FULL_TIME_HOURS, parseFloat(document.getElementById('input-base-hours').value) || 0);
+            const facC_Hours = parseFloat(document.getElementById('input-fac-c').value) || 0;
+            const facA_Hours = parseFloat(document.getElementById('input-fac-a').value) || 0;
+            const mdlHours = parseFloat(document.getElementById('input-mdl').value) || 0;
+            const otherBonus = parseFloat(document.getElementById('input-other').value) || 0;
+            const specialPayment = parseFloat(document.getElementById('input-special').value) || 0;
+
+            // Save to State
+            appState.months[currentMonth].incomeConfig = {
+                baseSalary: baseSalary100,
+                baseHours: baseHours,
+                facC: facC_Hours,
+                facA: facA_Hours,
+                mdl: mdlHours,
+                other: otherBonus,
+                special: specialPayment
+            };
+
+            // Calculate
+            const aliquotBase = baseSalary100 * (baseHours / FULL_TIME_HOURS);
+            const facCBous = facC_Hours * RATE_FAC_C;
+            const facABonus = facA_Hours * RATE_FAC_A;
+            const mdlBonus = mdlHours * RATE_MDL;
+            
+            const totalBonuses = facCBous + facABonus + mdlBonus + otherBonus;
+            const totalGross = aliquotBase + totalBonuses + specialPayment;
+            
+            const estNet = ((aliquotBase + totalBonuses) * ESTIMATED_NET_FACTOR) + (specialPayment * ESTIMATED_NET_FACTOR_SPECIAL);
+            
+            // Save Net for charts
+            appState.months[currentMonth].calculatedNet = estNet;
+            saveDataToStorage(); // <-- Speichern (Gedächtnis)
+
+            // Update UI
+            animateValue("display-net", estNet);
+            document.getElementById('display-gross').innerText = formatCurrency(totalGross);
+            document.getElementById('display-base').innerText = formatCurrency(aliquotBase);
+            document.getElementById('display-bonuses').innerText = formatCurrency(totalBonuses);
+            document.getElementById('display-special').innerText = formatCurrency(specialPayment);
+            
+            if(document.getElementById('tab-dashboard').classList.contains('active')) updateDashboard();
+        }
+
+        // --- EXPENSE & FIXKOSTEN LOGIC ---
+        function renderFixedCosts() {
+            const list = document.getElementById('fixkosten-list');
+            list.innerHTML = '';
+            let total = 0;
+
+            appState.fixedCosts.forEach(fc => {
+                total += fc.amount;
+                list.innerHTML += `
+                    <div class="flex items-center justify-between gap-2 border-b border-gray-50 pb-2 mb-2 last:border-0 last:mb-0 last:pb-0">
+                        <span class="text-sm font-medium text-gray-600 truncate w-1/2">${fc.name}</span>
+                        <div class="flex items-center w-1/2 justify-end gap-1">
+                            <span class="text-sm text-gray-400">€</span>
+                            <input type="number" step="0.01" value="${fc.amount.toFixed(2)}"
+                                   class="w-20 text-right bg-gray-50 border border-gray-200 rounded-lg px-2 py-1 text-sm font-semibold focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                                   onchange="updateFixedCost('${fc.id}', this.value)">
+                        </div>
+                    </div>
+                `;
+            });
+            document.getElementById('fixkosten-total').innerText = formatCurrency(total);
+        }
+
+        function updateFixedCost(id, newValue) {
+            const index = appState.fixedCosts.findIndex(fc => fc.id === id);
+            if(index !== -1) {
+                appState.fixedCosts[index].amount = parseFloat(newValue) || 0;
+                saveDataToStorage(); // <-- Speichern (Gedächtnis)
+                renderFixedCosts(); 
+                if(document.getElementById('tab-dashboard').classList.contains('active')) updateDashboard();
+            }
+        }
+
+        function toggleManualExpense() {
+            const form = document.getElementById('manual-expense-form');
+            form.classList.toggle('hidden');
+        }
+
+        function deleteExpense(id) {
+            appState.months[currentMonth].expenses = appState.months[currentMonth].expenses.filter(e => e.id !== id);
+            saveDataToStorage();
+            renderExpenseList();
+            if(document.getElementById('tab-dashboard').classList.contains('active')) updateDashboard();
+        }
+
+        function addManualExpense() {
+            const desc = document.getElementById('exp-desc').value;
+            const amount = parseFloat(document.getElementById('exp-amount').value);
+            const cat = document.getElementById('exp-cat').value;
+            const dateStr = document.getElementById('exp-date').value;
+
+            if (!desc || isNaN(amount) || !dateStr) {
+                showModal('Fehler', 'Bitte Beschreibung, Betrag und Datum eingeben.', 'error');
+                return;
+            }
+
+            // Sicherstellen, dass die Ausgabe in den richtigen Monat fällt, falls abweichend
+            const expenseMonth = dateStr.slice(0, 7); 
+            if (!appState.months[expenseMonth]) {
+                 appState.months[expenseMonth] = {
+                    incomeConfig: getLatestIncomeConfigBefore(expenseMonth),
+                    expenses: [],
+                    calculatedNet: 0
+                };
+            }
+
+            appState.months[expenseMonth].expenses.unshift({
+                id: Date.now(),
+                desc,
+                amount,
+                cat,
+                date: dateStr
+            });
+
+            saveDataToStorage(); // <-- Speichern (Gedächtnis)
+
+            document.getElementById('exp-desc').value = '';
+            document.getElementById('exp-amount').value = '';
+            toggleManualExpense();
+            
+            // Wenn in einen anderen Monat gebucht wurde, Nutzer informieren
+            if(expenseMonth !== currentMonth) {
+                showModal('Gespeichert!', `Ausgabe wurde im Monat ${formatMonthYear(expenseMonth)} verbucht.`, 'success');
+            } else {
+                renderExpenseList();
+                showModal('Erfolg', 'Ausgabe gespeichert!', 'success');
+            }
+        }
+
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const overlay = document.getElementById('modalOverlay');
+            const scanner = document.getElementById('scannerModal');
+            const msg = document.getElementById('messageModal');
+            
+            overlay.classList.remove('hidden');
+            overlay.classList.add('flex');
+            scanner.classList.remove('hidden');
+            scanner.classList.add('flex');
+            msg.classList.add('hidden');
+            msg.classList.remove('flex');
+
+            setTimeout(() => {
+                scanner.classList.remove('flex');
+                scanner.classList.add('hidden');
+
+                const mockMerchants = ["Billa", "Spar", "Hofer", "Thalia", "Kino"];
+                const mockCat = ["Lebensmittel", "Lebensmittel", "Lebensmittel", "Schule/Beruf", "Freizeit"];
+                const rndIndex = Math.floor(Math.random() * mockMerchants.length);
+                const rndAmount = (Math.random() * 50 + 5).toFixed(2);
+
+                const todayStr = new Date().toISOString().split('T')[0];
+
+                appState.months[currentMonth].expenses.unshift({
+                    id: Date.now(),
+                    desc: mockMerchants[rndIndex] + " (Scan)",
+                    amount: parseFloat(rndAmount),
+                    cat: mockCat[rndIndex],
+                    date: todayStr
+                });
+
+                saveDataToStorage();
+                renderExpenseList();
+                showModal('Beleg erfasst!', `${mockMerchants[rndIndex]}: € ${rndAmount}\nKategorie: ${mockCat[rndIndex]}`, 'success');
+                event.target.value = ''; 
+            }, 1500);
+        }
+
+        function renderExpenseList() {
+            const list = document.getElementById('expense-list');
+            list.innerHTML = '';
+            
+            const currentExpenses = appState.months[currentMonth]?.expenses || [];
+
+            if (currentExpenses.length === 0) {
+                list.innerHTML = '<p class="text-gray-400 text-sm italic py-4 text-center">Keine variablen Ausgaben in diesem Monat.</p>';
+                return;
+            }
+
+            // Sortieren nach Datum absteigend
+            const sortedExpenses = [...currentExpenses].sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            sortedExpenses.forEach(exp => {
+                const color = CATEGORY_COLORS[exp.cat] || '#gray-400';
+                const dateParts = exp.date.split('-');
+                const formattedDate = `${dateParts[2]}.${dateParts[1]}.`;
+                
+                const html = `
+                    <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 flex items-center justify-between mb-2">
+                        <div class="flex items-center gap-3 w-3/4">
+                            <div class="w-3 h-3 rounded-full flex-shrink-0" style="background-color: ${color}"></div>
+                            <div class="truncate">
+                                <p class="text-sm font-semibold text-gray-800 leading-tight truncate">${exp.desc}</p>
+                                <p class="text-xs text-gray-400">${formattedDate} • ${exp.cat}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2 flex-shrink-0">
+                            <div class="font-bold text-gray-800 text-sm">
+                                € ${exp.amount.toFixed(2).replace('.', ',')}
+                            </div>
+                            <button onclick="deleteExpense(${exp.id})" class="text-red-300 hover:text-red-500 p-1"><i class="fa-solid fa-trash text-xs"></i></button>
+                        </div>
+                    </div>
+                `;
+                list.innerHTML += html;
+            });
+        }
+
+        let expenseChartInstance = null;
+        let incomeChartInstance = null;
+
+        function updateDashboard() {
+            if(!currentMonth) return;
+
+            const currentExpenses = appState.months[currentMonth]?.expenses || [];
+            const currentNet = appState.months[currentMonth]?.calculatedNet || 0;
+
+            const totalManual = currentExpenses.reduce((sum, e) => sum + e.amount, 0);
+            const totalFixed = appState.fixedCosts.reduce((sum, e) => sum + e.amount, 0);
+            const totalExp = totalManual + totalFixed;
+            
+            const savings = currentNet - totalExp;
+
+            document.getElementById('dash-expenses').innerText = formatCurrency(totalExp);
+            document.getElementById('dash-savings').innerText = formatCurrency(savings);
+            
+            const savEl = document.getElementById('dash-savings');
+            if(savings < 0) { savEl.classList.replace('text-green-500', 'text-red-500'); } 
+            else { savEl.classList.replace('text-red-500', 'text-green-500'); }
+
+            renderExpenseChart(currentExpenses);
+            renderIncomeChart();
+        }
+
+        function renderExpenseChart(monthlyExpenses) {
+            const ctx = document.getElementById('expenseChart').getContext('2d');
+            
+            const grouped = {};
+            monthlyExpenses.forEach(exp => {
+                grouped[exp.cat] = (grouped[exp.cat] || 0) + exp.amount;
+            });
+            appState.fixedCosts.forEach(fc => {
+                grouped[fc.cat] = (grouped[fc.cat] || 0) + fc.amount;
+            });
+
+            const labels = Object.keys(grouped);
+            const data = Object.values(grouped);
+            const bgColors = labels.map(l => CATEGORY_COLORS[l] || '#cbd5e1');
+
+            if (expenseChartInstance) expenseChartInstance.destroy();
+
+            if (data.length === 0) return; 
+
+            expenseChartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: bgColors,
+                        borderWidth: 0,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'right', labels: { boxWidth: 12, font: { size: 10 } } }
+                    },
+                    cutout: '70%'
+                }
+            });
+        }
+
+        function renderIncomeChart() {
+            const ctx = document.getElementById('incomeChart').getContext('2d');
+            
+            // Get last 4 months (including current)
+            const sortedMonths = Object.keys(appState.months).sort();
+            const last4Months = sortedMonths.slice(-4);
+            
+            const labels = last4Months.map(m => {
+                const [y, mm] = m.split('-');
+                return `${mm}/${y.slice(2)}`;
+            });
+            
+            const data = last4Months.map(m => appState.months[m].calculatedNet || 0);
+
+            if (incomeChartInstance) incomeChartInstance.destroy();
+
+            incomeChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels.length > 0 ? labels : ['Aktuell'],
+                    datasets: [{
+                        label: 'Netto Einnahmen (€)',
+                        data: data.length > 0 ? data : [appState.months[currentMonth]?.calculatedNet || 0],
+                        backgroundColor: '#4F46E5',
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { beginAtZero: false, suggestedMin: 2000, grid: { display: false } },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+        }
+
+        function formatCurrency(num) {
+            return "€ " + num.toFixed(2).replace('.', ',');
+        }
+
+        function animateValue(id, end) {
+            const obj = document.getElementById(id);
+            let start = parseFloat(obj.innerText.replace('€ ', '').replace(',', '.')) || 0;
+            if (start === end) return;
+            
+            let startTimestamp = null;
+            const duration = 800; 
+
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                const easeProgress = progress * (2 - progress);
+                const current = start + easeProgress * (end - start);
+                obj.innerText = formatCurrency(current);
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        function showModal(title, text, type) {
+            const overlay = document.getElementById('modalOverlay');
+            const msgModal = document.getElementById('messageModal');
+            const scannerModal = document.getElementById('scannerModal');
+            const icon = document.getElementById('modalIcon');
+            
+            scannerModal.classList.add('hidden');
+            scannerModal.classList.remove('flex');
+            
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalText').innerText = text;
+
+            if (type === 'error') {
+                icon.className = 'w-16 h-16 bg-red-100 text-red-500 rounded-full flex items-center justify-center text-3xl mb-4';
+                icon.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+            } else {
+                icon.className = 'w-16 h-16 bg-green-100 text-green-500 rounded-full flex items-center justify-center text-3xl mb-4';
+                icon.innerHTML = '<i class="fa-solid fa-check"></i>';
+            }
+
+            overlay.classList.remove('hidden');
+            overlay.classList.add('flex');
+            msgModal.classList.remove('hidden');
+            msgModal.classList.add('flex');
+        }
+
+        function closeModal() {
+            const overlay = document.getElementById('modalOverlay');
+            overlay.classList.add('hidden');
+            overlay.classList.remove('flex');
+        }
+
+        // Backup function since localStorage is bound to the browser
+        function exportData() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appState));
+            const downloadAnchorNode = document.createElement('a');
+            downloadAnchorNode.setAttribute("href", dataStr);
+            downloadAnchorNode.setAttribute("download", "finanz_tracker_backup.json");
+            document.body.appendChild(downloadAnchorNode); // required for firefox
+            downloadAnchorNode.click();
+            downloadAnchorNode.remove();
+        }
+    </script>
+</body>
+</html>

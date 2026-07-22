@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Einheit 4: PC Konfigurator (Boss-Fight)</title>
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+        :root { --it-primary: #107c41; --it-dark: #064e3b; --bg-gray: #f8fafc; }
+        .module-container { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem; }
+        .shop-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem; }
+        @media(max-width: 600px) { .shop-grid { grid-template-columns: 1fr; } }
+        
+        .component-card { border: 2px solid #e2e8f0; padding: 1.5rem; border-radius: 8px; background: white; }
+        .component-card h4 { margin-top: 0; color: #334155; border-bottom: 2px solid var(--it-primary); padding-bottom: 5px; }
+        .comp-select { width: 100%; padding: 10px; font-size: 1rem; border: 1px solid #cbd5e1; border-radius: 4px; outline: none; }
+        
+        .checkout-box { background: #1e293b; color: white; padding: 2rem; border-radius: 12px; text-align: center; }
+        .budget-display { font-size: 2rem; font-weight: bold; margin: 10px 0; color: #10b981; }
+        
+        .btn-buy { background: var(--it-primary); color: white; border: none; padding: 15px 30px; font-size: 1.2rem; font-weight: bold; border-radius: 6px; cursor: pointer; width: 100%; margin-top: 15px; transition: 0.2s; }
+        .btn-buy:hover { background: #059669; }
+
+        .ticket-container { display: none; background: linear-gradient(135deg, #064e3b, #10b981); color: white; padding: 3rem; border-radius: 16px; text-align: center; margin-top: 2rem; box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4); position: relative; overflow: hidden; }
+        .ticket-watermark { position: absolute; top: -20px; right: -20px; font-size: 8rem; opacity: 0.1; transform: rotate(15deg); }
+    </style>
+</head>
+<body>
+
+<header style="background-color: var(--it-primary); color: white; padding: 2rem 1rem; text-align: center;">
+    <h1 style="color: white; margin: 0; font-size: 2.5rem;">Mission 4: Der Boss-Fight</h1>
+    <p style="color: #f0fdf4; margin-top: 10px; font-size: 1.1rem;">Baue den perfekten Gaming-PC!</p>
+</header>
+
+<div class="back-nav"><a href="einheit3_gpu_ssd.html" class="btn-back">← Zurück zu Einheit 3</a></div>
+
+<main class="module-container">
+    <div style="background: #fffbeb; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #f59e0b; margin-bottom: 2rem;">
+        <strong>Kundenauftrag:</strong> "Hallo! Ich brauche einen neuen PC. Ich möchte darauf die neuesten 3D-Spiele (wie Cyberpunk) spielen. Das Budget liegt bei exakt <strong>1.000 €</strong>. Bedenke: Für 3D-Spiele brauche ich eine enorm starke GPU, mindestens 16GB RAM und viel Speicherplatz für die Spiele. Die CPU muss auch solide sein, sonst gibt es einen Bottleneck!"
+    </div>
+
+    <div class="shop-grid">
+        <div class="component-card">
+            <h4>🧠 Prozessor (CPU)</h4>
+            <select class="comp-select" id="sel-cpu" onchange="calcCart()">
+                <option value="0" data-gaming="0">Bitte wählen...</option>
+                <option value="50" data-gaming="10">Intel Core i3 (Büro) - 50 €</option>
+                <option value="250" data-gaming="40">AMD Ryzen 5 (Allrounder) - 250 €</option>
+                <option value="600" data-gaming="90">Intel Core i9 (High-End) - 600 €</option>
+            </select>
+        </div>
+        <div class="component-card">
+            <h4>🗄️ Arbeitsspeicher (RAM)</h4>
+            <select class="comp-select" id="sel-ram" onchange="calcCart()">
+                <option value="0" data-gaming="0">Bitte wählen...</option>
+                <option value="30" data-gaming="5">8 GB DDR4 (Office) - 30 €</option>
+                <option value="80" data-gaming="30">16 GB DDR4 (Standard) - 80 €</option>
+                <option value="150" data-gaming="50">32 GB DDR5 (Profi) - 150 €</option>
+            </select>
+        </div>
+        <div class="component-card">
+            <h4>🎮 Grafikkarte (GPU)</h4>
+            <select class="comp-select" id="sel-gpu" onchange="calcCart()">
+                <option value="0" data-gaming="0">Bitte wählen...</option>
+                <option value="0" data-gaming="5">Integrierte Grafik (Keine extra GPU) - 0 €</option>
+                <option value="150" data-gaming="20">GTX 1650 (Alt, aber okay) - 150 €</option>
+                <option value="450" data-gaming="80">RTX 4060 (Gamer-Traum) - 450 €</option>
+            </select>
+        </div>
+        <div class="component-card">
+            <h4>💾 Speicher (SSD)</h4>
+            <select class="comp-select" id="sel-ssd" onchange="calcCart()">
+                <option value="0" data-gaming="0">Bitte wählen...</option>
+                <option value="40" data-gaming="10">256 GB SSD (Wenig Platz) - 40 €</option>
+                <option value="120" data-gaming="40">1 TB NVMe SSD (Viel Platz) - 120 €</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="checkout-box">
+        <div style="text-transform: uppercase; color: #94a3b8; letter-spacing: 2px;">Warenkorb Gesamt</div>
+        <div class="budget-display" id="total-price">0 €</div>
+        <div style="font-size: 0.9rem; color: #cbd5e1;">Maximales Budget: 1.000 € | Gaming-Leistung: <span id="total-gaming">0</span> / 180</div>
+        
+        <input type="text" id="student-name" placeholder="Dein Name für das Zertifikat" style="margin-top: 15px; padding: 10px; width: 80%; border-radius: 4px; border: none; text-align: center; font-size: 1rem;">
+        <button class="btn-buy" onclick="checkout()">PC Zusammenbauen & Testen</button>
+        <p id="checkout-msg" style="color: #ef4444; font-weight: bold; margin-top: 15px; display: none;"></p>
+    </div>
+
+    <div id="certificate" class="ticket-container">
+        <div class="ticket-watermark">IT</div>
+        <h2 style="margin: 0; color: #a7f3d0;">HARDWARE-SYSTEMADMINISTRATOR</h2>
+        <div style="font-size: 2rem; font-weight: bold; margin: 1rem 0;">BESTANDEN</div>
+        <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px; font-family: monospace; font-size: 1.2rem; text-align: left; display: inline-block;">
+            <span style="color: #6ee7b7;">Name:</span> <span id="cert-name"></span><br>
+            <span style="color: #6ee7b7;">Modul:</span> EVA-Prinzip & Hardware<br>
+            <span style="color: #6ee7b7;">Score:</span> Perfektes PC-Setup (1.000€)<br>
+            <span style="color: #6ee7b7;">Hash:</span> <span id="cert-hash" style="color: #cbd5e1; font-size: 0.9rem;"></span>
+        </div>
+        <p style="margin-top: 20px; font-weight: bold;">Bitte zeige diesen Bildschirm jetzt Prof. Schweitzer.</p>
+    </div>
+
+</main>
+
+<script>
+    function calcCart() {
+        let selects = ['sel-cpu', 'sel-ram', 'sel-gpu', 'sel-ssd'];
+        let price = 0;
+        let gamingScore = 0;
+
+        selects.forEach(id => {
+            let el = document.getElementById(id);
+            let option = el.options[el.selectedIndex];
+            price += parseInt(option.value);
+            gamingScore += parseInt(option.getAttribute('data-gaming'));
+        });
+
+        let priceDisplay = document.getElementById('total-price');
+        priceDisplay.innerText = price + " €";
+        if (price > 1000) { priceDisplay.style.color = "#ef4444"; } 
+        else { priceDisplay.style.color = "#10b981"; }
+
+        document.getElementById('total-gaming').innerText = gamingScore;
+        return { price: price, score: gamingScore };
+    }
+
+    function checkout() {
+        let stats = calcCart();
+        let msg = document.getElementById('checkout-msg');
+        let name = document.getElementById('student-name').value.trim();
+
+        msg.style.display = "block";
+        document.getElementById('certificate').style.display = "none";
+
+        if (name === "") {
+            msg.innerText = "Bitte gib deinen Namen ein!";
+            return;
+        }
+
+        if (document.getElementById('sel-cpu').value === "0" || document.getElementById('sel-ram').value === "0" || document.getElementById('sel-gpu').value === "0" || document.getElementById('sel-ssd').value === "0") {
+            msg.innerText = "Fehler: Der PC ist nicht komplett! (Du brauchst von jedem Teil eines).";
+            return;
+        }
+
+        if (stats.price > 1000) {
+            msg.innerText = "Kunde ist wütend: Du hast das Budget von 1000€ überschritten!";
+            return;
+        }
+
+        if (stats.score < 150) {
+            msg.innerText = "Kunde ist traurig: Das Spiel ruckelt extrem. Du hast die falschen Teile (Bottleneck) gekauft!";
+            return;
+        }
+
+        // Erfolg!
+        msg.style.display = "none";
+        document.getElementById('cert-name').innerText = name;
+        let now = new Date();
+        document.getElementById('cert-hash').innerText = "HW-" + (stats.price * 3) + "-" + now.getHours() + now.getMinutes() + "-SEC";
+        document.getElementById('certificate').style.display = "block";
+        document.getElementById('certificate').scrolltoView({ behavior: 'smooth' });
+    }
+</script>
+</body>
+</html>

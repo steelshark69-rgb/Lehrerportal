@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boxplots & Quartile</title>
+    <link rel="stylesheet" href="../../style.css">
+    
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+
+<header>
+    <h1>Boxplots & Quartile</h1>
+    <p>Datenverteilung und Streuung grafisch darstellen</p>
+</header>
+
+<div class="back-nav">
+    <a href="../index.html" class="btn-back">← Zurück zur Übersicht</a>
+</div>
+
+<main>
+    <section class="subject-group" id="theory-5point">
+        <div class="subject-header">
+            <span class="subject-badge bg-math">Kapitel 8.2</span>
+            <h2 style="margin: 0; color: var(--primary);">1. Die Kennzahlen für einen Boxplot</h2>
+        </div>
+        <p>Um einen Boxplot zeichnen zu können, müssen wir die Datenreihe zunächst sortieren und dann in vier gleich große "Viertel" (Quartile) unterteilen. Dazu benötigen wir <strong>fünf wichtige Kennzahlen</strong>:</p>
+        
+        <div style="background: var(--card-bg); border: 1px solid #e2e8f0; padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem;">
+            <ul style="line-height: 1.8;">
+                <li><strong>Minimum (\(x_{min}\)):</strong> Der kleinste Wert der Datenreihe.</li>
+                <li><strong>Erstes Quartil (\(q_1\)):</strong> Der Median der <em>unteren</em> Datenhälfte (25% der Werte sind kleiner oder gleich).</li>
+                <li><strong>Median (\(q_2\) oder \(\tilde{x}\)):</strong> Der mittlere Wert, der die Datenreihe halbiert (50% der Werte).</li>
+                <li><strong>Drittes Quartil (\(q_3\)):</strong> Der Median der <em>oberen</em> Datenhälfte (75% der Werte sind kleiner oder gleich).</li>
+                <li><strong>Maximum (\(x_{max}\)):</strong> Der größte Wert der Datenreihe.</li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="subject-group" id="theory-boxplot">
+        <div class="subject-header">
+            <span class="subject-badge bg-math">Kapitel 8.2</span>
+            <h2 style="margin: 0; color: var(--primary);">2. Aufbau eines Boxplots (Kastenschaubild)</h2>
+        </div>
+        <p>Der Boxplot (Kastenschaubild) visualisiert diese 5 Kennzahlen auf einem Zahlenstrahl. So lässt sich schnell erkennen, wo sich die Daten ballen und wie weit sie streuen.</p>
+        
+        
+
+        <div style="background: var(--bg); border-left: 4px solid var(--doc-blue); padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem;">
+            <h4 style="margin-top: 0; color: var(--primary);">Wie liest man die Box?</h4>
+            <p style="margin-bottom: 0;">
+                Die "Box" (Kasten) reicht vom ersten Quartil (\(q_1\)) bis zum dritten Quartil (\(q_3\)). 
+                <strong>In dieser Box liegen genau die mittleren 50% aller Daten!</strong> 
+                Der Strich in der Box markiert den Median. Die Linien nach außen ("Antennen" oder Whiskers) reichen bis zum Minimum und Maximum.
+            </p>
+        </div>
+        <p><strong>Die Spannweite:</strong> Abstand zwischen Maximum und Minimum (\(x_{max} - x_{min}\)).<br>
+        <strong>Die Quartilsabstand (Interquartilsabstand):</strong> Abstand zwischen \(q_3\) und \(q_1\) (Länge der Box).</p>
+    </section>
+
+    <section class="subject-group" id="labor">
+        <div class="subject-header">
+            <span class="subject-badge bg-info">Labor</span>
+            <h2 style="margin: 0; color: var(--primary);">Interaktiver Boxplot-Generator</h2>
+        </div>
+        <p>Gib eine Liste von Zahlen ein. Das Skript berechnet die 5-Punkte-Zusammenfassung und zeichnet automatisch den passenden Boxplot.</p>
+        
+        <div style="background: white; border: 2px solid var(--primary); padding: 1.5rem; border-radius: 12px;">
+            <div style="margin-bottom: 1.5rem;">
+                <label for="bpInput" style="font-weight: bold; display: block; margin-bottom: 0.5rem;">Deine Datenreihe (durch Kommas getrennt):</label>
+                <input type="text" id="bpInput" value="4, 12, 18, 22, 23, 26, 31, 35, 41, 48" placeholder="z.B. 10, 15, 12, 22, 18..." style="width: 100%; box-sizing: border-box; padding: 0.8rem; font-size: 1rem; border: 1px solid #e2e8f0; border-radius: 8px; font-family: inherit;">
+            </div>
+            
+            <button class="nav-toggle active" onclick="generateBoxplot()" style="border: none;">Boxplot zeichnen</button>
+
+            <div id="bpResults" style="display: none; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #e2e8f0;">
+                
+                <h4 style="color: var(--text-muted);">1. Die 5 Kennzahlen:</h4>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; text-align: center; margin-bottom: 2rem;">
+                    <div style="background: var(--bg); border: 1px solid #e2e8f0; padding: 1rem; border-radius: 8px;">
+                        <span style="color: var(--text-muted); font-size: 0.8rem;">Minimum</span><br>
+                        <strong style="font-size: 1.4rem; color: var(--primary);" id="bpMin">-</strong>
+                    </div>
+                    <div style="background: var(--bg); border: 1px solid #e2e8f0; padding: 1rem; border-radius: 8px;">
+                        <span style="color: var(--text-muted); font-size: 0.8rem;">1. Quartil (\(q_1\))</span><br>
+                        <strong style="font-size: 1.4rem; color: var(--doc-blue);" id="bpQ1">-</strong>
+                    </div>
+                    <div style="background: var(--bg); border: 1px solid #e2e8f0; padding: 1rem; border-radius: 8px;">
+                        <span style="color: var(--text-muted); font-size: 0.8rem;">Median</span><br>
+                        <strong style="font-size: 1.4rem; color: var(--xls-green);" id="bpMed">-</strong>
+                    </div>
+                    <div style="background: var(--bg); border: 1px solid #e2e8f0; padding: 1rem; border-radius: 8px;">
+                        <span style="color: var(--text-muted); font-size: 0.8rem;">3. Quartil (\(q_3\))</span><br>
+                        <strong style="font-size: 1.4rem; color: var(--html-orange);" id="bpQ3">-</strong>
+                    </div>
+                    <div style="background: var(--bg); border: 1px solid #e2e8f0; padding: 1rem; border-radius: 8px;">
+                        <span style="color: var(--text-muted); font-size: 0.8rem;">Maximum</span><br>
+                        <strong style="font-size: 1.4rem; color: var(--pdf-red);" id="bpMax">-</strong>
+                    </div>
+                </div>
+
+                <h4 style="color: var(--text-muted);">2. Grafische Darstellung (Kastenschaubild):</h4>
+                <div style="overflow-x: auto; background: var(--bg); padding: 1rem; border-radius: 8px; border: 1px solid #e2e8f0;">
+                    <svg id="svgBoxplot" width="100%" height="150" style="min-width: 600px;"></svg>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <p>Mathematik verstehen 4 | Beschreibende Statistik</p>
+</footer>
+
+<script>
+    // Funktion zum Parsen der Eingabe
+    function parseData(inputStr) {
+        let rawArr = inputStr.split(',');
+        let numArr = [];
+        for(let i=0; i<rawArr.length; i++) {
+            let val = parseFloat(rawArr[i].trim());
+            if(!isNaN(val)) {
+                numArr.push(val);
+            }
+        }
+        return numArr;
+    }
+
+    // Hilfsfunktion zur Berechnung des Medians eines Arrays
+    function getMedian(arr) {
+        if(arr.length === 0) return 0;
+        let mid = Math.floor(arr.length / 2);
+        if (arr.length % 2 === 0) {
+            return (arr[mid - 1] + arr[mid]) / 2;
+        } else {
+            return arr[mid];
+        }
+    }
+
+    // Hauptfunktion
+    function generateBoxplot() {
+        const inputStr = document.getElementById('bpInput').value;
+        let data = parseData(inputStr);
+        
+        if(data.length < 3) {
+            alert("Bitte gib mindestens 3 gültige Zahlen ein, um einen Boxplot zu erstellen.");
+            return;
+        }
+
+        // 1. Daten sortieren
+        data.sort((a, b) => a - b);
+
+        // 2. Kennzahlen berechnen
+        let min = data[0];
+        let max = data[data.length - 1];
+        let median = getMedian(data);
+        
+        // Quartile berechnen (Teilung in zwei Hälften)
+        let mid = Math.floor(data.length / 2);
+        let lowerHalf = data.slice(0, mid);
+        let upperHalf = (data.length % 2 === 0) ? data.slice(mid) : data.slice(mid + 1);
+        
+        let q1 = getMedian(lowerHalf);
+        let q3 = getMedian(upperHalf);
+
+        // 3. Werte in die HTML-Boxen schreiben
+        document.getElementById('bpMin').innerText = min.toFixed(2).replace('.00', '').replace('.', ',');
+        document.getElementById('bpQ1').innerText = q1.toFixed(2).replace('.00', '').replace('.', ',');
+        document.getElementById('bpMed').innerText = median.toFixed(2).replace('.00', '').replace('.', ',');
+        document.getElementById('bpQ3').innerText = q3.toFixed(2).replace('.00', '').replace('.', ',');
+        document.getElementById('bpMax').innerText = max.toFixed(2).replace('.00', '').replace('.', ',');
+
+        document.getElementById('bpResults').style.display = 'block';
+
+        // 4. SVG Boxplot zeichnen
+        drawSVGBoxplot(min, q1, median, q3, max);
+    }
+
+    function drawSVGBoxplot(min, q1, med, q3, max) {
+        const svg = document.getElementById('svgBoxplot');
+        // SVG leeren
+        svg.innerHTML = '';
+        
+        // Zeichenbereich definieren
+        const width = svg.clientWidth || 600;
+        const height = 150;
+        const padding = 50; // Rand links/rechts
+        const yCenter = 60; // Höhe des Boxplots
+        const boxHeight = 40;
+        
+        // Skalierung berechnen (X-Achse etwas breiter als Min/Max machen)
+        let span = max - min;
+        if(span === 0) span = 10;
+        let scaleMin = min - (span * 0.1);
+        let scaleMax = max + (span * 0.1);
+        let scaleSpan = scaleMax - scaleMin;
+
+        // Umrechnungsfunktion Wert -> Pixel
+        function getX(val) {
+            return padding + ((val - scaleMin) / scaleSpan) * (width - 2 * padding);
+        }
+
+        const xMin = getX(min);
+        const xQ1 = getX(q1);
+        const xMed = getX(med);
+        const xQ3 = getX(q3);
+        const xMax = getX(max);
+
+        // SVG-Elemente erstellen (Helfer-Funktion)
+        function createSVGElement(tag, attrs) {
+            let el = document.createElementNS("http://www.w3.org/2000/svg", tag);
+            for (let k in attrs) el.setAttribute(k, attrs[k]);
+            return el;
+        }
+
+        // --- Zahlenstrahl (X-Achse) ---
+        svg.appendChild(createSVGElement('line', { x1: padding, y1: 120, x2: width - padding, y2: 120, stroke: '#64748b', 'stroke-width': 2 }));
+        
+        // Ticks für Min, Max auf der Achse
+        let ticks = [
+            {val: min, label: min.toFixed(1).replace('.0', '')},
+            {val: max, label: max.toFixed(1).replace('.0', '')}
+        ];
+        
+        ticks.forEach(t => {
+            let tx = getX(t.val);
+            svg.appendChild(createSVGElement('line', { x1: tx, y1: 115, x2: tx, y2: 125, stroke: '#64748b', 'stroke-width': 2 }));
+            let text = createSVGElement('text', { x: tx, y: 140, 'text-anchor': 'middle', fill: '#64748b', 'font-family': 'sans-serif', 'font-size': '12px' });
+            text.textContent = t.label;
+            svg.appendChild(text);
+        });
+
+        // --- Boxplot zeichnen ---
+        // 1. Antennen (Whiskers)
+        svg.appendChild(createSVGElement('line', { x1: xMin, y1: yCenter, x2: xQ1, y2: yCenter, stroke: '#1e293b', 'stroke-width': 2 }));
+        svg.appendChild(createSVGElement('line', { x1: xQ3, y1: yCenter, x2: xMax, y2: yCenter, stroke: '#1e293b', 'stroke-width': 2 }));
+        
+        // 2. Minimum- und Maximum-Striche vertikal
+        svg.appendChild(createSVGElement('line', { x1: xMin, y1: yCenter - 10, x2: xMin, y2: yCenter + 10, stroke: '#1e293b', 'stroke-width': 2 }));
+        svg.appendChild(createSVGElement('line', { x1: xMax, y1: yCenter - 10, x2: xMax, y2: yCenter + 10, stroke: '#1e293b', 'stroke-width': 2 }));
+
+        // 3. Die Box (Q1 bis Q3)
+        svg.appendChild(createSVGElement('rect', {
+            x: xQ1, 
+            y: yCenter - boxHeight/2, 
+            width: Math.max(0, xQ3 - xQ1), 
+            height: boxHeight, 
+            fill: '#e0f2fe', // Hellblau, passend zum doc-blue
+            stroke: '#3b82f6', // doc-blue
+            'stroke-width': 2
+        }));
+
+        // 4. Der Median-Strich in der Box
+        svg.appendChild(createSVGElement('line', { 
+            x1: xMed, 
+            y1: yCenter - boxHeight/2, 
+            x2: xMed, 
+            y2: yCenter + boxHeight/2, 
+            stroke: '#ef4444', // pdf-red zur Hervorhebung
+            'stroke-width': 3 
+        }));
+    }
+
+    // Bei Fenstergrößenänderung SVG neu zeichnen, falls bereits sichtbar
+    window.addEventListener('resize', () => {
+        if(document.getElementById('bpResults').style.display === 'block') {
+            generateBoxplot();
+        }
+    });
+</script>
+
+</body>
+</html>

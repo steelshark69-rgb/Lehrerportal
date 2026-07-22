@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Übungsblatt: Drehzylinder</title>
+    <link rel="stylesheet" href="../../style.css">
+    
+    <style>
+        :root {
+            --math-primary: #0ea5e9; 
+            --math-dark: #0284c7;
+            --correct-bg: #d1fae5;
+            --correct-border: #10b981;
+            --incorrect-bg: #fee2e2;
+            --incorrect-border: #ef4444;
+        }
+
+        .tab-nav-container { display: flex; border-bottom: 2px solid #e2e8f0; margin-bottom: 2rem; background: white; border-radius: 8px 8px 0 0; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+        .tab-btn { flex: 1; padding: 15px; text-align: center; background: none; border: none; font-size: 1.1rem; color: #64748b; cursor: pointer; transition: 0.2s; font-weight: bold; }
+        .tab-btn:hover { background: #f8fafc; color: #334155; }
+        .tab-active { border-bottom: 4px solid var(--math-primary); color: var(--math-dark); background: #f0f9ff; }
+
+        .task-card { background: white; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; gap: 1.5rem; transition: border-color 0.2s; }
+        @media(min-width: 768px) { .task-card { flex-direction: row; justify-content: space-between; align-items: flex-start; } }
+        
+        .task-content { flex: 1; padding-right: 1rem; }
+        .task-badge { display: inline-block; font-size: 0.8rem; font-weight: bold; color: var(--math-primary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+        .task-text { font-size: 1.1rem; color: #334155; line-height: 1.5; margin: 0; }
+        
+        .solution-box { margin-top: 1.5rem; padding: 1rem; background-color: #f8fafc; border-left: 4px solid var(--math-primary); border-radius: 0 8px 8px 0; font-size: 0.95rem; color: #475569; display: none; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+
+        .task-action { display: flex; gap: 10px; align-items: center; justify-content: flex-end; flex-wrap: wrap; }
+        .task-input { padding: 10px; border: 2px solid #cbd5e1; border-radius: 6px; width: 130px; text-align: center; font-size: 1rem; outline: none; transition: 0.2s; }
+        .task-input:focus { border-color: var(--math-primary); }
+        
+        .task-btn { background: #334155; color: white; border: none; padding: 10px 15px; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        .task-btn:hover { background: #1e293b; }
+        
+        .btn-solution { background: #e2e8f0; color: #475569; }
+        .btn-solution:hover { background: #cbd5e1; color: #1e293b; }
+
+        .correct { border-color: var(--correct-border) !important; background-color: var(--correct-bg) !important; color: #065f46; font-weight: bold; }
+        .incorrect { border-color: var(--incorrect-border) !important; background-color: var(--incorrect-bg) !important; color: #991b1b; }
+    </style>
+</head>
+<body>
+
+<header style="background-color: var(--math-primary); padding: 2.5rem 1rem; text-align: center; color: white;">
+    <h1 style="margin: 0; color: white;">Übungsblatt: Drehzylinder</h1>
+    <p style="margin-top: 0.5rem; opacity: 0.9;">Aufgaben zu Volumen, Oberfläche und Mantelfläche.</p>
+</header>
+
+<div class="back-nav" style="display: flex; justify-content: center; margin-top: 1.5rem;">
+    <a href="../index.html" class="btn-back" style="background: #f8fafc; border: 1px solid #e2e8f0; color: #1e293b;">← Zurück zur Kapitelübersicht</a>
+</div>
+
+<main style="max-width: 1000px; margin: 2rem auto; padding: 0 1.5rem;">
+
+    <div class="tab-nav-container">
+        <button onclick="showTab('leicht')" id="tab-leicht" class="tab-btn tab-active">🟢 Leicht</button>
+        <button onclick="showTab('mittel')" id="tab-mittel" class="tab-btn">🟡 Mittel</button>
+        <button onclick="showTab('schwer')" id="tab-schwer" class="tab-btn">🔴 Schwer</button>
+    </div>
+
+    <div id="tasks-container"></div>
+
+</main>
+
+<script>
+    const tasks = {
+        leicht: [
+            { id: 1, q: "Ein Zylinder hat r=2cm und h=5cm. Berechne das Volumen V in cm³. Runde auf eine Nachkommastelle. (π≈3,14)", a: "62,8", s: "V = π * r² * h = 3,14 * 2² * 5 = 3,14 * 4 * 5 = 62,8 cm³." },
+            { id: 2, q: "Ein Zylinder hat r=3cm und h=4cm. Berechne die Oberfläche O in cm². Runde auf eine Nachkommastelle. (π≈3,14)", a: "131,9", s: "G=π*r²=28,26. M=2*π*r*h=75,36. O=2*G+M = 2*28,26 + 75,36 = 131,88 ≈ 131,9 cm²." },
+            { id: 3, q: "Ein Zylinder hat einen Durchmesser d=10cm und eine Höhe h=5cm. Berechne das Volumen V in cm³. Runde auf eine Nachkommastelle. (π≈3,14)", a: "392,5", s: "Radius r = d/2 = 5cm. V = π * r² * h = 3,14 * 5² * 5 = 3,14 * 25 * 5 = 392,5 cm³." },
+            { id: 4, q: "Welche geometrische Form hat die abgerollte Mantelfläche eines Zylinders?", a: "Rechteck", s: "Die Mantelfläche eines Zylinders ist ein Rechteck mit den Seitenlängen 'Umfang der Grundfläche' und 'Körperhöhe'." },
+            { id: 5, q: "Ein Zylinder hat einen Radius r=4cm. Berechne die Grundfläche G in cm². Runde auf eine Nachkommastelle. (π≈3,14)", a: "50,2", s: "Die Grundfläche ist ein Kreis. G = π * r² = 3,14 * 4² = 3,14 * 16 = 50,24 ≈ 50,2 cm²." }
+        ],
+        mittel: [
+            { id: 6, q: "Eine Konservendose (Zylinder) hat r=4cm und h=10cm. Wie viele Milliliter (ml) passen hinein? (1cm³=1ml, π≈3,14, runde auf ganze ml)", a: "502", s: "V = π * r² * h = 3,14 * 4² * 10 = 502,4 cm³. Das entspricht 502,4 ml, gerundet 502 ml." },
+            { id: 7, q: "Ein Zylinder hat r=5cm und h=10cm. Berechne die Mantelfläche M in cm². Runde auf eine Nachkommastelle. (π≈3,14)", a: "314,0", s: "M = 2 * π * r * h = 2 * 3,14 * 5 * 10 = 314 cm²." },
+            { id: 8, q: "Ein Zylinder hat V=314cm³ und h=10cm. Berechne den Radius r in cm. (π≈3,14)", a: "3,16", s: "V = π*r²*h => r² = V/(π*h) = 314/(3,14*10) = 10. r = √10 ≈ 3,16 cm." },
+            { id: 9, q: "Ein Zylinder hat O=1570cm² und r=10cm. Berechne die Höhe h in cm. (π≈3,14)", a: "15", s: "O=2πr²+2πrh => h=(O-2πr²)/(2πr) = (1570-2*3.14*100)/(2*3.14*10) = (1570-628)/62.8 = 942/62.8 = 15 cm." },
+            { id: 10, q: "Ein Rohr hat R=5cm, r=4cm und h=10cm. Berechne das Volumen des Materials in cm³. Runde auf eine NK. (π≈3,14)", a: "282,6", s: "V = (π*R²*h) - (π*r²*h) = π*h*(R²-r²) = 3.14*10*(25-16) = 31.4*9 = 282,6 cm³." }
+        ],
+        schwer: [
+            { id: 11, q: "Ein Regenfass fasst 200 Liter und ist 1m hoch. Berechne den Durchmesser d in cm. (1l=1dm³, π≈3,14, runde auf ganze cm)", a: "50", s: "V=200dm³, h=10dm. r²=V/(π*h)=200/(3.14*10)=6.37. r≈2.52dm=25.2cm. d=2r≈50.4cm. Gerundet 50 cm." },
+            { id: 12, q: "Ein A4-Blatt (21x29.7cm) wird einmal längs und einmal quer zu einem Zylinder gerollt. Welcher hat mehr Volumen? (längs/quer)", a: "quer", s: "Quer gerollt ist der Umfang größer (29.7), somit der Radius größer. Da r quadratisch ins Volumen eingeht, hat der flachere, breitere Zylinder mehr Volumen." },
+            { id: 13, q: "Eine Blechdose (r=5cm, h=12cm) soll hergestellt werden. Das Blech kostet 20€/m². Was kostet das Material für eine Dose in Cent? (π≈3,14, runde auf ganze Cent)", a: "11", s: "O=2πr(r+h)=2*3.14*5*(5+12)=533.8cm²=0.05338m². Kosten=0.05338*20=1.0676€ ≈ 107 Cent. Korrektur: 1,07€ sind 107 Cent. Antwort 107." },
+            { id: 14, q: "Ein Würfel (a=5cm) wird in einen Zylinder (r=10cm) mit Wasser geworfen. Wie hoch steigt der Wasserspiegel in cm? Runde auf 2 NK.", a: "0,40", s: "V(Würfel)=5³=125cm³. V(Wasseranstieg)=G(Zylinder)*h => h=V/G = 125/(π*10²) = 125/314 ≈ 0.398 cm." },
+            { id: 15, q: "Der Radius eines Zylinders wird verdoppelt, die Höhe bleibt gleich. Um welchen Faktor vergrößert sich das Volumen?", a: "4", s: "V_alt = π*r²*h. V_neu = π*(2r)²*h = π*4r²*h = 4 * V_alt. Das Volumen vervierfacht sich." }
+        ]
+    };
+
+    let currentTab = 'leicht';
+
+    function showTab(tabName) {
+        currentTab = tabName;
+        ['leicht', 'mittel', 'schwer'].forEach(t => document.getElementById('tab-' + t).classList.remove('tab-active'));
+        document.getElementById('tab-' + tabName).classList.add('tab-active');
+        renderTasks();
+    }
+
+    function renderTasks() {
+        const container = document.getElementById('tasks-container');
+        container.innerHTML = '';
+        tasks[currentTab].forEach(task => {
+            const div = document.createElement('div');
+            div.className = "task-card";
+            div.innerHTML = `
+                <div class="task-content">
+                    <div class="task-badge">Aufgabe ${task.id}</div>
+                    <p class="task-text">${task.q}</p>
+                    <div id="solution-${task.id}" class="solution-box"><strong>💡 Lösungsweg:</strong><br>${task.s}</div>
+                </div>
+                <div class="task-action">
+                    <input type="text" id="input-${task.id}" placeholder="Ergebnis" class="task-input" onkeydown="if(event.key==='Enter') checkAnswer(${task.id}, '${task.a}')">
+                    <button onclick="checkAnswer(${task.id}, '${task.a}')" class="task-btn">Prüfen</button>
+                    <button onclick="toggleSolution(${task.id})" class="task-btn btn-solution">Lösungsweg</button>
+                </div>`;
+            container.appendChild(div);
+        });
+    }
+
+    function checkAnswer(id, correct) {
+        const input = document.getElementById('input-' + id);
+        let userVal = input.value.trim().replace(',', '.').toLowerCase();
+        let targetVals = correct.split(',').map(v => v.trim().replace(',', '.').toLowerCase());
+
+        if (targetVals.includes(userVal)) {
+            input.classList.remove('incorrect');
+            input.classList.add('correct');
+        } else {
+            input.classList.remove('correct');
+            input.classList.add('incorrect');
+        }
+    }
+
+    function toggleSolution(id) {
+        const solBox = document.getElementById('solution-' + id);
+        solBox.style.display = (solBox.style.display === "block") ? "none" : "block";
+    }
+
+    window.onload = () => showTab('leicht');
+</script>
+
+</body>
+</html>

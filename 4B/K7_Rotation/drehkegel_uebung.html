@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Übungsblatt: Drehkegel</title>
+    <link rel="stylesheet" href="../../style.css">
+    
+    <style>
+        :root {
+            --math-primary: #0ea5e9; 
+            --math-dark: #0284c7;
+            --correct-bg: #d1fae5;
+            --correct-border: #10b981;
+            --incorrect-bg: #fee2e2;
+            --incorrect-border: #ef4444;
+        }
+
+        .tab-nav-container { display: flex; border-bottom: 2px solid #e2e8f0; margin-bottom: 2rem; background: white; border-radius: 8px 8px 0 0; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+        .tab-btn { flex: 1; padding: 15px; text-align: center; background: none; border: none; font-size: 1.1rem; color: #64748b; cursor: pointer; transition: 0.2s; font-weight: bold; }
+        .tab-btn:hover { background: #f8fafc; color: #334155; }
+        .tab-active { border-bottom: 4px solid var(--math-primary); color: var(--math-dark); background: #f0f9ff; }
+
+        .task-card { background: white; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; gap: 1.5rem; transition: border-color 0.2s; }
+        @media(min-width: 768px) { .task-card { flex-direction: row; justify-content: space-between; align-items: flex-start; } }
+        
+        .task-content { flex: 1; padding-right: 1rem; }
+        .task-badge { display: inline-block; font-size: 0.8rem; font-weight: bold; color: var(--math-primary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+        .task-text { font-size: 1.1rem; color: #334155; line-height: 1.5; margin: 0; }
+        
+        .solution-box { margin-top: 1.5rem; padding: 1rem; background-color: #f8fafc; border-left: 4px solid var(--math-primary); border-radius: 0 8px 8px 0; font-size: 0.95rem; color: #475569; display: none; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+
+        .task-action { display: flex; gap: 10px; align-items: center; justify-content: flex-end; flex-wrap: wrap; }
+        .task-input { padding: 10px; border: 2px solid #cbd5e1; border-radius: 6px; width: 130px; text-align: center; font-size: 1rem; outline: none; transition: 0.2s; }
+        .task-input:focus { border-color: var(--math-primary); }
+        
+        .task-btn { background: #334155; color: white; border: none; padding: 10px 15px; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        .task-btn:hover { background: #1e293b; }
+        
+        .btn-solution { background: #e2e8f0; color: #475569; }
+        .btn-solution:hover { background: #cbd5e1; color: #1e293b; }
+
+        .correct { border-color: var(--correct-border) !important; background-color: var(--correct-bg) !important; color: #065f46; font-weight: bold; }
+        .incorrect { border-color: var(--incorrect-border) !important; background-color: var(--incorrect-bg) !important; color: #991b1b; }
+    </style>
+</head>
+<body>
+
+<header style="background-color: var(--math-primary); padding: 2.5rem 1rem; text-align: center; color: white;">
+    <h1 style="margin: 0; color: white;">Übungsblatt: Drehkegel</h1>
+    <p style="margin-top: 0.5rem; opacity: 0.9;">Aufgaben zu Volumen und Eigenschaften von Kegeln.</p>
+</header>
+
+<div class="back-nav" style="display: flex; justify-content: center; margin-top: 1.5rem;">
+    <a href="../index.html" class="btn-back" style="background: #f8fafc; border: 1px solid #e2e8f0; color: #1e293b;">← Zurück zur Kapitelübersicht</a>
+</div>
+
+<main style="max-width: 1000px; margin: 2rem auto; padding: 0 1.5rem;">
+
+    <div class="tab-nav-container">
+        <button onclick="showTab('leicht')" id="tab-leicht" class="tab-btn tab-active">🟢 Leicht</button>
+        <button onclick="showTab('mittel')" id="tab-mittel" class="tab-btn">🟡 Mittel</button>
+        <button onclick="showTab('schwer')" id="tab-schwer" class="tab-btn">🔴 Schwer</button>
+    </div>
+
+    <div id="tasks-container"></div>
+
+</main>
+
+<script>
+    const tasks = {
+        leicht: [
+            { id: 1, q: "Ein Kegel hat r=3cm und h=5cm. Berechne das Volumen V in cm³. Runde auf eine NK. (π≈3,14)", a: "47,1", s: "V = (π*r²*h)/3 = (3,14*3²*5)/3 = (3,14*9*5)/3 = 141,3/3 = 47,1 cm³." },
+            { id: 2, q: "Ein Kegel hat d=10cm und h=6cm. Berechne das Volumen V in cm³. Runde auf eine NK. (π≈3,14)", a: "157,0", s: "r=d/2=5cm. V = (π*r²*h)/3 = (3,14*5²*6)/3 = (3,14*25*6)/3 = 471/3 = 157 cm³." },
+            { id: 3, q: "Ein Kegel hat r=5cm. Berechne die Grundfläche G in cm². Runde auf eine NK. (π≈3,14)", a: "78,5", s: "G = π*r² = 3,14*5² = 3,14*25 = 78,5 cm²." },
+            { id: 4, q: "Ein Zylinder hat V=90cm³. Welches Volumen hat ein Kegel mit gleicher Grundfläche und Höhe?", a: "30", s: "Die Drittel-Regel besagt V(Kegel) = V(Zylinder)/3. Also 90/3 = 30 cm³." },
+            { id: 5, q: "Wahr oder Falsch: Das Volumen eines Kegels ist die Hälfte des Volumens eines Zylinders mit gleicher Grundfläche und Höhe.", a: "Falsch", s: "Falsch, es ist ein Drittel (1/3), nicht die Hälfte." }
+        ],
+        mittel: [
+            { id: 6, q: "Eine Eistüte (Kegel) hat r=2,5cm und h=12cm. Wie viele ml Eis passen hinein? (1cm³=1ml, π≈3,14, runde auf ganze ml)", a: "79", s: "V=(π*r²*h)/3 = (3,14*2,5²*12)/3 = 235,5/3 = 78,5 cm³. Das sind 78,5 ml, gerundet 79 ml." },
+            { id: 7, q: "Ein Kegel hat V=314cm³ und r=5cm. Berechne die Höhe h in cm. (π≈3,14)", a: "12", s: "V=(G*h)/3 => h=3V/G = 3V/(πr²) = (3*314)/(3,14*25) = 942/78,5 = 12 cm." },
+            { id: 8, q: "Ein Kegel hat V=100cm³ und h=10cm. Berechne den Radius r in cm. Runde auf eine NK. (π≈3,14)", a: "3,1", s: "V=(πr²h)/3 => r²=3V/(πh) = 300/(3,14*10) = 9,55. r=√9,55 ≈ 3,09 ≈ 3,1 cm." },
+            { id: 9, q: "Berechne die Länge der Seitenlinie s eines Kegels mit r=3cm und h=4cm.", a: "5", s: "Mit Pythagoras: s² = r² + h² = 3² + 4² = 9 + 16 = 25. s = √25 = 5 cm." },
+            { id: 10, q: "Berechne die Mantelfläche M eines Kegels mit r=5cm und s=10cm. Runde auf eine NK. (π≈3,14)", a: "157,0", s: "M = π * r * s = 3,14 * 5 * 10 = 157 cm²." }
+        ],
+        schwer: [
+            { id: 11, q: "Ein kegelförmiger Sandhaufen hat V=5m³ und r=2m. Wie hoch ist er in m? Runde auf zwei NK. (π≈3,14)", a: "1,19", s: "h=3V/(πr²) = (3*5)/(3,14*2²) = 15/12,56 ≈ 1,194 m." },
+            { id: 12, q: "Ein Sektglas ist kegelförmig (d=5cm, h=8cm). Wie viel cl passen hinein? (1cl=10cm³, π≈3,14, runde auf eine NK)", a: "5,2", s: "r=2,5cm. V=(π*2,5²*8)/3 ≈ 52,33 cm³. Das sind 5,233 cl, gerundet 5,2 cl." },
+            { id: 13, q: "Aus einem Halbkreis (r=10cm) wird ein Kegel geformt. Welchen Radius hat der Kegel? Runde auf eine NK.", a: "5,0", s: "Der Umfang des Halbkreises (U=πr=31,4) wird zum Umfang der Kegel-Grundfläche (U=2πr_kegel). r_kegel = U/(2π) = (π*10)/(2π) = 5 cm." },
+            { id: 14, q: "Ein Würfel (a=10cm) wird zu einem Kegel mit maximalem Volumen gedrechselt. Welches Volumen hat der Kegel? Runde auf ganze cm³.", a: "262", s: "Der Kegel hat r=5cm und h=10cm. V=(π*5²*10)/3 ≈ 261,67 cm³." },
+            { id: 15, q: "Die Höhe eines Kegels wird verdoppelt, der Radius bleibt gleich. Um welchen Faktor vergrößert sich das Volumen?", a: "2", s: "V_alt=(G*h)/3. V_neu=(G*2h)/3 = 2 * (G*h)/3 = 2 * V_alt. Das Volumen verdoppelt sich." }
+        ]
+    };
+
+    let currentTab = 'leicht';
+
+    function showTab(tabName) {
+        currentTab = tabName;
+        ['leicht', 'mittel', 'schwer'].forEach(t => document.getElementById('tab-' + t).classList.remove('tab-active'));
+        document.getElementById('tab-' + tabName).classList.add('tab-active');
+        renderTasks();
+    }
+
+    function renderTasks() {
+        const container = document.getElementById('tasks-container');
+        container.innerHTML = '';
+        tasks[currentTab].forEach(task => {
+            const div = document.createElement('div');
+            div.className = "task-card";
+            div.innerHTML = `
+                <div class="task-content">
+                    <div class="task-badge">Aufgabe ${task.id}</div>
+                    <p class="task-text">${task.q}</p>
+                    <div id="solution-${task.id}" class="solution-box"><strong>💡 Lösungsweg:</strong><br>${task.s}</div>
+                </div>
+                <div class="task-action">
+                    <input type="text" id="input-${task.id}" placeholder="Ergebnis" class="task-input" onkeydown="if(event.key==='Enter') checkAnswer(${task.id}, '${task.a}')">
+                    <button onclick="checkAnswer(${task.id}, '${task.a}')" class="task-btn">Prüfen</button>
+                    <button onclick="toggleSolution(${task.id})" class="task-btn btn-solution">Lösungsweg</button>
+                </div>`;
+            container.appendChild(div);
+        });
+    }
+
+    function checkAnswer(id, correct) {
+        const input = document.getElementById('input-' + id);
+        let userVal = input.value.trim().replace(',', '.').toLowerCase();
+        let targetVals = correct.split(',').map(v => v.trim().replace(',', '.').toLowerCase());
+
+        if (targetVals.includes(userVal)) {
+            input.classList.remove('incorrect');
+            input.classList.add('correct');
+        } else {
+            input.classList.remove('correct');
+            input.classList.add('incorrect');
+        }
+    }
+
+    function toggleSolution(id) {
+        const solBox = document.getElementById('solution-' + id);
+        solBox.style.display = (solBox.style.display === "block") ? "none" : "block";
+    }
+
+    window.onload = () => showTab('leicht');
+</script>
+
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fotogalerie - Die besten Momente</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Lora:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'wedding-green': '#2c4c3b', 
+                        'wedding-gold': '#d4af37',
+                        'wedding-bg': '#fcfcfc',
+                    },
+                    fontFamily: {
+                        'serif': ['Lora', 'serif'],
+                        'sans': ['Outfit', 'sans-serif'],
+                        'handwriting': ['Caveat', 'cursive'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            background-color: #f4f1ea;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23dcd5c6' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+        }
+
+        /* Polaroid Basis (Rotation wird in Tailwind individuell gesetzt) */
+        .polaroid {
+            background: white;
+            padding: 0.75rem 0.75rem 1rem 0.75rem;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+            display: flex;
+            flex-direction: column;
+        }
+    </style>
+</head>
+
+<body class="font-sans text-gray-800 min-h-screen flex flex-col items-center justify-center p-4 md:p-8 relative">
+
+    <!-- Container der gedruckt werden soll -->
+    <main id="content-to-print" class="w-full max-w-6xl mx-auto glass-effect bg-white/95 rounded-3xl overflow-hidden relative z-10 my-8">
+        
+        <!-- Dekorativer Balken oben -->
+        <div class="h-4 w-full bg-gradient-to-r from-wedding-green via-wedding-gold to-wedding-green"></div>
+
+        <div class="p-8 md:p-12">
+            
+            <div class="text-center mb-12">
+                <h1 class="font-serif text-4xl lg:text-5xl font-bold text-wedding-green mb-4">
+                    Die besten Momente
+                </h1>
+                <p class="font-handwriting text-3xl text-wedding-gold">
+                    Unvergessliche Zeiten!
+                </p>
+                <div class="w-24 h-1 bg-wedding-gold/30 mx-auto mt-6 rounded-full"></div>
+            </div>
+
+            <!-- 4 Spalten auf Desktop, 2 auf Tablets, 1 auf Handys -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10">
+                
+                <!-- Bild 1 -->
+                <div class="polaroid relative transform -rotate-2">
+                    <img src="boot.jpeg" alt="Boot" class="w-full h-56 object-cover rounded-sm border border-gray-200">
+                    <div class="w-full text-center mt-4 mb-2 flex-grow flex items-center justify-center">
+                        <span class="font-handwriting text-2xl text-gray-700 block">Im selben Boot ⚓</span>
+                    </div>
+                    <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-16 h-6 bg-white/40 border border-white/60 shadow-sm backdrop-blur-sm transform rotate-2"></div>
+                </div>
+
+                <!-- Bild 2 -->
+                <div class="polaroid relative transform rotate-1">
+                    <img src="serioes.jpeg" alt="Seriös" class="w-full h-56 object-cover rounded-sm border border-gray-200">
+                    <div class="w-full text-center mt-4 mb-2 flex-grow flex items-center justify-center">
+                        <span class="font-handwriting text-2xl text-gray-700 block -rotate-1">Ausnahmsweise seriös</span>
+                    </div>
+                    <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-16 h-6 bg-white/40 border border-white/60 shadow-sm backdrop-blur-sm transform -rotate-1"></div>
+                </div>
+
+                <!-- Bild 3 -->
+                <div class="polaroid relative transform -rotate-1">
+                    <img src="gruppe3.jpeg" alt="Gruppe 3" class="w-full h-56 object-cover rounded-sm border border-gray-200">
+                    <div class="w-full text-center mt-4 mb-2 flex-grow flex items-center justify-center">
+                        <span class="font-handwriting text-2xl text-gray-700 block rotate-1">Auf das Brautpaar! 🥂</span>
+                    </div>
+                    <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-16 h-6 bg-white/40 border border-white/60 shadow-sm backdrop-blur-sm transform rotate-1"></div>
+                </div>
+
+                <!-- Bild 4 -->
+                <div class="polaroid relative transform rotate-2">
+                    <img src="mafia.jpeg" alt="Mafia" class="w-full h-56 object-cover rounded-sm border border-gray-200">
+                    <div class="w-full text-center mt-4 mb-2 flex-grow flex items-center justify-center">
+                        <span class="font-handwriting text-2xl text-gray-700 block">Die Paten 😎</span>
+                    </div>
+                    <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-16 h-6 bg-white/40 border border-white/60 shadow-sm backdrop-blur-sm transform -rotate-2"></div>
+                </div>
+
+                <!-- Bild 5 -->
+                <div class="polaroid relative transform rotate-1">
+                    <img src="steffkathiernst.jpeg" alt="Dream Team" class="w-full h-56 object-cover rounded-sm border border-gray-200" style="object-position: top;">
+                    <div class="w-full text-center mt-4 mb-2 flex-grow flex items-center justify-center">
+                        <span class="font-handwriting text-2xl text-gray-700 block -rotate-1">Dream Team ❄️</span>
+                    </div>
+                    <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-16 h-6 bg-white/40 border border-white/60 shadow-sm backdrop-blur-sm transform -rotate-1"></div>
+                </div>
+
+                <!-- Bild 6 -->
+                <div class="polaroid relative transform -rotate-2">
+                    <img src="steffmischa.jpeg" alt="Steff und Mischa" class="w-full h-56 object-cover rounded-sm border border-gray-200">
+                    <div class="w-full text-center mt-4 mb-2 flex-grow flex items-center justify-center">
+                        <span class="font-handwriting text-2xl text-gray-700 block rotate-1">Mischa 🤜🤛 Steff</span>
+                    </div>
+                    <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-16 h-6 bg-white/40 border border-white/60 shadow-sm backdrop-blur-sm transform rotate-2"></div>
+                </div>
+
+                <div class="polaroid relative transform -rotate-3">
+                    <img src="suppatruppn.jpeg" alt="Steff und Mischa" class="w-full h-56 object-cover rounded-sm border border-gray-200">
+                    <div class="w-full text-center mt-4 mb-2 flex-grow flex items-center justify-center">
+                        <span class="font-handwriting text-2xl text-gray-700 block rotate-1">Bist du deppad - suppa Truppn ⚽</span>
+                    </div>
+                    <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-16 h-6 bg-white/40 border border-white/60 shadow-sm backdrop-blur-sm transform rotate-2"></div>
+                </div>
+                <!-- Bild 7 -->
+                <div class="polaroid relative transform -rotate-1">
+                    <img src="italo.jpeg" alt="Italo" class="w-full h-56 object-cover rounded-sm border border-gray-200">
+                    <div class="w-full text-center mt-4 mb-2 flex-grow flex items-center justify-center">
+                        <span class="font-handwriting text-2xl text-gray-700 block">Dolce Vita 🍕</span>
+                    </div>
+                    <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-16 h-6 bg-white/40 border border-white/60 shadow-sm backdrop-blur-sm transform rotate-1"></div>
+                </div>
+
+                <!-- Bild 8 (Langer Text) -->
+                <div class="polaroid relative transform rotate-3">
+                    <img src="wippe1.jpeg" alt="Wippe 1" class="w-full h-56 object-cover rounded-sm border border-gray-200">
+                    <div class="w-full text-center mt-4 mb-2 flex-grow flex items-center justify-center">
+                        <span class="font-handwriting text-xl text-gray-700 block -rotate-1 leading-tight">Lieber Steff, du bringst uns nicht aus dem Gleichgewicht - egal, wie schwer du’s uns machst!</span>
+                    </div>
+                    <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-16 h-6 bg-white/40 border border-white/60 shadow-sm backdrop-blur-sm transform -rotate-3"></div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    
+</body>
+</html>

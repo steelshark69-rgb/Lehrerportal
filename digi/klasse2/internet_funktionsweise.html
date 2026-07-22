@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wie funktioniert das Internet? | Digitale Grundbildung</title>
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+        .component-card {
+            background: white;
+            border-left: 4px solid #f59e0b;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .component-card h3 {
+            color: #f59e0b;
+            margin-top: 0;
+        }
+        .component-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .protocol-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        .protocol-table th,
+        .protocol-table td {
+            border: 1px solid #e2e8f0;
+            padding: 0.75rem;
+            text-align: left;
+        }
+        .protocol-table th {
+            background: #fef3c7;
+            color: #92400e;
+            font-weight: 700;
+        }
+        .protocol-table tr:nth-child(even) {
+            background: #fffbeb;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>🌐 Wie funktioniert das Internet?</h1>
+    <p>6. Klasse | Digitale Grundbildung</p>
+    <div class="back-nav">
+        <a href="../index.html" class="btn-back">⬅ Zurück</a>
+    </div>
+</header>
+
+<main style="max-width: 900px; margin: 0 auto; padding: 2rem 1rem;">
+
+    <section>
+        <h2>Das OSI 5-Schichten-Modell</h2>
+        <p>Das Internet funktioniert nach einem <strong>standardisierten Modell aus 5 Schichten</strong>. Jede Schicht hat eine spezifische Aufgabe:</p>
+    </section>
+
+    <section>
+        <h2>Die 5 Schichten des Internets</h2>
+
+        <div class="component-card">
+            <div class="component-icon">💾</div>
+            <h3>1. Physische Schicht (Physical Layer)</h3>
+            <p><strong>Was passiert:</strong> Die Hardware - Kabel, WLAN, Kupferleitungen, Glasfasern</p>
+            <p><strong>Aufgabe:</strong> Übertragung von rohen Bits (0 und 1) als elektrische oder optische Signale</p>
+            <p><strong>Beispiele:</strong> Ethernet-Kabel, WLAN-Wellen</p>
+        </div>
+
+        <div class="component-card">
+            <div class="component-icon">🔗</div>
+            <h3>2. Sicherungsschicht (Data Link Layer)</h3>
+            <p><strong>Was passiert:</strong> Daten werden in "Frames" verpackt</p>
+            <p><strong>Aufgabe:</strong> Sichere Übertragung zwischen direkt verbundenen Geräten</p>
+            <p><strong>Beispiel:</strong> MAC-Adressen (z.B. 00:1A:2B:3C:4D:5E)</p>
+        </div>
+
+        <div class="component-card">
+            <div class="component-icon">🗺️</div>
+            <h3>3. Vermittlungsschicht (Network Layer)</h3>
+            <p><strong>Was passiert:</strong> Routing - der Weg der Daten wird entschieden</p>
+            <p><strong>Aufgabe:</strong> Daten von A zu B über das beste Netzwerk finden</p>
+            <p><strong>Wichtig:</strong> IP-Adressen (z.B. 192.168.1.1)</p>
+        </div>
+
+        <div class="component-card">
+            <div class="component-icon">🤝</div>
+            <h3>4. Transportschicht (Transport Layer)</h3>
+            <p><strong>Was passiert:</strong> Kommunikation zwischen Programmen</p>
+            <p><strong>Aufgabe:</strong> Sicherstellen, dass Daten vollständig und korrekt ankommen</p>
+            <p><strong>Protokolle:</strong> TCP (zuverlässig), UDP (schnell)</p>
+        </div>
+
+        <div class="component-card">
+            <div class="component-icon">🎯</div>
+            <h3>5. Anwendungsschicht (Application Layer)</h3>
+            <p><strong>Was passiert:</strong> Das, was du siehst!</p>
+            <p><strong>Aufgabe:</strong> Bereitstellung von Diensten für Anwendungen</p>
+            <p><strong>Beispiele:</strong> HTTP (Web), HTTPS (sicheres Web), Email, FTP</p>
+        </div>
+    </section>
+
+    <section>
+        <h2>So lädt eine Website Schritt für Schritt</h2>
+
+        <div style="background: #fff7ed; padding: 1.5rem; border-radius: 8px; margin: 1rem 0;">
+            <h3>Beispiel: Du öffnest www.google.com</h3>
+            <ol style="line-height: 2;">
+                <li><strong>Schritt 1:</strong> Du gibst die URL in den Browser ein</li>
+                <li><strong>Schritt 2:</strong> Der Browser fragt einen <strong>DNS-Server</strong> "Welche IP-Adresse hat google.com?"</li>
+                <li><strong>Schritt 3:</strong> Der DNS antwortet, z.B. "142.251.32.46"</li>
+                <li><strong>Schritt 4:</strong> Der Browser sendet einen <strong>HTTP-Request</strong> an diese IP-Adresse</li>
+                <li><strong>Schritt 5:</strong> Der Server bearbeitet die Anfrage</li>
+                <li><strong>Schritt 6:</strong> Der Server sendet die <strong>HTML-Datei</strong> zurück</li>
+                <li><strong>Schritt 7:</strong> Der Browser lädt zusätzlich CSS, JavaScript und Bilder</li>
+                <li><strong>Schritt 8:</strong> Der Browser rendert (zeichnet) die Seite auf deinem Bildschirm</li>
+            </ol>
+        </div>
+    </section>
+
+    <section>
+        <h2>Wichtige Protokolle der Anwendungsschicht</h2>
+        <table class="protocol-table">
+            <tr>
+                <th>Protokoll</th>
+                <th>Funktion</th>
+                <th>Beispiel</th>
+                <th>Port</th>
+            </tr>
+            <tr>
+                <td><strong>HTTP</strong></td>
+                <td>Websites laden (unverschlüsselt)</td>
+                <td>http://example.com</td>
+                <td>80</td>
+            </tr>
+            <tr>
+                <td><strong>HTTPS</strong></td>
+                <td>Websites laden (verschlüsselt)</td>
+                <td>https://example.com</td>
+                <td>443</td>
+            </tr>
+            <tr>
+                <td><strong>DNS</strong></td>
+                <td>Domain in IP-Adresse übersetzen</td>
+                <td>example.com → 93.184.216.34</td>
+                <td>53</td>
+            </tr>
+            <tr>
+                <td><strong>TCP</strong></td>
+                <td>Zuverlässige Datenübertragung</td>
+                <td>Dateidownload</td>
+                <td>variabel</td>
+            </tr>
+            <tr>
+                <td><strong>IP</strong></td>
+                <td>Routing durch das Internet</td>
+                <td>192.168.1.1</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td><strong>FTP</strong></td>
+                <td>Dateiübertragung</td>
+                <td>Datei-Upload auf Server</td>
+                <td>21</td>
+            </tr>
+            <tr>
+                <td><strong>SMTP</strong></td>
+                <td>Email versenden</td>
+                <td>Outgoing Mail</td>
+                <td>587</td>
+            </tr>
+            <tr>
+                <td><strong>POP3/IMAP</strong></td>
+                <td>Email empfangen</td>
+                <td>Eingehende Mail</td>
+                <td>110/143</td>
+            </tr>
+        </table>
+    </section>
+
+    <section style="background: #e0f2fe; padding: 1.5rem; border-radius: 8px; margin-top: 2rem;">
+        <h3>💡 Merksätze</h3>
+        <p><strong>Die 5 Schichten:</strong> Physisch → Sicherung → Vermittlung → Transport → Anwendung</p>
+        <p><strong>Analog zu Post:</strong> Briefkasten → Briefträger → Route → LKW → Zusteller → du</p>
+        <p><strong>DNS = Telefonbuch:</strong> Es übersetzt Namen (google.com) in Nummern (IP-Adresse)</p>
+    </section>
+
+</main>
+
+<footer style="text-align: center; padding: 2rem; color: #64748b; font-size: 0.9rem;">
+    &copy; 2026 | GvP | Mag. Schweitzer | Digitale Grundbildung
+</footer>
+
+</body>
+</html>

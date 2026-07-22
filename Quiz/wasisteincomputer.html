@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Computer-Technologie Quiz</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --success: #10b981;
+            --error: #ef4444;
+            --background: #f3f4f6;
+            --card-bg: #ffffff;
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: var(--card-bg);
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Header & Progress */
+        header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-container {
+            height: 6px;
+            background-color: #e5e7eb;
+            border-radius: 3px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: var(--primary);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* Screens */
+        .screen {
+            padding: 2rem;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .screen.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Start Screen */
+        .input-group {
+            width: 100%;
+            margin-bottom: 1.5rem;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--primary);
+        }
+
+        /* Quiz Area */
+        .question-meta {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .question-text {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .option-btn {
+            background: #fff;
+            border: 2px solid #e5e7eb;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: left;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            background-color: #f9fafb;
+            border-color: var(--primary);
+        }
+
+        .option-btn.correct {
+            background-color: #d1fae5;
+            border-color: var(--success);
+            color: #065f46;
+        }
+
+        .option-btn.wrong {
+            background-color: #fee2e2;
+            border-color: var(--error);
+            color: #991b1b;
+        }
+
+        .option-btn:disabled {
+            cursor: default;
+        }
+
+        /* Controls */
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 1.5rem;
+            width: 100%;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn:disabled {
+            background-color: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        .btn.secondary {
+            background-color: #4b5563;
+            margin-top: 10px;
+        }
+
+        /* Result Screen */
+        .result-card {
+            background: #f8fafc;
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            text-align: center;
+            width: 100%;
+            margin-bottom: 1.5rem;
+        }
+
+        .score-big {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin: 0.5rem 0;
+        }
+
+        .grade-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        .status-msg {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        /* Responsive */
+        @media (min-width: 640px) {
+            .options-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .btn {
+                width: auto;
+                min-width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div id="start-screen" class="screen active">
+            <h1>Computer-Technologie</h1>
+            <p style="color: var(--text-muted); margin-bottom: 2rem;">Eine umfassende Einführung</p>
+            
+            <div class="input-group">
+                <label for="username" style="display:block; margin-bottom:8px; font-weight:600;">Dein Name:</label>
+                <input type="text" id="username" placeholder="Max Mustermann" autocomplete="off">
+            </div>
+
+            <button class="btn" onclick="startQuiz()">Quiz Starten</button>
+        </div>
+
+        <div id="quiz-screen" class="screen">
+            <header style="width:100%; padding: 0 0 1.5rem 0; border:none;">
+                <h1>Wissens-Check</h1>
+                <div class="progress-container">
+                    <div id="progress-bar" class="progress-bar"></div>
+                </div>
+            </header>
+
+            <div class="question-meta">
+                <span id="question-counter">Frage 1 von 15</span>
+                <span id="difficulty-badge">Level: Leicht</span>
+            </div>
+
+            <div class="question-text" id="question-text">
+                Platzhalter Frage?
+            </div>
+
+            <div class="options-grid" id="options-container">
+                </div>
+
+            <button id="next-btn" class="btn" style="display: none;" onclick="nextQuestion()">Nächste Frage</button>
+        </div>
+
+        <div id="result-screen" class="screen">
+            <h1>Ergebnis</h1>
+            
+            <div id="result-capture-area" class="result-card">
+                <p style="color: var(--text-muted);">Quiz-Teilnehmer</p>
+                <h3 id="result-name" style="margin-bottom: 1rem;">Name</h3>
+                
+                <hr style="border:0; border-top:1px solid #e2e8f0; margin: 1rem 0;">
+
+                <div class="score-big" id="result-score">0%</div>
+                <div id="result-grade" class="grade-badge" style="background:#e5e7eb; color:#374151;">Note</div>
+                <p id="result-points">0 von 15 Punkten</p>
+                <p style="font-size: 0.8rem; margin-top: 1rem; color: #9ca3af;">Datum: <span id="result-date"></span></p>
+            </div>
+
+            <div id="email-status" class="status-msg">Ergebnis wird gesendet...</div>
+
+            <button class="btn" onclick="downloadScreenshot()">📸 Screenshot speichern</button>
+            <button class="btn secondary" onclick="location.reload()">Quiz neu starten</button>
+        </div>
+    </div>
+
+    <script>
+        // --- KONFIGURATION ---
+        const EMAILJS_PUBLIC_KEY = "HnZ28X9AihlD5y9XH";
+        const EMAILJS_SERVICE_ID = "service_qoofink";
+        const EMAILJS_TEMPLATE_ID = "template_cu0x1bc";
+
+        // --- DATENBASIS ---
+        // 5 Leicht, 5 Mittel, 5 Schwer
+        const questionsPool = [
+            // LEICHT (5)
+            {
+                question: "Welche Komponente wird als das 'Gehirn' des Computers bezeichnet?",
+                options: ["Festplatte (HDD)", "Prozessor (CPU)", "Grafikkarte (GPU)", "Netzteil"],
+                correct: 1,
+                level: "Leicht"
+            },
+            {
+                question: "Wofür steht die Abkürzung RAM?",
+                options: ["Read Access Memory", "Random Access Memory", "Rapid Action Module", "Real Application Memory"],
+                correct: 1,
+                level: "Leicht"
+            },
+            {
+                question: "Welches Gerät ist ein klassisches Eingabegerät?",
+                options: ["Monitor", "Drucker", "Tastatur", "Lautsprecher"],
+                correct: 2,
+                level: "Leicht"
+            },
+            {
+                question: "Was ist eine essentielle Sicherheitsmaßnahme für Online-Konten?",
+                options: ["Passwort auf einem Zettel notieren", "Überall das gleiche Passwort nutzen", "Multi-Faktor-Authentifizierung", "Niemals ausloggen"],
+                correct: 2,
+                level: "Leicht"
+            },
+            {
+                question: "Welches Betriebssystem wird im Text als Beispiel für Systemsoftware genannt?",
+                options: ["Photoshop", "Windows", "Word", "Excel"],
+                correct: 1,
+                level: "Leicht"
+            },
+            // MITTEL (5)
+            {
+                question: "In welchem Jahrzehnt wurde der Mikroprozessor erfunden?",
+                options: ["1950er", "1960er", "1970er", "1990er"],
+                correct: 2,
+                level: "Mittel"
+            },
+            {
+                question: "Was ist ein Hauptvorteil von Cloud-Computing laut Text?",
+                options: ["Funktioniert nur ohne Internet", "Skalierbarkeit des Speichers", "Daten werden nur lokal gespeichert", "Langsamere Zugriffszeiten"],
+                correct: 1,
+                level: "Mittel"
+            },
+            {
+                question: "Was versteht man unter 'Phishing'?",
+                options: ["Verschlüsseln von Daten gegen Lösegeld", "Betrügerische E-Mails zur Datengewinnung", "Das Angeln nach Netzwerkkabeln", "Ein Virus, der Hardware zerstört"],
+                correct: 1,
+                level: "Mittel"
+            },
+            {
+                question: "Welche Technologie ermöglicht Maschinen das Lernen von Mustern und Zusammenhängen?",
+                options: ["Neuronale Netze", "Blockchains", "Firewalls", "HTML"],
+                correct: 0,
+                level: "Mittel"
+            },
+            {
+                question: "Welche maximale Übertragungsgeschwindigkeit wird für Glasfaser im Text genannt?",
+                options: ["250 Mbit/s", "1 Gbit/s", "10 Gbit/s", "20 Gbit/s"],
+                correct: 2,
+                level: "Mittel"
+            },
+            // SCHWER (5)
+            {
+                question: "Welches Protokoll ermöglicht die standardisierte Kommunikation zwischen Milliarden Geräten weltweit?",
+                options: ["HTTP", "TCP/IP", "DNS", "VPN"],
+                correct: 1,
+                level: "Schwer"
+            },
+            {
+                question: "Welche Software-Ebene befindet sich direkt über der Hardware-Steuerung?",
+                options: ["Anwendungsebene", "Middleware", "Betriebssystem", "Firmware"],
+                correct: 3,
+                level: "Schwer"
+            },
+            {
+                question: "Wie hoch ist die genannte Maximalgeschwindigkeit für 5G Mobilfunk?",
+                options: ["1 Gbit/s", "5 Gbit/s", "10 Gbit/s", "20 Gbit/s"],
+                correct: 3,
+                level: "Schwer"
+            },
+            {
+                question: "Was bedeutet das 'Pay-as-you-go' Modell im Kontext der Cloud?",
+                options: ["Man zahlt nur für genutzte Ressourcen", "Man zahlt eine feste Jahresgebühr", "Man muss vorab Hardware kaufen", "Der Zugriff ist kostenlos"],
+                correct: 0,
+                level: "Schwer"
+            },
+            {
+                question: "Was ist das Kernziel von Industrie 4.0 in der Fertigung?",
+                options: ["Abschaffung aller Computer", "Intelligente Fabriken und Vernetzung", "Rückkehr zur Handarbeit", "Verzicht auf das Internet"],
+                correct: 1,
+                level: "Schwer"
+            }
+        ];
+
+        // --- ZUSTANDSVARIABLEN ---
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let userName = "";
+        let shuffledQuestions = [];
+
+        // --- INITIALISIERUNG ---
+        (function() {
+            emailjs.init(EMAILJS_PUBLIC_KEY);
+        })();
+
+        // --- LOGIK ---
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function startQuiz() {
+            const input = document.getElementById('username');
+            if (input.value.trim() === "") {
+                alert("Bitte gib deinen Namen ein.");
+                return;
+            }
+            userName = input.value.trim();
+            
+            // Fragen mischen
+            shuffledQuestions = shuffleArray([...questionsPool]);
+            currentQuestionIndex = 0;
+            score = 0;
+
+            // UI Wechsel
+            document.getElementById('start-screen').classList.remove('active');
+            document.getElementById('quiz-screen').classList.add('active');
+
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            const q = shuffledQuestions[currentQuestionIndex];
+            
+            // Update UI Metadaten
+            document.getElementById('question-counter').innerText = `Frage ${currentQuestionIndex + 1} von ${shuffledQuestions.length}`;
+            document.getElementById('difficulty-badge').innerText = `Level: ${q.level}`;
+            document.getElementById('progress-bar').style.width = `${(currentQuestionIndex / shuffledQuestions.length) * 100}%`;
+            
+            // Text und Buttons
+            document.getElementById('question-text').innerText = q.question;
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            // Buttons erstellen
+            q.options.forEach((opt, index) => {
+                const btn = document.createElement('button');
+                btn.classList.add('option-btn');
+                btn.innerText = opt;
+                btn.onclick = () => checkAnswer(index, q.correct, btn);
+                optionsContainer.appendChild(btn);
+            });
+
+            document.getElementById('next-btn').style.display = 'none';
+        }
+
+        function checkAnswer(selectedIndex, correctIndex, clickedBtn) {
+            const buttons = document.querySelectorAll('.option-btn');
+            
+            // Alle Buttons deaktivieren
+            buttons.forEach((btn, idx) => {
+                btn.disabled = true;
+                if (idx === correctIndex) {
+                    btn.classList.add('correct'); // Immer die richtige Lösung anzeigen
+                }
+            });
+
+            if (selectedIndex === correctIndex) {
+                // Richtig
+                score++;
+            } else {
+                // Falsch
+                clickedBtn.classList.add('wrong');
+            }
+
+            // Nächster Button sichtbar machen
+            document.getElementById('next-btn').style.display = 'block';
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < shuffledQuestions.length) {
+                loadQuestion();
+            } else {
+                finishQuiz();
+            }
+        }
+
+        function finishQuiz() {
+            document.getElementById('quiz-screen').classList.remove('active');
+            document.getElementById('result-screen').classList.add('active');
+            document.getElementById('progress-bar').style.width = '100%';
+
+            // Berechnungen
+            const total = shuffledQuestions.length;
+            const percentage = Math.round((score / total) * 100);
+            let gradeText = "";
+            let gradeColor = "";
+            let bgBadge = "";
+
+            // Notenschlüssel
+            if (percentage < 50) {
+                gradeText = "Nicht genügend";
+                gradeColor = "#dc2626";
+                bgBadge = "#fee2e2";
+            } else if (percentage <= 63) {
+                gradeText = "Genügend";
+                gradeColor = "#d97706";
+                bgBadge = "#fef3c7";
+            } else if (percentage <= 77) {
+                gradeText = "Befriedigend";
+                gradeColor = "#2563eb";
+                bgBadge = "#dbeafe";
+            } else if (percentage <= 89) {
+                gradeText = "Gut";
+                gradeColor = "#059669";
+                bgBadge = "#d1fae5";
+            } else {
+                gradeText = "Sehr gut";
+                gradeColor = "#059669";
+                bgBadge = "#d1fae5"; // Dunkleres Grün oder Gold
+            }
+
+            // UI Füllen
+            document.getElementById('result-name').innerText = userName;
+            document.getElementById('result-score').innerText = `${percentage}%`;
+            document.getElementById('result-points').innerText = `${score} von ${total} Punkten`;
+            document.getElementById('result-date').innerText = new Date().toLocaleString('de-AT');
+            
+            const badge = document.getElementById('result-grade');
+            badge.innerText = gradeText;
+            badge.style.backgroundColor = bgBadge;
+            badge.style.color = gradeColor;
+
+            // Email Senden
+            sendResultEmail(percentage, gradeText);
+        }
+
+        function sendResultEmail(percentage, grade) {
+            const statusEl = document.getElementById('email-status');
+            
+            const params = {
+                quiz_name: "Quiz: Computer-Technologie",
+                from_name: userName,
+                score: `${score} von ${shuffledQuestions.length} (${percentage}%)`,
+                message: `Zeitstempel: ${new Date().toLocaleString('de-AT')} | Note: ${grade}`
+            };
+
+            emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, params)
+                .then(function(response) {
+                    console.log('SUCCESS!', response.status, response.text);
+                    statusEl.innerText = "Ergebnis wurde erfolgreich an den Lehrer gesendet.";
+                    statusEl.style.color = "var(--success)";
+                }, function(error) {
+                    console.log('FAILED...', error);
+                    statusEl.innerText = "Fehler beim Senden des Ergebnisses.";
+                    statusEl.style.color = "var(--error)";
+                    alert("Achtung: Das Ergebnis konnte nicht automatisch gesendet werden. Bitte mache einen Screenshot.");
+                });
+        }
+
+        function downloadScreenshot() {
+            const element = document.getElementById('result-capture-area');
+            
+            html2canvas(element, { scale: 2 }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = `Quiz-Ergebnis_${userName}.png`;
+                link.href = canvas.toDataURL();
+                link.click();
+            }).catch(err => {
+                console.error("Screenshot failed", err);
+                alert("Screenshot konnte nicht erstellt werden.");
+            });
+        }
+    </script>
+</body>
+</html>

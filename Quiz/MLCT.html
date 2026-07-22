@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ML & CT Theorie Quiz</title>
+    <style>
+        :root {
+            --primary: #007AFF; /* iOS Blue */
+            --bg: #F2F2F7;
+            --card: #FFFFFF;
+            --text: #000000;
+            --success: #34C759;
+            --error: #FF3B30;
+            --radius: 12px;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            margin: 0;
+            padding: 20px;
+            color: var(--text);
+            -webkit-tap-highlight-color: transparent;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: var(--card);
+            padding: 24px;
+            border-radius: var(--radius);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        h1, h2 { margin-top: 0; }
+        
+        /* Input Optimization for iOS to prevent zoom */
+        input[type="text"] {
+            font-size: 16px; 
+            padding: 12px;
+            width: 100%;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            -webkit-appearance: none;
+        }
+
+        /* Button Optimization for Touch Targets (min 44px) */
+        button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px 20px;
+            font-size: 17px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            min-height: 44px;
+            transition: opacity 0.2s;
+            touch-action: manipulation;
+        }
+
+        button:active { opacity: 0.7; }
+        button:disabled { background-color: #ccc; cursor: not-allowed; }
+
+        .hidden { display: none; }
+
+        /* Quiz UI */
+        #timer-box {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: var(--error);
+            margin-bottom: 15px;
+            padding: 10px;
+            background: #ffecec;
+            border-radius: 8px;
+        }
+
+        .question-box {
+            font-size: 1.1em;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option-btn {
+            background-color: #f0f0f0;
+            color: black;
+            text-align: left;
+            border: 2px solid transparent;
+        }
+
+        .option-btn.correct { background-color: var(--success); color: white; border-color: var(--success); }
+        .option-btn.wrong { background-color: var(--error); color: white; border-color: var(--error); }
+
+        /* Result UI */
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border-left-color: var(--primary);
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .stat-box {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-size: 0.9em;
+        }
+    </style>
+    
+    <!-- External Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+
+    <div class="container" id="app">
+        <!-- SCREEN 1: START -->
+        <div id="start-screen">
+            <h1>Quiz: ML & CT Theorie</h1>
+            <p>15 Fragen | Zeitlimit: 7:30 Min</p>
+            <p><small>Themen: Computational Thinking, KI Grundlagen, Machine Learning</small></p>
+            
+            <input type="text" id="username" placeholder="Vorname & 1. Buchstabe Nachname" required>
+            <div style="text-align: left; margin-bottom: 20px; font-size: 0.9em; color: #666;">
+                <ul>
+                    <li>15 Fragen (Leicht/Mittel/Schwer)</li>
+                    <li>Note wird automatisch berechnet</li>
+                    <li>Ergebnis wird an die Lehrkraft gesendet</li>
+                </ul>
+            </div>
+            <button onclick="startQuiz()">Quiz Starten</button>
+        </div>
+
+        <!-- SCREEN 2: QUIZ -->
+        <div id="quiz-screen" class="hidden">
+            <div id="timer-box">Zeit: <span id="time-display">07:30</span></div>
+            <div style="margin-bottom: 10px; font-size: 0.9em; color: #666;">
+                Frage <span id="current-q-num">1</span> von 15
+            </div>
+            <div id="question-text" class="question-box"></div>
+            <div id="options-container" class="options-grid"></div>
+            <button id="next-btn" class="hidden" onclick="nextQuestion()" style="margin-top: 20px;">Nächste Frage</button>
+        </div>
+
+        <!-- SCREEN 3: RESULT -->
+        <div id="result-screen" class="hidden">
+            <h2>Ergebnis</h2>
+            <div id="result-content">
+                <p><strong>Name:</strong> <span id="res-name"></span></p>
+                <div class="stat-box">
+                    <p>Punkte: <span id="res-score"></span> / 15</p>
+                    <p>Prozent: <span id="res-percent"></span>%</p>
+                    <h3 style="margin: 10px 0;">Note: <span id="res-grade"></span></h3>
+                    <p id="timeout-msg" style="color: red; display: none;">ZEIT ABGELAUFEN!</p>
+                </div>
+            </div>
+            
+            <div id="processing-status">
+                <div class="spinner"></div>
+                <p>Verarbeite Ergebnisse & sende an Lehrkraft...</p>
+            </div>
+            <div id="final-msg" class="hidden">
+                <p style="color: var(--success); font-weight: bold;">Fertig! Ergebnis gespeichert.</p>
+                <button onclick="location.reload()">Neustart</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- KONFIGURATION ---
+        const CONFIG = {
+            totalQuestions: 15,
+            timePerQuestion: 30, // Sekunden
+            emailService: "service_qoofink",
+            emailTemplate: "template_cu0x1bc",
+            publicKey: "HnZ28X9AihlD5y9XH"
+        };
+
+        // --- FRAGEN POOL (Basierend auf digisw.neocities.org Inhalt) ---
+        const questionsPool = [
+            // LEICHT (5)
+            { q: "Was ist Computational Thinking?", a: "Problemlösungsmethode für Computer", options: ["Problemlösungsmethode für Computer", "Eine Programmiersprache", "Hardware-Reparatur", "Nur Mathematik"], diff: "Leicht" },
+            { q: "Was bedeutet 'Decomposition'?", a: "Zerlegung in Teilprobleme", options: ["Zerlegung in Teilprobleme", "Daten löschen", "Muster erkennen", "Code kompilieren"], diff: "Leicht" },
+            { q: "Was ist ein Algorithmus?", a: "Eine Schritt-für-Schritt Anleitung", options: ["Eine Schritt-für-Schritt Anleitung", "Ein Computerfehler", "Ein Roboter", "Eine Datenbank"], diff: "Leicht" },
+            { q: "Welches ist ein Beispiel für KI im Alltag?", a: "Sprachassistenten (Siri, Alexa)", options: ["Sprachassistenten (Siri, Alexa)", "Ein Taschenrechner", "Eine mechanische Uhr", "Ein Buch"], diff: "Leicht" },
+            { q: "Wofür steht 'AI'?", a: "Artificial Intelligence", options: ["Artificial Intelligence", "Automatic Internet", "Apple Interface", "Algorithm Integration"], diff: "Leicht" },
+
+            // MITTEL (5)
+            { q: "Was ist 'Pattern Recognition'?", a: "Muster und Ähnlichkeiten finden", options: ["Muster und Ähnlichkeiten finden", "Passwörter knacken", "Bilder zeichnen", "Hardwarebau"], diff: "Mittel" },
+            { q: "Was unterscheidet Weak AI von Strong AI?", a: "Spezifische Aufgaben vs. Bewusstsein", options: ["Spezifische Aufgaben vs. Bewusstsein", "Stromverbrauch", "Internetgeschwindigkeit", "Größe des Computers"], diff: "Mittel" },
+            { q: "Was benötigt Machine Learning zwingend?", a: "Trainingsdaten", options: ["Trainingsdaten", "Einen Roboter-Körper", "Windows 95", "Eine Webcam"], diff: "Mittel" },
+            { q: "Was passiert beim 'Supervised Learning'?", a: "Lernen mit gelabelten Daten (Vorgabe)", options: ["Lernen mit gelabelten Daten (Vorgabe)", "Lernen ohne Ziel", "Belohnungssystem", "Zufälliges Raten"], diff: "Mittel" },
+            { q: "Was ist der Turing-Test?", a: "Test auf menschenähnliche Intelligenz", options: ["Test auf menschenähnliche Intelligenz", "Ein Virentest", "Ein Geschwindigkeitstest", "Ein Mathetest"], diff: "Mittel" },
+
+            // SCHWER (5)
+            { q: "Was bedeutet 'Abstraction' im CT-Kontext?", a: "Weglassen unnötiger Details", options: ["Weglassen unnötiger Details", "Hinzufügen von Farben", "Kopieren von Code", "Alles exakt beschreiben"], diff: "Schwer" },
+            { q: "Was ist 'Overfitting' bei ML?", a: "Modell lernt Auswendig statt Zusammenhänge", options: ["Modell lernt Auswendig statt Zusammenhänge", "Zu wenig Daten", "Computer wird zu heiß", "Internet ist zu langsam"], diff: "Schwer" },
+            { q: "Was ist 'Bias' in KI-Daten?", a: "Verzerrung oder Vorurteile in Daten", options: ["Verzerrung oder Vorurteile in Daten", "Ein Virus", "Ein Hardware-Stecker", "Ein Programmierbefehl"], diff: "Schwer" },
+            { q: "Wie funktioniert 'Reinforcement Learning'?", a: "Durch Belohnung und Bestrafung", options: ["Durch Belohnung und Bestrafung", "Durch Bilder", "Durch Texteingabe", "Gar nicht"], diff: "Schwer" },
+            { q: "Was ist das 'Black Box' Problem bei Neuronalen Netzen?", a: "Entscheidungsweg ist nicht nachvollziehbar", options: ["Entscheidungsweg ist nicht nachvollziehbar", "Gehäuse ist schwarz", "Stromausfall", "Nur nachts nutzbar"], diff: "Schwer" }
+        ];
+
+        // --- STATE ---
+        let state = {
+            questions: [],
+            currentIdx: 0,
+            score: 0,
+            timeLeft: CONFIG.totalQuestions * CONFIG.timePerQuestion,
+            timerInterval: null,
+            userName: "",
+            isTimeout: false
+        };
+
+        // --- INIT ---
+        (function() {
+            try {
+                emailjs.init(CONFIG.publicKey);
+            } catch(e) {
+                console.error("EmailJS Init Error", e);
+            }
+        })();
+
+        // --- LOGIC ---
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function startQuiz() {
+            const nameInput = document.getElementById('username').value.trim();
+            if(nameInput.length < 2) {
+                alert("Bitte gib deinen Vornamen und den ersten Buchstaben des Nachnamens ein.");
+                return;
+            }
+            state.userName = nameInput;
+
+            // Prepare Questions (Shuffle options internally first)
+            let processedPool = questionsPool.map(q => {
+                return { ...q, options: shuffle([...q.options]) };
+            });
+            // Shuffle order
+            state.questions = shuffle(processedPool).slice(0, CONFIG.totalQuestions);
+
+            // Switch Screen
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('hidden');
+
+            renderQuestion();
+            startTimer();
+        }
+
+        function startTimer() {
+            updateTimeDisplay();
+            state.timerInterval = setInterval(() => {
+                state.timeLeft--;
+                updateTimeDisplay();
+                
+                if(state.timeLeft <= 0) {
+                    clearInterval(state.timerInterval);
+                    state.isTimeout = true;
+                    finishQuiz();
+                }
+            }, 1000);
+        }
+
+        function updateTimeDisplay() {
+            const m = Math.floor(state.timeLeft / 60);
+            const s = state.timeLeft % 60;
+            document.getElementById('time-display').innerText = 
+                `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+        }
+
+        function renderQuestion() {
+            const q = state.questions[state.currentIdx];
+            document.getElementById('current-q-num').innerText = state.currentIdx + 1;
+            document.getElementById('question-text').innerText = q.q;
+            
+            const container = document.getElementById('options-container');
+            container.innerHTML = '';
+
+            q.options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerText = opt;
+                btn.onclick = () => handleAnswer(btn, opt, q.a);
+                container.appendChild(btn);
+            });
+
+            document.getElementById('next-btn').classList.add('hidden');
+        }
+
+        function handleAnswer(btn, selected, correct) {
+            // Disable all buttons
+            const buttons = document.querySelectorAll('.option-btn');
+            buttons.forEach(b => b.disabled = true);
+
+            if(selected === correct) {
+                btn.classList.add('correct');
+                state.score++;
+            } else {
+                btn.classList.add('wrong');
+                // Show correct one
+                buttons.forEach(b => {
+                    if(b.innerText === correct) b.classList.add('correct');
+                });
+            }
+
+            document.getElementById('next-btn').classList.remove('hidden');
+        }
+
+        function nextQuestion() {
+            state.currentIdx++;
+            if(state.currentIdx < state.questions.length) {
+                renderQuestion();
+            } else {
+                finishQuiz();
+            }
+        }
+
+        function getGrade(percent) {
+            if(percent >= 90) return "Sehr gut aufgepasst";
+            if(percent >= 78) return "Gut aufgepasst";
+            if(percent >= 64) return "Befriedigend aufgepasst";
+            if(percent >= 50) return "Genügend aufgepasst";
+            return "Nicht genügend aufgepasst";
+        }
+
+        function finishQuiz() {
+            clearInterval(state.timerInterval);
+            document.getElementById('quiz-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+
+            const percent = Math.round((state.score / CONFIG.totalQuestions) * 100);
+            const grade = getGrade(percent);
+
+            document.getElementById('res-name').innerText = state.userName;
+            document.getElementById('res-score').innerText = state.score;
+            document.getElementById('res-percent').innerText = percent;
+            document.getElementById('res-grade').innerText = grade;
+            
+            if(state.isTimeout) {
+                const msg = document.getElementById('timeout-msg');
+                msg.style.display = 'block';
+                msg.innerText += " (Bearbeitung abgebrochen)";
+            }
+
+            processResults(grade, percent);
+        }
+
+        async function processResults(grade, percent) {
+            // 1. Screenshot
+            try {
+                const canvas = await html2canvas(document.getElementById('result-content'), { scale: 2 });
+                const image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+                
+                // Auto Download Link
+                const link = document.createElement('a');
+                link.download = `Quiz_Ergebnis_${state.userName}.png`;
+                link.href = image;
+                link.click();
+
+            } catch(e) {
+                console.error("Screenshot error:", e);
+            }
+
+            // 2. EmailJS
+            const params = {
+                quiz_name: "Quiz: ML & CT Theorie",
+                from_name: state.userName,
+                score: `${state.score} / ${CONFIG.totalQuestions} (${percent}%)`,
+                message: `Note: ${grade} | Zeit abgelaufen: ${state.isTimeout ? 'Ja' : 'Nein'}`
+            };
+
+            emailjs.send(CONFIG.emailService, CONFIG.emailTemplate, params)
+                .then(function() {
+                    document.getElementById('processing-status').classList.add('hidden');
+                    document.getElementById('final-msg').classList.remove('hidden');
+                })
+                .catch(function(error) {
+                    alert("Fehler: " + JSON.stringify(error));
+                    document.getElementById('processing-status').innerHTML = "<p style='color:red'>Fehler beim Senden. Bitte Screenshot manuell speichern.</p>";
+                });
+        }
+    </script>
+</body>
+</html>

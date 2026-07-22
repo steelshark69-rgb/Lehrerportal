@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Datenbanken 5 & 6: SQL Basics</title>
+    <link rel="stylesheet" href="../../style.css">
+    
+    <style>
+        /* Lokales CSS für Lesbarkeit und Interaktivität */
+        body {
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #2d3748;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Navigation Styles */
+        .nav-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #f8fafc;
+            padding: 10px 15px;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+            margin-bottom: 20px;
+            margin-top: 20px;
+        }
+        .nav-btn {
+            text-decoration: none; background-color: #e2e8f0; color: #334155;
+            padding: 8px 16px; border-radius: 5px; font-weight: 600; transition: 0.2s;
+        }
+        .nav-btn:hover { background-color: #cbd5e1; color: #0f172a; }
+        .nav-btn.primary { background-color: #3b82f6; color: white; }
+        .nav-btn.primary:hover { background-color: #2563eb; }
+        .nav-info { font-size: 0.9em; color: #64748b; font-weight: bold; }
+
+        h1 { color: #1a202c; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; }
+        h2 { color: #2b6cb0; margin-top: 30px; }
+        h3 { color: #4a5568; }
+        
+        .theory-box {
+            background-color: #ebf8ff; border-left: 5px solid #3182ce;
+            padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0;
+        }
+        
+        .sql-keyword { color: #2563eb; font-weight: bold; font-family: monospace; font-size: 1.1em;}
+        .sql-string { color: #16a34a; font-family: monospace; }
+        
+        .task-container {
+            background-color: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px;
+            padding: 25px; margin: 30px 0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        /* SQL Console Styles */
+        .console-container {
+            background: #1e293b; border-radius: 8px; padding: 20px; color: #f8fafc;
+            margin-top: 15px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+        }
+        .console-input-wrapper { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
+        .prompt { font-weight: bold; color: #10b981; font-family: monospace; font-size: 1.2em;}
+        input[type="text"].sql-input {
+            flex-grow: 1; background: transparent; border: none; border-bottom: 1px solid #64748b;
+            color: #f8fafc; font-family: monospace; font-size: 1.2em; padding: 5px; outline: none;
+        }
+        input[type="text"].sql-input:focus { border-bottom: 1px solid #3b82f6; }
+        
+        button.run-btn {
+            background-color: #10b981; color: white; border: none; padding: 8px 15px;
+            border-radius: 5px; cursor: pointer; font-weight: bold; font-family: monospace; transition: 0.3s;
+        }
+        button.run-btn:hover { background-color: #059669; }
+
+        .result-table { width: 100%; border-collapse: collapse; margin-top: 15px; background: #fff; color: #333; font-size: 0.9em; border-radius: 4px; overflow: hidden;}
+        .result-table th, .result-table td { border: 1px solid #cbd5e1; padding: 8px; text-align: left; }
+        .result-table th { background-color: #e2e8f0; font-weight: bold; }
+        
+        .error-msg { color: #f87171; font-family: monospace; margin-top: 10px; display: none; }
+    </style>
+</head>
+<body>
+
+    <nav class="nav-bar">
+        <a href="einheit3_4.html" class="nav-btn">🔙 Einheit 3 & 4</a>
+        <span class="nav-info">Einheit 5 & 6 von 8</span>
+        <a href="einheit7_8.html" class="nav-btn primary">Einheit 7 & 8 🔜</a>
+    </nav>
+
+    <h1>3. Die erste Datenbank & SQL</h1>
+    <p>Wir haben unsere Tabellen auf Papier gezeichnet. Wenn wir diese in den Computer übertragen, müssen wir dem System sagen, <strong>welche Art von Daten</strong> in eine Spalte kommt. Ein Name ist schließlich Text, ein Preis ist eine Zahl.</p>
+
+    <div class="theory-box">
+        <h3>Die wichtigsten Datentypen</h3>
+        <ul>
+            <li><strong>INTEGER:</strong> Ganze Zahlen (z.B. für IDs oder Stückzahlen).</li>
+            <li><strong>TEXT / VARCHAR:</strong> Zeichenketten, also Text (z.B. Namen, Adressen).</li>
+            <li><strong>REAL / DECIMAL:</strong> Kommazahlen (z.B. für Preise oder die MwSt).</li>
+        </ul>
+    </div>
+
+    <h2>Wie spricht man mit einer Datenbank?</h2>
+    <p>Um Daten abzufragen, brauchen wir eine Sprache, die die Datenbank versteht. Diese Sprache heißt <strong>SQL</strong> (Structured Query Language). Der wichtigste Befehl, um Daten auszulesen, ist der <strong>SELECT</strong>-Befehl.</p>
+
+    
+
+    <div class="theory-box">
+        <h3>Der Bauplan einer SELECT-Abfrage</h3>
+        <p>Eine Abfrage ist fast wie ein normaler englischer Satz aufgebaut:</p>
+        <ul>
+            <li><span class="sql-keyword">SELECT</span> (Zeige mir) -> <em>Hier sagst du, welche Spalten du sehen willst. Ein <strong>*</strong> bedeutet "alle Spalten".</em></li>
+            <li><span class="sql-keyword">FROM</span> (Aus der Tabelle) -> <em>Hier nennst du den Namen der Tabelle.</em></li>
+            <li><span class="sql-keyword">WHERE</span> (Wo / Unter der Bedingung) -> <em>Hier filterst du die Daten (z.B. Preis < 50).</em></li>
+            <li><span class="sql-keyword">ORDER BY</span> (Sortiert nach) -> <em>Hier legst du fest, ob aufsteigend oder absteigend sortiert wird.</em></li>
+        </ul>
+    </div>
+
+    <div class="task-container">
+        <h2>Aufgabe: Deine erste echte SQL-Konsole</h2>
+        <p>Willkommen im Backend unseres US-Sports-Shops! Die Datenbank heißt <span class="sql-keyword">produkte</span>. Oben siehst du, wie die Tabelle aktuell aussieht. Darunter ist dein Terminal.</p>
+        
+        <p><strong>Die gesamte Tabelle <code>produkte</code>:</strong></p>
+        <div id="full-db-view"></div>
+
+        <h3>Versuche nun, folgende Aufgaben im Terminal zu lösen:</h3>
+        <ol>
+            <li>Zeige nur die Spalten "artikel" und "preis" von allen Produkten an. <br><em>Tipp:</em> <span class="sql-keyword">SELECT</span> artikel, preis <span class="sql-keyword">FROM</span> produkte</li>
+            <li>Finde alle Produkte der Kategorie "Kleidung". <br><em>Tipp:</em> <span class="sql-keyword">... WHERE</span> kategorie = 'Kleidung'</li>
+            <li>Zeige alle Produkte an und sortiere sie nach Preis. <br><em>Tipp:</em> <span class="sql-keyword">... ORDER BY</span> preis</li>
+        </ol>
+
+        <div class="console-container">
+            <div class="console-input-wrapper">
+                <span class="prompt">SQL></span>
+                <input type="text" id="sql-input" class="sql-input" placeholder="SELECT * FROM produkte" autocomplete="off" spellcheck="false" onkeydown="if(event.key === 'Enter') executeSQL()">
+                <button class="run-btn" onclick="executeSQL()">Ausführen</button>
+            </div>
+            <div id="error-output" class="error-msg"></div>
+            <div id="result-output">
+                </div>
+        </div>
+    </div>
+
+    <nav class="nav-bar">
+        <a href="einheit3_4.html" class="nav-btn">🔙 Zurück zu Einheit 3&4</a>
+        <a href="einheit7_8.html" class="nav-btn primary">Weiter zu Einheit 7 & 8 🔜</a>
+    </nav>
+
+    <script>
+        // Unsere lokale In-Memory Datenbankbank für die Schüler
+        const db = [
+            { id: 1, artikel: "Packers Trikot", kategorie: "Kleidung", preis: 120.00, mwst: 20 },
+            { id: 2, artikel: "NFL Spielball", kategorie: "Zubehör", preis: 35.50, mwst: 20 },
+            { id: 3, artikel: "Packers Cap", kategorie: "Kleidung", preis: 25.00, mwst: 20 },
+            { id: 4, artikel: "Energy Drink", kategorie: "Lebensmittel", preis: 2.50, mwst: 10 },
+            { id: 5, artikel: "Stadion-Jacke", kategorie: "Kleidung", preis: 85.00, mwst: 20 }
+        ];
+
+        // Zeigt die komplette DB als Referenz an
+        function renderFullDB() {
+            let html = '<table class="result-table"><tr><th>id</th><th>artikel</th><th>kategorie</th><th>preis</th><th>mwst (%)</th></tr>';
+            db.forEach(row => {
+                html += `<tr><td>${row.id}</td><td>${row.artikel}</td><td>${row.kategorie}</td><td>${row.preis.toFixed(2)} €</td><td>${row.mwst}</td></tr>`;
+            });
+            html += '</table>';
+            document.getElementById('full-db-view').innerHTML = html;
+        }
+
+        // Mini SQL Parser in JavaScript
+        function executeSQL() {
+            const query = document.getElementById('sql-input').value.trim();
+            const errorOut = document.getElementById('error-output');
+            const resultOut = document.getElementById('result-output');
+            
+            errorOut.style.display = 'none';
+            resultOut.innerHTML = '';
+
+            if (query === '') return;
+
+            // Regex für einfaches SELECT ... FROM ... WHERE ... ORDER BY
+            const sqlRegex = /^SELECT\s+(.+?)\s+FROM\s+(\w+)(?:\s+WHERE\s+(.+?))?(?:\s+ORDER BY\s+(.+?))?\s*$/i;
+            const match = query.match(sqlRegex);
+
+            if (!match) {
+                showError("Syntax-Fehler! Hast du SELECT ... FROM ... richtig geschrieben?");
+                return;
+            }
+
+            const selectCols = match[1].split(',').map(s => s.trim().toLowerCase());
+            const table = match[2].toLowerCase();
+            const whereClause = match[3];
+            const orderByClause = match[4] ? match[4].trim().toLowerCase() : null;
+
+            if (table !== 'produkte') {
+                showError(`Tabelle '${table}' existiert nicht. Versuche 'produkte'.`);
+                return;
+            }
+
+            // Kopie der Daten für die Verarbeitung
+            let resultData = [...db];
+
+            // 1. WHERE Filterung
+            if (whereClause) {
+                // Erlaubt z.B. kategorie = 'Kleidung' oder preis < 50
+                const whereRegex = /^(\w+)\s*(=|<|>)\s*(.+)$/;
+                const wMatch = whereClause.match(whereRegex);
+                
+                if(wMatch) {
+                    const col = wMatch[1].toLowerCase();
+                    const op = wMatch[2];
+                    let val = wMatch[3].replace(/['"]/g, '').trim(); // Entferne Anführungszeichen
+                    
+                    if (!db[0].hasOwnProperty(col)) {
+                        showError(`Spalte '${col}' existiert nicht in WHERE.`);
+                        return;
+                    }
+
+                    // Datentyp anpassen falls es eine Zahl ist
+                    if(!isNaN(val)) val = parseFloat(val);
+
+                    resultData = resultData.filter(row => {
+                        if (op === '=') return row[col].toString().toLowerCase() === val.toString().toLowerCase();
+                        if (op === '<') return row[col] < val;
+                        if (op === '>') return row[col] > val;
+                        return true;
+                    });
+                } else {
+                    showError("WHERE-Bedingung nicht verstanden. Nutze z.B. kategorie = 'Kleidung' oder preis < 50");
+                    return;
+                }
+            }
+
+            // 2. ORDER BY Sortierung
+            if (orderByClause) {
+                if (!db[0].hasOwnProperty(orderByClause)) {
+                    showError(`Spalte '${orderByClause}' existiert nicht in ORDER BY.`);
+                    return;
+                }
+                resultData.sort((a, b) => {
+                    if (a[orderByClause] < b[orderByClause]) return -1;
+                    if (a[orderByClause] > b[orderByClause]) return 1;
+                    return 0;
+                });
+            }
+
+            // 3. SELECT Spalten filtern & Tabelle rendern
+            renderResultTable(resultData, selectCols);
+        }
+
+        function renderResultTable(data, cols) {
+            if (data.length === 0) {
+                document.getElementById('result-output').innerHTML = "<p style='color: #10b981;'>Abfrage erfolgreich, aber keine passenden Daten gefunden.</p>";
+                return;
+            }
+
+            let showAll = cols.includes('*');
+            let actualCols = showAll ? Object.keys(data[0]) : cols;
+
+            // Spaltennamen validieren
+            if (!showAll) {
+                for (let c of actualCols) {
+                    if (!data[0].hasOwnProperty(c)) {
+                        showError(`Spalte '${c}' existiert nicht in der Tabelle.`);
+                        return;
+                    }
+                }
+            }
+
+            let html = '<table class="result-table"><tr>';
+            actualCols.forEach(c => { html += `<th>${c}</th>`; });
+            html += '</tr>';
+
+            data.forEach(row => {
+                html += '<tr>';
+                actualCols.forEach(c => { 
+                    let val = row[c];
+                    // Formatierung
+                    if (c === 'preis') val = parseFloat(val).toFixed(2) + ' €';
+                    html += `<td>${val}</td>`; 
+                });
+                html += '</tr>';
+            });
+            html += '</table>';
+            
+            document.getElementById('result-output').innerHTML = html;
+        }
+
+        function showError(msg) {
+            const errorOut = document.getElementById('error-output');
+            errorOut.innerText = "SQL Error: " + msg;
+            errorOut.style.display = 'block';
+        }
+
+        // Init
+        window.onload = renderFullDB;
+    </script>
+</body>
+</html>

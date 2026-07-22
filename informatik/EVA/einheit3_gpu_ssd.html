@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Einheit 3: GPU & SSD</title>
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+        :root { --it-primary: #107c41; --it-dark: #064e3b; --bg-gray: #f8fafc; }
+        .module-container { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem; }
+        .hardware-box { background: white; border: 1px solid #e2e8f0; border-left: 5px solid var(--it-primary); padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; }
+        .quiz-box { background: var(--bg-gray); padding: 1.5rem; border-radius: 8px; border: 2px solid #cbd5e1; margin-bottom: 1rem; }
+        .quiz-select { padding: 10px; font-size: 1rem; width: 100%; border: 2px solid #cbd5e1; border-radius: 6px; margin-top: 10px; outline: none; }
+        .btn-check { background: var(--it-primary); color: white; border: none; padding: 10px 20px; font-size: 1rem; font-weight: bold; border-radius: 6px; cursor: pointer; margin-top: 10px; }
+        .feedback { display: none; font-weight: bold; margin-top: 10px; color: #10b981; }
+    </style>
+</head>
+<body>
+
+<header style="background-color: var(--it-primary); color: white; padding: 2rem 1rem; text-align: center;">
+    <h1 style="color: white; margin: 0; font-size: 2.5rem;">Mission 3: SSD & GPU</h1>
+    <p style="color: #f0fdf4; margin-top: 10px; font-size: 1.1rem;">Langzeitgedächtnis und Muskelkraft</p>
+</header>
+
+<div class="back-nav"><a href="einheit2_cpu_ram.html" class="btn-back">← Zurück zu Einheit 2</a></div>
+
+<main class="module-container">
+    
+    
+
+    <div class="hardware-box" style="border-left-color: #8b5cf6;">
+        <h3>💾 SSD / HDD - Der Aktenschrank</h3>
+        <p>Der Festspeicher (heute meistens eine blitzschnelle <strong>SSD</strong> - Solid State Drive) ist das Langzeitgedächtnis. Hier liegen dein Betriebssystem (Windows/macOS), deine Bilder und deine installierten Spiele. Auch wenn der PC ausgeschaltet wird, bleiben die Daten hier erhalten!</p>
+    </div>
+
+    <div class="hardware-box" style="border-left-color: #ef4444;">
+        <h3>🎮 GPU (Grafikkarte) - Der Spezialist</h3>
+        <p>Die <strong>G</strong>raphics <strong>P</strong>rocessing <strong>U</strong>nit ist ein zweiter, eigener Prozessor im Computer, der auf eine einzige Sache spezialisiert ist: Bilder berechnen! Für Word und Internet reicht eine schwache Grafikkarte, aber für 3D-Spiele oder Videobearbeitung braucht man einen echten "Muskelprotz".</p>
+    </div>
+
+    <h3 style="margin-top: 3rem; color: var(--it-dark);">💻 Interaktives Labor: Wer arbeitet gerade?</h3>
+    <p>Entscheide, welche Komponente bei der jeweiligen Aktion am meisten beansprucht wird!</p>
+
+    <div class="quiz-box" id="q1-box">
+        <p><strong>1. Du startest den PC und Windows lädt. Von wo werden die Windows-Daten in diesem Moment geholt?</strong></p>
+        <select id="q1" class="quiz-select">
+            <option value="0">- Wähle -</option>
+            <option value="SSD">Von der SSD</option>
+            <option value="GPU">Von der GPU</option>
+            <option value="RAM">Vom RAM</option>
+        </select>
+        <button class="btn-check" onclick="checkQ(1, 'SSD')">Prüfen</button>
+        <div id="fb1" class="feedback">Richtig! Die Daten werden vom Festspeicher geladen.</div>
+    </div>
+
+    <div class="quiz-box" id="q2-box">
+        <p><strong>2. Du spielst ein aufwendiges 3D-Spiel mit krassen Schatten- und Lichteffekten. Wer schwitzt gerade am meisten?</strong></p>
+        <select id="q2" class="quiz-select">
+            <option value="0">- Wähle -</option>
+            <option value="CPU">Die CPU</option>
+            <option value="GPU">Die GPU (Grafikkarte)</option>
+            <option value="SSD">Die SSD</option>
+        </select>
+        <button class="btn-check" onclick="checkQ(2, 'GPU')">Prüfen</button>
+        <div id="fb2" class="feedback">Exakt! 3D-Berechnungen sind die absolute Paradedisziplin der Grafikkarte.</div>
+    </div>
+
+    <div style="text-align: right; margin-top: 2rem;">
+        <a href="einheit4_bossfight.html" style="color: var(--it-primary); font-weight: bold; text-decoration: none;">Weiter zum Boss-Fight ➔</a>
+    </div>
+</main>
+
+<footer style="margin-top: 5rem; padding: 2rem 1rem; background-color: #f8fafc; border-top: 1px solid #e2e8f0; color: #64748b; font-size: 0.9rem; text-align: center;">
+    &copy; 2026 | GvP | Mag. Schweitzer | DSGVO-konform & lokal
+</footer>
+
+<script>
+    function checkQ(id, correct) {
+        let val = document.getElementById('q' + id).value;
+        let box = document.getElementById('q' + id + '-box');
+        let fb = document.getElementById('fb' + id);
+        if (val === correct) {
+            box.style.borderColor = "#10b981";
+            fb.style.display = "block";
+            fb.style.color = "#10b981";
+        } else {
+            box.style.borderColor = "#ef4444";
+            fb.style.display = "block";
+            fb.innerText = "Das ist leider falsch. Überlege nochmal!";
+            fb.style.color = "#ef4444";
+        }
+    }
+</script>
+</body>
+</html>

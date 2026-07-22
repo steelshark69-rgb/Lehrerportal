@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>In verletzten wie auch in unverletzten Zeiten</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Lora:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'wedding-green': '#2c4c3b', // A classy, deep green
+                        'wedding-gold': '#d4af37',
+                        'wedding-bg': '#fcfcfc',
+                    },
+                    fontFamily: {
+                        'serif': ['Lora', 'serif'],
+                        'sans': ['Outfit', 'sans-serif'],
+                        'handwriting': ['Caveat', 'cursive'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #f4f1ea;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23dcd5c6' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+        }
+
+        .polaroid {
+            background: white;
+            padding: 1rem 1rem 3rem 1rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            transform: rotate(-2deg);
+        }
+    </style>
+</head>
+<body class="font-sans text-gray-800 min-h-screen flex flex-col items-center justify-center p-4 md:p-8 relative">
+
+    <main id="content-to-print" class="w-full max-w-4xl mx-auto glass-effect bg-white/95 rounded-3xl overflow-hidden relative z-10">
+        
+        <!-- Decorative Top Element -->
+        <div class="h-4 w-full bg-gradient-to-r from-wedding-green via-wedding-gold to-wedding-green"></div>
+
+        <div class="flex flex-col md:flex-row items-center p-6 md:p-12 gap-8 md:gap-12">
+            
+            <div class="w-full md:w-1/2 flex justify-center">
+                <div class="polaroid relative">
+                    <img src="gruppe3.jpeg" alt="Die Kollegen" class="w-full h-auto object-cover rounded-sm border border-gray-200" style="aspect-ratio: 4/3;">
+                    
+                    <!-- Handwriting caption on polaroid -->
+                    <div class="absolute bottom-4 left-0 w-full text-center">
+                        <span class="font-handwriting text-2xl text-gray-700 block -rotate-3">GvP Powerteam</span>
+                    </div>
+                    
+                    <!-- Decorative tape -->
+                    <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-24 h-6 bg-white/40 border border-white/60 shadow-sm backdrop-blur-sm transform rotate-1"></div>
+                </div>
+            </div>
+
+            <div class="w-full md:w-1/2 flex flex-col justify-center text-center md:text-left space-y-6">
+                
+                <h1 class="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-wedding-green leading-tight">
+                    In verletzten wie auch in <span class="italic text-wedding-gold">unverletzten</span> Zeiten
+                </h1>
+                
+                <p class="font-handwriting text-2xl md:text-3xl text-gray-500">
+                    - I am from GvP -
+                </p>
+
+                <div class="relative py-6">
+                    <!-- Quote Marks -->
+                    <span class="absolute top-0 left-0 text-6xl text-wedding-gold opacity-20 font-serif leading-none transform -translate-x-4 -translate-y-2">"</span>
+                    
+                    <p class="font-serif text-lg md:text-xl leading-relaxed text-gray-700 relative z-10 italic">
+                        Wir stehn zu dir, bei Gips und Pflaster - JEDERZEIT!<br>
+                        Da kannst da brechn was du wüst, aufgschnittn oder a verbrennt,<br>
+                        wird mit dir ind Notaufnahme grennt.
+                    </p>
+                    
+                    <span class="absolute bottom-0 right-0 text-6xl text-wedding-gold opacity-20 font-serif leading-none transform translate-x-4 translate-y-4">"</span>
+                </div>
+
+                <div class="bg-wedding-green/5 border border-wedding-green/10 rounded-2xl p-6 mt-4">
+                    <p class="font-sans font-semibold text-lg text-gray-800 mb-2">
+                        Drum pass heit auf beim Glas erhem...
+                    </p>
+                    
+                    <div class="flex items-center justify-center md:justify-start gap-3 my-4">
+                        <span class="text-3xl">🍻</span>
+                        <span class="font-bold text-xl md:text-2xl text-wedding-green tracking-wider uppercase">
+                            ZAM ZAM ZAM ZAM
+                        </span>
+                        <span class="text-3xl">🍻</span>
+                    </div>
+
+                    <p class="font-sans text-sm md:text-base text-gray-600">
+                        ...du wüst jo morgen a nu erlem!
+                    </p>
+                </div>
+                
+            </div>
+        </div>
+    </main>
+
+   
+</body>
+</html>

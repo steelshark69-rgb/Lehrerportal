@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excel | Grundfunktionen & Bereiche</title>
+    <style>
+        :root {
+            --excel-green: #107c41;
+            --excel-green-dark: #0b5c30;
+            --excel-header: #e1dfdd;
+            --excel-border: #d2d2d2;
+            --bg-color: #f3f4f6;
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+            --card-bg: #ffffff;
+            --highlight-blue: #0ea5e9;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: var(--excel-green);
+            color: white;
+            padding: 3rem 1rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 1rem auto 0;
+        }
+
+        main {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        h2 {
+            color: var(--excel-green-dark);
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 0.5rem;
+            margin-top: 2.5rem;
+        }
+
+        /* Grid für Erklärungen */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border-top: 4px solid var(--excel-green);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+        }
+
+        .card h3 {
+            margin-top: 0;
+            color: var(--excel-green-dark);
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .code-snippet {
+            display: inline-block;
+            background: #f1f5f9;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-weight: bold;
+            color: var(--text-main);
+            border: 1px solid #cbd5e1;
+        }
+
+        /* Syntax Box */
+        .syntax-box {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            font-size: 1.1rem;
+        }
+
+        .syntax-box code {
+            font-size: 1.3rem;
+            color: var(--excel-green-dark);
+            font-weight: bold;
+        }
+
+        /* Mini Excel Mockup */
+        .excel-mockup {
+            background: white;
+            border: 1px solid var(--excel-border);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 2rem 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            font-family: 'Calibri', 'Segoe UI', sans-serif;
+            max-width: 700px;
+        }
+
+        .excel-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .excel-table th, .excel-table td {
+            border: 1px solid var(--excel-border);
+            padding: 0.5rem;
+            text-align: center;
+        }
+
+        .excel-table th {
+            background-color: var(--excel-header);
+            color: var(--text-main);
+            font-weight: normal;
+            font-size: 0.9rem;
+            user-select: none;
+        }
+
+        .excel-table .row-number {
+            background-color: var(--excel-header);
+            width: 30px;
+            color: var(--text-main);
+        }
+        
+        .cell-highlight {
+            background-color: #e0f2fe;
+            border: 2px solid var(--highlight-blue) !important;
+        }
+
+        .cell-formula {
+            font-family: 'Consolas', monospace;
+            color: var(--excel-green-dark);
+            font-weight: bold;
+            background-color: #f8fafc;
+        }
+
+        .operator-explanation {
+            display: flex;
+            gap: 2rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .operator-card {
+            flex: 1;
+            min-width: 250px;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--highlight-blue);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        /* Zurück Button */
+        .back-btn-container {
+            text-align: center;
+            margin-top: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .back-btn {
+            display: inline-block;
+            background-color: var(--excel-green);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .back-btn:hover {
+            background-color: var(--excel-green-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 1rem;
+            border-top: 1px solid #e5e7eb;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Excel: Grundfunktionen</h1>
+        <p>Summe, Mittelwert, Min & Max – Wie man in Excel nicht mehr selber rechnet, sondern rechnen lässt.</p>
+    </header>
+
+    <main>
+        <section>
+            <h2>Warum Funktionen verwenden?</h2>
+            <p>Stell dir vor, du möchtest die Punkte von 30 Schülern zusammenzählen. Du könntest schreiben: <span class="code-snippet">=B2+B3+B4+B5...</span> – das dauert ewig und ist fehleranfällig! 
+            Viel schlauer ist es, eine <strong>Funktion</strong> zu nutzen und Excel einen ganzen <strong>Bereich</strong> zu übergeben.</p>
+
+            <div class="syntax-box">
+                <strong>Der allgemeine Aufbau:</strong><br>
+                <code>=FUNKTIONSNAME(Bereich)</code>
+            </div>
+        </section>
+
+        <section>
+            <h2>Die "Big Four" der Excel-Funktionen</h2>
+            
+            <div class="grid-container">
+                <div class="card">
+                    <h3>SUMME</h3>
+                    <p>Addiert alle Zahlen in einem ausgewählten Bereich. Perfekt für Gesamtpunkte oder Ausgaben.</p>
+                    <p><span class="code-snippet">=SUMME(B2:B5)</span></p>
+                </div>
+
+                <div class="card">
+                    <h3>MITTELWERT</h3>
+                    <p>Berechnet den Durchschnitt (arithmetisches Mittel). Ideal für den Notenschnitt.</p>
+                    <p><span class="code-snippet">=MITTELWERT(B2:B5)</span></p>
+                </div>
+
+                <div class="card">
+                    <h3>MAX</h3>
+                    <p>Sucht den <strong>höchsten</strong> (maximalen) Wert aus allen Zahlen im Bereich heraus.</p>
+                    <p><span class="code-snippet">=MAX(B2:B5)</span></p>
+                </div>
+
+                <div class="card">
+                    <h3>MIN</h3>
+                    <p>Sucht den <strong>niedrigsten</strong> (minimalen) Wert aus allen Zahlen im Bereich heraus.</p>
+                    <p><span class="code-snippet">=MIN(B2:B5)</span></p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Bereiche richtig markieren (Der Doppelpunkt)</h2>
+            <p>Um Excel zu sagen, "Rechne von Zelle X <strong>bis</strong> Zelle Y", verwenden wir den <strong>Doppelpunkt ( : )</strong>.</p>
+
+            <div class="operator-explanation">
+                <div class="operator-card">
+                    <h3 style="margin-top:0; color:var(--highlight-blue);">Der Doppelpunkt ( : ) = "BIS"</h3>
+                    <p>Markiert einen zusammenhängenden Block.</p>
+                    <p><span class="code-snippet">A1:A10</span> = Alle Zellen von A1 bis A10.</p>
+                </div>
+                <div class="operator-card">
+                    <h3 style="margin-top:0; color:var(--highlight-blue);">Das Semikolon ( ; ) = "UND"</h3>
+                    <p>Wählt nur einzelne, verstreute Zellen aus.</p>
+                    <p><span class="code-snippet">A1;A10</span> = <strong>Nur</strong> die Zelle A1 und die Zelle A10.</p>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 2rem;">Ganze Spalten oder Zeilen auswählen</h3>
+            <p>Manchmal weiß man noch nicht, wie viele Daten noch dazukommen. Statt <code>B2:B100</code> zu markieren, kann man auch eine <strong>komplette Spalte</strong> oder Zeile als Bereich angeben:</p>
+            <ul>
+                <li><span class="code-snippet">=SUMME(B:B)</span> ➡️ Addiert ausnahmslos <strong>alle</strong> Zahlen in der gesamten Spalte B.</li>
+                <li><span class="code-snippet">=MITTELWERT(2:2)</span> ➡️ Berechnet den Durchschnitt <strong>aller</strong> Zahlen in der gesamten Zeile 2.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Beispiel in der Praxis</h2>
+            <p>Hier siehst du eine kleine Punkteliste. In den blauen Zellen (Spalte B) stehen die Werte. Darunter wenden wir unsere vier Funktionen auf genau diesen Bereich (<code>B2:B5</code>) an.</p>
+
+            <div class="excel-mockup">
+                <table class="excel-table">
+                    <tr>
+                        <th style="width: 30px;"></th>
+                        <th>A</th>
+                        <th>B</th>
+                        <th>C</th>
+                    </tr>
+                    <tr>
+                        <th class="row-number">1</th>
+                        <td><strong>Name</strong></td>
+                        <td><strong>Punkte</strong></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th class="row-number">2</th>
+                        <td>Anna</td>
+                        <td class="cell-highlight">24</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th class="row-number">3</th>
+                        <td>Lukas</td>
+                        <td class="cell-highlight">18</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th class="row-number">4</th>
+                        <td>Sarah</td>
+                        <td class="cell-highlight">22</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th class="row-number">5</th>
+                        <td>David</td>
+                        <td class="cell-highlight">12</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th class="row-number">6</th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th class="row-number">7</th>
+                        <td><strong>Gesamtpunkte:</strong></td>
+                        <td class="cell-formula">=SUMME(B2:B5)</td>
+                        <td><em>Ergebnis: 76</em></td>
+                    </tr>
+                    <tr>
+                        <th class="row-number">8</th>
+                        <td><strong>Durchschnitt:</strong></td>
+                        <td class="cell-formula">=MITTELWERT(B2:B5)</td>
+                        <td><em>Ergebnis: 19</em></td>
+                    </tr>
+                    <tr>
+                        <th class="row-number">9</th>
+                        <td><strong>Beste Leistung:</strong></td>
+                        <td class="cell-formula">=MAX(B2:B5)</td>
+                        <td><em>Ergebnis: 24</em></td>
+                    </tr>
+                    <tr>
+                        <th class="row-number">10</th>
+                        <td><strong>Schlechteste Leistung:</strong></td>
+                        <td class="cell-formula">=MIN(B2:B5)</td>
+                        <td><em>Ergebnis: 12</em></td>
+                    </tr>
+                </table>
+            </div>
+            
+            <p><strong>Tipp für den Unterricht:</strong> Wenn du eine Funktion eingibst (z.B. <code>=SUMME(</code>), musst du die Zellen B2 bis B5 nicht abtippen. Du kannst einfach mit der Maus bei B2 reinklicken, gedrückt halten und bis B5 hinunterziehen. Excel schreibt <code>B2:B5</code> dann ganz von alleine in die Formel!</p>
+        </section>
+
+        <div class="back-btn-container">
+            <a href="../index.html" class="back-btn">⬅ Zurück zur Übersicht</a>
+        </div>
+    </main>
+
+    <footer>
+        &copy; 2026 | GvP | Mag. Schweitzer | Mathematik & Informatik
+    </footer>
+
+</body>
+</html>

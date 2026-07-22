@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excel Boss-Level | Das E-Sports Turnier</title>
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+        /* E-Sports & Excel IT Theme */
+        :root {
+            --primary: #107c41; /* Excel Green */
+            --excel-green-dark: #0b5c30;
+            --excel-header: #e1dfdd;
+            --excel-border: #d2d2d2;
+            --highlight-blue: #0ea5e9;
+            --highlight-red: #ef4444;
+            --highlight-orange: #f59e0b;
+        }
+
+        /* Mockup Tables */
+        .excel-mockup {
+            background: white; border: 1px solid var(--excel-border); border-radius: 4px;
+            overflow: hidden; margin: 1.5rem 0; box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            font-family: 'Calibri', 'Segoe UI', sans-serif; overflow-x: auto;
+        }
+        .excel-table { width: 100%; border-collapse: collapse; min-width: 600px; }
+        .excel-table th, .excel-table td { border: 1px solid var(--excel-border); padding: 0.75rem; text-align: center; }
+        .excel-table th { background-color: var(--excel-header); color: var(--text-main); font-weight: normal; font-size: 0.9rem; }
+        .excel-table .row-number { background-color: var(--excel-header); width: 30px; font-weight: normal; }
+        .excel-table .col-header { font-weight: bold; background: #f8fafc; }
+        
+        .code-snippet {
+            display: inline-block; background: #f1f5f9; padding: 0.2rem 0.5rem;
+            border-radius: 4px; font-family: 'Consolas', 'Courier New', monospace;
+            font-weight: bold; color: var(--excel-green-dark); border: 1px solid #cbd5e1;
+        }
+        
+        .task-box {
+            background: white; border-left: 5px solid var(--primary);
+            padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05); border-top: 1px solid #e2e8f0;
+            border-right: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0;
+        }
+        .task-box h3 { margin-top: 0; color: var(--primary); display: flex; align-items: center; gap: 10px; }
+        .task-step {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 30px; height: 30px; background: var(--primary); color: white;
+            border-radius: 50%; font-weight: bold; font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body>
+
+<header style="background-color: var(--primary);">
+    <h1>Das große Excel Boss-Level</h1>
+    <p>WENN, ZÄHLENWENN, SUMMEWENN, SVERWEIS, XVERWEIS & Zellbezüge</p>
+</header>
+
+<div class="back-nav">
+    <a href="../index.html" class="btn-back">← Zurück zur Übersicht</a>
+</div>
+
+<main>
+    <div style="background: #1f2937; color: white; padding: 2rem; border-radius: 12px; margin-bottom: 3rem; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); position: relative; overflow: hidden;">
+        <div style="position: absolute; top: -20px; right: -20px; font-size: 10rem; opacity: 0.05;">🎮</div>
+        <h2 style="margin-top: 0; color: var(--highlight-blue); border: none; padding: 0; font-size: 2rem;">Szenario: Das E-Sports Turnier 2026</h2>
+        <p style="font-size: 1.1rem; line-height: 1.8; max-width: 800px; margin-bottom: 0;">Deine Schule veranstaltet ein großes E-Sports-Turnier (z.B. in Rocket League oder Valorant). Du bist die Turnierleitung (Admin). Du hast die Rohdaten der Spieler bekommen und musst nun das System aufbauen: Wer kommt ins Finale? Welches Team führt? Und wie baust du eine Suchmaske für den Hallen-Sprecher?</p>
+    </div>
+
+    <div class="task-box" style="border-left-color: #64748b;">
+        <h3><span class="task-step" style="background: #64748b;">1</span> Die Datenbank aufbauen</h3>
+        <p>Öffne eine leere Excel-Mappe. Schreibe in die Zelle <strong>J1</strong> die Zahl <code>1000</code> (das sind die maximal erreichbaren Punkte im Turnier). Übertrage anschließend exakt die folgende Tabelle in die Zellen <strong>A1 bis D8</strong>.</p>
+        
+        <div class="excel-mockup">
+            <table class="excel-table">
+                <tr>
+                    <th style="width: 30px;"></th><th>A</th><th>B</th><th>C</th><th>D</th>
+                </tr>
+                <tr>
+                    <th class="row-number">1</th>
+                    <td class="col-header">ID</td><td class="col-header">Nickname</td><td class="col-header">Team</td><td class="col-header">Punkte</td>
+                </tr>
+                <tr><th class="row-number">2</th><td>101</td><td>ShadowNinja</td><td>Red Dragons</td><td>850</td></tr>
+                <tr><th class="row-number">3</th><td>102</td><td>PixelQueen</td><td>Blue Falcons</td><td>420</td></tr>
+                <tr><th class="row-number">4</th><td>103</td><td>GlitchKing</td><td>Green Vipers</td><td>910</td></tr>
+                <tr><th class="row-number">5</th><td>104</td><td>CyberStorm</td><td>Red Dragons</td><td>350</td></tr>
+                <tr><th class="row-number">6</th><td>105</td><td>NeonRider</td><td>Blue Falcons</td><td>780</td></tr>
+                <tr><th class="row-number">7</th><td>106</td><td>ZeroCool</td><td>Green Vipers</td><td>490</td></tr>
+                <tr><th class="row-number">8</th><td>107</td><td>ByteMe</td><td>Red Dragons</td><td>600</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="task-box" style="border-left-color: var(--highlight-blue);">
+        <h3><span class="task-step" style="background: var(--highlight-blue);">2</span> WENN-Funktion: Die Qualifikation</h3>
+        <p>Wer <strong>500 Punkte oder mehr</strong> erreicht hat, darf ins große Finale auf der Hauptbühne. Wer weniger hat, scheidet aus.</p>
+        <ul style="line-height: 1.8;">
+            <li>Schreibe in Zelle <strong>E1</strong> die Überschrift <code>Status</code>.</li>
+            <li>Nutze in Zelle <strong>E2</strong> die <strong>WENN-Funktion</strong>, um zu prüfen, ob die Punkte (D2) größer oder gleich 500 sind (<code>>=500</code>).</li>
+            <li>Wenn ja, soll Excel das Wort <span class="code-snippet">"Finale"</span> ausgeben, sonst <span class="code-snippet">"Raus"</span>.</li>
+            <li>Ziehe die Formel mit dem Ausfüllkästchen bis Zeile 8 nach unten.</li>
+        </ul>
+    </div>
+
+    <div class="task-box" style="border-left-color: var(--highlight-orange);">
+        <h3><span class="task-step" style="background: var(--highlight-orange);">3</span> Absolute Zellbezüge: Prozentrechnung</h3>
+        <p>Wir wollen wissen, wie viel Prozent der Maximal-Punkte die Spieler erreicht haben. Erinnerst du dich an die Taste <strong>F4</strong>?</p>
+        <ul style="line-height: 1.8;">
+            <li>Schreibe in Zelle <strong>F1</strong> die Überschrift <code>Prozent</code>.</li>
+            <li>Berechne in <strong>F2</strong> den prozentualen Anteil: Teile die Punkte des Spielers durch die Maximalpunkte aus Zelle <strong>J1</strong> (also <code>=D2/J1</code>).</li>
+            <li><strong>Achtung:</strong> Du musst die Zelle J1 "festfrieren" (absoluter Bezug mit <code>$</code>), bevor du die Formel nach unten ziehst! Sonst rutscht J1 beim Kopieren mit nach unten.</li>
+            <li>Formatiere die Spalte F als Prozent (%).</li>
+        </ul>
+    </div>
+
+    <div class="task-box" style="border-left-color: var(--primary);">
+        <h3><span class="task-step" style="background: var(--primary);">4</span> ZÄHLENWENN & SUMMEWENN: Die Team-Auswertung</h3>
+        <p>Der Turnier-Sponsor möchte ein paar Statistiken zum Team <strong>"Red Dragons"</strong> haben. Lege rechts neben deiner Tabelle (z.B. ab Zelle H4) einen kleinen Statistik-Bereich an.</p>
+        <ul style="line-height: 1.8;">
+            <li><strong>ZÄHLENWENN:</strong> Wie viele Spieler gehören zum Team "Red Dragons"? <br><em>Tipp: Lass Excel in der Spalte C nach dem Text "Red Dragons" suchen.</em></li>
+            <li><strong>SUMMEWENN:</strong> Wie viele Punkte hat das Team "Red Dragons" <em>insgesamt</em> gesammelt? <br><em>Tipp: Das Suchkriterium ist wieder "Red Dragons", aber der Summenbereich ist die Spalte D.</em></li>
+        </ul>
+    </div>
+
+    <div class="task-box" style="border-left-color: var(--pdf-red);">
+        <h3><span class="task-step" style="background: var(--pdf-red);">5</span> SVERWEIS: Das Admin-Tool</h3>
+        <p>Der Hallen-Sprecher braucht ein Tool, wo er blitzschnell die ID eines Spielers eingibt, um den Nickname abzulesen.</p>
+        <ul style="line-height: 1.8;">
+            <li>Baue ab Zelle <strong>H8</strong> eine Suchmaske. In <strong>H8</strong> schreibst du <code>Such-ID:</code> und in <strong>I8</strong> gibst du zum Testen die Zahl <code>105</code> ein.</li>
+            <li>In <strong>H9</strong> schreibst du <code>Ergebnis Nickname:</code></li>
+            <li>Schreibe in <strong>I9</strong> einen <strong>SVERWEIS</strong>. Er soll die Such-ID aus I8 nehmen, in deiner gesamten Tabelle (Matrix) danach suchen und den Namen aus der <strong>2. Spalte</strong> zurückgeben (am Ende das <code>FALSCH</code> nicht vergessen!).</li>
+        </ul>
+    </div>
+
+    <div class="task-box" style="border-left-color: #8b5cf6;">
+        <h3><span class="task-step" style="background: #8b5cf6;">6</span> XVERWEIS: Die Rückwärtssuche (Härtetest)</h3>
+        <p>Jetzt passiert ein Problem: Ein Spieler hat seine ID vergessen, weiß aber seinen Nicknamen noch. Der Sprecher gibt in Zelle <strong>I11</strong> den Namen <code>ByteMe</code> ein und möchte in <strong>I12</strong> die ID (Spalte A) ausspucken lassen.</p>
+        <ul style="line-height: 1.8;">
+            <li><strong>Warum scheitert der SVERWEIS hier?</strong> Überlege kurz: Das Suchkriterium (Spalte B) steht <em>rechts</em> von dem, was wir ausgeben wollen (Spalte A). Der SVERWEIS kann nur nach rechts gucken!</li>
+            <li>Nutze in Zelle <strong>I12</strong> den <strong>XVERWEIS</strong>, um dieses Problem zu lösen (Suchmatrix ist Spalte B, Rückgabematrix ist Spalte A).</li>
+            <li><strong>Zusatzaufgabe für Profis:</strong> Füge dem XVERWEIS als viertes Argument den Text <span class="code-snippet">"Spieler existiert nicht"</span> hinzu. Teste es, indem du als Nickname "SuperMario" eingibst!</li>
+        </ul>
+    </div>
+
+    <div style="text-align: center; margin-top: 3rem; padding: 2rem; border-top: 2px dashed #cbd5e1;">
+        <h3 style="color: var(--text-main);">Geknackt? 🏆</h3>
+        <p style="color: var(--text-muted);">Wenn du alle 6 Schritte fehlerfrei gelöst hast, hast du das Excel-Bosslevel offiziell bezwungen. Du beherrschst nun die wichtigsten Analyse-Tools, die auch in echten Unternehmen jeden Tag genutzt werden!</p>
+    </div>
+
+</main>
+
+<footer>
+    <p>Informatik 5. Klasse AHS | Prof. Schweitzer | Datenanalyse Praxisprojekt</p>
+</footer>
+
+</body>
+</html>

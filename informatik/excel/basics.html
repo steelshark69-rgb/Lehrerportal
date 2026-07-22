@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Einführung in Excel | Anwendungsbereiche & Möglichkeiten</title>
+    <style>
+        :root {
+            --excel-green: #107c41;
+            --excel-green-dark: #0b5c30;
+            --bg-color: #f3f4f6;
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: var(--excel-green);
+            color: white;
+            padding: 3rem 1rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 1rem auto 0;
+        }
+
+        main {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        h2 {
+            color: var(--excel-green-dark);
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 0.5rem;
+            margin-top: 2.5rem;
+        }
+
+        /* Grid für die Anwendungsbereiche */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border-left: 4px solid var(--excel-green);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+        }
+
+        .card h3 {
+            margin-top: 0;
+            color: var(--text-main);
+        }
+
+        /* Listen-Styling für die Möglichkeiten */
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .feature-list li {
+            background: var(--card-bg);
+            margin-bottom: 0.75rem;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .feature-list li strong {
+            color: var(--excel-green);
+            margin-right: 0.5rem;
+            min-width: 120px;
+        }
+
+        /* Styling für den Zurück-Button */
+        .back-btn-container {
+            text-align: center;
+            margin-top: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .back-btn {
+            display: inline-block;
+            background-color: var(--excel-green);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .back-btn:hover {
+            background-color: var(--excel-green-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 1rem;
+            border-top: 1px solid #e5e7eb;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Tabellenkalkulation mit Excel</h1>
+        <p>Ein mächtiges Werkzeug zur Datenverarbeitung, Berechnung und Visualisierung – von einfachen Listen bis zu komplexen mathematischen Modellen.</p>
+    </header>
+
+    <main>
+        <section>
+            <h2>Wo wird Excel angewendet?</h2>
+            <p>Die Tabellenkalkulation ist ein universelles Werkzeug, das in fast allen Bereichen des Lebens und der Arbeitswelt zum Einsatz kommt.</p>
+            
+            <div class="grid-container">
+                <div class="card">
+                    <h3>📚 Schule & Alltag</h3>
+                    <p>Ideal zur Selbstorganisation und für erste Berechnungen. Hier lernt man die Grundlagen der Datenstrukturierung.</p>
+                    <ul>
+                        <li>Haushaltsbuch und Taschengeldplaner</li>
+                        <li>Notenrechner zur Schnittberechnung</li>
+                        <li>Stundenpläne und Checklisten</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3>📊 Wirtschaft & Beruf</h3>
+                    <p>In Unternehmen ist Excel oft das Rückgrat für administrative und analytische Aufgaben.</p>
+                    <ul>
+                        <li>Buchhaltung und Rechnungswesen</li>
+                        <li>Kalkulation von Preisen und Angeboten</li>
+                        <li>Personalplanung und Zeiterfassung</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3>📐 Mathematik & Wissenschaft</h3>
+                    <p>Auch für komplexe Auswertungen und das Sichtbarmachen von abstrakten Zahlenreihen ist das Programm unverzichtbar.</p>
+                    <ul>
+                        <li>Statistische Datenauswertungen</li>
+                        <li>Simulation von Wahrscheinlichkeiten</li>
+                        <li>Visualisierung von mathematischen Funktionen</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Was kann man mit Excel machen? (Möglichkeiten)</h2>
+            <p>Die wahre Stärke des Programms liegt in der Kombination verschiedener Werkzeuge:</p>
+
+            <ul class="feature-list">
+                <li>
+                    <strong>Berechnungen:</strong> 
+                    <span>Von den Grundrechenarten bis hin zu komplexen logischen (z.B. WENN-Funktion) und mathematischen Funktionen (z.B. Wurzel, Sinus). Excel rechnet bei jeder Änderung automatisch neu.</span>
+                </li>
+                <li>
+                    <strong>Datenorganisation:</strong> 
+                    <span>Umfangreiche Datensätze können problemlos sortiert, gefiltert und durchsucht werden. Ideal, um aus tausenden Zeilen genau die gesuchten Informationen herauszufiltern.</span>
+                </li>
+                <li>
+                    <strong>Visualisierung:</strong> 
+                    <span>Zahlenkolonnen lassen sich mit wenigen Klicks in aussagekräftige Diagramme (Kreis-, Säulen-, Linien- oder Streudiagramme) verwandeln.</span>
+                </li>
+                <li>
+                    <strong>Bedingte Formatierung:</strong> 
+                    <span>Zellen können ihre Farbe automatisch ändern, wenn bestimmte Werte über- oder unterschritten werden (z.B. rote Schrift für negative Zahlen oder Ampelsysteme für Noten).</span>
+                </li>
+                <li>
+                    <strong>Automatisierung:</strong> 
+                    <span>Durch den Einsatz von Makros lassen sich wiederkehrende Arbeitsschritte aufzeichnen und per Knopfdruck abspielen.</span>
+                </li>
+            </ul>
+        </section>
+
+        <!-- Neuer Zurück-Button -->
+        <div class="back-btn-container">
+            <a href="../index.html" class="back-btn">⬅ Zurück zur Übersicht</a>
+        </div>
+    </main>
+
+    <footer>
+        &copy; 2026 | GvP | Mag. Schweitzer | Mathematik & Informatik
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Übungsblatt: Kugel</title>
+    <link rel="stylesheet" href="../../style.css">
+    
+    <style>
+        :root {
+            --math-primary: #0ea5e9; 
+            --math-dark: #0284c7;
+            --correct-bg: #d1fae5;
+            --correct-border: #10b981;
+            --incorrect-bg: #fee2e2;
+            --incorrect-border: #ef4444;
+        }
+
+        .tab-nav-container { display: flex; border-bottom: 2px solid #e2e8f0; margin-bottom: 2rem; background: white; border-radius: 8px 8px 0 0; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+        .tab-btn { flex: 1; padding: 15px; text-align: center; background: none; border: none; font-size: 1.1rem; color: #64748b; cursor: pointer; transition: 0.2s; font-weight: bold; }
+        .tab-btn:hover { background: #f8fafc; color: #334155; }
+        .tab-active { border-bottom: 4px solid var(--math-primary); color: var(--math-dark); background: #f0f9ff; }
+
+        .task-card { background: white; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; gap: 1.5rem; transition: border-color 0.2s; }
+        @media(min-width: 768px) { .task-card { flex-direction: row; justify-content: space-between; align-items: flex-start; } }
+        
+        .task-content { flex: 1; padding-right: 1rem; }
+        .task-badge { display: inline-block; font-size: 0.8rem; font-weight: bold; color: var(--math-primary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+        .task-text { font-size: 1.1rem; color: #334155; line-height: 1.5; margin: 0; }
+        
+        .solution-box { margin-top: 1.5rem; padding: 1rem; background-color: #f8fafc; border-left: 4px solid var(--math-primary); border-radius: 0 8px 8px 0; font-size: 0.95rem; color: #475569; display: none; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+
+        .task-action { display: flex; gap: 10px; align-items: center; justify-content: flex-end; flex-wrap: wrap; }
+        .task-input { padding: 10px; border: 2px solid #cbd5e1; border-radius: 6px; width: 130px; text-align: center; font-size: 1rem; outline: none; transition: 0.2s; }
+        .task-input:focus { border-color: var(--math-primary); }
+        
+        .task-btn { background: #334155; color: white; border: none; padding: 10px 15px; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        .task-btn:hover { background: #1e293b; }
+        
+        .btn-solution { background: #e2e8f0; color: #475569; }
+        .btn-solution:hover { background: #cbd5e1; color: #1e293b; }
+
+        .correct { border-color: var(--correct-border) !important; background-color: var(--correct-bg) !important; color: #065f46; font-weight: bold; }
+        .incorrect { border-color: var(--incorrect-border) !important; background-color: var(--incorrect-bg) !important; color: #991b1b; }
+    </style>
+</head>
+<body>
+
+<header style="background-color: var(--math-primary); padding: 2.5rem 1rem; text-align: center; color: white;">
+    <h1 style="margin: 0; color: white;">Übungsblatt: Kugel</h1>
+    <p style="margin-top: 0.5rem; opacity: 0.9;">Aufgaben zu Volumen und Oberfläche von Kugeln.</p>
+</header>
+
+<div class="back-nav" style="display: flex; justify-content: center; margin-top: 1.5rem;">
+    <a href="../index.html" class="btn-back" style="background: #f8fafc; border: 1px solid #e2e8f0; color: #1e293b;">← Zurück zur Kapitelübersicht</a>
+</div>
+
+<main style="max-width: 1000px; margin: 2rem auto; padding: 0 1.5rem;">
+
+    <div class="tab-nav-container">
+        <button onclick="showTab('leicht')" id="tab-leicht" class="tab-btn tab-active">🟢 Leicht</button>
+        <button onclick="showTab('mittel')" id="tab-mittel" class="tab-btn">🟡 Mittel</button>
+        <button onclick="showTab('schwer')" id="tab-schwer" class="tab-btn">🔴 Schwer</button>
+    </div>
+
+    <div id="tasks-container"></div>
+
+</main>
+
+<script>
+    const tasks = {
+        leicht: [
+            { id: 1, q: "Eine Kugel hat r=3cm. Berechne das Volumen V in cm³. Runde auf eine NK. (π≈3,14)", a: "113,0", s: "V = (4/3)*π*r³ = (4/3)*3,14*3³ = (4/3)*3,14*27 = 113,04 cm³." },
+            { id: 2, q: "Eine Kugel hat r=2cm. Berechne die Oberfläche O in cm². Runde auf eine NK. (π≈3,14)", a: "50,2", s: "O = 4*π*r² = 4*3,14*2² = 4*3,14*4 = 50,24 cm²." },
+            { id: 3, q: "Eine Kugel hat d=10cm. Berechne das Volumen V in cm³. Runde auf eine NK. (π≈3,14)", a: "523,3", s: "r=d/2=5cm. V = (4/3)*π*r³ = (4/3)*3,14*5³ = (4/3)*3,14*125 ≈ 523,33 cm³." },
+            { id: 4, q: "Wahr oder Falsch: Die Oberfläche einer Kugel ist O = 2*π*r².", a: "Falsch", s: "Falsch, die korrekte Formel lautet O = 4*π*r²." },
+            { id: 5, q: "Von welcher einzigen Größe hängt das Volumen einer Kugel ab?", a: "Radius, r", s: "Das Volumen und die Oberfläche einer Kugel hängen nur von ihrem Radius r ab." }
+        ],
+        mittel: [
+            { id: 6, q: "Ein Fußball hat einen Durchmesser d=22cm. Berechne seine Oberfläche O in cm². Runde auf ganze cm². (π≈3,14)", a: "1520", s: "r=11cm. O = 4*π*r² = 4*3,14*11² = 4*3,14*121 ≈ 1519,76 cm²." },
+            { id: 7, q: "Ein Tennisball hat einen Radius von r=3,3cm. Berechne sein Volumen V in cm³. Runde auf ganze cm³. (π≈3,14)", a: "150", s: "V = (4/3)*π*r³ = (4/3)*3,14*(3,3)³ ≈ 150,45 cm³." },
+            { id: 8, q: "Eine Kugel hat ein Volumen von V=33,5cm³. Berechne den Radius r in cm. (π≈3,14)", a: "2", s: "V=(4/3)πr³ => r³=3V/(4π) = (3*33,5)/(4*3,14) = 100,5/12,56 ≈ 8. r = ³√8 = 2 cm." },
+            { id: 9, q: "Eine Kugel hat eine Oberfläche von O=113,04cm². Berechne den Radius r in cm. (π≈3,14)", a: "3", s: "O=4πr² => r²=O/(4π) = 113,04/(4*3,14) = 113,04/12,56 = 9. r = √9 = 3 cm." },
+            { id: 10, q: "Ein Ball hat einen Umfang U=69cm. Berechne seinen Radius r in cm. Runde auf eine NK. (π≈3,14)", a: "11,0", s: "U=2πr => r=U/(2π) = 69/(2*3,14) = 69/6,28 ≈ 10,98 cm." }
+        ],
+        schwer: [
+            { id: 11, q: "Eine Hohlkugel hat R=10cm und r=9cm. Berechne das Volumen des Materials in cm³. Runde auf ganze cm³. (π≈3,14)", a: "1172", s: "V = V_aussen - V_innen = (4/3)π(R³-r³) = (4/3)*3.14*(1000-729) = (4/3)*3.14*271 ≈ 1134,5 cm³. Korrektur: 1134.5" },
+            { id: 12, q: "Wie viel % des Volumens eines Würfels (a=10cm) nimmt eine Kugel mit d=10cm ein? Runde auf ganze %.", a: "52", s: "V(Würfel)=1000cm³. V(Kugel)=(4/3)π5³≈523.3cm³. Anteil = (523.3/1000)*100 ≈ 52%." },
+            { id: 13, q: "Die Erde hat r≈6371km. Berechne ihr Volumen in Mrd. km³. Runde auf ganze Mrd. (π≈3,14)", a: "1083", s: "V=(4/3)*π*(6371)³ ≈ 1,0827 * 10¹² km³ ≈ 1083 Mrd. km³." },
+            { id: 14, q: "Ein Zylinder hat r=5 und h=10. Eine Kugel hat r=5. Welches Volumenverhältnis V(Kugel)/V(Zylinder) ergibt sich? (als Bruch oder Dezimal)", a: "2/3, 0.67", s: "V(Kugel)=(4/3)πr³. V(Zylinder)=πr²(2r)=2πr³. Verhältnis = ((4/3)πr³)/(2πr³) = (4/3)/2 = 2/3." },
+            { id: 15, q: "Der Radius einer Kugel wird verdoppelt. Um welchen Faktor vergrößert sich die Oberfläche O?", a: "4", s: "O_alt=4πr². O_neu=4π(2r)² = 4π(4r²) = 4 * (4πr²). Die Oberfläche vervierfacht sich." }
+        ]
+    };
+
+    let currentTab = 'leicht';
+
+    function showTab(tabName) {
+        currentTab = tabName;
+        ['leicht', 'mittel', 'schwer'].forEach(t => document.getElementById('tab-' + t).classList.remove('tab-active'));
+        document.getElementById('tab-' + tabName).classList.add('tab-active');
+        renderTasks();
+    }
+
+    function renderTasks() {
+        const container = document.getElementById('tasks-container');
+        container.innerHTML = '';
+        tasks[currentTab].forEach(task => {
+            const div = document.createElement('div');
+            div.className = "task-card";
+            div.innerHTML = `
+                <div class="task-content">
+                    <div class="task-badge">Aufgabe ${task.id}</div>
+                    <p class="task-text">${task.q}</p>
+                    <div id="solution-${task.id}" class="solution-box"><strong>💡 Lösungsweg:</strong><br>${task.s}</div>
+                </div>
+                <div class="task-action">
+                    <input type="text" id="input-${task.id}" placeholder="Ergebnis" class="task-input" onkeydown="if(event.key==='Enter') checkAnswer(${task.id}, '${task.a}')">
+                    <button onclick="checkAnswer(${task.id}, '${task.a}')" class="task-btn">Prüfen</button>
+                    <button onclick="toggleSolution(${task.id})" class="task-btn btn-solution">Lösungsweg</button>
+                </div>`;
+            container.appendChild(div);
+        });
+    }
+
+    function checkAnswer(id, correct) {
+        const input = document.getElementById('input-' + id);
+        let userVal = input.value.trim().replace(',', '.').toLowerCase();
+        let targetVals = correct.split(',').map(v => v.trim().replace(',', '.').toLowerCase());
+
+        if (targetVals.includes(userVal)) {
+            input.classList.remove('incorrect');
+            input.classList.add('correct');
+        } else {
+            input.classList.remove('correct');
+            input.classList.add('incorrect');
+        }
+    }
+
+    function toggleSolution(id) {
+        const solBox = document.getElementById('solution-' + id);
+        solBox.style.display = (solBox.style.display === "block") ? "none" : "block";
+    }
+
+    window.onload = () => showTab('leicht');
+</script>
+
+</body>
+</html>

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Binärsystem-Spiel | Digitale Grundbildung</title>
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+        .game-container {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 2rem;
+            border-radius: 10px;
+            color: white;
+            max-width: 800px;
+            margin: 2rem auto;
+        }
+        .game-card {
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+            padding: 2rem;
+            border-radius: 8px;
+            text-align: center;
+            margin: 1rem 0;
+        }
+        .bit-toggle {
+            display: inline-block;
+            width: 60px;
+            height: 60px;
+            margin: 5px;
+            border: 3px solid #667eea;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 24px;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+        .bit-toggle.off {
+            background: #e0e0e0;
+            color: #999;
+        }
+        .bit-toggle.on {
+            background: #667eea;
+            color: white;
+        }
+        .score-box {
+            background: #dcfce7;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        .buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background: #667eea;
+            color: white;
+            transition: 0.2s;
+        }
+        button:hover {
+            background: #764ba2;
+        }
+        .info-box {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>🎮 Binärsystem-Spiel</h1>
+    <p>1. Klasse | Digitale Grundbildung</p>
+    <div class="back-nav">
+        <a href="index.html" class="btn-back">⬅ Zurück</a>
+    </div>
+</header>
+
+<main style="max-width: 900px; margin: 0 auto; padding: 2rem 1rem;">
+
+    <section class="info-box">
+        <h2>🤖 Was ist das Binärsystem?</h2>
+        <p>Computer verstehen nur zwei Zustände: <strong>1 (an)</strong> und <strong>0 (aus)</strong>. Das ist die Sprache der Computer!</p>
+        <p>Deine Aufgabe: Klicke auf die Bits, um die Dezimalzahl korrekt zu kodieren.</p>
+    </section>
+
+    <div class="game-container">
+        <div class="game-card">
+            <h2>Umwandle diese Zahl ins Binärsystem!</h2>
+            <h1 id="targetNumber" style="color: #667eea;">5</h1>
+            
+            <div id="bitContainer" style="margin: 2rem 0;">
+                <!-- Bits werden hier eingefügt -->
+            </div>
+            
+            <p id="decimalDisplay" style="font-size: 1.5rem; margin: 1rem 0;"><strong>Dezimal:</strong> <span id="decimalValue">0</span></p>
+            
+            <div class="buttons">
+                <button onclick="checkAnswer()">✓ Überprüfen</button>
+                <button onclick="newRound()">🔄 Nächste Zahl</button>
+                <button onclick="resetGame()">🏠 Neues Spiel</button>
+            </div>
+            
+            <div class="score-box">
+                ✓ Richtig: <span id="score">0</span> | ✗ Falsch: <span id="wrong">0</span>
+            </div>
+        </div>
+    </div>
+
+    <section style="max-width: 600px; margin: 2rem auto;">
+        <h2>📚 Wie funktioniert das Binärsystem?</h2>
+        <table style="width: 100%; border-collapse: collapse;">
+            <tr style="background: #f0f0f0;">
+                <th style="padding: 10px; text-align: left; border: 1px solid #ddd;"><strong>Dezimal</strong></th>
+                <th style="padding: 10px; text-align: left; border: 1px solid #ddd;"><strong>Binär</strong></th>
+                <th style="padding: 10px; text-align: left; border: 1px solid #ddd;"><strong>Erklärung</strong></th>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd;">0</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">0000</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">Alle aus</td>
+            </tr>
+            <tr style="background: #f9f9f9;">
+                <td style="padding: 10px; border: 1px solid #ddd;">1</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">0001</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">Letztes Bit an</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd;">5</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">0101</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">1 + 4 = 5</td>
+            </tr>
+            <tr style="background: #f9f9f9;">
+                <td style="padding: 10px; border: 1px solid #ddd;">15</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">1111</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">Alle an: 1+2+4+8=15</td>
+            </tr>
+        </table>
+    </section>
+
+</main>
+
+<footer style="margin-top: 5rem; padding: 2rem 1rem; background-color: #f8fafc; border-top: 1px solid #e2e8f0; color: #64748b; font-size: 0.9rem; text-align: center;">
+    &copy; 2026 | GvP | Mag. Schweitzer | Digitale Grundbildung
+</footer>
+
+<script>
+    let score = 0;
+    let wrong = 0;
+    let currentNumber = 0;
+    let bits = [0, 0, 0, 0];
+
+    function initGame() {
+        newRound();
+    }
+
+    function newRound() {
+        currentNumber = Math.floor(Math.random() * 16);
+        document.getElementById('targetNumber').textContent = currentNumber;
+        bits = [0, 0, 0, 0];
+        updateBits();
+    }
+
+    function updateBits() {
+        const container = document.getElementById('bitContainer');
+        container.innerHTML = '';
+        
+        for (let i = 0; i < 4; i++) {
+            const bit = document.createElement('button');
+            bit.className = `bit-toggle ${bits[i] === 1 ? 'on' : 'off'}`;
+            bit.textContent = bits[i];
+            bit.onclick = () => {
+                bits[i] = bits[i] === 0 ? 1 : 0;
+                updateBits();
+            };
+            container.appendChild(bit);
+        }
+        
+        updateDecimal();
+    }
+
+    function updateDecimal() {
+        const decimal = bits[3] * 1 + bits[2] * 2 + bits[1] * 4 + bits[0] * 8;
+        document.getElementById('decimalValue').textContent = decimal;
+    }
+
+    function checkAnswer() {
+        const decimal = bits[3] * 1 + bits[2] * 2 + bits[1] * 4 + bits[0] * 8;
+        
+        if (decimal === currentNumber) {
+            alert('✅ Korrekt! ' + currentNumber + ' = ' + bits.join(''));
+            score++;
+            newRound();
+        } else {
+            alert('❌ Falsch! ' + currentNumber + ' = ' + convertToBinary(currentNumber).join(''));
+            wrong++;
+        }
+        
+        document.getElementById('score').textContent = score;
+        document.getElementById('wrong').textContent = wrong;
+    }
+
+    function convertToBinary(num) {
+        return [
+            Math.floor(num / 8),
+            Math.floor((num % 8) / 4),
+            Math.floor((num % 4) / 2),
+            num % 2
+        ];
+    }
+
+    function resetGame() {
+        score = 0;
+        wrong = 0;
+        initGame();
+        document.getElementById('score').textContent = '0';
+        document.getElementById('wrong').textContent = '0';
+    }
+
+    initGame();
+</script>
+
+</body>
+</html>

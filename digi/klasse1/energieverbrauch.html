@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Energieverbrauch & Carbon Footprint | Digitale Grundbildung</title>
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+        .energy-card {
+            background: white;
+            border-left: 4px solid #14b8a6;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .energy-card h3 {
+            color: #14b8a6;
+            margin-top: 0;
+        }
+        .energy-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .calculator-box {
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+            padding: 2rem;
+            border-radius: 10px;
+            color: white;
+            max-width: 600px;
+            margin: 2rem auto;
+        }
+        .input-group {
+            margin: 1rem 0;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+        .result-box {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+        }
+        .result-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #fbbf24;
+        }
+        .comparison-bars {
+            display: flex;
+            gap: 1rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+        .bar-item {
+            flex: 1;
+            min-width: 150px;
+            text-align: center;
+        }
+        .bar {
+            width: 100%;
+            height: 200px;
+            background: #e5e7eb;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+        .bar-fill {
+            height: 100%;
+            background: linear-gradient(180deg, #14b8a6 0%, #0d9488 100%);
+            width: 100%;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            padding-bottom: 0.5rem;
+        }
+        .bar-label {
+            font-weight: bold;
+            color: #333;
+        }
+        .tip-box {
+            background: #d1fae5;
+            border-left: 4px solid #14b8a6;
+            padding: 1.5rem;
+            border-radius: 5px;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>⚡ Energieverbrauch & Carbon Footprint</h1>
+    <p>1. Klasse | Digitale Grundbildung</p>
+    <div class="back-nav">
+        <a href="index.html" class="btn-back">⬅ Zurück</a>
+    </div>
+</header>
+
+<main style="max-width: 900px; margin: 0 auto; padding: 2rem 1rem;">
+
+    <section style="background: #d1fae5; border-left: 4px solid #14b8a6; padding: 1.5rem; border-radius: 5px; margin-bottom: 2rem;">
+        <h2>♻️ Wie nachhaltig sind Computer?</h2>
+        <p>Computer brauchen Strom. Und Strom hat einen Umwelt-Preis! Schau dir an, wie viel Energie dein Computer verbraucht.</p>
+    </section>
+
+    <div class="energy-card">
+        <div class="energy-icon">⚡</div>
+        <h3>Stromverbrauch verschiedener Geräte</h3>
+        <ul>
+            <li><strong>💻 Desktop-Computer:</strong> 100-500 Watt</li>
+            <li><strong>💻 Laptop:</strong> 30-100 Watt</li>
+            <li><strong>📱 Handy:</strong> 5-15 Watt</li>
+            <li><strong>🖨️ Drucker:</strong> 50-300 Watt</li>
+            <li><strong>🖥️ Monitor:</strong> 30-150 Watt</li>
+            <li><strong>☁️ Rechenzentrum (pro Server):</strong> 500-2000 Watt</li>
+        </ul>
+        <p><strong>Beispiel:</strong> Ein Laptop mit 50 Watt kostet ca. 0,006€ pro Stunde!</p>
+    </div>
+
+    <div class="calculator-box">
+        <h2 style="margin-top: 0; text-align: center;">🧮 Berechne deine Stromkosten</h2>
+        
+        <div class="input-group">
+            <label for="watts">Stromverbrauch (Watt):</label>
+            <input type="number" id="watts" value="50" min="0" max="2000">
+        </div>
+        
+        <div class="input-group">
+            <label for="hours">Stunden pro Tag:</label>
+            <input type="number" id="hours" value="8" min="0" max="24">
+        </div>
+        
+        <div class="input-group">
+            <label for="rate">Strompreis (€ pro kWh):</label>
+            <input type="number" id="rate" value="0.30" min="0" max="1" step="0.01">
+        </div>
+        
+        <button onclick="calculateEnergy()" style="width: 100%; margin-top: 1.5rem; background: white; color: #0d9488; font-weight: bold;">📊 Berechnen</button>
+        
+        <div class="result-box" id="resultBox" style="display: none;">
+            <div>📅 Pro Tag: <span class="result-value" id="daily">0,00</span> €</div>
+            <div style="margin-top: 1rem;">📆 Pro Jahr: <span class="result-value" id="yearly">0,00</span> €</div>
+            <div style="margin-top: 1rem; font-size: 0.9rem;">🌍 CO₂-Ausstoß: <span id="co2">0</span> kg/Jahr</div>
+        </div>
+    </div>
+
+    <section style="background: white; padding: 2rem; border-radius: 8px; margin-top: 2rem;">
+        <h2>📊 Vergleich: Energieverbrauch</h2>
+        <div class="comparison-bars">
+            <div class="bar-item">
+                <div class="bar">
+                    <div class="bar-fill" style="height: 100%;">500W</div>
+                </div>
+                <div class="bar-label">Desktop</div>
+            </div>
+            <div class="bar-item">
+                <div class="bar">
+                    <div class="bar-fill" style="height: 20%;">100W</div>
+                </div>
+                <div class="bar-label">Laptop</div>
+            </div>
+            <div class="bar-item">
+                <div class="bar">
+                    <div class="bar-fill" style="height: 6%;">30W</div>
+                </div>
+                <div class="bar-label">Handy</div>
+            </div>
+            <div class="bar-item">
+                <div class="bar">
+                    <div class="bar-fill" style="height: 25%;">125W</div>
+                </div>
+                <div class="bar-label">Monitor</div>
+            </div>
+        </div>
+    </section>
+
+    <div class="energy-card">
+        <div class="energy-icon">🌍</div>
+        <h3>Carbon Footprint (CO₂-Fußabdruck)</h3>
+        <p>Jede kWh Strom verursacht CO₂-Emissionen. Der Durchschnitt in Österreich:</p>
+        <ul>
+            <li>ca. <strong>0,25 kg CO₂ pro kWh</strong> (je nach Stromquelle)</li>
+            <li><strong>Grünstrom:</strong> nur 0,05 kg CO₂ pro kWh</li>
+            <li><strong>Kohlestrom:</strong> bis zu 1 kg CO₂ pro kWh</li>
+        </ul>
+    </div>
+
+    <section style="background: white; padding: 2rem; border-radius: 8px; margin-top: 2rem;">
+        <h2>💡 Tipps zum Stromsparen</h2>
+        
+        <div class="tip-box">
+            <h3>✅ Energie sparen:</h3>
+            <ul>
+                <li>🛌 Computer in den <strong>Standby-Modus</strong> versetzen, nicht ständig laufen lassen</li>
+                <li>🔌 <strong>Stromstecker</strong> aus der Steckdose ziehen - auch standby verbraucht Strom!</li>
+                <li>⚫ <strong>Monitor ausschalten</strong> - das braucht viel Strom</li>
+                <li>💻 <strong>Laptop statt Desktop</strong> - Laptops verbrauchen weniger Energie</li>
+                <li>🌙 <strong>Bildschirmhelligkeit</strong> reduzieren</li>
+                <li>🌬️ <strong>Lüftung reinigen</strong> - ein verschmutzter Computer verbraucht mehr Strom</li>
+                <li>☁️ <strong>Cloud-Speicher nutzen</strong> statt eigene Festplatte - Rechenzentren nutzen oft Grünstrom</li>
+            </ul>
+        </div>
+
+        <div class="tip-box" style="background: #fef3c7; border-left-color: #f59e0b;">
+            <h3>📊 Umweltfreundliche Alternativen:</h3>
+            <ul>
+                <li>⚡ <strong>Grünstrom</strong> benutzen - reduziert CO₂ um 80%!</li>
+                <li>♻️ <strong>Gebrauchte Computer</strong> kaufen - neue Produktion verbraucht mehr Energie</li>
+                <li>🔧 <strong>Computer reparieren</strong> statt wegwerfen</li>
+                <li>☀️ <strong>Solarladegeräte</strong> für Handy nutzen</li>
+            </ul>
+        </div>
+    </section>
+
+    <section style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 1.5rem; border-radius: 5px; margin-top: 2rem;">
+        <h2>🤔 Wusstest du?</h2>
+        <ul>
+            <li>Eine Email hat einen CO₂-Fußabdruck von ca. 4 Gramm!</li>
+            <li>Streaming von 1 Stunde Netflix = ca. 0,2 kg CO₂</li>
+            <li>Ein Bitcoin benötigt so viel Strom wie 500.000 Visa-Transaktionen!</li>
+            <li>Rechenzentren für Cloud-Speicher verbrauchen weltweit ca. 2% aller Elektrizität</li>
+            <li>Wenn der ganze Internet-Verkehr ein Land wäre, würde er mehr CO₂ verursachen als der Flugverkehr!</li>
+        </ul>
+    </section>
+
+</main>
+
+<footer style="margin-top: 5rem; padding: 2rem 1rem; background-color: #f8fafc; border-top: 1px solid #e2e8f0; color: #64748b; font-size: 0.9rem; text-align: center;">
+    &copy; 2026 | GvP | Mag. Schweitzer | Digitale Grundbildung
+</footer>
+
+<script>
+    function calculateEnergy() {
+        const watts = parseFloat(document.getElementById('watts').value) || 0;
+        const hours = parseFloat(document.getElementById('hours').value) || 0;
+        const rate = parseFloat(document.getElementById('rate').value) || 0;
+        
+        // kWh berechnen
+        const dailyKwh = (watts * hours) / 1000;
+        const yearlyKwh = dailyKwh * 365;
+        
+        // Kosten berechnen
+        const dailyCost = (dailyKwh * rate).toFixed(2);
+        const yearlyCost = (yearlyKwh * rate).toFixed(2);
+        
+        // CO₂ berechnen (0,25 kg CO₂ pro kWh)
+        const co2Yearly = (yearlyKwh * 0.25).toFixed(2);
+        
+        // Anzeigen
+        document.getElementById('daily').textContent = dailyCost;
+        document.getElementById('yearly').textContent = yearlyCost;
+        document.getElementById('co2').textContent = co2Yearly;
+        document.getElementById('resultBox').style.display = 'block';
+    }
+    
+    // Automatisch berechnen beim Laden
+    calculateEnergy();
+</script>
+
+</body>
+</html>

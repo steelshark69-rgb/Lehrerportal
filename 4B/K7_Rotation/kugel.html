@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kugel - Eigenschaften, Oberfläche & Volumen | Prof. Schweitzer</title>
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+        .explanation-box {
+            background: #eff6ff;
+            border-left: 4px solid var(--primary, #2563eb);
+            padding: 1.5rem;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+        .highlight-box {
+            background: #fffbeb;
+            border: 1px solid #fef3c7;
+            padding: 1.2rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        
+        .interactive-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-top: 1.5rem;
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border: 1px solid #cbd5e1;
+        }
+        .controls {
+            flex: 1;
+            min-width: 280px;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+        .canvas-container {
+            flex: 1;
+            min-width: 280px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+        }
+        canvas {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .slider-group {
+            background: #f8fafc;
+            padding: 0.8rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+        }
+        .slider-group label {
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        input[type="range"] { width: 100%; cursor: pointer; }
+
+        .live-solution {
+            background: #fafafa;
+            border: 1px solid #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* Ausklappbare Beispiele */
+        .example-box {
+            background: white;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+        .example-header {
+            background: #f1f5f9;
+            padding: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+        }
+        .example-header:hover {
+            background: #e2e8f0;
+        }
+        
+        .example-content {
+            padding: 1.5rem;
+            display: none;
+            border-top: 1px solid #cbd5e1;
+            line-height: 1.6;
+        }
+        .example-content.open {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Kapitel 7</h1>
+    <p>Die Kugel: Eigenschaften, Oberfläche und Rauminhalt</p>
+    <div class="back-nav">
+        <a href="../index.html" class="btn-back">⬅ Zurück zur Übersicht</a>
+    </div>
+</header>
+
+<main>
+    <div class="subject-group">
+        <div class="subject-header">
+            <span class="subject-badge bg-math">Eigenschaften</span>
+            <h2 style="margin: 0; color: var(--primary);">Was ist eine Kugel?</h2>
+        </div>
+
+        <div class="explanation-box">
+            <p>Eine <strong>Kugel</strong> ist ein vollkommen runder Körper im Raum. Stell dir vor, du zeichnest einen Kreis und drehst ihn unendlich schnell um eine Achse, die durch seinen Mittelpunkt läuft – der Körper, der dabei entsteht, ist die Kugel.</p>
+            <p>Eine Kugel besitzt folgende Eigenschaften:</p>
+            <ul>
+                <li><strong>Mittelpunkt (M):</strong> Der zentrale Punkt, von dem alle Punkte der Kugeloberfläche gleich weit entfernt sind.</li>
+                <li><strong>Radius (r):</strong> Der Abstand vom Mittelpunkt zu einem beliebigen Punkt auf der Oberfläche. Alle Radien einer Kugel haben dieselbe Länge.</li>
+                <li><strong>Durchmesser (d):</strong> Die längste Strecke durch die Kugel, die den doppelten Radius darstellt: <i>d = 2r</i>.</li>
+                <li><strong>Oberfläche:</strong> Die gesamte gekrümmte Außenhülle der Kugel. Im Gegensatz zu Polyedern hat die Kugel keine Ecken oder Kanten!</li>
+            </ul>
+        </div>
+
+        <div class="highlight-box">
+            <h4 style="margin-top: 0; color: #b45309;">📐 Formeln für die Kugel</h4>
+            <p style="margin-bottom: 0;">
+                Für die <strong>Oberfläche</strong> einer Kugel mit Radius <i>r</i>:<br>
+                <span style="font-size: 1.2rem;"><strong><i>O</i> = 4 &middot; &pi; &middot; <i>r</i><sup>2</sup></strong></span>
+                <br><br>
+                Für den <strong>Rauminhalt (Volumen)</strong> einer Kugel mit Radius <i>r</i>:<br>
+                <span style="font-size: 1.2rem;"><strong><i>V</i> = (4/3) &middot; &pi; &middot; <i>r</i><sup>3</sup></strong></span>
+                <br><br>
+                💡 <strong>Merksatz:</strong> Die Oberfläche ist proportional zu <i>r</i><sup>2</sup>, das Volumen ist proportional zu <i>r</i><sup>3</sup>. Das heißt: Wenn der Radius verdoppelt wird, vervierfacht sich die Oberfläche, aber das Volumen wird achtfach!
+            </p>
+        </div>
+    </div>
+
+    <div class="subject-group">
+        <div class="subject-header">
+            <span class="subject-badge bg-math">Interaktiv</span>
+            <h2 style="margin: 0; color: var(--primary);">Der Oberflächen- & Volumen-Rechner für die Kugel</h2>
+        </div>
+        
+        <p>Verändere den Radius <strong><i>r</i></strong>. Beobachte, wie die Kugel wächst und wie sich die Oberfläche und das Volumen verändern. Achte darauf, wie schnell das Volumen wächst im Vergleich zur Oberfläche!</p>
+
+        <div class="interactive-container">
+            <div class="controls">
+                <div class="slider-group">
+                    <label for="sliderR">Radius <i>r</i>: <span id="valR">3,0</span> cm</label>
+                    <input type="range" id="sliderR" min="0.5" max="8" step="0.5" value="3">
+                </div>
+
+                <div style="background: #f8fafc; padding: 1rem; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 0.95rem;">
+                    <strong>Durchmesser d = 2 &middot; r:</strong><br>
+                    <span id="diamDisplay">6,0 cm</span>
+                </div>
+            </div>
+
+            <div class="canvas-container">
+                <canvas id="sphereCanvas" width="240" height="240"></canvas>
+            </div>
+
+            <div class="live-solution" id="solutionOutput">
+                Rechner wird geladen...
+            </div>
+        </div>
+    </div>
+
+    <div class="subject-group">
+        <div class="subject-header">
+            <span class="subject-badge bg-math">Übung</span>
+            <h2 style="margin: 0; color: var(--primary);">Typische Schularbeiten-Aufgaben</h2>
+        </div>
+
+        <div class="example-box">
+            <div class="example-header">
+                <span>🌍 Aufgabe 1: Die Erde (vereinfacht)</span>
+                <span class="arrow">▼</span>
+            </div>
+            <div class="example-content">
+                <p><strong>Aufgabe:</strong> Die Erde hat einen Radius von etwa <i>r</i> = 6.371 km. Berechne die Oberfläche und das Volumen der Erde!</p>
+                <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 10px 0;">
+                <strong>Schritt 1: Oberfläche berechnen</strong><br>
+                <i>O = 4 &middot; &pi; &middot; r<sup>2</sup></i><br>
+                <i>O = 4 &middot; &pi; &middot; 6.371<sup>2</sup></i><br>
+                <i>O = 4 &middot; &pi; &middot; 40.590.641 &approx; 510.100.000 km<sup>2</sup></i>
+                <br><br>
+                <strong>Schritt 2: Volumen berechnen</strong><br>
+                <i>V = (4/3) &middot; &pi; &middot; r<sup>3</sup></i><br>
+                <i>V = (4/3) &middot; &pi; &middot; 6.371<sup>3</sup></i><br>
+                <i>V = (4/3) &middot; &pi; &middot; 258.518.857.511 &approx; 1.083.210.000.000 km<sup>3</sup></i>
+                <br><br>
+                <strong>Antwort:</strong> Die Erde hat eine Oberfläche von ca. 510 Millionen km² und ein Volumen von ca. 1.083 Milliarden km³.
+            </div>
+        </div>
+
+        <div class="example-box">
+            <div class="example-header">
+                <span>⚽ Aufgabe 2: Der Fußball</span>
+                <span class="arrow">▼</span>
+            </div>
+            <div class="example-content">
+                <p><strong>Aufgabe:</strong> Ein offizieller Fußball hat einen Umfang von 68 bis 70 cm. Nimm den Mittelwert <i>U</i> = 69 cm an. Berechne den Radius, die Oberfläche und das Volumen des Fußballs!</p>
+                <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 10px 0;">
+                <strong>Schritt 1: Radius aus dem Umfang berechnen</strong><br>
+                Der Umfang eines Großkreises der Kugel ist: <i>U = 2 &middot; &pi; &middot; r</i><br>
+                <i>r = U / (2 &middot; &pi;) = 69 / (2 &middot; &pi;) &approx; 10,98 cm</i>
+                <br><br>
+                <strong>Schritt 2: Oberfläche berechnen</strong><br>
+                <i>O = 4 &middot; &pi; &middot; r<sup>2</sup> = 4 &middot; &pi; &middot; 10,98<sup>2</sup> &approx; 1.514 cm<sup>2</sup></i>
+                <br><br>
+                <strong>Schritt 3: Volumen berechnen</strong><br>
+                <i>V = (4/3) &middot; &pi; &middot; r<sup>3</sup> = (4/3) &middot; &pi; &middot; 10,98<sup>3</sup> &approx; 5.572 cm<sup>3</sup></i>
+                <br><br>
+                <strong>Antwort:</strong> Der Fußball hat einen Radius von ca. 10,98 cm, eine Oberfläche von ca. 1.514 cm² und ein Volumen von ca. 5.572 cm³.
+            </div>
+        </div>
+
+        <div class="example-box">
+            <div class="example-header">
+                <span>🎾 Aufgabe 3: Umkehraufgabe (Tennisball)</span>
+                <span class="arrow">▼</span>
+            </div>
+            <div class="example-content">
+                <p><strong>Aufgabe:</strong> Ein Tennisball hat ein Volumen von <i>V</i> ≈ 143 cm³. Berechne den Radius und die Oberfläche des Tennisballs!</p>
+                <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 10px 0;">
+                <strong>Schritt 1: Radius aus dem Volumen berechnen</strong><br>
+                Wir haben: <i>V = (4/3) &middot; &pi; &middot; r<sup>3</sup></i><br>
+                Umformen nach <i>r</i>:<br>
+                <i>r<sup>3</sup> = V / ((4/3) &middot; &pi;)</i><br>
+                <i>r<sup>3</sup> = 143 / ((4/3) &middot; &pi;) &approx; 34,2</i><br>
+                <i>r = ∛34,2 &approx; 3,24 cm</i>
+                <br><br>
+                <strong>Schritt 2: Oberfläche berechnen</strong><br>
+                <i>O = 4 &middot; &pi; &middot; r<sup>2</sup> = 4 &middot; &pi; &middot; 3,24<sup>2</sup> &approx; 132 cm<sup>2</sup></i>
+                <br><br>
+                <strong>Antwort:</strong> Der Tennisball hat einen Radius von ca. 3,24 cm und eine Oberfläche von ca. 132 cm².
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+
+        // --- Logik für aufklappbare Boxen ---
+        const headers = document.querySelectorAll(".example-header");
+        
+        headers.forEach(function(header) {
+            header.addEventListener("click", function() {
+                const content = this.nextElementSibling;
+                const arrow = this.querySelector(".arrow");
+                
+                content.classList.toggle("open");
+                
+                if (content.classList.contains("open")) {
+                    arrow.textContent = "▲";
+                } else {
+                    arrow.textContent = "▼";
+                }
+            });
+        });
+
+        // --- Kugel-Rechner ---
+        const sliderR = document.getElementById("sliderR");
+        const valR = document.getElementById("valR");
+        const diamDisplay = document.getElementById("diamDisplay");
+        const solutionOutput = document.getElementById("solutionOutput");
+        const canvas = document.getElementById("sphereCanvas");
+        
+        if (!canvas || !sliderR) return;
+        
+        const ctx = canvas.getContext("2d");
+
+        function formatNum(num) {
+            return parseFloat(num).toFixed(2).replace('.', ',');
+        }
+
+        // Zeichnet eine Kugel als Kreis mit 3D-Effekt (konzentrische Kreise)
+        function drawSphere(r) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const scale = 20; // Pixel pro cm
+            const radius = r * scale;
+
+            // Äußerer Kreis (Oberfläche)
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+            ctx.strokeStyle = "#2563eb";
+            ctx.lineWidth = 3;
+            ctx.stroke();
+
+            // Füllung mit Gradient für 3D-Effekt
+            const gradient = ctx.createRadialGradient(centerX - radius/3, centerY - radius/3, 0, centerX, centerY, radius);
+            gradient.addColorStop(0, "rgba(37, 99, 235, 0.15)");
+            gradient.addColorStop(0.7, "rgba(37, 99, 235, 0.05)");
+            gradient.addColorStop(1, "rgba(37, 99, 235, 0)");
+            ctx.fillStyle = gradient;
+            ctx.fill();
+
+            // Radius-Linie (Orange)
+            ctx.beginPath();
+            ctx.strokeStyle = "#ea580c";
+            ctx.setLineDash([3, 3]);
+            ctx.moveTo(centerX, centerY);
+            ctx.lineTo(centerX + radius, centerY);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // Beschriftung
+            ctx.fillStyle = "#ea580c";
+            ctx.font = "bold 12px sans-serif";
+            ctx.textAlign = "center";
+            ctx.fillText("r", centerX + radius/2, centerY - 10);
+
+            // Mittelpunkt
+            ctx.beginPath();
+            ctx.fillStyle = "#334155";
+            ctx.arc(centerX, centerY, 3, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        function calculateAndUpdate() {
+            const r = parseFloat(sliderR.value);
+
+            if (valR) valR.textContent = r.toFixed(1).replace('.', ',');
+            if (diamDisplay) diamDisplay.textContent = (r * 2).toFixed(1).replace('.', ',') + " cm";
+
+            drawSphere(r);
+
+            const pi = Math.PI;
+            const o = 4 * pi * r * r;
+            const v = (4 / 3) * pi * r * r * r;
+
+            if (solutionOutput) {
+                solutionOutput.innerHTML = 
+                    "<strong>DYNAMISCHE MUSTERLÖSUNG (r = " + formatNum(r) + " cm):</strong><br><br>" +
+                    "<strong>1. Oberfläche O berechnen:</strong><br>" +
+                    "Formel:  O = 4 &middot; &pi; &middot; r<sup>2</sup><br>" +
+                    "Rechnung: O = 4 &middot; &pi; &middot; " + formatNum(r) + "<sup>2</sup><br>" +
+                    "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;O = 4 &middot; &pi; &middot; " + formatNum(r*r) + " &approx; <strong>" + formatNum(o) + " cm<sup>2</sup></strong><br><br>" +
+                    "<strong>2. Rauminhalt V berechnen:</strong><br>" +
+                    "Formel:  V = (4/3) &middot; &pi; &middot; r<sup>3</sup><br>" +
+                    "Rechnung: V = (4/3) &middot; &pi; &middot; " + formatNum(r) + "<sup>3</sup><br>" +
+                    "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;V = (4/3) &middot; &pi; &middot; " + formatNum(r*r*r) + " &approx; <strong>" + formatNum(v) + " cm<sup>3</sup></strong>";
+            }
+        }
+
+        ['input', 'change'].forEach(function(evt) {
+            sliderR.addEventListener(evt, calculateAndUpdate);
+        });
+
+        calculateAndUpdate();
+    });
+</script>
+
+</body>
+</html>

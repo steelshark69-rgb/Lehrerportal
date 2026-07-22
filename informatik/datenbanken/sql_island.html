@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bonus-Level: SQL Island</title>
+    <link rel="stylesheet" href="../../style.css">
+    
+    <style>
+        /* Lokales CSS für Lesbarkeit und Interaktivität */
+        body {
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #2d3748;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8fafc;
+        }
+        
+        /* Navigation Styles */
+        .nav-bar {
+            display: flex; justify-content: space-between; align-items: center;
+            background-color: #fff; padding: 10px 15px; border-radius: 8px;
+            border: 1px solid #cbd5e1; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .nav-btn {
+            text-decoration: none; background-color: #e2e8f0; color: #334155;
+            padding: 8px 16px; border-radius: 5px; font-weight: 600; transition: 0.2s;
+        }
+        .nav-btn:hover { background-color: #cbd5e1; color: #0f172a; }
+        
+        h1 { color: #1e293b; border-bottom: 3px solid #10b981; padding-bottom: 10px; }
+        h2 { color: #059669; margin-top: 35px; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px;}
+        h3 { color: #334155; }
+        
+        .story-box {
+            background-color: #1e293b; color: #f8fafc; border-left: 5px solid #10b981;
+            padding: 25px; margin: 20px 0; border-radius: 0 8px 8px 0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2); font-size: 1.1em;
+        }
+        .story-box strong { color: #34d399; }
+
+        .theory-box {
+            background-color: #fff; border-left: 5px solid #3b82f6;
+            padding: 20px; margin: 20px 0; border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .sql-keyword { color: #2563eb; font-weight: bold; font-family: monospace; font-size: 1.1em;}
+        .sql-string { color: #16a34a; font-family: monospace; }
+        .sql-block { background: #f1f5f9; color: #0f172a; padding: 15px; border-radius: 6px; font-family: monospace; font-size: 1.1em; border: 1px solid #cbd5e1; margin: 15px 0;}
+        
+        .task-container {
+            background-color: #fff; border: 1px solid #e2e8f0; border-radius: 8px;
+            padding: 35px; margin: 40px 0; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .btn-play {
+            background-color: #10b981; color: white; text-decoration: none; padding: 15px 30px;
+            border-radius: 8px; font-size: 22px; font-weight: bold; transition: 0.3s;
+            display: inline-block; margin-top: 20px; box-shadow: 0 4px 6px rgba(16, 185, 129, 0.3);
+        }
+        .btn-play:hover { background-color: #059669; transform: translateY(-2px); box-shadow: 0 6px 8px rgba(16, 185, 129, 0.4); }
+
+        .hint-badge {
+            display: inline-block; background-color: #fee2e2; color: #991b1b;
+            padding: 3px 8px; border-radius: 12px; font-size: 0.8em; font-weight: bold;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="nav-bar">
+        <a href="../index.html" class="nav-btn">🔙 Zurück zur Übersicht</a>
+    </nav>
+
+    <h1>Bonus-Level: Gefangen auf SQL Island!</h1>
+    
+    <div class="story-box">
+        <p><strong>Die Mission:</strong> Du hast einen Flugzeugabsturz überlebt und bist auf einer mysteriösen Insel gestrandet. Die Bewohner hier sprechen eine seltsame Sprache: <strong>Sie verstehen nur SQL!</strong></p>
+        <p>Um von dieser Insel zu entkommen, musst du mit den Dörflern kommunizieren, Gegenstände finden (oder stehlen) und Rätsel lösen. Deine einzige Waffe ist das Terminal.</p>
+    </div>
+
+    <h2>Dein Überlebens-Handbuch (Cheat-Sheet)</h2>
+    <p>Das Spiel (entwickelt von der TU Kaiserslautern) wird dich durch eine spannende Geschichte führen. Bevor du startest, ist hier noch einmal eine kurze Zusammenfassung deiner wichtigsten Werkzeuge.</p>
+
+    <div class="theory-box">
+        <h3>1. Die Umgebung scannen (SELECT)</h3>
+        <p>Um herauszufinden, was es auf der Insel überhaupt gibt, musst du Tabellen auslesen. Erinnere dich an unsere Basics:</p>
+        <div class="sql-block">
+            SELECT * FROM bewohner;
+        </div>
+        <p>Willst du nur bestimmte Personen finden, nutze den Filter (<span class="sql-keyword">WHERE</span>):</p>
+        <div class="sql-block">
+            SELECT * FROM bewohner WHERE beruf = 'Schmied';
+        </div>
+    </div>
+
+    <div class="theory-box" style="border-left-color: #8b5cf6;">
+        <span class="hint-badge">Neuer Befehl!</span>
+        <h3>2. Dinge verändern (UPDATE)</h3>
+        <p>Auf der Insel musst du manchmal Dinge aktiv verändern. Vielleicht musst du jemandem ein Schwert geben oder deinen eigenen Status ändern. Dafür gibt es den <span class="sql-keyword">UPDATE</span>-Befehl.</p>
+        <p><em>Bauplan:</em> Ändere in der Tabelle X, setze die Spalte Y auf den neuen Wert, aber NUR dort, wo die Bedingung Z zutrifft!</p>
+        <div class="sql-block">
+            UPDATE bewohner SET status = 'befreit' WHERE name = 'Paul';
+        </div>
+    </div>
+
+    <div class="theory-box" style="border-left-color: #f59e0b;">
+        <span class="hint-badge">Neuer Befehl!</span>
+        <h3>3. Dinge löschen (DELETE)</h3>
+        <p>Wenn du einen Gegenstand wegwirfst oder einen Gegner besiegst, musst du ihn aus der Datenbank löschen. <strong>Achtung:</strong> Vergiss niemals das <span class="sql-keyword">WHERE</span>, sonst löschst du die ganze Insel!</p>
+        <div class="sql-block">
+            DELETE FROM gegenstaende WHERE name = 'kaputtes Schwert';
+        </div>
+    </div>
+
+    <div class="task-container">
+        <h2 style="margin-top: 0;">Bist du bereit für das Abenteuer?</h2>
+        <p>Öffne das Spiel über den Button unten. Das Spiel merkt sich deinen Fortschritt im Browser. Lies dir die Texte der Dorfbewohner genau durch – sie verraten dir immer, wie die Tabellen und Spalten heißen, die du abfragen musst.</p>
+        <p><em>Tipp: Achte bei Texten immer auf die einfachen Anführungszeichen (<span class="sql-string">'Schwert'</span>)!</em></p>
+        
+        <a href="https://sql-island.informatik.uni-kl.de/" target="_blank" class="btn-play">🎮 SQL Island jetzt starten</a>
+    </div>
+
+</body>
+</html>

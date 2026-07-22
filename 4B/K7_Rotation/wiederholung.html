@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>7.0 Wiederholung Geometrie | Prof. Schweitzer</title>
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+        .explanation-box {
+            background: #eff6ff;
+            border-left: 4px solid var(--primary, #2563eb);
+            padding: 1.5rem;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .comparison-card {
+            background: white;
+            border: 1px solid #cbd5e1;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+        .comparison-card h3 {
+            margin-top: 0;
+            color: var(--primary, #2563eb);
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 0.5rem;
+        }
+
+        /* Interaktiver Rechner */
+        .interactive-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-top: 1.5rem;
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border: 1px solid #cbd5e1;
+        }
+        .controls {
+            flex: 1;
+            min-width: 280px;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+        .canvas-container {
+            flex: 1.2;
+            min-width: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+        }
+        canvas {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .select-style {
+            width: 100%;
+            padding: 10px;
+            font-size: 1rem;
+            border-radius: 6px;
+            border: 1px solid #94a3b8;
+            background: white;
+            font-weight: bold;
+        }
+        .slider-group {
+            background: #f8fafc;
+            padding: 0.8rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+        }
+        .slider-group label {
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        input[type="range"] { width: 100%; cursor: pointer; }
+
+        .live-solution {
+            background: #fafafa;
+            border: 1px solid #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* Musterbeispiele */
+        .example-box {
+            background: white;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+        .example-header {
+            background: #f1f5f9;
+            padding: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+        }
+        .example-content {
+            padding: 1.5rem;
+            display: none;
+            border-top: 1px solid #cbd5e1;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Kapitel 7.0 Wiederholung</h1>
+    <p>Rauminhalt und Oberfläche gerader Körper</p>
+    <div class="back-nav">
+        <a href="../index.html" class="btn-back">⬅ Zurück zur Übersicht</a>
+    </div>
+</header>
+
+<main>
+    <div class="subject-group">
+        <div class="subject-header">
+            <span class="subject-badge bg-math">Theorie</span>
+            <h2 style="margin: 0; color: var(--primary);">Was unterscheidet Prisma, Quader und Würfel?</h2>
+        </div>
+
+        <div class="explanation-box">
+            In der Geometrie bauen diese drei Körpertypen logisch aufeinander auf. Das **Prisma** ist dabei der Oberbegriff für eine ganze Familie von Körpern!
+        </div>
+
+        <div class="comparison-grid">
+            <div class="comparison-card">
+                <h3>Das Prisma (Allgemein)</h3>
+                <p>Ein Prisma ist ein Körper, bei dem die <strong>Grundfläche</strong> und die <strong>Deckfläche</strong> deckungsgleich (kongruent) und parallel zueinander sind.</p>
+                <p>Die Grundfläche kann ein beliebiges Vieleck sein (Dreieck, Viereck, Sechseck...). Die Seitenwände stehen normal auf die Grundfläche und bilden zusammen den <strong>Mantel</strong>.</p>
+            </div>
+            <div class="comparison-card">
+                <h3>Der Quader (Spezial-Prisma)</h3>
+                <p>Ein Quader ist ein ganz besonderes Prisma: Seine Grundfläche ist zwingend ein <strong>Rechteck</strong>.</p>
+                <p>Daraus folgt automatisch, dass alle 6 Begrenzungsflächen des Quaders Rechtecke sind, von denen jeweils zwei gegenüberliegende genau gleich groß sind. Ein Quader hat die drei Kantenmaße <i>a</i>, <i>b</i> und <i>c</i>.</p>
+            </div>
+            <div class="comparison-card">
+                <h3>Der Würfel (Spezial-Quader)</h3>
+                <p>Der Würfel ist wiederum der extremste Spezialfall eines Quaders.</p>
+                <p>Beim Würfel sind nicht nur alle Flächen Rechtecke, sondern alle 6 Seitenflächen sind absolut identische, quadratische Flächen. Alle Kanten haben dieselbe Länge <i>a</i>. Somit ist jeder Würfel auch ein Quader und jedes Prisma!</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="subject-group">
+        <div class="subject-header">
+            <span class="subject-badge bg-math">Interaktiv</span>
+            <h2 style="margin: 0; color: var(--primary);">Interaktiver Formel-Explorer & Live-Lösung</h2>
+        </div>
+        
+        <p>Wähle einen geometrischen Körper aus und verändere die Schieberegler. Die "Musterlösung" berechnet sich in Echtzeit mit deinen eingestellten Zahlen!</p>
+
+        <div class="interactive-container">
+            <div class="controls">
+                <label for="bodySelect" style="font-weight: bold;">Wähle einen Körper:</label>
+                <select id="bodySelect" class="select-style">
+                    <option value="cube">Würfel (Kantenlänge a)</option>
+                    <option value="cuboid" selected>Quader (a &middot; b &middot; c)</option>
+                    <option value="prism">Dreiecksprisma (rechtwinkliges Dreieck)</option>
+                    <option value="pyramid">Quadratische Pyramide (Seitenlänge a, Höhe h<sub>k</sub>)</option>
+                </select>
+
+                <div class="slider-group" id="groupA">
+                    <label for="sliderA">Kante <i>a</i>: <span id="valA">4</span> cm</label>
+                    <input type="range" id="sliderA" min="1" max="8" step="0.5" value="4">
+                </div>
+
+                <div class="slider-group" id="groupB">
+                    <label for="sliderB">Kante <i>b</i>: <span id="valB">3</span> cm</label>
+                    <input type="range" id="sliderB" min="1" max="8" step="0.5" value="3">
+                </div>
+
+                <div class="slider-group" id="groupC">
+                    <label for="sliderC">Kante <i>c</i> (bzw. Körperhöhe <i>h<sub>k</sub></i>): <span id="valC">5</span> cm</label>
+                    <input type="range" id="sliderC" min="1" max="10" step="0.5" value="5">
+                </div>
+
+                <div class="slider-group" id="groupPyramidBase" style="display: none;">
+                    <label for="sliderPyramidBase">Seitenlänge der Grundfläche <i>a</i>: <span id="valPyramidBase">4</span> cm</label>
+                    <input type="range" id="sliderPyramidBase" min="1" max="8" step="0.5" value="4">
+                </div>
+
+                <div class="slider-group" id="groupPyramidHeight" style="display: none;">
+                    <label for="sliderPyramidHeight">Körperhöhe <i>h<sub>k</sub></i>: <span id="valPyramidHeight">5</span> cm</label>
+                    <input type="range" id="sliderPyramidHeight" min="1" max="10" step="0.5" value="5">
+                </div>
+            </div>
+
+            <div class="canvas-container">
+                <canvas id="volumeCanvas" width="250" height="220"></canvas>
+            </div>
+
+            <div class="live-solution" id="solutionOutput">
+                </div>
+        </div>
+    </div>
+
+    <div class="subject-group">
+        <div class="subject-header">
+            <span class="subject-badge bg-math">Übung</span>
+            <h2 style="margin: 0; color: var(--primary);">Typische Schularbeiten-Beispiele</h2>
+        </div>
+        
+        <p>Versuche diese Beispiele zuerst alleine auf einem Zettel zu rechnen. Klicke dann auf die Zeile, um die ausführliche Musterlösung aufzuklappen!</p>
+
+        <div class="example-box">
+            <div class="example-header" onclick="toggleExample(this)">
+                <span>📝 Beispiel 1: Das dreiseitige Prisma (rechtwinklige Grundfläche)</span>
+                <span class="arrow">▼</span>
+            </div>
+            <div class="example-content">
+                <p><strong>Aufgabe:</strong> Ein gerades Prisma hat als Grundfläche ein rechtwinkliges Dreieck mit den Katheten <i>a</i> = 6 cm und <i>b</i> = 8 cm. Die Körperhöhe beträgt <i>h<sub>k</sub></i> = 12 cm. Berechne das Volumen und die Gesamtoberfläche des Prismas!</p>
+                <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 10px 0;">
+                <strong>Schritt 1: Grundfläche G berechnen</strong><br>
+                Da die Grundfläche ein rechtwinkliges Dreieck ist, berechnet sich die Fläche mit:<br>
+                <i>G = (a &middot; b) / 2</i><br>
+                <i>G = (6 &middot; 8) / 2 = 48 / 2 = 24 cm<sup>2</sup></i>
+                <br><br>
+                <strong>Schritt 2: Volumen V berechnen</strong><br>
+                Die allgemeine Volumenformel für jedes Prisma lautet: <i>V = G &middot; h<sub>k</sub></i><br>
+                <i>V = 24 &middot; 12 = <strong>288 cm<sup>3</sup></strong></i>
+                <br><br>
+                <strong>Schritt 3: Hypotenuse c der Grundfläche berechnen (für den Umfang)</strong><br>
+                Mit dem Satz des Pythagoras berechnen wir die fehlende Dreieckskante <i>c</i>:<br>
+                <i>c = &radic;(a<sup>2</sup> + b<sup>2</sup>)</i><br>
+                <i>c = &radic;(6<sup>2</sup> + 8<sup>2</sup>) = &radic;(36 + 64) = &radic;100 = 10 cm</i>
+                <br><br>
+                <strong>Schritt 4: Umfang der Grundfläche U<sub>G</sub> und Mantel M berechnen</strong><br>
+                <i>U<sub>G</sub> = a + b + c = 6 + 8 + 10 = 24 cm</i><br>
+                Der Mantel ist die Summe aller Seitenwände: <i>M = U<sub>G</sub> &middot; h<sub>k</sub></i><br>
+                <i>M = 24 &middot; 12 = 288 cm<sup>2</sup></i>
+                <br><br>
+                <strong>Schritt 5: Oberfläche O berechnen</strong><br>
+                <i>O = 2 &middot; G + M</i><br>
+                <i>O = 2 &middot; 24 + 288 = 48 + 288 = <strong>336 cm<sup>2</sup></strong></i>
+            </div>
+        </div>
+
+        <div class="example-box">
+            <div class="example-header" onclick="toggleExample(this)">
+                <span>📝 Beispiel 2: Umkehraufgabe beim Quader</span>
+                <span class="arrow">▼</span>
+            </div>
+            <div class="example-content">
+                <p><strong>Aufgabe:</strong> Ein quaderförmiges Aquarium ist 50 cm lang (<i>a</i>) und 30 cm breit (<i>b</i>). Es wird mit 45 Litern Wasser befüllt. Wie hoch steht das Wasser im Aquarium (Höhe <i>c</i>)?</p>
+                <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 10px 0;">
+                <strong>Schritt 1: Einheiten angleichen</strong><br>
+                Ein ganz wichtiger Stolperstein! 1 Liter entspricht 1 Kubikdezimeter (dm<sup>3</sup>). Wir wandeln am besten alle Maße in Dezimeter (dm) um:<br>
+                <i>V</i> = 45 Liter = 45 dm<sup>3</sup><br>
+                <i>a</i> = 50 cm = 5 dm<br>
+                <i>b</i> = 30 cm = 3 dm
+                <br><br>
+                <strong>Schritt 2: Volumenformel aufstellen und umformen</strong><br>
+                Die Formel lautet: <i>V = a &middot; b &middot; c</i><br>
+                Wir formen nach der gesuchten Kante <i>c</i> um, indem wir durch (<i>a &middot; b</i>) dividieren:<br>
+                <i>c = V / (a &middot; b)</i>
+                <br><br>
+                <strong>Schritt 3: Werte einsetzen und berechnen</strong><br>
+                <i>c = 45 / (5 &middot; 3)</i><br>
+                <i>c = 45 / 15 = 3 dm</i>
+                <br><br>
+                <strong>Antwort:</strong> Das Wasser steht im Aquarium genau 3 dm (oder umgerechnet <strong>30 cm</strong>) hoch.
+            </div>
+        </div>
+
+        <div class="example-box">
+            <div class="example-header" onclick="toggleExample(this)">
+                <span>⛺ Beispiel 3: Die quadratische Pyramide (Zeltdach)</span>
+                <span class="arrow">▼</span>
+            </div>
+            <div class="example-content">
+                <p><strong>Aufgabe:</strong> Ein quaderförmiges Gebäude mit quadratischer Grundfläche (Seitenlänge <i>a</i> = 8 m) erhält ein pyramidenförmiges Dach. Die Körperhöhe des Dachs beträgt <i>h<sub>k</sub></i> = 5 m. Berechne das Volumen und die Mantelfläche (Dachfläche) des Dachs!</p>
+                <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 10px 0;">
+                <strong>Schritt 1: Grundfläche G berechnen</strong><br>
+                Die Grundfläche ist ein Quadrat mit Seitenlänge <i>a</i> = 8 m:<br>
+                <i>G = a<sup>2</sup> = 8<sup>2</sup> = 64 m<sup>2</sup></i>
+                <br><br>
+                <strong>Schritt 2: Volumen V berechnen (Drittel-Regel wie beim Kegel!)</strong><br>
+                Formel: <i>V = (1/3) &middot; G &middot; h<sub>k</sub></i><br>
+                <i>V = (1/3) &middot; 64 &middot; 5 = (1/3) &middot; 320 &approx; <strong>106,67 m<sup>3</sup></strong></i>
+                <br><br>
+                <strong>Schritt 3: Slant Height s (Seitenkante eines Mantel-Dreiecks) berechnen</strong><br>
+                Der Abstand von der Mitte einer Basiskante zur Spitze ist:<br>
+                <i>s = &radic;((a/2)<sup>2</sup> + h<sub>k</sub><sup>2</sup>)</i><br>
+                <i>s = &radic;(4<sup>2</sup> + 5<sup>2</sup>) = &radic;(16 + 25) = &radic;41 &approx; 6,40 m</i>
+                <br><br>
+                <strong>Schritt 4: Fläche eines Mantel-Dreiecks berechnen</strong><br>
+                Jedes der 4 Dreiecke hat Basis <i>a</i> = 8 m und Höhe <i>s</i> ≈ 6,40 m:<br>
+                Fläche = (8 &middot; 6,40) / 2 = 25,6 m<sup>2</sup>
+                <br><br>
+                <strong>Schritt 5: Mantelfläche M berechnen</strong><br>
+                <i>M = 4 &middot; 25,6 = <strong>102,4 m<sup>2</sup></strong></i>
+                <br><br>
+                <strong>Antwort:</strong> Das pyramidenförmige Dach hat ein Volumen von ca. 106,67 m³ und eine Mantelfläche (Dachfläche) von ca. 102,4 m².
+            </div>
+        </div>
+</main>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const bodySelect = document.getElementById("bodySelect");
+        const sliderA = document.getElementById("sliderA");
+        const sliderB = document.getElementById("sliderB");
+        const sliderC = document.getElementById("sliderC");
+        
+        const valA = document.getElementById("valA");
+        const valB = document.getElementById("valB");
+        const valC = document.getElementById("valC");
+        
+        const groupB = document.getElementById("groupB");
+        const solutionOutput = document.getElementById("solutionOutput");
+        const canvas = document.getElementById("volumeCanvas");
+        const ctx = canvas.getContext("2d");
+
+        function formatNum(num) {
+            return num.toString().replace('.', ',');
+        }
+
+        function drawShape(type, a, b, c) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.strokeStyle = "#2563eb";
+            ctx.lineWidth = 2;
+            ctx.fillStyle = "rgba(37, 99, 235, 0.05)";
+            
+            // Einfache isometrische Projektion für die Skizze
+            const startX = 50;
+            const startY = canvas.height - 60;
+            
+            // Skalierungsfaktoren für die Optik im Canvas
+            const scale = 15; 
+            const dx = a * scale;
+            const dy = b * scale * 0.5; // Verkürzung auf Schrägachse
+            const dz = c * scale;
+
+            if (type === "cube" || type === "cuboid") {
+                // Bodenfläche
+                ctx.beginPath();
+                ctx.moveTo(startX, startY);
+                ctx.lineTo(startX + dx, startY);
+                ctx.lineTo(startX + dx + dy, startY - dy);
+                ctx.lineTo(startX + dy, startY - dy);
+                ctx.closePath();
+                ctx.fill(); ctx.stroke();
+
+                // Deckfläche
+                ctx.beginPath();
+                ctx.moveTo(startX, startY - dz);
+                ctx.lineTo(startX + dx, startY - dz);
+                ctx.lineTo(startX + dx + dy, startY - dy - dz);
+                ctx.lineTo(startX + dy, startY - dy - dz);
+                ctx.closePath();
+                ctx.fill(); ctx.stroke();
+
+                // Vertikale Kanten
+                ctx.beginPath();
+                ctx.moveTo(startX, startY); ctx.lineTo(startX, startY - dz);
+                ctx.moveTo(startX + dx, startY); ctx.lineTo(startX + dx, startY - dz);
+                ctx.moveTo(startX + dx + dy, startY - dy); ctx.lineTo(startX + dx + dy, startY - dy - dz);
+                ctx.moveTo(startX + dy, startY - dy); ctx.lineTo(startX + dy, startY - dy - dz);
+                ctx.stroke();
+            } else if (type === "prism") {
+                // Rechtwinkliges Dreieck als Boden
+                ctx.beginPath();
+                ctx.moveTo(startX, startY);
+                ctx.lineTo(startX + dx, startY); // Kathete a
+                ctx.lineTo(startX, startY - (b * scale)); // Kathete b nach oben verzerrt für 3D
+                ctx.closePath();
+                ctx.fill(); ctx.stroke();
+
+                // Deckfläche (nach hinten verschoben um dz)
+                const shiftX = dy; 
+                const shiftY = -dy;
+                
+                ctx.beginPath();
+                ctx.moveTo(startX + shiftX, startY + shiftY);
+                ctx.lineTo(startX + dx + shiftX, startY + shiftY);
+                ctx.lineTo(startX + shiftX, startY - (b * scale) + shiftY);
+                ctx.closePath();
+                ctx.fill(); ctx.stroke();
+
+                // Verbindungen
+                ctx.beginPath();
+                ctx.moveTo(startX, startY); ctx.lineTo(startX + shiftX, startY + shiftY);
+                ctx.moveTo(startX + dx, startY); ctx.lineTo(startX + dx + shiftX, startY + shiftY);
+                ctx.moveTo(startX, startY - (b * scale)); ctx.lineTo(startX + shiftX, startY - (b * scale) + shiftY);
+                ctx.stroke();
+            } else if (type === "pyramid") {
+                // Quadratische Pyramide in isometrischer Projektion
+                const baseScale = 12;
+                const base_a = a * baseScale;
+                const base_b = a * baseScale * 0.5;
+                const height = c * baseScale;
+                
+                // Bodenfläche (Quadrat in isometrischer Projektion)
+                ctx.beginPath();
+                ctx.moveTo(startX, startY);
+                ctx.lineTo(startX + base_a, startY);
+                ctx.lineTo(startX + base_a + base_b, startY - base_b);
+                ctx.lineTo(startX + base_b, startY - base_b);
+                ctx.closePath();
+                ctx.fill(); ctx.stroke();
+
+                // Spitze
+                const topX = startX + (base_a + base_b) / 2;
+                const topY = startY - height;
+
+                // Mantelkanten
+                ctx.beginPath();
+                ctx.moveTo(startX, startY); ctx.lineTo(topX, topY);
+                ctx.moveTo(startX + base_a, startY); ctx.lineTo(topX, topY);
+                ctx.moveTo(startX + base_a + base_b, startY - base_b); ctx.lineTo(topX, topY);
+                ctx.moveTo(startX + base_b, startY - base_b); ctx.lineTo(topX, topY);
+                ctx.stroke();
+
+                // Sichtbare Basiskanten
+                ctx.beginPath();
+                ctx.moveTo(startX, startY); ctx.lineTo(startX + base_a, startY);
+                ctx.moveTo(startX + base_a, startY); ctx.lineTo(startX + base_a + base_b, startY - base_b);
+                ctx.stroke();
+            }
+        }
+
+        function update() {
+            const type = bodySelect.value;
+            let a = parseFloat(sliderA.value);
+            let b = parseFloat(sliderB.value);
+            let c = parseFloat(sliderC.value);
+            let pyramidBase = parseFloat(document.getElementById("sliderPyramidBase").value);
+            let pyramidHeight = parseFloat(document.getElementById("sliderPyramidHeight").value);
+
+            // Anpassung der Regler je nach Körper
+            if (type === "cube") {
+                groupB.style.display = "none";
+                document.getElementById("groupC").style.display = "none";
+                document.getElementById("groupPyramidBase").style.display = "none";
+                document.getElementById("groupPyramidHeight").style.display = "none";
+                b = a; 
+                c = a;
+                document.querySelector("#groupA label").innerHTML = `Kantenlänge <i>a</i>: <span id="valA">${formatNum(a)}</span> cm`;
+            } else if (type === "pyramid") {
+                groupB.style.display = "none";
+                document.getElementById("groupC").style.display = "none";
+                document.getElementById("groupPyramidBase").style.display = "block";
+                document.getElementById("groupPyramidHeight").style.display = "block";
+                a = pyramidBase;
+                c = pyramidHeight;
+                document.getElementById("valPyramidBase").textContent = formatNum(a);
+                document.getElementById("valPyramidHeight").textContent = formatNum(c);
+            } else {
+                groupB.style.display = "block";
+                document.getElementById("groupC").style.display = "block";
+                document.getElementById("groupPyramidBase").style.display = "none";
+                document.getElementById("groupPyramidHeight").style.display = "none";
+                document.querySelector("#groupA label").innerHTML = `Kante <i>a</i>: <span id="valA">${formatNum(a)}</span> cm`;
+            }
+
+            valA.textContent = formatNum(a);
+            valB.textContent = formatNum(b);
+            valC.textContent = formatNum(c);
+
+            drawShape(type, a, b, c);
+
+            let htmlSolution = "";
+
+            if (type === "cube") {
+                let v = a * a * a;
+                let o = 6 * a * a;
+                htmlSolution = `
+<strong>MUSTERLÖSUNG FÜR DEN WÜRFEL (Kante a = ${formatNum(a)} cm):</strong><br>
+<br>
+<strong>1. Rauminhalt (Volumen) V:</strong><br>
+Formel: V = a &middot; a &middot; a = a<sup>3</sup><br>
+Rechnung: V = ${formatNum(a)} &middot; ${formatNum(a)} &middot; ${formatNum(a)} = <strong>${formatNum(v.toFixed(2))} cm<sup>3</sup></strong><br>
+<br>
+<strong>2. Gesamtoberfläche O:</strong><br>
+Formel: O = 6 &middot; a<sup>2</sup> (Da der Würfel aus 6 gleichen Quadraten besteht)<br>
+Rechnung: O = 6 &middot; ${formatNum(a)}<sup>2</sup> = 6 &middot; ${formatNum(a*a)} = <strong>${formatNum(o.toFixed(2))} cm<sup>2</sup></strong>
+                `;
+            } else if (type === "cuboid") {
+                let v = a * b * c;
+                let o = 2 * (a*b + a*c + b*c);
+                htmlSolution = `
+<strong>MUSTERLÖSUNG FÜR DEN QUADER (a = ${formatNum(a)} cm, b = ${formatNum(b)} cm, c = ${formatNum(c)} cm):</strong><br>
+<br>
+<strong>1. Rauminhalt (Volumen) V:</strong><br>
+Formel: V = a &middot; b &middot; c<br>
+Rechnung: V = ${formatNum(a)} &middot; ${formatNum(b)} &middot; ${formatNum(c)} = <strong>${formatNum(v.toFixed(2))} cm<sup>3</sup></strong><br>
+<br>
+<strong>2. Gesamtoberfläche O:</strong><br>
+Formel: O = 2 &middot; (a&middot;b + a&middot;c + b&middot;c)<br>
+Rechnung: O = 2 &middot; (${formatNum(a)}&middot;${formatNum(b)} + ${formatNum(a)}&middot;${formatNum(c)} + ${formatNum(b)}&middot;${formatNum(c)})<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;O = 2 &middot; (${formatNum(a*b)} + ${formatNum(a*c)} + ${formatNum(b*c)})<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;O = 2 &middot; ${formatNum(a*b + a*c + b*c)} = <strong>${formatNum(o.toFixed(2))} cm<sup>2</sup></strong>
+                `;
+            } else if (type === "prism") {
+                // Rechtwinkliges Dreieck mit Katheten a und b. c ist Körperhöhe hk.
+                let g = (a * b) / 2;
+                let v = g * c;
+                let hypo = Math.sqrt(a*a + b*b);
+                let ug = a + b + hypo;
+                let m = ug * c;
+                let o = 2 * g + m;
+                
+                htmlSolution = `
+<strong>MUSTERLÖSUNG FÜR DAS DREIECKSPRISMA (Katheten a = ${formatNum(a)} cm, b = ${formatNum(b)} cm | Körperhöhe h<sub>k</sub> = ${formatNum(c)} cm):</strong><br>
+<br>
+<strong>1. Grundfläche G (rechtwinkliges Dreieck):</strong><br>
+Formel: G = (a &middot; b) / 2<br>
+Rechnung: G = (${formatNum(a)} &middot; ${formatNum(b)}) / 2 = <strong>${formatNum(g.toFixed(2))} cm<sup>2</sup></strong><br>
+<br>
+<strong>2. Rauminhalt (Volumen) V:</strong><br>
+Formel: V = G &middot; h<sub>k</sub><br>
+Rechnung: V = ${formatNum(g.toFixed(2))} &middot; ${formatNum(c)} = <strong>${formatNum(v.toFixed(2))} cm<sup>3</sup></strong><br>
+<br>
+<strong>3. Mantel M (Umfang der Grundfläche &middot; Körperhöhe):</strong><br>
+Zuerst Hypotenuse der Grundfläche mit Pythagoras: Kante = &radic;(${formatNum(a)}<sup>2</sup> + ${formatNum(b)}<sup>2</sup>) = &radic;${formatNum(a*a + b*b)} &approx; ${formatNum(hypo.toFixed(2))} cm<br>
+Umfang Grundfläche U<sub>G</sub> = a + b + Kante = ${formatNum(a)} + ${formatNum(b)} + ${formatNum(hypo.toFixed(2))} = ${formatNum(ug.toFixed(2))} cm<br>
+Mantelfläche M = U<sub>G</sub> &middot; h<sub>k</sub> = ${formatNum(ug.toFixed(2))} &middot; ${formatNum(c)} = <strong>${formatNum(m.toFixed(2))} cm<sup>2</sup></strong><br>
+<br>
+<strong>4. Gesamtoberfläche O:</strong><br>
+Formel: O = 2 &middot; G + M<br>
+Rechnung: O = 2 &middot; ${formatNum(g.toFixed(2))} + ${formatNum(m.toFixed(2))} = ${formatNum((2*g).toFixed(2))} + ${formatNum(m.toFixed(2))} = <strong>${formatNum(o.toFixed(2))} cm<sup>2</sup></strong>
+                `;
+            } else if (type === "pyramid") {
+                let g = a * a;
+                let v = (1 / 3) * g * c;
+                let slantH = Math.sqrt((a/2)*(a/2) + c*c);
+                let triangleArea = (a * slantH) / 2;
+                let m = 4 * triangleArea;
+                let o = g + m;
+                
+                htmlSolution = `
+<strong>MUSTERLÖSUNG FÜR DIE QUADRATISCHE PYRAMIDE (Seitenlänge a = ${formatNum(a)} cm | Körperhöhe h<sub>k</sub> = ${formatNum(c)} cm):</strong><br>
+<br>
+<strong>1. Grundfläche G berechnen:</strong><br>
+Formel: G = a<sup>2</sup><br>
+Rechnung: G = ${formatNum(a)}<sup>2</sup> = <strong>${formatNum(g.toFixed(2))} cm<sup>2</sup></strong><br>
+<br>
+<strong>2. Rauminhalt (Volumen) V:</strong><br>
+Formel: V = (1/3) &middot; G &middot; h<sub>k</sub><br>
+Rechnung: V = (1/3) &middot; ${formatNum(g.toFixed(2))} &middot; ${formatNum(c)} = <strong>${formatNum(v.toFixed(2))} cm<sup>3</sup></strong><br>
+<br>
+<strong>3. Slant Height s (Höhe der Mantel-Dreiecke):</strong><br>
+Formel: s = &radic;((a/2)<sup>2</sup> + h<sub>k</sub><sup>2</sup>)<br>
+Rechnung: s = &radic;${formatNum(((a/2)*(a/2) + c*c).toFixed(2))} &approx; <strong>${formatNum(slantH.toFixed(2))} cm</strong><br>
+<br>
+<strong>4. Mantelfläche M (4 Dreiecke):</strong><br>
+Jedes Dreieck: Fläche = (${formatNum(a)} &middot; ${formatNum(slantH.toFixed(2))}) / 2 = ${formatNum(triangleArea.toFixed(2))} cm<sup>2</sup><br>
+M = 4 &middot; ${formatNum(triangleArea.toFixed(2))} = <strong>${formatNum(m.toFixed(2))} cm<sup>2</sup></strong><br>
+<br>
+<strong>5. Gesamtoberfläche O:</strong><br>
+Formel: O = G + M<br>
+Rechnung: O = ${formatNum(g.toFixed(2))} + ${formatNum(m.toFixed(2))} = <strong>${formatNum(o.toFixed(2))} cm<sup>2</sup></strong>
+                `;
+            }
+
+            solutionOutput.innerHTML = htmlSolution;
+        }
+
+        bodySelect.addEventListener("change", update);
+        sliderA.addEventListener("input", update);
+        sliderB.addEventListener("input", update);
+        sliderC.addEventListener("input", update);
+        document.getElementById("sliderPyramidBase").addEventListener("input", update);
+        document.getElementById("sliderPyramidHeight").addEventListener("input", update);
+
+        update(); // Init
+    });
+
+    // Klappfunktion für Beispiele
+    function toggleExample(headerElement) {
+        const content = headerElement.nextElementSibling;
+        const arrow = headerElement.querySelector(".arrow");
+        if (content.style.display === "block") {
+            content.style.display = "none";
+            arrow.textContent = "▼";
+        } else {
+            content.style.display = "block";
+            arrow.textContent = "▲";
+        }
+    }
+</script>
+
+</body>
+</html>

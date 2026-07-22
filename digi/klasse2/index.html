@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2. Klasse - Digitale Grundbildung</title>
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+        .subject-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .subject-badge {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        .subject-header h2 {
+            margin: 0;
+            color: #1f2937;
+        }
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+        .resource-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 1.5rem;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            transition: 0.3s;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .resource-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transform: translateY(-2px);
+            border-color: #ef4444;
+        }
+        .resource-card h4 {
+            margin: 0 0 0.5rem 0;
+            color: #1f2937;
+        }
+        .resource-card p {
+            margin: 0;
+            color: #6b7280;
+            font-size: 0.95rem;
+        }
+        .back-nav {
+            margin: 2rem 0;
+        }
+        .btn-back {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background: #e5e7eb;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #1f2937;
+            transition: 0.2s;
+        }
+        .btn-back:hover {
+            background: #ef4444;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>2. Klasse - Digitale Grundbildung</h1>
+    <p>Internet & Sicherheit - Vertiefung der Online-Sicherheit</p>
+    <div class="back-nav">
+        <a href="../index.html" class="btn-back">⬅ Zurück zur Übersicht</a>
+    </div>
+</header>
+
+<main style="max-width: 1200px; margin: 0 auto; padding: 2rem 1rem;">
+
+    <section style="background: #fee2e2; border-left: 4px solid #ef4444; padding: 1.5rem; border-radius: 5px; margin-bottom: 2rem;">
+        <h2>🔐 Willkommen zur 2. Klasse - Internet & Sicherheit!</h2>
+        <p>In dieser Klasse wirst du zum Sicherheits-Experten! Du lernst wie das Internet funktioniert, erkennst Bedrohungen und schützt dich selbst.</p>
+        <p><strong>12 interaktive Module</strong> mit Spielen, Quiz und Simulatoren! 🎮</p>
+    </section>
+
+    <!-- Grundlagen Module -->
+    <section>
+        <div class="subject-header">
+            <span class="subject-badge" style="background: #fef3c7; color: #92400e;">Grundlagen</span>
+            <h2>🌐 Internet & Netzwerke</h2>
+        </div>
+        <div class="resource-grid">
+            <a href="internet_funktionsweise.html" class="resource-card">
+                <h4>🌐 Internet Funktionsweise</h4>
+                <p>DNS, TCP, HTTP - die technischen Grundlagen</p>
+            </a>
+            <a href="netzwerk_spiel.html" class="resource-card">
+                <h4>🎯 Netzwerk-Spiel</h4>
+                <p>Wie reisen Daten durchs Internet?</p>
+            </a>
+        </div>
+    </section>
+
+    <!-- Sicherheit & Passwörter -->
+    <section style="margin-top: 3rem;">
+        <div class="subject-header">
+            <span class="subject-badge">Sicherheit</span>
+            <h2>🔐 Passwörter & Anmeldedaten</h2>
+        </div>
+        <div class="resource-grid">
+            <a href="sichere_passwoerter.html" class="resource-card">
+                <h4>🔐 Sichere Passwörter</h4>
+                <p>2FA, Passwort-Manager, Stärke checken</p>
+            </a>
+            <a href="passwort_staerke.html" class="resource-card">
+                <h4>🔑 Passwort-Stärke-Tester</h4>
+                <p>Teste dein Passwort - ist es stark genug?</p>
+            </a>
+        </div>
+    </section>
+
+    <!-- Phishing & Betrüger -->
+    <section style="margin-top: 3rem;">
+        <div class="subject-header">
+            <span class="subject-badge" style="background: #fee2e2; color: #991b1b;">Bedrohungen</span>
+            <h2>🎣 Phishing & Online-Betrug</h2>
+        </div>
+        <div class="resource-grid">
+            <a href="phishing_betrug.html" class="resource-card">
+                <h4>🚨 Phishing & Online-Betrug</h4>
+                <p>Erkenne Betrugs-E-Mails und Scams</p>
+            </a>
+            <a href="phishing_simulator.html" class="resource-card">
+                <h4>🎣 Phishing-Simulator</h4>
+                <p>E-Mails analysieren - echt oder Fake?</p>
+            </a>
+            <a href="cyber_detektiv.html" class="resource-card">
+                <h4>🕵️ Cyber-Detektiv Spiel</h4>
+                <p>Finde versteckte Sicherheitslücken!</p>
+            </a>
+        </div>
+    </section>
+
+    <!-- Digitale Identität -->
+    <section style="margin-top: 3rem;">
+        <div class="subject-header">
+            <span class="subject-badge" style="background: #ede9fe; color: #6d28d9;">Identität</span>
+            <h2>👤 Digitale Identität & Fußabdruck</h2>
+        </div>
+        <div class="resource-grid">
+            <a href="digitale_identitaet.html" class="resource-card">
+                <h4>👤 Digitale Identität</h4>
+                <p>Wer bist du im Internet?</p>
+            </a>
+            <a href="digitale_identitaet_szenarien.html" class="resource-card">
+                <h4>🎭 Digitale Identität-Szenarios</h4>
+                <p>Fallbeispiele und richtige Entscheidungen</p>
+            </a>
+            <a href="digitaler_fussabdruck.html" class="resource-card">
+                <h4>📍 Digitaler Fußabdruck Quiz</h4>
+                <p>Test dein Wissen über deinen Online-Fußabdruck</p>
+            </a>
+        </div>
+    </section>
+
+    <!-- Social Media & Datenschutz -->
+    <section style="margin-top: 3rem;">
+        <div class="subject-header">
+            <span class="subject-badge" style="background: #cffafe; color: #0891b2;">Social Media</span>
+            <h2>📱 Social Media & Privatsphäre</h2>
+        </div>
+        <div class="resource-grid">
+            <a href="social_media_privacy.html" class="resource-card">
+                <h4>💬 Social Media Privacy-Check</h4>
+                <p>Sicherheitseinstellungen überprüfen</p>
+            </a>
+        </div>
+    </section>
+
+    <!-- Bildrechte & Urheberrecht -->
+    <section style="margin-top: 3rem;">
+        <div class="subject-header">
+            <span class="subject-badge" style="background: #fef3c7; color: #92400e;">Recht</span>
+            <h2>📷 Bildrechte & Urheberrecht</h2>
+        </div>
+        <div class="resource-grid">
+            <a href="bildrechte_urheberrecht.html" class="resource-card">
+                <h4>📷 Bildrechte & Urheberrecht</h4>
+                <p>Lizenztypen, Creative Commons, deine Rechte</p>
+            </a>
+            <a href="bildrechte_quiz.html" class="resource-card">
+                <h4>🎨 Bildrechte Quiz</h4>
+                <p>Creative Commons Lizenzen verstehen</p>
+            </a>
+        </div>
+    </section>
+
+    <!-- Info Box -->
+    <section style="background: #f0fdf4; border-left: 4px solid #10b981; padding: 2rem; border-radius: 8px; margin-top: 3rem;">
+        <h2>💡 Tipps zum Lernen</h2>
+        <ul style="line-height: 1.8;">
+            <li><strong>Mit den Grundlagen beginnen:</strong> Verstehe wie das Internet funktioniert</li>
+            <li><strong>Sicherheit trainieren:</strong> Nutze die Simulatoren um Phishing zu erkennen</li>
+            <li><strong>Deine Daten schützen:</strong> Checke deine Social Media Einstellungen</li>
+            <li><strong>Interaktive Spiele nutzen:</strong> Quiz und Detektiv-Spiele machen es lustig!</li>
+            <li><strong>Regeln merken:</strong> Was Cybersicherheit ist und warum es wichtig ist</li>
+        </ul>
+    </section>
+
+    <!-- Lernziele -->
+    <section style="background: #dcfce7; border-left: 4px solid #10b981; padding: 2rem; border-radius: 8px; margin-top: 2rem;">
+        <h2>🎯 Das lernst du in dieser Klasse</h2>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div>
+                <h3 style="color: #065f46;">🌐 Internet-Wissen</h3>
+                <ul style="font-size: 0.95rem;">
+                    <li>Wie funktioniert das Internet?</li>
+                    <li>Datenfluss verstehen</li>
+                    <li>Sichere vs. unsichere Verbindungen</li>
+                </ul>
+            </div>
+            <div>
+                <h3 style="color: #065f46;">🔐 Sicherheits-Basics</h3>
+                <ul style="font-size: 0.95rem;">
+                    <li>Starke Passwörter erstellen</li>
+                    <li>2-Faktor-Authentifizierung</li>
+                    <li>Sicherheitseinstellungen konfigurieren</li>
+                </ul>
+            </div>
+            <div>
+                <h3 style="color: #065f46;">🚨 Bedrohungen erkennen</h3>
+                <ul style="font-size: 0.95rem;">
+                    <li>Phishing-Mails identifizieren</li>
+                    <li>Betrugs-Strategien verstehen</li>
+                    <li>Sicherheitslücken finden</li>
+                </ul>
+            </div>
+            <div>
+                <h3 style="color: #065f46;">📱 Datenschutz</h3>
+                <ul style="font-size: 0.95rem;">
+                    <li>Digitale Identität managen</li>
+                    <li>Urheberrechte respektieren</li>
+                    <li>Privatsphäre bewahren</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<footer style="margin-top: 5rem; padding: 2rem 1rem; background-color: #f8fafc; border-top: 1px solid #e2e8f0; color: #64748b; font-size: 0.9rem; text-align: center;">
+    &copy; 2026 | GvP | Mag. Schweitzer | Digitale Grundbildung
+</footer>
+
+</body>
+</html>

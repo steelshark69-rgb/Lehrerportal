@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Echtzeit Kurs-Dashboard - Altcoins</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        body {
+            background-color: #0f172a;
+            color: #f8fafc;
+        }
+    </style>
+</head>
+<body class="p-6 md:p-12">
+
+    <div class="max-w-7xl mx-auto">
+        
+        <!-- Header -->
+        <header class="mb-6 text-center md:text-left">
+            <h1 class="text-3xl md:text-4xl font-bold text-blue-400 mb-2">Mein Portfolio Dashboard</h1>
+            <p class="text-slate-400">Echtzeitkurse für Aktien, Krypto und Rohstoffe</p>
+        </header>
+
+        <!-- Navigation zwischen den Seiten (Hier ist der Altcoin-Button hervorgehoben) -->
+        <nav class="flex flex-wrap gap-4 mb-10 justify-center md:justify-start">
+            <a href="finanz_hauptwerte.html" class="px-5 py-2.5 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-lg font-semibold transition-colors duration-200">
+                📈 Hauptwerte (Charts)
+            </a>
+            <a href="finanz_altcoins.html" class="px-5 py-2.5 bg-blue-600 text-white rounded-lg font-semibold shadow-lg">
+                📋 Altcoin Watchlist
+            </a>
+<a href="finanz_portfolio.html" class="px-5 py-2.5 bg-blue-600 text-white rounded-lg font-semibold shadow-lg">
+                💼 Mein Portfolio (Bestände)
+            </a>
+
+        </nav>
+
+        <!-- Watchlist: Krypto-Werte (Nur Liste) -->
+        <div class="bg-slate-800 rounded-xl p-4">
+            <h2 class="text-xl font-bold mb-4 text-slate-200">Altcoin Watchlist (Aktuelle Werte)</h2>
+            <div class="tradingview-widget-container" style="height:1600px;width:100%">
+                <div class="tradingview-widget-container__widget" style="height:100%;width:100%"></div>
+                <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js" async>
+                {
+                    "colorTheme": "dark",
+                    "dateRange": "12M",
+                    "showChart": false,
+                    "locale": "de_DE",
+                    "width": "100%",
+                    "height": "1600",
+                    "largeChartUrl": "",
+                    "isTransparent": true,
+                    "showSymbolLogo": true,
+                    "showFloatingTooltip": false,
+                    "tabs": [
+                        {
+                            "title": "Kryptowährungen",
+                            "symbols": [
+                                { "s": "BINANCE:BNBUSDT", "d": "BNB" },
+                                { "s": "BINANCE:ADAUSDT", "d": "Cardano (ADA)" },
+                                { "s": "BINANCE:SOLUSDT", "d": "Solana (SOL)" },
+                                { "s": "BINANCE:ATOMUSDT", "d": "Cosmos (ATOM)" },
+                                { "s": "BINANCE:HBARUSDT", "d": "Hedera (HBAR)" },
+                                { "s": "BINANCE:FETUSDT", "d": "Fetch.ai (FET)" },
+                                { "s": "BINANCE:LINKUSDT", "d": "Chainlink (LINK)" },
+                                { "s": "BINANCE:SUIUSDT", "d": "Sui" },
+                                { "s": "BINANCE:XLMUSDT", "d": "Stellar (XLM)" },
+                                { "s": "BINANCE:SEIUSDT", "d": "Sei" },
+                                { "s": "BINANCE:QNTUSDT", "d": "Quant (QNT)" },
+                                { "s": "BINANCE:PENDLEUSDT", "d": "Pendle" },
+                                { "s": "BINANCE:JUPUSDT", "d": "Jupiter (JUP)" },
+                                { "s": "BINANCE:NEARUSDT", "d": "NEAR Protocol" },
+                                { "s": "BINANCE:ONDOUSDT", "d": "Ondo" },
+                                { "s": "BINANCE:VETUSDT", "d": "VeChain (VET)" },
+                                { "s": "BINANCE:RENDERUSDT", "d": "Render" },
+                                { "s": "BINANCE:CAKEUSDT", "d": "PancakeSwap (CAKE)" },
+                                { "s": "BINANCE:ICPUSDT", "d": "Internet Computer (ICP)" },
+                                { "s": "BINANCE:ALGOUSDT", "d": "Algorand (ALGO)" },
+                                { "s": "BINANCE:MATICUSDT", "d": "Polygon (MATIC)" },
+                                { "s": "BINANCE:ETHFIUSDT", "d": "ether.fi (ETHFI)" },
+                                { "s": "BINANCE:BONKUSDT", "d": "Bonk" },
+                                { "s": "BINANCE:DOGEUSDT", "d": "Dogecoin (DOGE)" },
+                                { "s": "CRYPTO:PINUSD", "d": "PIN" },
+                                { "s": "COINBASE:LCXUSD", "d": "LCX" },
+                                { "s": "BINANCE:GALAUSDT", "d": "Gala" },
+                                { "s": "BINANCE:ROSEUSDT", "d": "Oasis (ROSE)" },
+                                { "s": "BINANCE:LRCUSDT", "d": "Loopring (LRC)" },
+                                { "s": "BINANCE:AXSUSDT", "d": "Axie Infinity (AXS)" },
+                                { "s": "BINANCE:GRTUSDT", "d": "The Graph (GRT)" },
+                                { "s": "BINANCE:PYRUSDT", "d": "Vulcan Forged (PYR)" }
+                            ]
+                        }
+                    ]
+                }
+                </script>
+            </div>
+        </div>
+        
+        <!-- Footer / Hinweis -->
+        <div class="mt-12 text-center text-slate-500 text-sm">
+            <p>Daten bereitgestellt von TradingView. Kurse können je nach Börsenplatz leicht verzögert sein.</p>
+        </div>
+
+    </div>
+
+</body>
+</html>

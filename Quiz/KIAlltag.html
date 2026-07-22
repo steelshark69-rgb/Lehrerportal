@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Quiz: Künstliche Intelligenz</title>
+    
+    <!-- CDNs -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <style>
+        /* Grundlegendes Reset & iOS Optimierung */
+        * {
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f7;
+            color: #1c1c1e;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            min-height: 100vh;
+            position: relative;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        /* Mobile UX: Touch Targets & Typography */
+        h1, h2 {
+            text-align: center;
+            color: #000;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            min-height: 48px; /* Touch Target > 44px */
+            font-size: 16px; /* Verhindert iOS Input-Zoom */
+            padding: 12px;
+            border: 1px solid #c7c7cc;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            appearance: none;
+        }
+
+        button {
+            width: 100%;
+            min-height: 48px; /* Touch Target > 44px */
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            background-color: #007aff;
+            color: white;
+            padding: 12px;
+            touch-action: manipulation;
+            transition: transform 0.1s;
+        }
+
+        button:active {
+            background-color: #005bb5;
+            transform: scale(0.98);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        /* Screens */
+        .screen {
+            display: none;
+            flex-direction: column;
+        }
+
+        .screen.active {
+            display: flex;
+        }
+
+        /* Quiz Timer & Header */
+        #timer-container {
+            position: sticky;
+            top: 0;
+            background: #ffffff;
+            padding: 15px 0;
+            text-align: center;
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #ff3b30;
+            border-bottom: 1px solid #e5e5ea;
+            margin-bottom: 20px;
+            z-index: 10;
+        }
+
+        /* Fragen & Antwort-Buttons */
+        .question-text {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        .option-btn {
+            background-color: #f2f2f7;
+            color: #000;
+            text-align: left;
+            margin-bottom: 12px;
+            border: 2px solid transparent;
+            min-height: 54px;
+        }
+
+        .option-btn:active {
+            background-color: #e5e5ea;
+        }
+
+        .option-btn.correct {
+            background-color: #34c759 !important;
+            color: white;
+            border-color: #34c759;
+        }
+
+        .option-btn.wrong {
+            background-color: #ff3b30 !important;
+            color: white;
+            border-color: #ff3b30;
+        }
+
+        /* Überschreibe opacity für disabled states der farbigen Buttons */
+        .option-btn:disabled.correct,
+        .option-btn:disabled.wrong {
+            opacity: 1;
+        }
+
+        #next-btn {
+            margin-top: 20px;
+            display: none;
+        }
+
+        /* Ergebnis & Spinner */
+        #result-content {
+            padding: 20px;
+            background: #f9f9eb;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 20px;
+            border: 1px solid #e5e5ea;
+        }
+
+        .score-text {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #007aff;
+            margin: 10px 0;
+        }
+
+        .grade-text {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .timeout-text {
+            color: #ff3b30;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .spinner-container {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 1.1rem;
+            color: #8e8e93;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- START SCREEN -->
+        <div id="start-screen" class="screen active">
+            <h1>Quiz: Künstliche Intelligenz</h1>
+            <p style="text-align: center; color: #8e8e93; margin-bottom: 30px;">
+                Teste dein Wissen aus dem Vortrag.<br>
+                <strong>Zeitlimit: 10:00 Min</strong> (20 Fragen)
+            </p>
+            
+            <label for="student-name" style="font-weight: 600; margin-bottom: 8px;">Vorname & 1. Buchstabe Nachname</label>
+            <input type="text" id="student-name" placeholder="z.B. Max M." autocomplete="off">
+            
+            <button id="start-btn" onclick="startQuiz()">Quiz starten</button>
+        </div>
+
+        <!-- QUIZ SCREEN -->
+        <div id="quiz-screen" class="screen">
+            <div id="timer-container">Restzeit: <span id="timer-display">10:00</span></div>
+            
+            <div id="question-counter" style="color: #8e8e93; font-size: 0.9rem; margin-bottom: 10px;">Frage 1 von 20</div>
+            <div class="question-text" id="question-text">Lädt...</div>
+            
+            <div id="options-container">
+                <!-- Buttons werden hier dynamisch generiert -->
+            </div>
+            
+            <button id="next-btn" onclick="nextQuestion()">Weiter</button>
+        </div>
+
+        <!-- RESULT SCREEN -->
+        <div id="result-screen" class="screen">
+            <h1>Quiz Beendet!</h1>
+            
+            <div id="result-content">
+                <div id="timeout-msg" class="timeout-text" style="display: none;">⏰ Zeit abgelaufen!</div>
+                <div>Dein Ergebnis:</div>
+                <div class="score-text" id="final-score">0 / 20</div>
+                <div class="grade-text" id="final-grade">Note</div>
+            </div>
+
+            <div class="spinner-container" id="spinner-container">
+                <span id="spinner-text">Verarbeite Ergebnisse...</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- 1. EMAILJS INITIALISIERUNG (KRITISCH) ---
+        emailjs.init("HnZ28X9AihlD5y9XH");
+
+        // --- 2. DATEN: FRAGENPOOL (20 Fragen: 5 Leicht, 8 Mittel, 7 Schwer) ---
+        const rawQuestions = [
+            // Leicht
+            { q: "Was bedeutet die Abkürzung KI?", opts: [{t: "Künstliche Intelligenz", c: true}, {t: "Komplexe Informatik", c: false}, {t: "Kognitive Integration", c: false}, {t: "Künstliche Industrie", c: false}] },
+            { q: "Was ist das wichtigste Werkzeug für moderne KI, besonders bei Bildern und Sprache?", opts: [{t: "Neuronale Netze", c: true}, {t: "Feste Programmregeln", c: false}, {t: "Taschenrechner", c: false}, {t: "Textverarbeitungsprogramme", c: false}] },
+            { q: "Welche menschliche Eigenschaft besitzt KI NICHT?", opts: [{t: "Gefühle oder eigenes Denken", c: true}, {t: "Fähigkeit zu lernen", c: false}, {t: "Mustererkennung", c: false}, {t: "Entscheidungsfindung", c: false}] },
+            { q: "Woraus lernt Maschinelles Lernen hauptsächlich?", opts: [{t: "Aus großen Datenmengen", c: true}, {t: "Aus festen, programmierten Regeln", c: false}, {t: "Durch reines Auswendiglernen", c: false}, {t: "Durch menschliche Emotionen", c: false}] },
+            { q: "In welchem medizinischen Bereich unterstützt KI laut Präsentation bereits heute?", opts: [{t: "Auswertung von Röntgen- und MRT-Bildern", c: true}, {t: "Durchführung psychologischer Gespräche", c: false}, {t: "Kochen von Patientenmahlzeiten", c: false}, {t: "Manuelle Wundversorgung", c: false}] },
+            // Mittel
+            { q: "Wie trifft KI im Gegensatz zu klassischen Programmen Entscheidungen?", opts: [{t: "Mit Wahrscheinlichkeiten", c: true}, {t: "Nach fest programmierten Regeln", c: false}, {t: "Durch reinen Zufall", c: false}, {t: "Durch menschliche Eingaben in Echtzeit", c: false}] },
+            { q: "Was ist der erste Schritt im iterativen Lernprozess einer KI?", opts: [{t: "Die KI trifft eine Vorhersage", c: true}, {t: "Der Fehler wird berechnet", c: false}, {t: "Das interne Modell wird angepasst", c: false}, {t: "Das Ergebnis wird gespeichert", c: false}] },
+            { q: "Warum ist 'Generalisierung' für eine KI so wichtig?", opts: [{t: "Damit sie Gelerntes auf neue, unbekannte Daten anwenden kann", c: true}, {t: "Damit sie jedes Trainingsbild auswendig lernt", c: false}, {t: "Damit sie keine Fehler mehr macht", c: false}, {t: "Damit sie schneller rechnen kann", c: false}] },
+            { q: "Was passiert, wenn eine KI nicht generalisiert, sondern nur auswendig lernt?", opts: [{t: "Sie scheitert bei neuen Perspektiven oder veränderten Daten", c: true}, {t: "Sie wird automatisch intelligenter als der Mensch", c: false}, {t: "Sie braucht keine Trainingsdaten mehr", c: false}, {t: "Sie arbeitet komplett fehlerfrei", c: false}] },
+            { q: "Warum kann ein klassisches Programm moderne, komplexe Systeme oft nicht steuern?", opts: [{t: "Weil es komplexe Abläufe mit festen Regeln kaum abbilden kann", c: true}, {t: "Weil es Wahrscheinlichkeiten nutzt", c: false}, {t: "Weil es zu viele Sensoren hat", c: false}, {t: "Weil es zu oft generalisiert", c: false}] },
+            { q: "Welchen Nutzen bringt KI bei der Winkelberechnung für Operationen?", opts: [{t: "Präzisere OP-Planung und bessere Implantate", c: true}, {t: "Verzicht auf jegliche Röntgenbilder", c: false}, {t: "Komplett selbstständige Durchführung der Operation", c: false}, {t: "Die Operation verläuft langsamer, aber günstiger", c: false}] },
+            { q: "Wie hilft KI in der Industrie bei der Maschinenwartung (Predictive Maintenance)?", opts: [{t: "Sie sagt Maschinenausfälle voraus", c: true}, {t: "Sie wartet Maschinen stur nach Kalenderplan", c: false}, {t: "Sie repariert Defekte physisch von selbst", c: false}, {t: "Sie ersetzt sämtliches Wartungspersonal", c: false}] },
+            { q: "Was versteht man unter einer 'Intelligenten Stadt' (Smart City) in Bezug auf KI?", opts: [{t: "Verkehr und Stromnetze passen sich automatisch und effizient an", c: true}, {t: "Menschen dürfen keine Entscheidungen mehr treffen", c: false}, {t: "Müllabfuhr wird komplett abgeschafft", c: false}, {t: "Alle Autos fliegen", c: false}] },
+            // Schwer
+            { q: "Welche Schrittfolge beschreibt den iterativen Lernzyklus einer KI am besten?", opts: [{t: "Vorhersage -> Vergleich -> Fehlerberechnung -> Modellanpassung", c: true}, {t: "Fehlerberechnung -> Modellanpassung -> Vorhersage -> Löschung", c: false}, {t: "Dateneingabe -> Auswendiglernen -> Testen -> Stopp", c: false}, {t: "Zufallsentscheidung -> Vergleich -> Speichern -> Beenden", c: false}] },
+            { q: "Ein KI-Modell erkennt Knochenbrüche nur auf hellen Bildern fehlerfrei, scheitert aber bei dunklen. Welches Problem liegt hier höchstwahrscheinlich vor?", opts: [{t: "Mangelnde Generalisierung", c: true}, {t: "Zu viel Generalisierung", c: false}, {t: "Zu viele Trainingsdaten", c: false}, {t: "Das neuronale Netz hat zu viele Schichten", c: false}] },
+            { q: "Warum führt die Verarbeitung riesiger Datenmengen durch KI im Laufe der Zeit zu besseren Ergebnissen?", opts: [{t: "Weil die KI kontinuierlich mehr Muster erkennt und ihr internes Modell anpasst", c: true}, {t: "Weil die KI dadurch beginnt, ein eigenes Bewusstsein zu entwickeln", c: false}, {t: "Weil klassische Programme überhaupt keine Daten speichern können", c: false}, {t: "Weil die Hardware automatisch schneller wird", c: false}] },
+            { q: "Inwiefern trägt KI zur 'Personalisierten Medizin' bei?", opts: [{t: "Durch individuelle Behandlungen basierend auf Genetik und Lebensstil", c: true}, {t: "Durch die Ausgabe der exakt gleichen Medikamente für alle", c: false}, {t: "Durch den kompletten Ersatz von Ärzten in Krankenhäusern", c: false}, {t: "Durch das Verbot von bewährten klassischen Standard-Behandlungen", c: false}] },
+            { q: "Warum arbeiten KIs bei repetitiven Analyse-Aufgaben oft präziser als Menschen?", opts: [{t: "Sie werden nicht durch Stress oder Müdigkeit beeinflusst und haben keine Emotionen", c: true}, {t: "Sie arbeiten deutlich langsamer und prüfen deshalb genauer", c: false}, {t: "Sie fragen bei jedem Schritt einen menschlichen Experten", c: false}, {t: "Sie ignorieren mathematische Modelle und vertrauen auf Erfahrung", c: false}] },
+            { q: "Welches dieser Themenfelder wird für die Zukunft der KI als besonders kritische Herausforderung genannt?", opts: [{t: "Datenschutz, Transparenz und Verantwortung", c: true}, {t: "Die Speicherung von Daten auf magnetischen Disketten", c: false}, {t: "Die Erfindung des Internets", c: false}, {t: "Die mangelnde Rechenleistung von Taschenrechnern", c: false}] },
+            { q: "Was bedeutet 'Skalierbarkeit' im Kontext von trainierten KI-Modellen?", opts: [{t: "Ein trainiertes Modell kann weltweit und in vielen Bereichen gleichzeitig eingesetzt werden", c: true}, {t: "Das Modell muss für jeden neuen Computer komplett neu programmiert werden", c: false}, {t: "Die KI funktioniert nur auf extrem großen Bildschirmen", c: false}, {t: "Die KI skaliert hochauflösende Bilder automatisch kleiner", c: false}] }
+        ];
+
+        // --- 3. STATE & LOGIK ---
+        let questions = [];
+        let currentIdx = 0;
+        let score = 0;
+        let timerInterval;
+        let totalTime = 20 * 30; // 600 Sekunden (10 Min)
+        let isTimeout = false;
+        let userName = "";
+
+        // Hilfsfunktion: Mischen (Fisher-Yates)
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function initQuiz() {
+            // Fragen mischen
+            questions = shuffleArray([...rawQuestions]);
+            // Antworten mischen
+            questions.forEach(q => {
+                q.opts = shuffleArray([...q.opts]);
+            });
+        }
+
+        function startQuiz() {
+            const nameInput = document.getElementById('student-name').value.trim();
+            if (nameInput.length < 2) {
+                alert("Bitte gib deinen Vor- und den 1. Buchstaben deines Nachnamens ein.");
+                return;
+            }
+            userName = nameInput;
+            initQuiz();
+            
+            document.getElementById('start-screen').classList.remove('active');
+            document.getElementById('quiz-screen').classList.add('active');
+            
+            loadQuestion();
+            startTimer();
+        }
+
+        function startTimer() {
+            updateTimerUI();
+            timerInterval = setInterval(() => {
+                totalTime--;
+                updateTimerUI();
+                
+                if (totalTime <= 0) {
+                    clearInterval(timerInterval);
+                    isTimeout = true;
+                    finishQuiz();
+                }
+            }, 1000);
+        }
+
+        function updateTimerUI() {
+            let m = Math.floor(totalTime / 60);
+            let s = totalTime % 60;
+            document.getElementById('timer-display').innerText = 
+                (m < 10 ? "0" + m : m) + ":" + (s < 10 ? "0" + s : s);
+        }
+
+        function loadQuestion() {
+            const q = questions[currentIdx];
+            document.getElementById('question-counter').innerText = `Frage ${currentIdx + 1} von ${questions.length}`;
+            document.getElementById('question-text').innerText = q.q;
+            
+            const optsContainer = document.getElementById('options-container');
+            optsContainer.innerHTML = '';
+            document.getElementById('next-btn').style.display = 'none';
+
+            q.opts.forEach((opt, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerText = opt.t;
+                btn.onclick = () => selectOption(btn, opt.c, q.opts);
+                optsContainer.appendChild(btn);
+            });
+        }
+
+        function selectOption(selectedBtn, isCorrect, allOpts) {
+            const buttons = document.querySelectorAll('.option-btn');
+            
+            // Buttons deaktivieren
+            buttons.forEach(btn => btn.disabled = true);
+
+            // Styling anwenden
+            if (isCorrect) {
+                selectedBtn.classList.add('correct');
+                score++;
+            } else {
+                selectedBtn.classList.add('wrong');
+                // Richtige Antwort farblich hervorheben
+                buttons.forEach(btn => {
+                    const optData = allOpts.find(o => o.t === btn.innerText);
+                    if (optData && optData.c) {
+                        btn.classList.add('correct');
+                    }
+                });
+            }
+
+            document.getElementById('next-btn').style.display = 'block';
+        }
+
+        function nextQuestion() {
+            currentIdx++;
+            if (currentIdx < questions.length) {
+                loadQuestion();
+            } else {
+                finishQuiz();
+            }
+        }
+
+        function finishQuiz() {
+            clearInterval(timerInterval);
+            document.getElementById('quiz-screen').classList.remove('active');
+            document.getElementById('result-screen').classList.add('active');
+
+            // Note berechnen
+            let percentage = score / questions.length;
+            let note = "";
+            if (percentage < 0.5) note = "Nicht genügend aufgepasst";
+            else if (percentage < 0.64) note = "Genügend aufgepasst";
+            else if (percentage < 0.78) note = "Befriedigend aufgepasst";
+            else if (percentage < 0.90) note = "Gut aufgepasst";
+            else note = "Sehr gut aufgepasst";
+
+            // UI updaten
+            document.getElementById('final-score').innerText = `${score} / ${questions.length} Punkte`;
+            document.getElementById('final-grade').innerText = note;
+            
+            if (isTimeout) {
+                document.getElementById('timeout-msg').style.display = 'block';
+            }
+
+            // Automatischer Abschluss-Prozess
+            processFinalization(note);
+        }
+
+        // --- 4. SCREENSHOT & EMAIL SENDEN ---
+        function processFinalization(note) {
+            // Kurze Pause, damit der DOM das Rendern des Ergebnisses abschließt
+            setTimeout(() => {
+                const captureArea = document.getElementById('result-content');
+                
+                // 1. Screenshot generieren (Html2Canvas)
+                html2canvas(captureArea, { scale: 2 }).then(canvas => {
+                    // Auto-Download
+                    let link = document.createElement('a');
+                    link.download = `Ergebnis_${userName.replace(/[^a-zA-Z0-9]/g, '_')}.png`;
+                    link.href = canvas.toDataURL("image/png");
+                    link.click();
+
+                    // 2. Email im Hintergrund senden
+                    sendEmail(note);
+                }).catch(err => {
+                    // Fallback falls html2canvas auf älteren Geräten streikt
+                    console.error("Screenshot Fehler:", err);
+                    sendEmail(note); 
+                });
+            }, 500);
+        }
+
+        function sendEmail(note) {
+            const templateParams = {
+                quiz_name: "Quiz: Künstliche Intelligenz",
+                from_name: userName,
+                score: `${score}/${questions.length}`,
+                message: `Note: ${note} | Zeit abgelaufen: ${isTimeout ? 'Ja' : 'Nein'}`
+            };
+
+            emailjs.send("service_qoofink", "template_cu0x1bc", templateParams)
+                .then(function(response) {
+                    document.getElementById('spinner-text').innerText = "Fertig! Ergebnis gesichert.";
+                    document.getElementById('spinner-text').style.color = "#34c759";
+                    document.getElementById('spinner-text').style.fontWeight = "bold";
+                })
+                .catch(function(error) {
+                    alert("Fehler: " + error.text);
+                    document.getElementById('spinner-text').innerText = "Ergebnis konnte nicht gesendet werden.";
+                    document.getElementById('spinner-text').style.color = "#ff3b30";
+                });
+        }
+    </script>
+</body>
+</html>

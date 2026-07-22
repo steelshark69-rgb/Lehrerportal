@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informatik Portal | Prof. Schweitzer</title>
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        .overview-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .overview-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border: none;
+            text-align: center;
+        }
+        .overview-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+        .overview-card.blue { background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%); }
+        .overview-card.green { background: linear-gradient(135deg, #10b981 0%, #047857 100%); }
+        .overview-card.purple { background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%); }
+        .overview-card.orange { background: linear-gradient(135deg, #f97316 0%, #c2410c 100%); }
+        .overview-card.pink { background: linear-gradient(135deg, #ec4899 0%, #be185d 100%); }
+        .overview-card.amber { background: linear-gradient(135deg, #f59e0b 0%, #b45309 100%); }
+        .overview-card h3 {
+            margin: 0.5rem 0;
+            font-size: 1.3rem;
+        }
+        .overview-card .emoji {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+        .overview-card p {
+            margin: 0;
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+
+        .class-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+            justify-content: center;
+        }
+        .class-pill {
+            padding: 0.75rem 1.5rem;
+            background: #f1f5f9;
+            border: 2px solid #cbd5e1;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .class-pill:hover {
+            border-color: #3b82f6;
+            color: #3b82f6;
+        }
+        .class-pill.active {
+            background: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Informatik Portal</h1>
+    <p>Unterrichtsmaterialien für Informatik & Digitale Kompetenz</p>
+    <div class="back-nav">
+        <a href="../index.html" class="btn-back">⬅ Zurück zur Hauptseite</a>
+    </div>
+</header>
+
+<main>
+    <div id="view-classes" class="view-section active">
+        
+        <section id="category-overview" class="class-section active" style="display: block;">
+            <div style="margin-bottom: 2rem;">
+                <h2 style="text-align: center; color: var(--primary); margin-bottom: 1.5rem;">📚 Themenübersicht</h2>
+                <div class="overview-section">
+                    <div class="overview-card blue" onclick="showCategory('excel')">
+                        <div class="emoji">📊</div>
+                        <h3>Excel & Tabellenkalkulation</h3>
+                        <p>Formeln, Funktionen, Diagramme</p>
+                    </div>
+                    <div class="overview-card green" onclick="showCategory('datenbanken')">
+                        <div class="emoji">🗄️</div>
+                        <h3>Datenbanken & SQL</h3>
+                        <p>Datenmodellierung, Abfragen</p>
+                    </div>
+                    <div class="overview-card purple" onclick="showCategory('EVA')">
+                        <div class="emoji">⚙️</div>
+                        <h3>Inside the Machine</h3>
+                        <p>CPU, RAM, GPU, Hardware</p>
+                    </div>
+                    <div class="overview-card orange" onclick="showCategory('tcpip')">
+                        <div class="emoji">🌐</div>
+                        <h3>Internet & Netzwerke</h3>
+                        <p>Wie das Internet funktioniert</p>
+                    </div>
+                    <div class="overview-card pink" onclick="showCategory('blockchain')">
+                        <div class="emoji">🔐</div>
+                        <h3>Blockchain & Kryptographie</h3>
+                        <p>Verschlüsselung, Hashing, Keys</p>
+                    </div>
+                    <div class="overview-card amber" onclick="showCategory('snowden')">
+                        <div class="emoji">🎬</div>
+                        <h3>Snowden & Privatsphäre</h3>
+                        <p>Datenschutz und Überwachung</p>
+                    </div>
+                    <div class="overview-card" style="background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);" onclick="showCategory('mlct')">
+                        <div class="emoji">🤖</div>
+                        <h3>KI & Machine Learning</h3>
+                        <p>Künstliche Intelligenz, ML, Computational Thinking</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="class-nav" id="nav-pills" style="display: none;">
+            <div class="class-pill" onclick="showCategory('overview')">← Zurück zur Übersicht</div>
+            <div class="class-pill" onclick="showCategory('excel')">📊 Excel</div>
+            <div class="class-pill" onclick="showCategory('datenbanken')">🗄️ Datenbanken</div>
+            <div class="class-pill" onclick="showCategory('blockchain')">🔐 Blockchain</div>
+            <div class="class-pill" onclick="showCategory('tcpip')">🌐 Internet</div>
+            <div class="class-pill" onclick="showCategory('EVA')">⚙️ Hardware</div>
+            <div class="class-pill" onclick="showCategory('snowden')">🎬 Snowden</div>
+            <div class="class-pill" onclick="showCategory('mlct')">🤖 KI & ML</div>
+        </div>
+
+        <section id="category-datenbanken" class="class-section" style="display: none;">
+            <div class="subject-group">
+                <div class="subject-header">
+                    <span class="subject-badge bg-info">🗄️ Datenbanken & SQL</span>
+                    <h2>Vom Chaos zur Ordnung: Relationale Datenbanken</h2>
+                </div>
+                <div class="resource-grid">
+                    <a href="datenbanken/einheit1_2.html" target="_blank" class="resource-card">
+                        <h4>📋 Teil 1: Grundkonzepte</h4>
+                        <p>Warum Datenbanken? Chaos, Redundanz, Duplikate & Schlüsselkonzepte</p>
+                    </a>
+                    <a href="datenbanken/einheit3_4.html" target="_blank" class="resource-card">
+                        <h4>🎨 Teil 2: Datenmodellierung</h4>
+                        <p>Entitäten, Beziehungen & Entity-Relationship-Diagramme</p>
+                    </a>
+                    <a href="datenbanken/einheit5_6.html" target="_blank" class="resource-card">
+                        <h4>💾 Teil 3: Die erste Datenbank</h4>
+                        <p>SQL Basics: SELECT-Abfragen und erste Datenbank erstellen</p>
+                    </a>
+                     <a href="datenbanken/select.html" target="_blank" class="resource-card" style="border: 2px solid #10b981; background-color: #f0fdf4;">
+                        <h4 style="color: #10b981;">🔍 SELECT vertiefen</h4>
+                        <p>WHERE, ORDER BY, LIMIT - Daten filtern und sortieren</p>
+                    </a>
+                    <a href="datenbanken/sql_island.html" target="_blank" class="resource-card" style="border: 2px solid #10b981; background-color: #f0fdf4;">
+                        <h4 style="color: #10b981;">🎮 Bonus: SQL Island</h4>
+                        <p>Interaktives Abenteuer-Spiel zum Trainieren von SQL-Abfragen</p>
+                    </a>
+                    <a href="datenbanken/einheit7_8.html" target="_blank" class="resource-card">
+                        <h4>🔗 Teil 4: Tabellen verknüpfen</h4>
+                        <p>JOINs - Verbindungen zwischen Tabellen & Datenbankabschluss</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="category-snowden" class="class-section" style="display: none;">
+            <div class="subject-group">
+                <div class="subject-header">
+                    <span class="subject-badge bg-info">🎬 Edward Snowden</span>
+                    <h2>Der Überwachungsskandal & digitale Privatsphäre</h2>
+                </div>
+                <div class="resource-grid">
+                      <a href="snowden/snowden.html" target="_blank" class="resource-card">
+                        <h4>🎥 Vorbereitung zum Film</h4>
+                        <p>Informationen, Kontext und Fragen zum Verständnis des Snowden-Films</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="category-EVA" class="class-section" style="display: none;">
+            <div class="subject-group">
+                <div class="subject-header">
+                    <span class="subject-badge bg-info">⚙️ Inside the Machine</span>
+                    <h2>EVA-Prinzip: Eingabe, Verarbeitung, Ausgabe</h2>
+                </div>
+                <div class="resource-grid">
+                     <a href="EVA/einheit1_eva.html" target="_blank" class="resource-card">
+                        <h4>🖥️ Einheit 1: Das EVA-Prinzip</h4>
+                        <p>Grundlagen der Informationsverarbeitung erklärt</p>
+                    </a>
+                     <a href="EVA/einheit2_cpu_ram.html" target="_blank" class="resource-card">
+                        <h4>⚡ Einheit 2: CPU & RAM</h4>
+                        <p>Prozessor und Arbeitspeicher - Das Herzstück des Computers</p>
+                    </a>
+                     <a href="EVA/einheit3_gpu_ssd.html" target="_blank" class="resource-card">
+                        <h4>💾 Einheit 3: GPU & SSD</h4>
+                        <p>Grafikkarte und Speicher - Leistung und Kapazität</p>
+                    </a>
+                    <a href="EVA/einheit4_bossfight.html" target="_blank" class="resource-card">
+                        <h4>🎮 Einheit 4: Der PC als System</h4>
+                        <p>Wie arbeiten CPU, RAM, GPU und SSD zusammen?</p>
+                    </a>
+                     <a href="EVA/einheit5_evas.html" target="_blank" class="resource-card">
+                        <h4>🏗️ Einheit 5: Die 3 Säulen</h4>
+                        <p>Vertiefung des EVA-Prinzips mit Beispielen</p>
+                    </a>
+                     <a href="EVA/quiz.html" target="_blank" class="resource-card" style="border: 2px solid #8b5cf6; background-color: #faf5ff;">
+                        <h4 style="color: #8b5cf6;">📝 Abschlussquiz</h4>
+                        <p>Teste dein Verständnis der Hardware-Grundlagen</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="category-tcpip" class="class-section" style="display: none;">
+            <div class="subject-group">
+                <div class="subject-header">
+                    <span class="subject-badge bg-info">🌐 Internet & Netzwerke</span>
+                    <h2>Der Bauplan des Internets: TCP/IP erklärt</h2>
+                </div>
+                <div class="resource-grid">
+                      <a href="internet/infra.html" target="_blank" class="resource-card">
+                        <h4>🏗️ Teil 1: Die Infrastruktur</h4>
+                        <p>Kabel, Server, Router - Wie ist das Internet physisch aufgebaut?</p>
+                    </a>
+                   <a href="internet/internetppt.html" target="_blank" class="resource-card">
+                        <h4>📡 Teil 2: Protokolle & Übertragung</h4>
+                        <p>TCP/IP, DNS, HTTP - Wie werden Daten übertragen?</p>
+                    </a>
+                    <a href="internet/internetppt.html" target="_blank" class="resource-card">
+                        <h4>✅ Checkup: Verständnisfragen</h4>
+                        <p>Teste dein Wissen über die Funktionsweise des Internets</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+        
+        <section id="category-excel" class="class-section" style="display: none;">
+            <div class="subject-group">
+                <div class="subject-header">
+                    <span class="subject-badge bg-info">📊 Excel & Tabellenkalkulation</span>
+                    <h2>Von den Grundlagen bis zu Fortgeschrittenen Techniken</h2>
+                </div>
+                <div class="resource-grid">
+                    <h3 style="grid-column: 1 / -1; color: var(--primary); margin-top: 0;">🎯 Grundlagen</h3>
+                    <a href="excel/basics.html" target="_blank" class="resource-card">
+                        <h4>1️⃣ Basics: Excel erkunden</h4>
+                        <p>Benutzeroberfläche, Zellen und erste Schritte</p>
+                    </a>
+                    <a href="excel/aufbau.html" target="_blank" class="resource-card">
+                        <h4>2️⃣ Aufbau: Strukturiert arbeiten</h4>
+                        <p>Zeilen, Spalten, Blätter - So ist Excel organisiert</p>
+                    </a>
+                    <a href="excel/zellen.html" target="_blank" class="resource-card">
+                        <h4>3️⃣ Zellenbezüge & Verweise</h4>
+                        <p>Absolute & relative Bezüge - Referenzieren wie ein Profi</p>
+                    </a>
+                    <a href="excel/summe.html" target="_blank" class="resource-card">
+                        <h4>4️⃣ Grundfunktionen</h4>
+                        <p>SUMME, AVERAGE, COUNT, MIN, MAX - Die wichtigsten Formeln</p>
+                    </a>
+                    <a href="excel/wenn.html" target="_blank" class="resource-card">
+                        <h4>5️⃣ WENN-Funktion: Logik in Excel</h4>
+                        <p>Bedingte Berechnungen - Wenn...dann...sonst</p>
+                    </a>
+                    <a href="excel/diagramme.html" target="_blank" class="resource-card">
+                        <h4>6️⃣ Diagramme: Daten visualisieren</h4>
+                        <p>Säulen-, Linien-, Kreisdiagramme und mehr</p>
+                    </a>
+                    <a href="excel/excelAB.html" target="_blank" class="resource-card" style="border: 2px solid #f97316; background-color: #fff7ed;">
+                        <h4 style="color: #f97316;">📋 Arbeitsauftrag 1</h4>
+                        <p>Praktische Übung: Erstelle ein Verkaufsreport mit Diagrammen</p>
+                    </a>
+                    
+                    <h3 style="grid-column: 1 / -1; color: var(--primary); margin-top: 2rem; margin-bottom: 1rem;">🚀 Fortgeschrittene Techniken</h3>
+                    <a href="excel/summewenn.html" target="_blank" class="resource-card">
+                        <h4>🎯 SUMMEWENN & ZÄHLENWENN</h4>
+                        <p>Bedingte Summen & Zählungen - Filtere deine Daten intelligent</p>
+                    </a>
+                    <a href="excel/verweis.html" target="_blank" class="resource-card">
+                        <h4>🔗 SVERWEIS & XVERWEIS</h4>
+                        <p>Lookup-Funktionen - Finde Werte in großen Tabellen</p>
+                    </a>
+                    <a href="excel/excelAB2.html" target="_blank" class="resource-card" style="border: 2px solid #f97316; background-color: #fff7ed;">
+                        <h4 style="color: #f97316;">📋 Arbeitsauftrag 2</h4>
+                        <p>Fortgeschrittene Übung mit Lookups und bedingten Formeln</p>
+                    </a>
+                    <a href="excel/bosslevel.html" target="_blank" class="resource-card" style="border: 2px solid #ef4444; background-color: #fef2f2;">
+                        <h4 style="color: #ef4444;">🏆 Finaler Boss-Level</h4>
+                        <p>Die ultimative Herausforderung: Komplexe Datenanalyse</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        
+        <section id="category-blockchain" class="class-section" style="display: none;">
+            <div class="subject-group">
+                <div class="subject-header">
+                    <span class="subject-badge bg-info">🔐 Blockchain & Kryptographie</span>
+                    <h2>Verschlüsselung & dezentrale Systeme</h2>
+                </div>
+                <div class="resource-grid">
+                    <a href="blockchain/kryptotheorie.html" target="_blank" class="resource-card" style="border: 2px solid #ec4899; background-color: #fdf2f8;">
+                        <h4 style="color: #ec4899;">🔗 Blockchain & Kryptografie - Komplettkurs</h4>
+                        <p>Von Double Spending über Hashing bis zu Consensus Mechanisms. Umfassendes Lehrmaterial mit Quiz.</p>
+                    </a>
+                    <a href="blockchain/ceasar.html" target="_blank" class="resource-card">
+                        <h4>🔤 Caesar-Verschlüsselung</h4>
+                        <p>Die Klassiker unter den Verschlüsselungsverfahren - Von Julius Caesar bis heute</p>
+                    </a>
+                    <a href="blockchain/hashing.html" target="_blank" class="resource-card">
+                        <h4>#️⃣ Hashing & SHA-256</h4>
+                        <p>Einwegfunktionen - Das Fundament der Blockchain</p>
+                    </a>
+                    <a href="blockchain/PublicPrivateKey.html" target="_blank" class="resource-card">
+                        <h4>🔑 Public & Private Keys</h4>
+                        <p>Asymmetrische Kryptographie - Sicher kommunizieren ohne geheime Schlüssel zu teilen</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="category-mlct" class="class-section" style="display: none;">
+            <div class="subject-group">
+                <div class="subject-header">
+                    <span class="subject-badge bg-info">🤖 KI & Machine Learning</span>
+                    <h2>Künstliche Intelligenz, Machine Learning & Computational Thinking</h2>
+                </div>
+                <div class="resource-grid">
+                    <a href="MLCTtheorie.html" target="_blank" class="resource-card" style="border: 2px solid #06b6d4; background-color: #f0f9fc;">
+                        <h4 style="color: #06b6d4;">🤖 KI & ML - Komplettkurs</h4>
+                        <p>Künstliche Intelligenz, Machine Learning, Supervised Learning Simulator & Computational Thinking mit interaktivem Labor und Quiz.</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </div>
+</main>
+
+<footer style="margin-top: 5rem; padding: 2rem 1rem; background-color: #f8fafc; border-top: 1px solid #e2e8f0; color: #64748b; font-size: 0.9rem;">
+    <div style="max-width: 900px; margin: 0 auto;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-bottom: 2rem;">
+            <div>
+                <h4 style="color: #334155; margin-top: 0;">📚 Über diesen Kurs</h4>
+                <p style="margin: 0; line-height: 1.6;">Interaktive Materialien zur Vermittlung von Informatik-Grundlagen, von Excel über Datenbanken bis zu Kryptographie und Netzwerken.</p>
+            </div>
+            <div>
+                <h4 style="color: #334155; margin-top: 0;">🎯 Lernziele</h4>
+                <p style="margin: 0; line-height: 1.6;">Praktische IT-Fähigkeiten entwickeln, digitales Verständnis vertiefen, Sicherheit und Datenschutz verstehen.</p>
+            </div>
+            <div>
+                <h4 style="color: #334155; margin-top: 0;">✅ 100% DSGVO konform</h4>
+                <p style="margin: 0; line-height: 1.6;">Keine Tracker, keine Cookies, keine externen Dienste. Alle Inhalte lokal im Browser.</p>
+            </div>
+        </div>
+        <div style="text-align: center; border-top: 1px solid #e2e8f0; padding-top: 2rem;">
+            <p style="margin: 0;">&copy; 2026 | Georg von Peuerbach Gymnasium | Mag. Schweitzer | Mathematik & Informatik</p>
+        </div>
+    </div>
+</footer>
+
+<script>
+    function showCategory(categoryName) {
+        document.querySelectorAll('.class-section').forEach(s => s.style.display = 'none');
+        document.querySelectorAll('.class-pill').forEach(p => p.classList.remove('active'));
+
+        const target = document.getElementById('category-' + categoryName);
+        if (target) {
+            target.style.display = 'block';
+            document.getElementById('nav-pills').style.display = categoryName !== 'overview' ? 'flex' : 'none';
+            
+            // Finde den passenden Button (ignoriert Leerzeichen und Groß-/Kleinschreibung)
+            document.querySelectorAll('.class-pill').forEach(p => {
+                let btnText = p.innerText.toLowerCase().replace(/[^a-z0-9]/g, '');
+                let catText = categoryName.toLowerCase().replace(/[^a-z0-9]/g, '');
+                if(btnText.includes(catText) || catText.includes(btnText)) {
+                    p.classList.add('active');
+                }
+            });
+        }
+    }
+    
+    window.onload = () => {
+        showCategory('overview');
+    };
+</script>
+
+</body>
+</html>

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Varianz & Standardabweichung | Mathe Verstehen 4</title>
+    <link rel="stylesheet" href="../../style.css">
+    
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        /* Spezifische Klassen für das interaktive Gauge */
+        .gauge-container { width: 100%; max-width: 300px; height: 150px; position: relative; margin: 0 auto; overflow: hidden;}
+        .gauge-body { width: 100%; height: 100%; background: #e2e8f0; border-radius: 150px 150px 0 0; position: absolute; top: 0; left: 0; }
+        .gauge-color-ranges { width: 100%; height: 100%; position: absolute; top: 0; left: 0; border-radius: 150px 150px 0 0; background: conic-gradient(from 0deg at 50% 100%, #10b981 0deg 90deg, #f59e0b 90deg 135deg, #ef4444 135deg 180deg); opacity: 0.8; mask: radial-gradient(circle at 50% 100%, transparent 60%, black 61%); -webkit-mask: radial-gradient(circle at 50% 100%, transparent 60%, black 61%); }
+        .gauge-needle { width: 4px; height: 75%; background: var(--text-main); position: absolute; bottom: 0; left: 50%; transform-origin: 50% 100%; transform: translateX(-50%) rotate(0deg); transition: transform 0.4s; border-radius: 4px; }
+        .gauge-center { width: 12px; height: 12px; background: var(--text-main); border-radius: 50%; position: absolute; bottom: -6px; left: 50%; transform: translateX(-50%); }
+        .gauge-labels { display: flex; justify-content: space-between; position: absolute; width: 100%; bottom: -20px; font-weight: bold; font-size: 0.9rem;}
+        
+        /* Interactive Data Points Visualization */
+        .datapoint-container { width: 100%; height: 120px; border: 1px dashed #cbd5e1; border-radius: 8px; position: relative; margin: 10px 0; background: white; overflow: hidden; }
+        .datapoint { width: 8px; height: 8px; background: var(--primary); border-radius: 50%; position: absolute; opacity: 0.8; transition: left 0.4s; }
+        .mean-line { width: 2px; height: 100%; background: var(--text-muted); position: absolute; left: 50%; transform: translateX(-50%); border-radius: 2px; }
+
+        /* Formel-Box Styling */
+        .formula-box {
+            background: white;
+            border: 1px solid #cbd5e1;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            margin: 1rem 0;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Varianz & Standardabweichung</h1>
+    <p>Wie stark streuen die Daten um das Mittel?</p>
+</header>
+
+<div class="back-nav">
+    <a href="../index.html" class="btn-back">← Zurück zur Übersicht</a>
+</div>
+
+<main>
+    <section class="subject-group">
+        <div class="subject-header">
+            <span class="subject-badge bg-math">Mathematik 4</span>
+            <h2 style="margin: 0; color: var(--primary);">Das Problem mit dem Mittelwert</h2>
+        </div>
+        <p>Stell dir zwei Klassen vor, die denselben arithmetischen Mittelwert ($\bar{x}$) in einem Test erreicht haben. Sind sie deswegen gleich?</p>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+            <div style="background: var(--card-bg); border: 1px solid #e2e8f0; padding: 1rem; border-radius: 8px;">
+                <h4 style="margin-top: 0; color: var(--doc-blue);">Dataset A (Klasse 1)</h4>
+                <p style="margin:0;">Werte: {4, 5, 5, 6}</p>
+                <p style="margin:0;">Mittelwert $\bar{x} = 5$</p>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Alle Werte sind nah beieinander.</p>
+            </div>
+            <div style="background: var(--card-bg); border: 1px solid #e2e8f0; padding: 1rem; border-radius: 8px;">
+                <h4 style="margin-top: 0; color: var(--pdf-red);">Dataset B (Klasse 2)</h4>
+                <p style="margin:0;">Werte: {1, 2, 8, 9}</p>
+                <p style="margin:0;">Mittelwert $\bar{x} = 5$</p>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Extrem breite Streuung.</p>
+            </div>
+        </div>
+
+        <div class="info-card" style="border-left-color: var(--primary);">
+            <p><strong>Die Kernaussage nach „Mathematik verstehen 4“:</strong> Nur wenn man angibt, wie stark die Daten um das arithmetische Mittel ($\bar{x}$) streuen, kann man Datensätze richtig vergleichen. Dafür brauchen wir die <strong>Streuungsmaße</strong>.</p>
+        </div>
+    </section>
+
+    <section class="subject-group" id="labor">
+        <div class="subject-header">
+            <span class="subject-badge bg-info">Labor</span>
+            <h2 style="margin: 0; color: var(--primary);">Interaktives Qualitäts-Labor</h2>
+        </div>
+        <p>In der 4. Klasse ist die Standardabweichung das zentrale Maß für <strong>Präzision</strong>, z. B. bei der Qualitätskontrolle einer Abfüllmaschine.</p>
+        
+        <div style="background: white; border: 2px solid var(--primary); border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; align-items: center;">
+            
+            <div>
+                <label style="font-weight: bold; color: var(--primary); display: block; margin-bottom: 10px;">Präzision der Maschine (Verschiebe die Datenpunkte)</label>
+                <input type="range" id="dispersion-slider" min="5" max="95" value="50" style="width: 100%; accent-color: var(--primary);" oninput="updateLab()">
+                
+                <div class="datapoint-container" id="datapoint-visualizer">
+                    <div class="mean-line"></div>
+                    </div>
+            </div>
+
+            <div style="text-align: center;">
+                <div class="gauge-container">
+                    <div class="gauge-body"></div>
+                    <div class="gauge-color-ranges"></div>
+                    <div class="gauge-needle" id="gauge-needle"></div>
+                    <div class="gauge-center"></div>
+                    <div class="gauge-labels">
+                        <span>PRÄZISE</span>
+                        <span>MITTEL</span>
+                        <span>UNPRÄZISE</span>
+                    </div>
+                </div>
+                <div style="margin-top: 1.5rem;">
+                    <p style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin:0;">Aktuelle Streuung ($s$)</p>
+                    <p style="font-size: 1.8rem; font-weight: bold; color: var(--primary); margin: 5px 0;" id="gauge-value">-- mm</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="subject-group">
+        <div class="subject-header">
+            <span class="subject-badge bg-math">Schritt-für-Schritt</span>
+            <h2 style="margin: 0; color: var(--primary);">Die Berechnung: Die Formeln</h2>
+        </div>
+        
+        <p>Um die Standardabweichung ($s$) zu erhalten, gehen wir im Schulbuch immer über die <strong>empirische Varianz</strong> ($s^2$).</p>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+            <div style="background: var(--card-bg); border: 1px solid #e2e8f0; padding: 1.5rem; border-radius: 8px;">
+                <h4 style="margin-top: 0; color: var(--text-main);">Schritt 1: Empirische Varianz ($s^2$)</h4>
+                <p style="font-size: 0.95rem;">Man bildet das arithmetische Mittel ($\bar{x}$), quadriert alle Abweichungen der Datenpunkte von $\bar{x}$, summiert diese Quadrate und teilt sie durch die Anzahl ($n$) der Datenpunkte.</p>
+                
+                <div class="formula-box">
+                    $$ s^2 = \frac{(x_1 - \bar{x})^2 + (x_2 - \bar{x})^2 + ... + (x_n - \bar{x})^2}{n} $$
+                </div>
+
+                <div class="analogy-card" style="border-color: #f59e0b; background: #fffbeb; font-size: 0.9rem; padding: 1rem; border-radius: 8px; margin-top: 1rem;">
+                    <strong>Das Problem:</strong> Die Varianz hat eine falsche Maßeinheit, da alles quadriert wurde (z. B. $mm^2$ statt $mm$). Das ist im Alltag schwer vorstellbar!
+                </div>
+            </div>
+
+            <div style="background: var(--card-bg); border: 1px solid #e2e8f0; padding: 1.5rem; border-radius: 8px;">
+                <h4 style="margin-top: 0; color: var(--primary);">Schritt 2: Standardabweichung ($s$)</h4>
+                <p style="font-size: 0.95rem;">Die Varianz korrigiert man, indem man am Ende einfach die Wurzel zieht. Die Standardabweichung hat somit wieder die <strong>ursprüngliche Maßeinheit</strong> der Datenliste (z. B. $mm$).</p>
+                
+                <div class="formula-box">
+                    $$ s = \sqrt{s^2} $$
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="subject-group">
+        <div class="subject-header">
+            <span class="subject-badge bg-info">Check</span>
+            <h2 style="margin: 0; color: var(--primary);">Arbeitsauftrag: Qualitätskontrolle</h2>
+        </div>
+        <p>Gegeben sind die Ergebnisse der Füllmengenprüfung zweier Maschinen. Klicke auf die korrekte Aussage.</p>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem;">
+            <div style="background: white; border: 1px solid #cbd5e1; border-radius: 8px; padding: 1.5rem; text-align: center;">
+                <h4 style="margin:0 0 10px 0; font-size: 1.2rem;">Maschine A</h4>
+                <p style="margin: 5px 0;">Füllmenge $\bar{x}_A = 100\,mm$</p>
+                <p style="margin: 10px 0 0 0; color: var(--xls-green); font-weight: bold; font-size: 1.2rem;">$s_A = 2\,mm$</p>
+            </div>
+            <div style="background: white; border: 1px solid #cbd5e1; border-radius: 8px; padding: 1.5rem; text-align: center;">
+                <h4 style="margin:0 0 10px 0; font-size: 1.2rem;">Maschine B</h4>
+                <p style="margin: 5px 0;">Füllmenge $\bar{x}_B = 100\,mm$</p>
+                <p style="margin: 10px 0 0 0; color: var(--pdf-red); font-weight: bold; font-size: 1.2rem;">$s_B = 5\,mm$</p>
+            </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+            <button class="nav-toggle" style="width: 100%; border: 1px solid #cbd5e1; font-size: 1.1rem; padding: 15px;" onclick="alert('Richtig! Die Standardabweichung s_A = 2 mm ist kleiner. Die Werte liegen näher am Mittelwert, die Maschine arbeitet also präziser.')">Aussage 1: Maschine A arbeitet präziser.</button>
+            <button class="nav-toggle" style="width: 100%; border: 1px solid #cbd5e1; font-size: 1.1rem; padding: 15px;" onclick="alert('Leider falsch. Überprüfe die Standardabweichungen: s_A = 2 mm ist kleiner als s_B = 5 mm. Eine kleinere Streuung bedeutet höhere Präzision!')">Aussage 2: Maschine B arbeitet präziser.</button>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <p>Mathematik verstehen 4 | Beschreibende Statistik</p>
+</footer>
+
+<script>
+    const container = document.getElementById('datapoint-visualizer');
+    const needle = document.getElementById('gauge-needle');
+    const gaugeValue = document.getElementById('gauge-value');
+
+    // Init 10 Datapoints
+    const datapoints = [];
+    for (let i = 0; i < 10; i++) {
+        const div = document.createElement('div');
+        div.className = 'datapoint';
+        div.style.top = Math.random() * 80 + 10 + '%'; // Random y-pos
+        container.appendChild(div);
+        datapoints.push(div);
+    }
+
+    function updateLab() {
+        const sliderVal = document.getElementById('dispersion-slider').value;
+        const target_x = 50; // Mean in % of the container
+        const dispersion = sliderVal / 100 * 50; // max possible s
+
+        // Move datapoints
+        datapoints.forEach((dp, index) => {
+            // Gauss-like distribution around target_x, controlled by dispersion
+            const std_dev = 2.5 + dispersion * 0.4;
+            const spread = std_dev * index * 0.3;
+            const movePercent = target_x + spread * (index % 2 === 0 ? 1 : -1);
+            dp.style.left = movePercent + '%';
+        });
+
+        // Update Gauge
+        const rotation = (sliderVal - 5) / 90 * 180 - 90;
+        needle.style.transform = `translateX(-50%) rotate(${rotation}deg)`;
+        
+        // Map slider value (5-95) to a realistic simulated Standard Deviation in mm (e.g., 2.5 - 20 mm)
+        const simulated_s = (2.5 + (sliderVal - 5) / 90 * 17.5).toFixed(1);
+        gaugeValue.innerText = `${simulated_s} mm`;
+    }
+
+    // Initial run
+    window.onload = updateLab;
+</script>
+
+</body>
+</html>

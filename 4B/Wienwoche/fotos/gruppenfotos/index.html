@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gruppenfotos - Wienwoche 4b</title>
+    <!-- Verweis auf die zentrale CSS-Datei (4 Ebenen höher im Hauptordner) -->
+    <link rel="stylesheet" href="../../../../css/style.css">
+    <style>
+        :root {
+            --primary-color: #003366;
+            --accent-color: #c4121a;
+            --bg-light: #f4f4f9;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background-color: var(--bg-light);
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: var(--primary-color);
+            text-align: center;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        
+        /* DSGVO & Info Box */
+        .dsgvo-box {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 15px;
+            margin-bottom: 30px;
+            border-radius: 4px;
+            color: #856404;
+        }
+
+        /* Navigation / Zurück Button */
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            background-color: #e7f3ff;
+            color: var(--primary-color);
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            transition: background 0.2s;
+        }
+        .back-link:hover {
+            background-color: #cce5ff;
+        }
+
+        /* Fotogalerie Grid */
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        /* Einzelnes Foto */
+        .photo-item {
+            position: relative;
+            aspect-ratio: 4 / 3;
+            overflow: hidden;
+            border-radius: 6px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            background-color: #e0e0e0;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .photo-item:hover {
+            transform: scale(1.03);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            z-index: 2;
+        }
+        .photo-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        
+        /* Fallback-Styling, wenn das Bild (noch) nicht existiert */
+        .photo-item.fallback-mode {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            padding: 10px;
+        }
+
+        /* Lightbox (Vollbild-Ansicht) */
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .lightbox.active {
+            display: flex;
+            opacity: 1;
+        }
+        .lightbox-img {
+            max-width: 90%;
+            max-height: 90vh;
+            border-radius: 4px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            object-fit: contain;
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .lightbox-close:hover {
+            color: var(--accent-color);
+        }
+        
+        /* Erklärender Text für Lehrkraft (kann später gelöscht werden) */
+        .teacher-note {
+            background-color: #e6f7ff;
+            border: 1px dashed #1890ff;
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            margin-bottom: 20px;
+            color: #0050b3;
+        }
+
+        @media (max-width: 600px) {
+            .container { padding: 15px; margin: 10px; }
+            .photo-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Zwei Ebenen zurück zur Übersichtsgalerie -->
+    <a href="../../index.html" class="back-link">⬅ Zurück zur Alben-Übersicht</a>
+
+    <h1>📸 Gruppenfotos & Sonstiges</h1>
+
+    <div class="dsgvo-box">
+        <strong>🔒 Wichtiger Hinweis zum Datenschutz (DSGVO)</strong><br>
+        Diese Fotos sind eine schöne Erinnerung für unsere Klasse. Bitte beachtet das "Recht am eigenen Bild": 
+        Das Herunterladen, Weiterleiten oder Veröffentlichen dieser Fotos auf Social Media (Instagram, TikTok, WhatsApp-Status etc.) ist <strong>ohne ausdrückliche Erlaubnis der abgebildeten Personen strengstens verboten!</strong>
+    </div>
+
+    <div class="teacher-note">
+        <strong>Hinweis für die Lehrkraft:</strong> Um Fotos hinzuzufügen, speichere die Bilder (z.B. als <code>foto1.jpg</code>, <code>foto2.jpg</code>) in genau diesem Ordner (<code>gruppenfotos/</code>) ab und trage die Dateinamen unten im HTML-Code bei den <code>&lt;img src="..."&gt;</code> Tags ein.
+    </div>
+
+    <!-- Das Bilder-Raster -->
+    <div class="photo-grid">
+        
+        <!-- Foto 1 -->
+        <div class="photo-item" onclick="openLightbox(this)">
+            <img src="foto1.jpg" alt="Gruppenfoto 1" onerror="showFallback(this, 'Foto 1 folgt')">
+        </div>
+
+        <!-- Foto 2 -->
+        <div class="photo-item" onclick="openLightbox(this)">
+            <img src="foto2.jpg" alt="Gruppenfoto 2" onerror="showFallback(this, 'Foto 2 folgt')">
+        </div>
+
+        <!-- Foto 3 -->
+        <div class="photo-item" onclick="openLightbox(this)">
+            <img src="foto3.jpg" alt="Gruppenfoto 3" onerror="showFallback(this, 'Foto 3 folgt')">
+        </div>
+
+        <!-- Foto 4 -->
+        <div class="photo-item" onclick="openLightbox(this)">
+            <img src="foto4.jpg" alt="Gruppenfoto 4" onerror="showFallback(this, 'Foto 4 folgt')">
+        </div>
+        
+        <!-- Foto 5 -->
+        <div class="photo-item" onclick="openLightbox(this)">
+            <img src="foto5.jpg" alt="Gruppenfoto 5" onerror="showFallback(this, 'Foto 5 folgt')">
+        </div>
+        
+        <!-- Foto 6 -->
+        <div class="photo-item" onclick="openLightbox(this)">
+            <img src="foto6.jpg" alt="Gruppenfoto 6" onerror="showFallback(this, 'Foto 6 folgt')">
+        </div>
+       
+        <div class="photo-item" onclick="openLightbox(this)">
+            <img src="foto7.jpg" alt="Gruppenfoto 7" onerror="showFallback(this, 'Foto 6 folgt')">
+        </div>
+         <div class="photo-item" onclick="openLightbox(this)">
+            <img src="foto8.jpg" alt="Gruppenfoto 8" onerror="showFallback(this, 'Foto 6 folgt')">
+        </div>
+         <div class="photo-item" onclick="openLightbox(this)">
+            <img src="foto9.jpg" alt="Gruppenfoto 9" onerror="showFallback(this, 'Foto 6 folgt')">
+        </div>
+         <div class="photo-item" onclick="openLightbox(this)">
+            <img src="foto10.jpg" alt="Gruppenfoto 10" onerror="showFallback(this, 'Foto 10 folgt')">
+        </div>
+        <!-- Füge hier einfach weitere Block-Kopien ein für mehr Fotos -->
+
+    </div>
+
+</div>
+
+<!-- Lightbox Container (wird unsichtbar geladen und bei Klick auf ein Bild eingeblendet) -->
+<div id="lightbox" class="lightbox" onclick="closeLightbox(event)">
+    <span class="lightbox-close" onclick="closeLightbox(event)">&times;</span>
+    <img id="lightbox-img" class="lightbox-img" src="" alt="Vollbild">
+</div>
+
+<script>
+    // Funktion, wenn ein Bild nicht geladen werden kann (Platzhalter-Modus)
+    function showFallback(imgElement, text) {
+        const parent = imgElement.parentElement;
+        parent.classList.add('fallback-mode');
+        parent.innerHTML = `<span>📸<br>${text}</span>`;
+        // Deaktiviere die Lightbox für nicht-existierende Bilder
+        parent.onclick = null; 
+    }
+
+    // Lightbox öffnen
+    function openLightbox(element) {
+        const img = element.querySelector('img');
+        if (img) {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            
+            // Setze das Quellbild in die Lightbox
+            lightboxImg.src = img.src;
+            
+            // Zeige die Lightbox an
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Verhindert Scrollen im Hintergrund
+        }
+    }
+
+    // Lightbox schließen
+    function closeLightbox(event) {
+        // Schließt nur, wenn man auf den Hintergrund oder das X klickt (nicht auf das Bild selbst)
+        if (event.target.id === 'lightbox' || event.target.className === 'lightbox-close') {
+            const lightbox = document.getElementById('lightbox');
+            lightbox.classList.remove('active');
+            document.body.style.overflow = 'auto'; // Scrollen wieder aktivieren
+        }
+    }
+
+    // Lightbox auch mit der ESC-Taste schließen
+    document.addEventListener('keydown', function(event) {
+        if (event.key === "Escape") {
+            const lightbox = document.getElementById('lightbox');
+            if (lightbox.classList.contains('active')) {
+                lightbox.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        }
+    });
+</script>
+
+</body>
+</html>

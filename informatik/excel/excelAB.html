@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arbeitsblatt: Kostenkalkulation Sommersportwoche 5A</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @media print {
+            .no-print { display: none; }
+            body { background-color: white; }
+            .container { box-shadow: none; border: none; max-width: 100%; margin: 0; padding: 0; }
+        }
+        .excel-table td, .excel-table th {
+            border: 1px solid #e2e8f0;
+            padding: 8px;
+            text-align: left;
+        }
+        .excel-table th {
+            background-color: #f8fafc;
+            font-weight: bold;
+            color: #64748b;
+            text-align: center;
+            width: 30px;
+        }
+        .excel-row-num {
+            background-color: #f8fafc;
+            font-weight: bold;
+            color: #64748b;
+            text-align: center;
+            width: 30px;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 font-sans text-slate-800 leading-relaxed">
+
+    <div class="container mx-auto max-w-4xl my-8 p-8 bg-white shadow-lg rounded-xl border border-slate-200">
+        
+        <!-- Header -->
+        <header class="border-b-2 border-blue-600 pb-4 mb-8">
+            <div class="flex justify-between items-start">
+                <div>
+                    <h1 class="text-3xl font-bold text-slate-900">Arbeitsblatt: Kostenkalkulation Sommersportwoche 5A</h1>
+                    <p class="text-blue-600 font-semibold mt-1 uppercase tracking-wide text-sm">Fach: Informatik / Digitale Grundbildung</p>
+                </div>
+                <div class="text-right text-sm text-slate-500 no-print">
+                    <button onclick="window.print()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+                            <path d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2H5zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4V3zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2H5zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1z"/>
+                        </svg>
+                        Drucken / PDF
+                    </button>
+                </div>
+            </div>
+            <div class="mt-4 flex gap-8 text-sm italic text-slate-600">
+                <span>Name: __________________________</span>
+                <span>Datum: __________________________</span>
+            </div>
+        </header>
+
+        <!-- Ausgangslage -->
+        <section class="mb-10 bg-blue-50 p-4 rounded-lg border-l-4 border-blue-400">
+            <h2 class="text-xl font-bold mb-2 text-blue-900">Ausgangslage</h2>
+            <p>
+                Unsere Klasse fährt auf Sommersportwoche! Du bist für die Finanzkalkulation verantwortlich. 
+                Die Fixkosten für Bus und Quartier sind für alle gleich, aber jeder wählt ein anderes Sportpaket. 
+                Zudem gibt es einen Zuschuss vom Elternverein, der von den Gesamtkosten abgezogen wird.
+            </p>
+        </section>
+
+        <!-- Aufgabe 1 -->
+        <section class="mb-10">
+            <h3 class="text-lg font-bold mb-3 flex items-center gap-2">
+                <span class="bg-blue-600 text-white w-6 h-6 rounded-full inline-flex items-center justify-center text-sm">1</span>
+                Aufgabe 1: Das Grundgerüst aufbauen
+            </h3>
+            <p class="mb-4 text-slate-600">
+                Erstelle in deiner Tabellenkalkulation (Excel/Calc) folgendes Raster und trage die Rohdaten ein. 
+                Achte darauf, dass die Beträge als <strong>Währung</strong> formatiert sind.
+            </p>
+            
+            <div class="overflow-x-auto border rounded-lg shadow-sm">
+                <table class="excel-table w-full text-sm font-mono">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>A</th>
+                            <th>B</th>
+                            <th>C</th>
+                            <th>D</th>
+                            <th>E</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="excel-row-num">1</td>
+                            <td class="bg-slate-50">Fixkosten (Bus & Quartier):</td>
+                            <td class="text-right">245,00</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="excel-row-num">2</td>
+                            <td class="bg-slate-50">Zuschuss Elternverein:</td>
+                            <td class="text-right">15,00</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr><td class="excel-row-num">3</td><td></td><td></td><td></td><td></td><td></td></tr>
+                        <tr class="font-bold">
+                            <td class="excel-row-num">4</td>
+                            <td class="bg-slate-100">Name</td>
+                            <td class="bg-slate-100 text-center">Sportpaket (€)</td>
+                            <td class="bg-slate-100 text-center">Gesamtkosten (€)</td>
+                            <td class="bg-slate-100 text-center">Zu zahlen (€)</td>
+                            <td class="bg-slate-100 text-center">Budget-Check</td>
+                        </tr>
+                        <tr>
+                            <td class="excel-row-num">5</td>
+                            <td>Anna (Surfen)</td>
+                            <td class="text-right">85,00</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="excel-row-num">6</td>
+                            <td>Ben (Tennis)</td>
+                            <td class="text-right">60,00</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="excel-row-num">7</td>
+                            <td>Clara (Klettern)</td>
+                            <td class="text-right">75,00</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="excel-row-num">8</td>
+                            <td>David (Biken)</td>
+                            <td class="text-right">50,00</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="excel-row-num">9</td>
+                            <td>Ena (Surfen)</td>
+                            <td class="text-right">85,00</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="excel-row-num">10</td>
+                            <td>Felix (Wandern)</td>
+                            <td class="text-right">0,00</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Aufgabe 2 -->
+        <section class="mb-10">
+            <h3 class="text-lg font-bold mb-3 flex items-center gap-2">
+                <span class="bg-blue-600 text-white w-6 h-6 rounded-full inline-flex items-center justify-center text-sm">2</span>
+                Aufgabe 2: Formeln & Zellbezüge (Die $ - Falle)
+            </h3>
+            <ul class="list-disc ml-6 space-y-2 text-slate-700">
+                <li><strong>Gesamtkosten:</strong> Berechne in Spalte <strong>C</strong> die Gesamtkosten für Anna (Sportpaket + Fixkosten).</li>
+                <li><strong>Autoausfüllen:</strong> Ziehe die Formel nach unten.
+                    <div class="mt-2 text-red-600 bg-red-50 p-2 rounded text-sm border border-red-100">
+                        <strong>Achtung:</strong> Denke daran, die Zelle der Fixkosten ($B$1) "festzunageln" (Absoluter Bezug mit der <strong>F4-Taste</strong>), sonst wandert der Bezug beim Kopieren ins Leere!
+                    </div>
+                </li>
+                <li><strong>Zu zahlen:</strong> Berechne in Spalte <strong>D</strong> den Betrag "Zu zahlen" (Gesamtkosten minus Zuschuss). Nutze auch hier für den Zuschuss ($B$2) einen <strong>absoluten Bezug</strong>.</li>
+            </ul>
+        </section>
+
+        <!-- Aufgabe 3 -->
+        <section class="mb-10">
+            <h3 class="text-lg font-bold mb-3 flex items-center gap-2">
+                <span class="bg-blue-600 text-white w-6 h-6 rounded-full inline-flex items-center justify-center text-sm">3</span>
+                Aufgabe 3: Beschreibende Statistik
+            </h3>
+            <p class="mb-3">Erstelle unterhalb deiner Tabelle (ab Zeile 12) eine Statistik-Übersicht für die Spalte "Zu zahlen". Nutze die passenden Funktionen:</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm font-mono">
+                <div class="p-3 bg-slate-50 border rounded flex justify-between"><span>Gesamtsumme (alle Schüler):</span> <code class="text-blue-700">SUMME</code></div>
+                <div class="p-3 bg-slate-50 border rounded flex justify-between"><span>Durchschnittlicher Preis:</span> <code class="text-blue-700">MITTELWERT</code></div>
+                <div class="p-3 bg-slate-50 border rounded flex justify-between"><span>Das teuerste Paket:</span> <code class="text-blue-700">MAX</code></div>
+                <div class="p-3 bg-slate-50 border rounded flex justify-between"><span>Das günstigste Paket:</span> <code class="text-blue-700">MIN</code></div>
+                <div class="p-3 bg-slate-50 border rounded flex justify-between"><span>Anzahl der Schüler:</span> <code class="text-blue-700">ANZAHL2</code></div>
+            </div>
+        </section>
+
+        <!-- Aufgabe 4 -->
+        <section class="mb-10">
+            <h3 class="text-lg font-bold mb-3 flex items-center gap-2">
+                <span class="bg-blue-600 text-white w-6 h-6 rounded-full inline-flex items-center justify-center text-sm">4</span>
+                Aufgabe 4: Die logische WENN-Funktion
+            </h3>
+            <div class="bg-amber-50 border border-amber-200 p-4 rounded-lg">
+                <p class="mb-2 italic text-slate-700">Einige Eltern haben ein Limit von <strong>300 €</strong> gesetzt. Wir wollen automatisch prüfen, wer darüber liegt.</p>
+                <p>Schreibe in Zelle <strong>E5</strong> (Budget-Check) eine WENN-Funktion:</p>
+                <ul class="list-circle ml-8 mt-2 space-y-1 text-sm font-semibold">
+                    <li>Prüfung: Ist der Betrag in "Zu zahlen" > 300?</li>
+                    <li>Dann-Wert: "Warnung"</li>
+                    <li>Sonst-Wert: "OK"</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Aufgabe 5 -->
+        <section class="mb-6">
+            <h3 class="text-lg font-bold mb-3 flex items-center gap-2">
+                <span class="bg-blue-600 text-white w-6 h-6 rounded-full inline-flex items-center justify-center text-sm">5</span>
+                Aufgabe 5: Datenvisualisierung
+            </h3>
+            <p class="mb-3">Erstelle ein Diagramm, um die Kosten visuell zu vergleichen:</p>
+            <ol class="list-decimal ml-6 space-y-2">
+                <li>Markiere die <strong>Namen</strong> (Spalte A) und die Beträge bei <strong>"Zu zahlen"</strong> (Spalte D). 
+                    <em class="text-sm block text-slate-500">(Tipp: Halte STRG gedrückt für Mehrfachmarkierung)</em>
+                </li>
+                <li>Erstelle ein <strong>Säulendiagramm</strong>.</li>
+                <li>Beschrifte das Diagramm:
+                    <ul class="list-bullet ml-6 text-sm text-slate-600">
+                        <li>Titel: "Kosten pro Schüler"</li>
+                        <li>Achsen: Schüler (unten), Euro (links)</li>
+                    </ul>
+                </li>
+            </ol>
+        </section>
+<section class="mt-12 pt-8 border-t-4 border-amber-400 page-break">
+            <div class="flex items-center gap-3 mb-6">
+                <span class="text-3xl">🚀</span>
+                <h2 class="text-2xl font-black text-slate-900 uppercase tracking-tighter">Level Up: Experten-Aufgaben</h2>
+            </div>
+
+            <div class="space-y-6">
+                <!-- Profi 1 -->
+                <div class="bg-amber-50 p-5 rounded-xl border border-amber-200 shadow-sm">
+                    <h3 class="font-bold text-amber-900 flex items-center gap-2 mb-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
+                            <path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                        </svg>
+                        E1: Bedingte Formatierung (Visualisierung)
+                    </h3>
+                    <p class="text-sm text-amber-800 mb-2">Lass die Tabelle für dich arbeiten! Die Spalte "Check" soll sich automatisch formatieren:</p>
+                    <ul class="list-disc ml-6 text-sm text-slate-700">
+                        <li>Text "Warnung" &rarr; Hintergrund <strong>Hellrot</strong>, Text <strong>Dunkelrot</strong>.</li>
+                        <li>Text "OK" &rarr; Hintergrund <strong>Hellgrün</strong>, Text <strong>Dunkelgrün</strong>.</li>
+                    </ul>
+                </div>
+
+                <!-- Profi 2 -->
+                <div class="bg-indigo-50 p-5 rounded-xl border border-indigo-200 shadow-sm">
+                    <h3 class="font-bold text-indigo-900 flex items-center gap-2 mb-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
+                        </svg>
+                        E2: Datenvalidierung (Dropdown)
+                    </h3>
+                    <p class="text-sm text-indigo-800 mb-2">Vermeide Tippfehler! Erstelle ein Dropdown-Menü für die Sportarten.</p>
+                    <ol class="list-decimal ml-6 text-sm text-slate-700">
+                        <li>Schreibe die Sportarten (Surfen, Tennis, Klettern, Biken, Wandern) in einen freien Bereich (z.B. Spalte H).</li>
+                        <li>Markiere die Zellen in Spalte A (z.B. A5 bis A10).</li>
+                        <li>Gehe zu <strong>Daten &rarr; Datentools &rarr; Datenüberprüfung</strong> und wähle "Liste".</li>
+                    </ol>
+                </div>
+
+                <!-- Profi 3 -->
+                <div class="bg-emerald-50 p-5 rounded-xl border border-emerald-200 shadow-sm">
+                    <h3 class="font-bold text-emerald-900 flex items-center gap-2 mb-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm15 2h-4v3h4V4zm0 4h-4v3h4V8zm0 4h-4v3h4v-3zM5 4H1v3h4V4zm5 0H6v3h4V4zm5 4H1v3h4V8zm5 4H1v3h4v-3zm5-4h-4v3h4V8zm0 4h-4v3h4v-3z"/>
+                        </svg>
+                        E3: Verschachtelte WENN-Logik (Mathe-Profi)
+                    </h3>
+                    <p class="text-sm text-emerald-800 mb-2">Verfeinere den "Check" in Spalte E. Wir brauchen drei Zustände:</p>
+                    <div class="bg-white p-3 rounded border border-emerald-100 font-mono text-xs">
+                        =WENN(D5>300; "Warnung"; WENN(D5>280; "Grenzwertig"; "OK"))
+                    </div>
+                    <p class="mt-2 text-xs text-slate-600 italic">*Erklärung: Wenn über 300 &rarr; Warnung. Wenn nicht, prüfe ob über 280 &rarr; Grenzwertig. Sonst &rarr; OK.*</p>
+                </div>
+            </div>
+        </section>
+
+        <footer class="mt-12 pt-6 border-t border-slate-200 text-center text-xs text-slate-400">
+            &copy; Informatik & Digitale Grundbildung - Sommersportwochen-Kalkulation
+        </footer>
+    </div>
+    
+</body>
+</html>

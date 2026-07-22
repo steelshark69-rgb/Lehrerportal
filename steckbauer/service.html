@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autohaus Steckbauer - Service</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = { theme: { extend: { fontFamily: { sans: ['Inter', 'sans-serif'] }, colors: { brand: { 50: '#f0f9ff', 100: '#e0f2fe', 500: '#0ea5e9', 600: '#0284c7', 900: '#0c4a6e' } } } } }
+    </script>
+</head>
+<body class="font-sans text-slate-800 bg-slate-50 flex flex-col min-h-screen">
+
+    <nav class="bg-white shadow-md fixed w-full z-50">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+               <a href="index.html" class="flex items-center">
+                    <img src="logo-steckbauer-farbig.jpg" alt="Autohaus Steckbauer Logo" class="h-10 md:h-12 w-auto object-contain">
+                </a>
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="index.html" class="text-slate-600 hover:text-brand-600 font-medium transition">Startseite</a>
+                    <a href="fahrzeuge.html" class="text-slate-600 hover:text-brand-600 font-medium transition">Fahrzeuge</a>
+                    <a href="service.html" class="text-brand-600 font-bold transition">Service</a>
+                    <a href="team.html" class="text-slate-600 hover:text-brand-600 font-medium transition">Team</a>
+                    <a href="kontakt.html" class="px-5 py-2.5 bg-brand-600 text-white rounded-lg hover:bg-brand-700 transition shadow-md">Kontakt</a>
+                </div>
+                <button id="mobile-menu-btn" class="md:hidden text-slate-700 focus:outline-none"><i class="fa-solid fa-bars text-2xl"></i></button>
+            </div>
+            <div id="mobile-menu" class="hidden md:hidden mt-4 pb-4 border-t border-slate-100">
+                <a href="index.html" class="block py-2 text-slate-600">Startseite</a>
+                <a href="fahrzeuge.html" class="block py-2 text-slate-600">Fahrzeuge</a>
+                <a href="service.html" class="block py-2 text-brand-600 font-bold">Service</a>
+                <a href="team.html" class="block py-2 text-slate-600">Team</a>
+                <a href="kontakt.html" class="block py-2 text-slate-600">Kontakt</a>
+            </div>
+        </div>
+    </nav>
+    <div class="h-20"></div>
+
+    <main class="flex-grow">
+        <div class="bg-brand-900 text-white py-12 mb-8">
+            <div class="container mx-auto px-6 text-center">
+                <h1 class="text-4xl font-bold">Meisterwerkstatt & Service</h1>
+                <p class="text-brand-100 mt-2">Alles für Ihr Auto aus einer Hand</p>
+            </div>
+        </div>
+        
+        <div class="container mx-auto px-6 pb-20">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Service Card 1 -->
+                <div class="bg-brand-50 rounded-xl p-8 hover:shadow-lg transition border border-brand-100">
+                    <div class="w-14 h-14 bg-brand-600 rounded-lg flex items-center justify-center text-white text-2xl mb-6"><i class="fa-solid fa-car-crash"></i></div>
+                    <h3 class="text-xl font-bold text-brand-900 mb-3">Karosserie & Lack</h3>
+                    <ul class="space-y-2 text-slate-600 text-sm">
+                        <li><i class="fa-solid fa-check text-brand-500 mr-2"></i>Unfallinstandsetzung</li>
+                        <li><i class="fa-solid fa-check text-brand-500 mr-2"></i>Direktverrechnung mit Versicherung</li>
+                        <li><i class="fa-solid fa-check text-brand-500 mr-2"></i>Schadensgutachten (EDV-Basis)</li>
+                        <li><i class="fa-solid fa-check text-brand-500 mr-2"></i>Umweltgerechte Lacktechnik</li>
+                    </ul>
+                </div>
+                <!-- Service Card 2 -->
+                <div class="bg-brand-50 rounded-xl p-8 hover:shadow-lg transition border border-brand-100">
+                    <div class="w-14 h-14 bg-brand-600 rounded-lg flex items-center justify-center text-white text-2xl mb-6"><i class="fa-solid fa-wrench"></i></div>
+                    <h3 class="text-xl font-bold text-brand-900 mb-3">Werkstatt & Teile</h3>
+                    <ul class="space-y-2 text-slate-600 text-sm">
+                        <li><i class="fa-solid fa-check text-brand-500 mr-2"></i>§57a Pickerl (alle Marken bis 3,5t)</li>
+                        <li><i class="fa-solid fa-check text-brand-500 mr-2"></i>Ford Originalteile</li>
+                        <li><i class="fa-solid fa-check text-brand-500 mr-2"></i>1 Jahr Ersatzteilgarantie</li>
+                        <li><i class="fa-solid fa-check text-brand-500 mr-2"></i>Service & Wartung</li>
+                    </ul>
+                </div>
+                <!-- Service Card 3 -->
+                <div class="bg-brand-50 rounded-xl p-8 hover:shadow-lg transition border border-brand-100">
+                    <div class="w-14 h-14 bg-brand-600 rounded-lg flex items-center justify-center text-white text-2xl mb-6"><i class="fa-solid fa-hand-holding-heart"></i></div>
+                    <h3 class="text-xl font-bold text-brand-900 mb-3">Kunden-Extras</h3>
+                    <ul class="space-y-2 text-slate-600 text-sm">
+                        <li><i class="fa-solid fa-check text-brand-500 mr-2"></i><strong>Kostenloser Leihwagen</strong>*</li>
+                        <li><i class="fa-solid fa-check text-brand-500 mr-2"></i>Finanzierung & Leasing</li>
+                        <li><i class="fa-solid fa-check text-brand-500 mr-2"></i>Gebrauchtwagen Garantie</li>
+                        <li><i class="fa-solid fa-check text-brand-500 mr-2"></i>Bargeldloses Zahlen</li>
+                    </ul>
+                    <p class="text-xs text-slate-400 mt-4">*für die Dauer der Reparatur (exkl. Treibstoff)</p>
+                </div>
+            </div>
+
+            <!-- Pannenhilfe Banner -->
+            <div class="mt-12 bg-red-50 border border-red-100 rounded-2xl p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center text-white animate-pulse"><i class="fa-solid fa-phone"></i></div>
+                    <div><h4 class="text-xl font-bold text-gray-900">Pannenhilfe benötigt?</h4><p class="text-red-600">Wir sind rund um die Uhr für Sie da.</p></div>
+                </div>
+                <div class="text-center md:text-right">
+                    <span class="block text-sm text-gray-500 uppercase tracking-wide font-semibold">24 Std. Hotline</span>
+                    <a href="tel:06641856068" class="text-2xl md:text-3xl font-bold text-red-600 hover:text-red-700 transition">0664 / 185 60 68</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-brand-900 text-white py-8 mt-auto">
+        <div class="container mx-auto px-6 text-center text-slate-400 text-sm">
+            <p>&copy; 2025 Autohaus Steckbauer GmbH. Passauer Straße 11, 4731 Prambachkirchen.</p>
+            <div class="mt-4 space-x-4">
+                <a href="impressum.html" class="hover:text-white transition">Impressum & Rechtliches</a> | <a href="impressum.html" class="hover:text-white transition">Datenschutz</a>
+            </div>
+        </div>
+    </footer>
+    <script>document.getElementById('mobile-menu-btn').addEventListener('click', () => { document.getElementById('mobile-menu').classList.toggle('hidden'); });</script>
+</body>
+</html>

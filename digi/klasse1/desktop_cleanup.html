@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mission 3: Das digitale Kinderzimmer</title>
+    <link rel="stylesheet" href="../../style.css">
+    
+    <style>
+        :root {
+            --it-primary: #107c41; 
+            --it-dark: #064e3b;
+            --bg-gray: #f8fafc;
+            --text-dark: #1e293b;
+            --accent: #f59e0b;
+        }
+
+        body { 
+            background-color: var(--bg-gray); 
+            font-size: 1.15rem; 
+            line-height: 1.7; 
+            color: var(--text-dark);
+            font-family: system-ui, -apple-system, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 3rem 1.5rem; }
+
+        /* Erklärungen */
+        .story-box { background: white; border-radius: 12px; padding: 2.5rem; border-left: 6px solid var(--it-primary); box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 3rem; }
+        
+        /* Drag & Drop Game Styles */
+        .game-area { background: #1e293b; padding: 3rem; border-radius: 16px; margin-bottom: 4rem; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+        .game-title { color: white; margin-top: 0; text-align: center; font-size: 2rem; margin-bottom: 10px; }
+        .game-subtitle { color: #94a3b8; text-align: center; margin-bottom: 2rem; }
+
+        /* The Pool (Chaotic Desktop) */
+        .desktop-pool { 
+            background: #0f172a; 
+            border: 2px dashed #475569; 
+            border-radius: 12px; 
+            min-height: 200px; 
+            padding: 20px; 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 15px; 
+            align-items: flex-start;
+            margin-bottom: 2rem;
+        }
+
+        /* The Folders (Drop Zones) */
+        .folder-grid { 
+            display: grid; 
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 20px; 
+        }
+        @media(min-width: 800px) { .folder-grid { grid-template-columns: repeat(4, 1fr); } }
+
+        .folder-zone { 
+            background: #334155; 
+            border: 3px solid #475569; 
+            border-radius: 12px; 
+            min-height: 180px; 
+            padding: 15px; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            gap: 10px;
+            transition: background 0.2s;
+        }
+        .folder-zone.drag-over { background: #475569; border-color: var(--it-primary); }
+        .folder-header { font-weight: bold; color: white; display: flex; align-items: center; gap: 10px; width: 100%; border-bottom: 2px solid #475569; padding-bottom: 10px; margin-bottom: 10px; justify-content: center; }
+
+        /* File Items */
+        .file-item { 
+            background: white; 
+            color: #0f172a; 
+            padding: 10px 15px; 
+            border-radius: 8px; 
+            font-size: 1rem; 
+            font-family: monospace; 
+            font-weight: bold; 
+            cursor: grab; 
+            border: 2px solid #cbd5e1;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            user-select: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.1s;
+        }
+        .file-item:active { cursor: grabbing; transform: scale(0.95); }
+
+        /* Game Button & Feedback */
+        .btn-check-game { background: #10b981; color: white; border: none; padding: 15px 30px; font-size: 1.2rem; font-weight: bold; border-radius: 8px; cursor: pointer; width: 100%; max-width: 400px; margin: 2rem auto 0 auto; display: block; transition: 0.2s; }
+        .btn-check-game:hover { background: #059669; }
+        .game-feedback { display: none; text-align: center; padding: 15px; border-radius: 8px; font-weight: bold; margin-top: 20px; font-size: 1.2rem; }
+
+        /* Quiz Styles */
+        .quiz-section { background: white; padding: 3rem; border-radius: 12px; border: 2px solid var(--it-primary); margin-top: 3rem; display: none; /* Erst nach dem Game sichtbar */ }
+        .quiz-question { background: #f8fafc; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid var(--it-primary); }
+        .quiz-select { width: 100%; padding: 15px; font-size: 1.1rem; border: 2px solid #cbd5e1; border-radius: 6px; margin-top: 10px; outline: none; cursor: pointer; }
+        .quiz-select:focus { border-color: var(--it-primary); }
+        
+        .btn-check-quiz { background: var(--it-primary); color: white; border: none; padding: 18px 30px; font-size: 1.2rem; font-weight: bold; border-radius: 6px; cursor: pointer; transition: 0.2s; width: 100%; margin-top: 15px; }
+        .btn-check-quiz:hover { background: var(--it-dark); }
+        
+        .feedback { display: none; font-weight: bold; margin-top: 15px; padding: 15px; border-radius: 6px; text-align: center; border: 1px solid transparent; }
+        .fb-correct { background: #d1fae5 !important; color: #065f46 !important; border-color: #10b981 !important; }
+        .fb-wrong { background: #fee2e2 !important; color: #991b1b !important; border-color: #ef4444 !important; }
+        .fb-warning { background: #fffbeb !important; color: #92400e !important; border-color: #f59e0b !important; }
+
+        /* Ticket Styles */
+        .ticket-container { display: none; background: linear-gradient(135deg, #1e293b, #10b981); color: white; padding: 3rem; border-radius: 16px; text-align: center; margin-top: 2rem; box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4); position: relative; overflow: hidden; }
+        .ticket-watermark { position: absolute; top: -20px; right: -20px; font-size: 8rem; opacity: 0.1; transform: rotate(15deg); user-select: none; }
+    </style>
+</head>
+<body>
+
+<header style="background-color: var(--it-primary); color: white; padding: 4rem 1rem; text-align: center; border-bottom: 8px solid var(--it-dark);">
+    <div style="font-size: 5rem; margin-bottom: 15px;">🧹</div>
+    <h1 style="margin: 0; font-size: 3.5rem;">Mission 3: Der Boss-Fight</h1>
+    <p style="margin-top: 10px; font-size: 1.4rem; color: #dcfce7;">Das digitale Kinderzimmer aufräumen</p>
+</header>
+
+<main class="container">
+
+    <div class="story-box">
+        <h2 style="margin-top: 0; color: var(--it-dark);">Der Endgegner: Ein chaotischer Desktop</h2>
+        <p>Du hast nun gelernt, was Hardware und Software sind, wie man die Tastatur benutzt und warum Dateiendungen und gute Namen so wichtig sind. Jetzt kommt die Meisterprüfung!</p>
+        <p>Vor dir siehst du den Computer-Desktop eines völlig unorganisierten Schülers. Dateien fliegen wild durcheinander. Wenn er morgen sein Mathe-Referat sucht, wird er weinen. <strong>Deine Aufgabe:</strong> Nimm die Dateien mit der Maus (Klicken und Halten) und ziehe sie in die richtigen, logischen Ordner. Wenn eine Datei kompletten Unsinn als Namen hat, wirf sie direkt in den Papierkorb!</p>
+    </div>
+
+    <div class="game-area">
+        <h2 class="game-title">Sortiere die Dateien</h2>
+        <p class="game-subtitle">Tipp: Achte auf die Dateiendungen (.docx, .jpg, .exe) und den Namen!</p>
+
+        <div class="desktop-pool" id="pool" ondragover="allowDrop(event)" ondrop="drop(event, 'pool')">
+            <div class="file-item" id="file1" draggable="true" ondragstart="drag(event)" data-target="schule">📄 Mathe_Hausuebung.docx</div>
+            <div class="file-item" id="file2" draggable="true" ondragstart="drag(event)" data-target="bilder">🖼️ Urlaub_Italien_2025.jpg</div>
+            <div class="file-item" id="file3" draggable="true" ondragstart="drag(event)" data-target="mull">🗑️ asdfghjkl.txt</div>
+            <div class="file-item" id="file4" draggable="true" ondragstart="drag(event)" data-target="spiele">🎮 Minecraft_Setup.exe</div>
+            <div class="file-item" id="file5" draggable="true" ondragstart="drag(event)" data-target="schule">📊 Referat_Biologie_Hunde.pptx</div>
+            <div class="file-item" id="file6" draggable="true" ondragstart="drag(event)" data-target="bilder">🖼️ KlassenFoto.png</div>
+            <div class="file-item" id="file7" draggable="true" ondragstart="drag(event)" data-target="mull">🗑️ dokument(1)kopie(kopie).docx</div>
+            <div class="file-item" id="file8" draggable="true" ondragstart="drag(event)" data-target="spiele">🎮 Roblox_Launcher.exe</div>
+        </div>
+
+        <div class="folder-grid">
+            <div class="folder-zone" id="zone-schule" ondragover="allowDrop(event)" ondrop="drop(event, 'schule')" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)">
+                <div class="folder-header">📁 Ordner: Schule</div>
+            </div>
+            
+            <div class="folder-zone" id="zone-bilder" ondragover="allowDrop(event)" ondrop="drop(event, 'bilder')" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)">
+                <div class="folder-header">📁 Ordner: Bilder</div>
+            </div>
+
+            <div class="folder-zone" id="zone-spiele" ondragover="allowDrop(event)" ondrop="drop(event, 'spiele')" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)">
+                <div class="folder-header">📁 Ordner: Spiele</div>
+            </div>
+
+            <div class="folder-zone" id="zone-mull" style="border-color: #ef4444;" ondragover="allowDrop(event)" ondrop="drop(event, 'mull')" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)">
+                <div class="folder-header" style="color: #fca5a5; border-bottom-color: #ef4444;">🗑️ Papierkorb</div>
+            </div>
+        </div>
+
+        <button class="btn-check-game" onclick="checkSorting()">Sortierung überprüfen!</button>
+        <div id="game-feedback" class="game-feedback"></div>
+    </div>
+
+    <div class="quiz-section" id="quiz-section">
+        <h2 style="margin-top: 0; color: var(--it-dark); text-align: center;">Der finale Security-Check</h2>
+        <p style="color: #475569; margin-bottom: 2rem; text-align: center;">Hervorragend sortiert! Löse nun diese letzten 3 Fragen, um die Mission 3 endgültig abzuschließen.</p>
+
+        <div class="quiz-question" id="q1-box">
+            <p><strong>1. Warum ist es wichtig, Ordner anzulegen, anstatt alles auf dem Desktop zu speichern?</strong></p>
+            <select id="q1-ans" class="quiz-select">
+                <option value="0">-- Bitte wählen --</option>
+                <option value="wrong1">Weil der Computer sonst zu viel Strom verbraucht.</option>
+                <option value="correct">Um Übersicht zu behalten und Dateien (wie im Aktenschrank) schnell wiederzufinden.</option>
+                <option value="wrong2">Weil Dateien auf dem Desktop nach 3 Tagen automatisch gelöscht werden.</option>
+            </select>
+        </div>
+
+        <div class="quiz-question" id="q2-box">
+            <p><strong>2. In welchen Ordner gehört eine Datei mit der Endung ".exe" normalerweise?</strong></p>
+            <select id="q2-ans" class="quiz-select">
+                <option value="0">-- Bitte wählen --</option>
+                <option value="correct">Das ist ein ausführbares Programm (z.B. ein Spiel), also in "Spiele" oder "Programme".</option>
+                <option value="wrong1">Das ist ein Bild, also in "Fotos".</option>
+                <option value="wrong2">Das ist ein Text, also in "Schule".</option>
+            </select>
+        </div>
+
+        <div class="quiz-question" id="q3-box">
+            <p><strong>3. Was solltest du tun, wenn eine Datei "dokument(1)kopie(kopie).docx" heißt?</strong></p>
+            <select id="q3-ans" class="quiz-select">
+                <option value="0">-- Bitte wählen --</option>
+                <option value="wrong1">Sie sofort ausdrucken.</option>
+                <option value="wrong2">Die Dateiendung in .jpg ändern.</option>
+                <option value="correct">Sie entweder sofort sinnvoll umbenennen oder löschen, wenn es nur Müll ist.</option>
+            </select>
+        </div>
+
+        <button class="btn-check-quiz" onclick="evaluateQuiz()">Gesamtes Quiz auswerten</button>
+        <div id="global-quiz-feedback" class="feedback"></div>
+
+        <div id="ticket-generator-section" style="margin-top: 3rem; background: #f0fdf4; border: 2px solid var(--it-primary); padding: 2rem; border-radius: 8px; text-align: center; display: none;">
+            <h3 style="color: var(--it-dark); margin-top: 0;">🎉 Zertifikat freigeschaltet!</h3>
+            <p>Mission erfüllt! Trage deinen Namen ein und generiere dein Abschluss-Zertifikat für Einheit 3.</p>
+            
+            <input type="text" id="student-name" style="width: 100%; max-width: 400px; padding: 15px; font-size: 1.2rem; border: 2px solid #cbd5e1; border-radius: 6px; margin-bottom: 15px; outline: none;" placeholder="Dein Vor- und Nachname">
+            <br>
+            <button class="btn-check-quiz" style="width: auto; padding: 15px 40px;" onclick="generateTicket()">Zertifikat erstellen</button>
+            <p id="ticket-error" style="color: #ef4444; font-weight: bold; display: none; margin-top: 15px;">Bitte gib deinen Namen ein!</p>
+        </div>
+
+        <div id="certificate" class="ticket-container">
+            <div class="ticket-watermark">BOSS</div>
+            <h2 style="margin: 0; color: #a7f3d0;">MASTER OF DESKTOP</h2>
+            <div style="font-size: 2.5rem; font-weight: bold; margin: 1rem 0;">100% ORDNUNG</div>
+            <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 8px; font-family: monospace; font-size: 1.3rem; text-align: left; display: inline-block;">
+                <span style="color: #6ee7b7;">Name:</span> <span id="cert-name"></span><br>
+                <span style="color: #6ee7b7;">Klasse:</span> 1. Klasse AHS<br>
+                <span style="color: #6ee7b7;">Datum:</span> <span id="cert-date"></span><br>
+                <span style="color: #6ee7b7;">Hash:</span> <span id="cert-hash" style="color: #cbd5e1; font-size: 0.9rem;"></span>
+            </div>
+            <p style="margin-top: 30px; font-size: 1.2rem; font-weight: bold; color: #f1f5f9;">Bitte zeige diesen Bildschirm jetzt deiner Lehrkraft.</p>
+        </div>
+    </div>
+
+</main>
+
+<footer style="margin-top: 5rem; padding: 3rem 1rem; background-color: #f8fafc; border-top: 1px solid #e2e8f0; color: #64748b; font-size: 1rem; text-align: center;">
+    <div style="max-width: 800px; margin: 0 auto 2rem auto; text-align: left; background: white; padding: 1.5rem; border: 1px solid #cbd5e1; border-radius: 8px;">
+        <h4 style="margin-top: 0; color: #334155;">Datenschutzhinweis (DSGVO)</h4>
+        <p style="margin-bottom: 0;">Alles passiert direkt in deinem Browser. Es werden keine Eingaben, Namen oder Ergebnisse an einen Server gesendet.</p>
+    </div>
+    <strong>&copy; 2026 | GvP | Digitale Grundbildung 1. Klasse</strong>
+</footer>
+
+<script>
+    // --- DRAG AND DROP LOGIK ---
+    function allowDrop(ev) {
+        ev.preventDefault(); // Nötig, um das Ablegen zu erlauben
+    }
+
+    function drag(ev) {
+        ev.dataTransfer.setData("text", ev.target.id);
+    }
+
+    function dragEnter(ev) {
+        if (ev.currentTarget.classList.contains('folder-zone')) {
+            ev.currentTarget.classList.add('drag-over');
+        }
+    }
+
+    function dragLeave(ev) {
+        if (ev.currentTarget.classList.contains('folder-zone')) {
+            ev.currentTarget.classList.remove('drag-over');
+        }
+    }
+
+    function drop(ev, targetZoneId) {
+        ev.preventDefault();
+        let data = ev.dataTransfer.getData("text");
+        let element = document.getElementById(data);
+        
+        // Finde die richtige Ziel-Zone (entweder Pool oder einer der Ordner)
+        let dropTarget = ev.target;
+        
+        // Sicherstellen, dass wir das Element in die Zone einfügen, nicht in ein Kind-Element (wie den Header)
+        if (!dropTarget.classList.contains('folder-zone') && !dropTarget.classList.contains('desktop-pool')) {
+            dropTarget = dropTarget.closest('.folder-zone') || document.getElementById('pool');
+        }
+
+        if (dropTarget) {
+            dropTarget.classList.remove('drag-over');
+            dropTarget.appendChild(element);
+        }
+    }
+
+    function checkSorting() {
+        let feedback = document.getElementById('game-feedback');
+        let allCorrect = true;
+        let poolItems = document.getElementById('pool').children.length;
+
+        if (poolItems > 0) {
+            feedback.innerHTML = `❌ Der Desktop (Pool) ist noch nicht leer! Du musst alle Dateien aufräumen.`;
+            feedback.style.color = "#991b1b";
+            feedback.style.backgroundColor = "#fee2e2";
+            feedback.style.display = "block";
+            return;
+        }
+
+        // Überprüfe jede Drop-Zone
+        const zones = ['schule', 'bilder', 'spiele', 'mull'];
+        
+        zones.forEach(zoneId => {
+            let zoneElement = document.getElementById('zone-' + zoneId);
+            let items = zoneElement.querySelectorAll('.file-item');
+            
+            items.forEach(item => {
+                if (item.getAttribute('data-target') !== zoneId) {
+                    allCorrect = false;
+                    item.style.borderColor = "#ef4444";
+                    item.style.backgroundColor = "#fef2f2";
+                } else {
+                    item.style.borderColor = "#10b981";
+                    item.style.backgroundColor = "white";
+                }
+            });
+        });
+
+        if (allCorrect) {
+            feedback.innerHTML = "✅ Wahnsinn! Du hast alle Dateien perfekt sortiert. Der Boss ist besiegt!";
+            feedback.style.color = "#065f46";
+            feedback.style.backgroundColor = "#d1fae5";
+            feedback.style.display = "block";
+            
+            // Quiz-Sektion einblenden
+            document.getElementById('quiz-section').style.display = "block";
+            // Sanft zum Quiz scrollen
+            document.getElementById('quiz-section').scrolltoView({ behavior: 'smooth' });
+            
+        } else {
+            feedback.innerHTML = "❌ Da ist noch etwas durcheinandergeraten! Die rot markierten Dateien liegen im falschen Ordner.";
+            feedback.style.color = "#991b1b";
+            feedback.style.backgroundColor = "#fee2e2";
+            feedback.style.display = "block";
+        }
+    }
+
+
+    // --- QUIZ LOGIK ---
+    let allQuestionsCorrect = false;
+
+    function evaluateQuiz() {
+        let globalFeedback = document.getElementById('global-quiz-feedback');
+        let ticketSection = document.getElementById('ticket-generator-section');
+        let unansweredCount = 0;
+        let errorCount = 0;
+
+        for (let i = 1; i <= 3; i++) {
+            let selectElement = document.getElementById('q' + i + '-ans');
+            if (selectElement.value === '0') {
+                unansweredCount++;
+            } else if (selectElement.value !== 'correct') {
+                errorCount++;
+            }
+        }
+
+        if (unansweredCount > 0) {
+            globalFeedback.innerHTML = `⚠️ Du hast noch ${unansweredCount} Frage(n) nicht beantwortet!`;
+            globalFeedback.className = "feedback fb-warning";
+            globalFeedback.style.display = "block";
+            ticketSection.style.display = "none";
+            allQuestionsCorrect = false;
+            return;
+        }
+
+        if (errorCount === 0) {
+            globalFeedback.innerHTML = "✅ Super! Alles richtig.";
+            globalFeedback.className = "feedback fb-correct";
+            globalFeedback.style.display = "block";
+            ticketSection.style.display = "block"; 
+            allQuestionsCorrect = true;
+        } else {
+            globalFeedback.innerHTML = `❌ Das stimmt noch nicht ganz. Du hast ${errorCount} Frage(n) falsch beantwortet. (Tipp: Die Fehler sind unsichtbar!)`;
+            globalFeedback.className = "feedback fb-wrong";
+            globalFeedback.style.display = "block";
+            ticketSection.style.display = "none";
+            allQuestionsCorrect = false;
+        }
+    }
+
+    // --- TICKET GENERATOR ---
+    function generateTicket() {
+        let name = document.getElementById('student-name').value.trim();
+        let errorMsg = document.getElementById('ticket-error');
+        
+        if (!allQuestionsCorrect || name === "") {
+            errorMsg.style.display = "block";
+            return;
+        }
+
+        errorMsg.style.display = "none";
+        document.getElementById('cert-name').innerText = name;
+        
+        let now = new Date();
+        let timeString = now.toLocaleDateString('de-AT') + " | " + now.toLocaleTimeString('de-AT');
+        document.getElementById('cert-date').innerText = timeString;
+
+        let hash = "BOSS-" + (name.length * 15) + "-" + now.getHours() + now.getMinutes() + "-V3";
+        document.getElementById('cert-hash').innerText = hash;
+
+        document.getElementById('certificate').style.display = "block";
+        document.getElementById('certificate').scrolltoView({ behavior: 'smooth' });
+    }
+</script>
+
+</body>
+</html>

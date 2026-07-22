@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autohaus Steckbauer - Fahrzeuge</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = { theme: { extend: { fontFamily: { sans: ['Inter', 'sans-serif'] }, colors: { brand: { 50: '#f0f9ff', 100: '#e0f2fe', 500: '#0ea5e9', 600: '#0284c7', 900: '#0c4a6e' } } } } }
+    </script>
+</head>
+<body class="font-sans text-slate-800 bg-slate-50 flex flex-col min-h-screen">
+
+    <nav class="bg-white shadow-md fixed w-full z-50">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+               
+                <a href="index.html" class="flex items-center">
+                    <img src="logo-steckbauer-farbig.jpg" alt="Autohaus Steckbauer Logo" class="h-10 md:h-12 w-auto object-contain">
+                </a>
+                
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="index.html" class="text-slate-600 hover:text-brand-600 font-medium transition">Startseite</a>
+                    <a href="fahrzeuge.html" class="text-brand-600 font-bold transition">Fahrzeuge</a>
+                    <a href="service.html" class="text-slate-600 hover:text-brand-600 font-medium transition">Service</a>
+                    <a href="team.html" class="text-slate-600 hover:text-brand-600 font-medium transition">Team</a>
+                    <a href="kontakt.html" class="px-5 py-2.5 bg-brand-600 text-white rounded-lg hover:bg-brand-700 transition shadow-md">Kontakt</a>
+                </div>
+                <button id="mobile-menu-btn" class="md:hidden text-slate-700 focus:outline-none"><i class="fa-solid fa-bars text-2xl"></i></button>
+            </div>
+            <div id="mobile-menu" class="hidden md:hidden mt-4 pb-4 border-t border-slate-100">
+                <a href="index.html" class="block py-2 text-slate-600">Startseite</a>
+                <a href="fahrzeuge.html" class="block py-2 text-brand-600 font-bold">Fahrzeuge</a>
+                <a href="service.html" class="block py-2 text-slate-600">Service</a>
+                <a href="team.html" class="block py-2 text-slate-600">Team</a>
+                <a href="kontakt.html" class="block py-2 text-slate-600">Kontakt</a>
+            </div>
+        </div>
+    </nav>
+    <div class="h-20"></div>
+
+    <main class="flex-grow">
+        <div class="bg-brand-900 text-white py-12 mb-8">
+            <div class="container mx-auto px-6 text-center">
+                <h1 class="text-4xl font-bold">Unser Fahrzeugbestand</h1>
+                <p class="text-brand-100 mt-2">Finden Sie Ihr Traumauto</p>
+            </div>
+        </div>
+
+        <div class="container mx-auto px-6 pb-20">
+            <div class="bg-white rounded-2xl shadow-lg border border-slate-100 p-8 md:p-12 text-center max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-brand-900 mb-6 uppercase tracking-wide">Finden Sie hier Ihr Wunschfahrzeug!</h2>
+                <p class="text-lg text-slate-600 mb-4 leading-relaxed">
+                    Unsere Palette umfasst ein sorgfältiges Angebot ausgewählter Neu- und Gebrauchtwagen.<br>Wir können mit gutem Gewissen verkaufen.
+                </p>
+                <div class="my-10 p-8 bg-slate-50 rounded-xl border border-slate-200">
+                    <p class="text-xl font-semibold text-slate-800 mb-6">Unsere Gebrauchtwagen finden Sie auf:</p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <a href="https://www.gebrauchtwagen.at/handlerwagen?cid=23379408" target="_blank" class="flex items-center justify-center px-8 py-4 bg-brand-600 text-white text-lg font-bold rounded-lg hover:bg-brand-700 transition shadow-md hover:-translate-y-1 transform">
+                            <i class="fa-solid fa-arrow-up-right-from-square mr-3"></i> gebrauchtwagen.at
+                        </a>
+                        <a href="https://www.car4you.at" target="_blank" class="flex items-center justify-center px-8 py-4 bg-white text-brand-900 border-2 border-brand-900 text-lg font-bold rounded-lg hover:bg-brand-50 transition hover:-translate-y-1 transform">
+                            <i class="fa-solid fa-arrow-up-right-from-square mr-3"></i> car4you.at
+                        </a>
+                    </div>
+                </div>
+                <div class="space-y-6">
+                    <div class="bg-brand-50 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-brand-900 mb-3">Beratung & Probefahrt</h3>
+                        <p class="text-slate-600 mb-4">Wollen Sie sich von uns beraten lassen oder gleich eine Probefahrt vereinbaren?</p>
+                        <a href="tel:+4372777141" class="inline-flex items-center text-2xl font-bold text-brand-600 hover:text-brand-800 transition"><i class="fa-solid fa-phone mr-3"></i> +43 (0) 7277 / 7141</a>
+                    </div>
+                    <p class="text-slate-500 italic border-t border-slate-100 pt-6 mt-6">
+                        "Wir merken Sie auch gerne vor, falls Ihr Wunschfahrzeug im Moment nicht verfügbar ist, und melden uns bei Ihnen sobald dies der Fall ist!"
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-brand-900 text-white py-8 mt-auto">
+        <div class="container mx-auto px-6 text-center text-slate-400 text-sm">
+            <p>&copy; 2025 Autohaus Steckbauer GmbH. Passauer Straße 11, 4731 Prambachkirchen.</p>
+            <div class="mt-4 space-x-4">
+                <a href="impressum.html" class="hover:text-white transition">Impressum & Rechtliches</a> | <a href="impressum.html" class="hover:text-white transition">Datenschutz</a>
+            </div>
+        </div>
+    </footer>
+    <script>document.getElementById('mobile-menu-btn').addEventListener('click', () => { document.getElementById('mobile-menu').classList.toggle('hidden'); });</script>
+</body>
+</html>

@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phishing-Simulator | Digitale Grundbildung</title>
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+        .simulator-container {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            padding: 2rem;
+            border-radius: 10px;
+            color: white;
+            max-width: 900px;
+            margin: 2rem auto;
+        }
+        .email-box {
+            background: white;
+            color: #333;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            font-family: system-ui;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        .email-header {
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+        }
+        .email-field {
+            margin: 0.5rem 0;
+            font-size: 0.95rem;
+        }
+        .email-label {
+            font-weight: bold;
+            color: #666;
+            display: inline-block;
+            width: 80px;
+        }
+        .email-content {
+            background: #f9fafb;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1rem 0;
+            line-height: 1.6;
+        }
+        .suspicious-link {
+            background: #fee2e2;
+            padding: 2px 6px;
+            border-radius: 3px;
+            word-break: break-all;
+        }
+        .analysis-btns {
+            display: flex;
+            gap: 10px;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        .btn-check {
+            flex: 1;
+            min-width: 150px;
+            padding: 12px 20px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+        .btn-legit {
+            background: #10b981;
+            color: white;
+        }
+        .btn-legit:hover {
+            background: #059669;
+        }
+        .btn-phishing {
+            background: #ef4444;
+            color: white;
+        }
+        .btn-phishing:hover {
+            background: #dc2626;
+        }
+        .result-box {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+            display: none;
+        }
+        .result-box.show {
+            display: block;
+        }
+        .result-correct {
+            background: rgba(16, 185, 129, 0.3) !important;
+            border: 2px solid #10b981;
+        }
+        .result-wrong {
+            background: rgba(239, 68, 68, 0.3) !important;
+            border: 2px solid #ef4444;
+        }
+        .score-display {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 1rem;
+            text-align: center;
+            border-radius: 5px;
+            margin-top: 1rem;
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>🎣 Phishing-Simulator</h1>
+    <p>2. Klasse | Digitale Grundbildung</p>
+    <div class="back-nav">
+        <a href="index.html" class="btn-back">⬅ Zurück</a>
+    </div>
+</header>
+
+<main style="max-width: 1000px; margin: 0 auto; padding: 2rem 1rem;">
+
+    <section style="background: #fee2e2; border-left: 4px solid #ef4444; padding: 1.5rem; border-radius: 5px; margin-bottom: 2rem;">
+        <h2>🎯 Phishing-E-Mails erkennen!</h2>
+        <p>Hier siehst du verschiedene E-Mails. Entscheide: Ist das eine echte E-Mail oder Phishing?</p>
+        <p><strong>Tipp:</strong> Achte auf verdächtige Links, falsche Absender, Rechtschreibfehler!</p>
+    </section>
+
+    <div class="simulator-container">
+        <h2 style="text-align: center; margin-top: 0;">📧 E-Mail Analyse</h2>
+        
+        <div id="emailContainer"></div>
+
+        <div id="resultBox" class="result-box">
+            <p id="resultText"></p>
+            <button onclick="nextEmail()" style="width: 100%; padding: 12px; background: white; color: #dc2626; font-weight: bold; border: none; border-radius: 5px; cursor: pointer; font-size: 1rem;">Nächste E-Mail →</button>
+        </div>
+
+        <div class="score-display">
+            ✓ Richtig: <span id="score">0</span> | ✗ Falsch: <span id="wrong">0</span>
+        </div>
+    </div>
+
+    <section style="background: white; padding: 2rem; border-radius: 8px; margin-top: 2rem;">
+        <h2>🚨 8 Zeichen für Phishing</h2>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div style="background: #fee2e2; padding: 1rem; border-radius: 5px;">
+                <h3 style="margin-top: 0; color: #991b1b;">❌ Falsche Links</h3>
+                <p>URL sieht merkwürdig aus oder versteckt die echte URL</p>
+            </div>
+            <div style="background: #fee2e2; padding: 1rem; border-radius: 5px;">
+                <h3 style="margin-top: 0; color: #991b1b;">❌ Falsche Absender</h3>
+                <p>E-Mail-Adresse ist nicht die offizielle Bank/Firma</p>
+            </div>
+            <div style="background: #fee2e2; padding: 1rem; border-radius: 5px;">
+                <h3 style="margin-top: 0; color: #991b1b;">❌ Dringlichkeit</h3>
+                <p>"Sofort handeln!" oder "Account wird gelöscht!"</p>
+            </div>
+            <div style="background: #fee2e2; padding: 1rem; border-radius: 5px;">
+                <h3 style="margin-top: 0; color: #991b1b;">❌ Passwort abfragen</h3>
+                <p>Echte Banken fragen NIEMALS Passwörter per Mail!</p>
+            </div>
+            <div style="background: #fee2e2; padding: 1rem; border-radius: 5px;">
+                <h3 style="margin-top: 0; color: #991b1b;">❌ Rechtschreibfehler</h3>
+                <p>Viele Tippfehler oder merkwürdige Grammatik</p>
+            </div>
+            <div style="background: #fee2e2; padding: 1rem; border-radius: 5px;">
+                <h3 style="margin-top: 0; color: #991b1b;">❌ Seltsame Anfragen</h3>
+                <p>"Bestätige deine Daten" oder "Verifiziere dein Konto"</p>
+            </div>
+            <div style="background: #fee2e2; padding: 1rem; border-radius: 5px;">
+                <h3 style="margin-top: 0; color: #991b1b;">❌ Verdächtige Anhänge</h3>
+                <p>.exe, .zip oder andere unerwartete Dateien</p>
+            </div>
+            <div style="background: #fee2e2; padding: 1rem; border-radius: 5px;">
+                <h3 style="margin-top: 0; color: #991b1b;">❌ Generische Ansprache</h3>
+                <p>"Lieber Kunde" statt deinem echten Namen</p>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<footer style="margin-top: 5rem; padding: 2rem 1rem; background-color: #f8fafc; border-top: 1px solid #e2e8f0; color: #64748b; font-size: 0.9rem; text-align: center;">
+    &copy; 2026 | GvP | Mag. Schweitzer | Digitale Grundbildung
+</footer>
+
+<script>
+    const emails = [
+        {
+            from: "sicherheit@bank-austria.at",
+            to: "dein.email@example.com",
+            subject: "Wichtig: Kontobestätigung erforderlich",
+            content: "Lieber Kunde,\n\nwir müssen dein Konto bestätigen. Klicke auf diesen Link:\nhttps://www.bank-austria.at/confirm-account\n\nMit freundlichen Grüßen,\nBank Austria",
+            isPhishing: false,
+            explanation: "✅ LEGIT: Echte E-Mail-Adresse, normaler Link, höfliche Ansprache, keine Dringlichkeit"
+        },
+        {
+            from: "noreply-verify@paypaalsecurity.com",
+            to: "dein.email@example.com",
+            subject: "URGENT: Verify Your Account Now!!!",
+            content: "Hello User,\n\nYour account will be CLOSED in 24 HOURS!\n\nClick here to verify: http://paypa1-security.net/verify\n\nPayPal Security Team",
+            isPhishing: true,
+            explanation: "🚨 PHISHING: Falsche Absender-Domain, dringende Warnung, verdächtiger Link (paypa1 statt paypal), Großbuchstaben!"
+        },
+        {
+            from: "amazon@amazon.com",
+            to: "dein.email@example.com",
+            subject: "Deine Bestellung #12345",
+            content: "Hallo Anna,\n\ndeine Bestellung ist unterwegs! Tracking: amazon.com/track\n\nVielen Dank für deinen Einkauf!\nAmazon",
+            isPhishing: false,
+            explanation: "✅ LEGIT: Personalisiert (mit Name), normaler Ton, echte Links, kein Passwort abgefragt"
+        },
+        {
+            from: "support.office@micr0soft-help.ru",
+            to: "dein.email@example.com",
+            subject: "Your Microsoft Account Needs Your Attention",
+            content: "Dear User,\n\nWe detected unusual activity. Confirm your password now:\n[enter-password-here]\n\nMicrosoft Support",
+            isPhishing: true,
+            explanation: "🚨 PHISHING: Falsche Domain (.ru statt .com), Aufforderung Passwort einzugeben, generische Ansprache, falsche englische Formulierungen"
+        },
+        {
+            from: "newsletter@shop.example.com",
+            to: "dein.email@example.com",
+            subject: "Dein Gutschein: 20% Rabatt!",
+            content: "Hallo,\n\ndu hast 20% Rabatt auf deinen nächsten Einkauf!\nGültig bis 31.7.2026\n\nZum Shop: shop.example.com/gutschein123\n\nLiebe Grüße,\nDein Shop",
+            isPhishing: false,
+            explanation: "✅ LEGIT: Legitime Shop-E-Mail, klarer Link, normales Angebot, kein Passwort nötig"
+        }
+    ];
+
+    let currentEmail = 0;
+    let score = 0;
+    let wrong = 0;
+    let answered = false;
+
+    function loadEmail() {
+        const email = emails[currentEmail];
+        const html = `
+            <div class="email-box">
+                <div class="email-header">
+                    <div class="email-field"><span class="email-label">Von:</span> ${email.from}</div>
+                    <div class="email-field"><span class="email-label">An:</span> ${email.to}</div>
+                    <div class="email-field"><span class="email-label">Betreff:</span> ${email.subject}</div>
+                </div>
+                <div class="email-content">${email.content.replace(/\n/g, '<br>')}</div>
+                <div class="analysis-btns">
+                    <button class="btn-check btn-legit" onclick="checkAnswer(false)">✅ Legit E-Mail</button>
+                    <button class="btn-check btn-phishing" onclick="checkAnswer(true)">🚨 Phishing!</button>
+                </div>
+            </div>
+        `;
+        document.getElementById('emailContainer').innerHTML = html;
+        document.getElementById('resultBox').classList.remove('show', 'result-correct', 'result-wrong');
+        answered = false;
+    }
+
+    function checkAnswer(isPhishing) {
+        if (answered) return;
+        answered = true;
+
+        const email = emails[currentEmail];
+        const correct = isPhishing === email.isPhishing;
+
+        if (correct) {
+            score++;
+            document.getElementById('resultBox').classList.add('result-correct');
+        } else {
+            wrong++;
+            document.getElementById('resultBox').classList.add('result-wrong');
+        }
+
+        document.getElementById('resultText').innerHTML = `
+            <strong>${correct ? '✅ Korrekt!' : '❌ Falsch!'}</strong><br>
+            ${email.explanation}
+        `;
+        document.getElementById('resultBox').classList.add('show');
+        document.getElementById('score').textContent = score;
+        document.getElementById('wrong').textContent = wrong;
+    }
+
+    function nextEmail() {
+        currentEmail++;
+        if (currentEmail < emails.length) {
+            loadEmail();
+        } else {
+            let message = score === emails.length ? '🌟 Perfekt!' : score >= emails.length - 1 ? '👍 Sehr gut!' : '✓ Gut gemacht!';
+            document.getElementById('emailContainer').innerHTML = `
+                <div style="text-align: center; padding: 2rem;">
+                    <h2>${message}</h2>
+                    <p style="font-size: 1.2rem;">${score} von ${emails.length} E-Mails richtig erkannt!</p>
+                    <button onclick="location.reload()" style="padding: 12px 30px; background: white; color: #dc2626; font-weight: bold; border: none; border-radius: 5px; cursor: pointer; font-size: 1rem;">Nochmal spielen</button>
+                </div>
+            `;
+        }
+    }
+
+    loadEmail();
+</script>
+
+</body>
+</html>

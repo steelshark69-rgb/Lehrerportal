@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excel | Zellbezüge verstehen (Relativ & Absolut)</title>
+    <style>
+        :root {
+            --excel-green: #107c41;
+            --excel-green-dark: #0b5c30;
+            --excel-header: #e1dfdd;
+            --excel-border: #d2d2d2;
+            --bg-color: #f3f4f6;
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+            --card-bg: #ffffff;
+            --alert-color: #e63946;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: var(--excel-green);
+            color: white;
+            padding: 3rem 1rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 1rem auto 0;
+        }
+
+        main {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        h2 {
+            color: var(--excel-green-dark);
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 0.5rem;
+            margin-top: 2.5rem;
+        }
+
+        /* Grid für Erklärungen */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border-left: 4px solid var(--excel-green);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .card.card-alert {
+            border-left-color: var(--alert-color);
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+        }
+
+        .card h3 {
+            margin-top: 0;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .code-snippet {
+            display: inline-block;
+            background: #f1f5f9;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-weight: bold;
+            color: var(--excel-green-dark);
+            border: 1px solid #cbd5e1;
+        }
+
+        /* Mini Excel Mockup */
+        .excel-mockup {
+            background: white;
+            border: 1px solid var(--excel-border);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 2rem 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            font-family: 'Calibri', 'Segoe UI', sans-serif;
+            max-width: 600px;
+        }
+
+        .excel-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .excel-table th, .excel-table td {
+            border: 1px solid var(--excel-border);
+            padding: 0.5rem;
+            text-align: center;
+            min-width: 80px;
+        }
+
+        .excel-table th {
+            background-color: var(--excel-header);
+            color: var(--text-main);
+            font-weight: normal;
+            font-size: 0.9rem;
+            user-select: none;
+        }
+
+        .excel-table .row-number {
+            background-color: var(--excel-header);
+            width: 30px;
+            color: var(--text-main);
+        }
+        
+        .cell-fixed {
+            background-color: #fff3cd;
+            font-weight: bold;
+            border: 2px solid #ffc107 !important;
+        }
+
+        .cell-formula {
+            font-family: 'Consolas', monospace;
+            color: var(--excel-green-dark);
+        }
+
+        .shortcut-box {
+            background-color: #e0f2fe;
+            border: 1px solid #bae6fd;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .key {
+            display: inline-block;
+            background: linear-gradient(to bottom, #f8fafc, #e2e8f0);
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            padding: 0.5rem 1rem;
+            font-weight: bold;
+            font-family: sans-serif;
+            box-shadow: 0 4px 0 #94a3b8, 0 5px 5px rgba(0,0,0,0.1);
+            color: #333;
+            font-size: 1.2rem;
+        }
+
+        /* Zurück Button */
+        .back-btn-container {
+            text-align: center;
+            margin-top: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .back-btn {
+            display: inline-block;
+            background-color: var(--excel-green);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .back-btn:hover {
+            background-color: var(--excel-green-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 1rem;
+            border-top: 1px solid #e5e7eb;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Excel: Zellbezüge</h1>
+        <p>Warum das $-Zeichen in Excel dein bester Freund ist und wie man Formeln richtig kopiert.</p>
+    </header>
+
+    <main>
+        <section>
+            <h2>Warum Zellbezüge statt Zahlen?</h2>
+            <p>In Excel schreiben wir fast nie <code>=5+10</code>. Stattdessen schreiben wir <code>=A1+B1</code>. Das nennt man einen <strong>Zellbezug</strong>. Der große Vorteil: Wenn sich die Zahl in A1 später ändert, rechnet Excel das Ergebnis automatisch neu aus!</p>
+        </section>
+
+        <section>
+            <h2>Die zwei Arten von Bezügen</h2>
+            
+            <div class="grid-container">
+                <div class="card">
+                    <h3>➡️ Relativer Bezug</h3>
+                    <p>Beispiel: <span class="code-snippet">=A1</span></p>
+                    <p>Das ist das Standard-Verhalten von Excel. "Relativ" bedeutet, dass sich der Bezug <strong>anpasst</strong>, wenn du eine Formel kopierst oder nach unten ziehst.</p>
+                    <p><em>Ziehstu du =A1 eins nach unten, wird daraus automatisch =A2.</em></p>
+                </div>
+
+                <div class="card card-alert">
+                    <h3>⚓ Absoluter Bezug</h3>
+                    <p>Beispiel: <span class="code-snippet">=$A$1</span></p>
+                    <p>Das Dollarzeichen (<code>$</code>) wirkt wie ein <strong>Anker</strong>. Es friert die Spalte oder die Zeile ein. Egal wohin du die Formel kopierst, sie greift immer auf exakt diese eine Zelle zu.</p>
+                    <p><em>Ziehstu du =$A$1 nach unten, bleibt es =$A$1!</em></p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Das klassische Problem: Warum brauchen wir das?</h2>
+            <p>Stell dir vor, du hast eine Preisliste und willst für alle Artikel die Mehrwertsteuer (20%) berechnen. Der Steuersatz steht ganz oben in einer eigenen Zelle.</p>
+
+            <div class="excel-mockup">
+                <table class="excel-table">
+                    <tr>
+                        <th style="width: 30px;"></th>
+                        <th>A</th>
+                        <th>B</th>
+                        <th>C</th>
+                    </tr>
+                    <tr>
+                        <th class="row-number">1</th>
+                        <td><strong>MwSt-Satz:</strong></td>
+                        <td class="cell-fixed">20%</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th class="row-number">2</th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th class="row-number">3</th>
+                        <td><strong>Artikel</strong></td>
+                        <td><strong>Preis</strong></td>
+                        <td><strong>Steuer (Berechnung)</strong></td>
+                    </tr>
+                    <tr>
+                        <th class="row-number">4</th>
+                        <td>Apfel</td>
+                        <td>2,00 €</td>
+                        <td class="cell-formula">=B4 * $B$1</td>
+                    </tr>
+                    <tr>
+                        <th class="row-number">5</th>
+                        <td>Banane</td>
+                        <td>1,50 €</td>
+                        <td class="cell-formula">=B5 * $B$1</td>
+                    </tr>
+                    <tr>
+                        <th class="row-number">6</th>
+                        <td>Kiwi</td>
+                        <td>3,00 €</td>
+                        <td class="cell-formula">=B6 * $B$1</td>
+                    </tr>
+                </table>
+            </div>
+
+            <p><strong>Die Erklärung:</strong></p>
+            <ul>
+                <li>Der Preis in Spalte B soll sich beim Herunterziehen verändern (B4, B5, B6...). Das ist ein <strong>relativer Bezug</strong>.</li>
+                <li>Der Steuersatz steht <em>immer</em> in Zelle B1. Er darf beim Herunterziehen nicht zu B2 oder B3 werden (dort steht ja nichts!). Deshalb machen wir B1 mit den Dollarzeichen zu einem <strong>absoluten Bezug</strong> (<code>$B$1</code>).</li>
+            </ul>
+        </section>
+
+        <div class="shortcut-box">
+            <div>
+                <span class="key">F4</span>
+            </div>
+            <div>
+                <h3 style="margin-top: 0; color: #0284c7;">Der Profi-Tipp (Shortcut)</h3>
+                <p style="margin-bottom: 0;">Du musst die Dollarzeichen nicht mühsam per Hand eintippen! Klicke beim Schreiben der Formel einfach auf den Zellbezug (z.B. B1) und drücke die Taste <strong>F4</strong> auf deiner Tastatur. Excel setzt die Dollarzeichen (<code>$B$1</code>) dann ganz automatisch für dich!</p>
+            </div>
+        </div>
+
+        <div class="back-btn-container">
+            <a href="../index.html" class="back-btn">⬅ Zurück zur Übersicht</a>
+        </div>
+    </main>
+
+    <footer>
+        &copy; 2026 | GvP | Mag. Schweitzer | Mathematik & Informatik
+    </footer>
+
+</body>
+</html>

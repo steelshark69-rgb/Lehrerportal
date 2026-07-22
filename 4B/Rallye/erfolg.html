@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Erfolg | Operation Zeugnis-Rettung</title>
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+        /* Hacker-Theme für das Finale */
+        body {
+            background-color: #0f172a;
+            color: #f8fafc;
+            font-family: 'Courier New', Courier, monospace;
+            overflow-x: hidden; /* Verhindert Scrollbalken durch Konfetti */
+            margin: 0;
+            padding: 0;
+        }
+        
+        header {
+            background-color: #020617;
+            border-bottom: 1px solid #22c55e;
+            padding: 1rem 2rem;
+        }
+        header h1 {
+            color: #22c55e;
+            text-shadow: 0 0 5px rgba(34, 197, 94, 0.5);
+            margin: 0 0 5px 0;
+        }
+        header p {
+            color: #4ade80;
+            margin: 0;
+        }
+        
+        /* Versteckter Container für die Entschlüsselungs-Simulation */
+        #decrypting-screen {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 70vh;
+            color: #22c55e;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        /* Der finale Erfolgs-Bildschirm (zuerst unsichtbar) */
+        #success-screen {
+            display: none;
+            padding: 2rem;
+            max-width: 800px;
+            margin: 3rem auto;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .terminal-box {
+            background-color: #000000;
+            border: 2px solid #22c55e;
+            border-radius: 8px;
+            padding: 3rem 2rem;
+            box-shadow: 0 0 30px rgba(34, 197, 94, 0.4);
+            position: relative;
+        }
+
+        .success-title {
+            color: #4ade80;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px rgba(74, 222, 128, 0.8);
+        }
+
+        .success-text {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            color: #f8fafc;
+        }
+
+        .secret-box {
+            background-color: #064e3b;
+            border: 1px dashed #34d399;
+            padding: 1.5rem;
+            border-radius: 6px;
+            margin-top: 2rem;
+        }
+
+        .secret-code {
+            display: block;
+            font-size: 1.5rem;
+            color: #a78bfa;
+            font-weight: bold;
+            margin: 1rem 0;
+            padding: 10px;
+            background: #000;
+            border-radius: 4px;
+        }
+
+        .btn-home {
+            display: inline-block;
+            margin-top: 2rem;
+            background-color: #000000;
+            color: #22c55e;
+            border: 1px solid #22c55e;
+            padding: 10px 20px;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+        .btn-home:hover {
+            background-color: #22c55e;
+            color: #000000;
+        }
+
+        /* Konfetti CSS */
+        .confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+            display: none; /* Erst nach dem Hack sichtbar */
+        }
+        .confetti-piece {
+            position: absolute;
+            width: 10px;
+            height: 20px;
+            top: -20px;
+            opacity: 0;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% { top: -20px; transform: rotate(0deg) scale(1); opacity: 1; }
+            100% { top: 100vh; transform: rotate(720deg) scale(0.5); opacity: 0; }
+        }
+
+        /* Spinner Animation */
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #064e3b;
+            border-top: 5px solid #22c55e;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>> MASTER_OVERRIDE_INITIATED</h1>
+    <p>Netzwerk: AHS // Port: 4B // Status: ENCRYPTING...</p>
+</header>
+
+<div id="decrypting-screen">
+    <div class="spinner"></div>
+    <div id="loading-text">Entschlüssle Master-Dateien...</div>
+</div>
+
+<div id="success-screen">
+    <div class="terminal-box">
+        <h2 class="success-title">System Wiederhergestellt</h2>
+        
+        <div class="success-text">
+            <strong>Hervorragende Arbeit!</strong><br><br>
+            Der Phantom-Algorithmus wurde erfolgreich aus dem Schulnetzwerk entfernt. Die Zeugnis-Datenbank der Klasse 4B ist wieder zu 100 % entschlüsselt und sicher. Euer Klassenvorstand kann nun problemlos auf die Daten zugreifen.
+        </div>
+
+        <div class="secret-box">
+            <p style="margin-top: 0; font-weight: bold; color: #34d399;">/// MISSION ABGESCHLOSSEN ///</p>
+            <p>Gehe nun völlig unauffällig zum Pult von Prof. Schweitzer. Verrate deinen Mitschülern nichts! Flüstere ihm exakt folgenden Satz zu:</p>
+            <span class="secret-code">"Der Phantom-Algorithmus ist Geschichte."</span>
+            <p style="margin-bottom: 0; font-size: 0.9rem;">Er wird wissen, was zu tun ist, und dir deine wohlverdiente Belohnung übergeben.</p>
+        </div>
+
+        <a href="../index.html" class="btn-home">⬅ Zurück zum Mathe-Portal der 4B</a>
+    </div>
+</div>
+
+<div id="confetti" class="confetti-container"></div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // --- 1. Lade-Simulation ---
+        const decryptScreen = document.getElementById("decrypting-screen");
+        const successScreen = document.getElementById("success-screen");
+        const headerStatus = document.querySelector("header p");
+        const loadingText = document.getElementById("loading-text");
+        const confettiContainer = document.getElementById("confetti");
+
+        // Ein kleiner Text-Effekt beim Laden
+        setTimeout(() => { loadingText.innerText = "Deaktiviere Firewalls..."; }, 1000);
+        setTimeout(() => { loadingText.innerText = "Stelle Zeugnisse wieder her..."; }, 2000);
+
+        // Nach 3 Sekunden wird der Erfolg angezeigt
+        setTimeout(() => {
+            decryptScreen.style.display = "none";
+            successScreen.style.display = "block";
+            headerStatus.innerText = "Netzwerk: AHS // Port: 4B // Status: SECURE";
+            headerStatus.style.color = "#a78bfa";
+            
+            // Konfetti starten
+            confettiContainer.style.display = "block";
+            createConfetti();
+        }, 3000);
+
+
+        // --- 2. Lokaler Konfetti-Generator ---
+        function createConfetti() {
+            const colors = ['#22c55e', '#3b82f6', '#ef4444', '#eab308', '#a78bfa', '#f97316'];
+            const confettiCount = 150; // Anzahl der Konfetti-Schnipsel
+
+            for (let i = 0; i < confettiCount; i++) {
+                let piece = document.createElement('div');
+                piece.classList.add('confetti-piece');
+                
+                // Zufällige Farbe
+                piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                
+                // Zufällige Startposition (X-Achse)
+                piece.style.left = Math.random() * 100 + 'vw';
+                
+                // Zufällige Animationsdauer (wie schnell sie fallen)
+                let duration = Math.random() * 3 + 2; 
+                piece.style.animationDuration = duration + 's';
+                
+                // Zufälliger Start-Delay (damit nicht alle gleichzeitig losrieseln)
+                let delay = Math.random() * 5;
+                piece.style.animationDelay = delay + 's';
+
+                // Schnipsel zum Container hinzufügen
+                confettiContainer.appendChild(piece);
+            }
+        }
+    });
+</script>
+
+</body>
+</html>

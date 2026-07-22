@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digitale Grundbildung | Prof. Schweitzer</title>
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        /* Modulares Design für schnelles Erweitern */
+        .category-section { display: none; }
+        .category-section.active { display: block; }
+        
+        .class-nav { margin-bottom: 2rem; display: flex; gap: 10px; flex-wrap: wrap; }
+        .class-pill { 
+            padding: 10px 20px; background: #e2e8f0; border-radius: 50px; cursor: pointer; 
+            font-weight: bold; transition: 0.2s; 
+        }
+        .class-pill.active { background: var(--it-primary); color: white; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>🌐 Digitale Grundbildung</h1>
+    <p>Unterrichtsportal | 1.-4. Klasse AHS | Prof. Schweitzer</p>
+    <div class="back-nav">
+        <a href="../index.html" class="btn-back">⬅ Zurück zur Hauptseite</a>
+    </div>
+</header>
+
+<main>
+    <div class="class-nav">
+        <div class="class-pill active" onclick="showCategory('klasse1')">1. Klasse</div>
+        <div class="class-pill" onclick="showCategory('klasse2')">2. Klasse</div>
+        <div class="class-pill" onclick="showCategory('klasse3')">3. Klasse</div>
+        <div class="class-pill" onclick="showCategory('klasse4')">4. Klasse</div>
+    </div>
+
+    <!-- 1. Klasse -->
+    <section id="category-klasse1" class="category-section active">
+        <div class="subject-group">
+            <div class="subject-header">
+                <span class="subject-badge bg-info">1. Klasse</span>
+                <h2>💻 Grundlagen: Hardware, Software & Internet</h2>
+            </div>
+            <div class="resource-grid">
+                <a href="klasse1/hardware.html" class="resource-card">
+                    <h4>💻 Hardware</h4>
+                    <p>CPU, RAM, Speicher - die Komponenten deines Computers</p>
+                </a>
+                <a href="klasse1/software.html" class="resource-card">
+                    <h4>💿 Software</h4>
+                    <p>Betriebssystem, Apps und Programme</p>
+                </a>
+                <a href="klasse1/dateisystem.html" class="resource-card">
+                    <h4>📁 Dateisystem</h4>
+                    <p>Ordner, Dateien und Pfade organisieren</p>
+                </a>
+                <a href="klasse1/internet_basics.html" class="resource-card">
+                    <h4>🌐 Internet Basics</h4>
+                    <p>Wie funktioniert das Internet?</p>
+                </a>
+                <a href="klasse1/datenschutz_anfaenger.html" class="resource-card">
+                    <h4>🔒 Datenschutz für Anfänger</h4>
+                    <p>Deine Daten sind wertvoll!</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. Klasse -->
+    <section id="category-klasse2" class="category-section">
+        <div class="subject-group">
+            <div class="subject-header">
+                <span class="subject-badge bg-info">2. Klasse</span>
+                <h2>🔐 Internet & Sicherheit</h2>
+            </div>
+            <div class="resource-grid">
+                <a href="klasse2/internet_funktionsweise.html" class="resource-card">
+                    <h4>🌐 Wie funktioniert das Internet?</h4>
+                    <p>DNS, TCP, HTTP - die technischen Grundlagen</p>
+                </a>
+                <a href="klasse2/sichere_passwoerter.html" class="resource-card">
+                    <h4>🔐 Sichere Passwörter</h4>
+                    <p>2FA, Passwort-Manager, Stärke checken</p>
+                </a>
+                <a href="klasse2/phishing_betrug.html" class="resource-card">
+                    <h4>🎣 Phishing & Online-Betrug</h4>
+                    <p>Erkenne Betrugs-E-Mails und Scams</p>
+                </a>
+                <a href="klasse2/digitale_identitaet.html" class="resource-card">
+                    <h4>👤 Digitale Identität</h4>
+                    <p>Wer bist du im Internet?</p>
+                </a>
+                <a href="klasse2/bildrechte_urheberrecht.html" class="resource-card">
+                    <h4>📷 Bildrechte & Urheberrecht</h4>
+                    <p>Lizenztypen, Creative Commons, deine Rechte</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. Klasse -->
+    <section id="category-klasse3" class="category-section">
+        <div class="subject-group">
+            <div class="subject-header">
+                <span class="subject-badge bg-info">3. Klasse</span>
+                <h2>🛡️ Sicherheit & Medienkompetenz</h2>
+            </div>
+            <div class="resource-grid">
+                <a href="klasse3/dsgvo_datenschutz.html" class="resource-card">
+                    <h4>⚖️ DSGVO & Datenschutz</h4>
+                    <p>Das Gesetz schützt deine Daten</p>
+                </a>
+                <a href="klasse3/fake_news_medienkompetenz.html" class="resource-card">
+                    <h4>📰 Fake News & Medienkompetenz</h4>
+                    <p>SIFT-Methode, Quellen checken, Desinformation</p>
+                </a>
+                <a href="cybersicherheit.html" class="resource-card">
+                    <h4>🔒 Cybersicherheit (erweitert)</h4>
+                    <p>Hacker, Malware, Schutzmaßnahmen</p>
+                </a>
+                <a href="kryptografie.html" class="resource-card">
+                    <h4>🔐 Kryptografie & Verschlüsselung</h4>
+                    <p>Cäsar, Vigenère & moderne Methoden</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Klasse -->
+    <section id="category-klasse4" class="category-section">
+        <div class="subject-group">
+            <div class="subject-header">
+                <span class="subject-badge bg-info">4. Klasse</span>
+                <h2>🚀 Zukunft: KI & Programmierung</h2>
+            </div>
+            <div class="resource-grid">
+                <a href="klasse4/ki_machine_learning.html" class="resource-card">
+                    <h4>🤖 KI & Machine Learning</h4>
+                    <p>Neuronale Netzwerke, Bias, Anwendungen</p>
+                </a>
+                <a href="klasse4/programmierung_einfuehrung.html" class="resource-card">
+                    <h4>💻 Programmierung - Einführung</h4>
+                    <p>Variablen, Schleifen, Funktionen, erste Programme</p>
+                </a>
+                <a href="klasse4/netzwerktechnologien.html" class="resource-card">
+                    <h4>📡 Netzwerktechnologien</h4>
+                    <p>LAN, WAN, WiFi, 5G, Router & Sicherheit</p>
+                </a>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer style="margin-top: 5rem; padding: 2rem 1rem; background-color: #f8fafc; border-top: 1px solid #e2e8f0; color: #64748b; font-size: 0.9rem; text-align: center;">
+    &copy; 2026 | GvP | Mag. Schweitzer | Digitale Grundbildung
+</footer>
+
+<script>
+    function showCategory(category) {
+        // Verstecke alle Kategorien
+        document.querySelectorAll('.category-section').forEach(section => {
+            section.classList.remove('active');
+        });
+        
+        // Entferne active von allen Pills
+        document.querySelectorAll('.class-pill').forEach(pill => {
+            pill.classList.remove('active');
+        });
+        
+        // Zeige die neue Kategorie
+        document.getElementById('category-' + category).classList.add('active');
+        
+        // Markiere den richtigen Pill als aktiv
+        event.currentTarget.classList.add('active');
+    }
+    
+    // Aktiviere klasse1 beim Laden
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('category-klasse1').classList.add('active');
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Práctica de Español: Indefinido vs. Imperfecto (A2)</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #3498db;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --success-color: #27ae60;
+            --error-color: #c0392b;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.8;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            text-align: center;
+            border-bottom: 3px solid var(--accent-color);
+            padding-bottom: 10px;
+            margin-bottom: 40px;
+        }
+
+        /* Tarjeta para cada ejercicio */
+        .bloque-ejercicio {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 35px;
+            border-left: 6px solid var(--primary-color);
+        }
+
+        .bloque-ejercicio h2 {
+            color: var(--accent-color);
+            margin-top: 0;
+            font-size: 1.4rem;
+            margin-bottom: 5px;
+        }
+
+        p.instrucciones {
+            font-style: italic;
+            color: #666;
+            background: #eef7fc;
+            padding: 10px 15px;
+            border-left: 3px solid var(--accent-color);
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+
+        .texto-ejercicio {
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+        }
+
+        /* Contenedores inline para inputs y soluciones */
+        .wrapper-input {
+            display: inline-block;
+            position: relative;
+            margin: 2px 4px;
+            vertical-align: middle;
+        }
+
+        input[type="text"] {
+            font-family: inherit;
+            font-size: 1rem;
+            padding: 4px 8px;
+            width: 135px;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+        }
+
+        input.correct {
+            border-color: var(--success-color) !important;
+            background-color: #e8f8f0;
+            color: var(--success-color);
+            font-weight: bold;
+        }
+
+        input.incorrect {
+            border-color: var(--error-color) !important;
+            background-color: #fdeaea;
+            color: var(--error-color);
+        }
+
+        /* Estilo para mostrar la solución al lado */
+        .solucion-feedback {
+            display: none;
+            color: var(--error-color);
+            font-weight: bold;
+            font-size: 0.95rem;
+            margin-left: 5px;
+            background-color: #fdeaea;
+            padding: 2px 6px;
+            border-radius: 4px;
+            border: 1px dashed var(--error-color);
+        }
+
+        /* Botones por sección */
+        .acciones-bloque {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        button {
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        button.btn-comprobar {
+            background-color: var(--primary-color);
+        }
+
+        button.btn-comprobar:hover {
+            background-color: var(--accent-color);
+        }
+
+        button.btn-reiniciar {
+            background-color: #95a5a6;
+        }
+
+        button.btn-reiniciar:hover {
+            background-color: #7f8c8d;
+        }
+
+        .resultado-parcial {
+            font-weight: bold;
+            font-size: 1.05rem;
+            margin-left: 15px;
+        }
+
+        footer {
+            margin-top: 60px;
+            font-size: 0.85rem;
+            color: #888;
+            text-align: center;
+            border-top: 1px solid #e0e0e0;
+            padding-top: 15px;
+            padding-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Práctica de Pasados: Indefinido vs. Imperfecto</h1>
+
+    <!-- TEXTO 1 -->
+    <div class="bloque-ejercicio" id="bloque-1">
+        <h2>Texto 1: Un viaje accidentado</h2>
+        <p class="instrucciones">Completa los huecos con la forma correcta del Indefinido o del Imperfecto.</p>
+        
+        <div class="texto-ejercicio">
+            El año pasado, mi amigo Carlos y yo 
+            <span class="wrapper-input"><input type="text" data-answer="decidimos"><span class="solucion-feedback"></span></span> (decidir) ir de vacaciones a Galicia. 
+            El día que <span class="wrapper-input"><input type="text" data-answer="salimos"><span class="solucion-feedback"></span></span> (salir), 
+            <span class="wrapper-input"><input type="text" data-answer="hacía"><span class="solucion-feedback"></span></span> (hacer) mucho sol 
+            y la gente <span class="wrapper-input"><input type="text" data-answer="estaba"><span class="solucion-feedback"></span></span> (estar) muy alegre en la estación. <br><br>
+            
+            Mientras nosotros <span class="wrapper-input"><input type="text" data-answer="esperábamos"><span class="solucion-feedback"></span></span> (esperar) el tren, de repente 
+            <span class="wrapper-input"><input type="text" data-answer="empezó"><span class="solucion-feedback"></span></span> (empezar) a llover a cántaros. 
+            Cuando el tren <span class="wrapper-input"><input type="text" data-answer="llegó"><span class="solucion-feedback"></span></span> (llegar), nos 
+            <span class="wrapper-input"><input type="text" data-answer="dimos"><span class="solucion-feedback"></span></span> (dar) cuenta de que 
+            no <span class="wrapper-input"><input type="text" data-answer="teníamos"><span class="solucion-feedback"></span></span> (tener) nuestros billetes impresos. ¡Qué desastre! 
+            Por suerte, el revisor <span class="wrapper-input"><input type="text" data-answer="fue"><span class="solucion-feedback"></span></span> (ser) muy amable y nos 
+            <span class="wrapper-input"><input type="text" data-answer="permitió"><span class="solucion-feedback"></span></span> (permitir) subir enseñando el móvil.
+        </div>
+
+        <div class="acciones-bloque">
+            <button class="btn-comprobar" onclick="corregirBloque(1)">Comprobar Texto 1</button>
+            <button class="btn-reiniciar" onclick="reiniciarBloque(1)">Reiniciar</button>
+            <span class="resultado-parcial" id="res-1"></span>
+        </div>
+    </div>
+
+    <!-- TEXTO 2 -->
+    <div class="bloque-ejercicio" id="bloque-2">
+        <h2>Texto 2: La vida en el pueblo</h2>
+        <p class="instrucciones">Usa el Imperfecto para rutinas y descripciones, y el Indefinido para acciones puntuales.</p>
+        
+        <div class="texto-ejercicio">
+            Cuando yo <span class="wrapper-input"><input type="text" data-answer="era"><span class="solucion-feedback"></span></span> (ser) pequeño, todos los veranos 
+            <span class="wrapper-input"><input type="text" data-answer="iba"><span class="solucion-feedback"></span></span> (ir) al pueblo de mis abuelos. 
+            El pueblo <span class="wrapper-input"><input type="text" data-answer="era"><span class="solucion-feedback"></span></span> (ser) muy tranquilo y no 
+            <span class="wrapper-input"><input type="text" data-answer="había"><span class="solucion-feedback"></span></span> (haber) coches. 
+            Todos los días, mis amigos y yo <span class="wrapper-input"><input type="text" data-answer="jugábamos"><span class="solucion-feedback"></span></span> (jugar) en la calle hasta tarde. 
+            Mi abuela siempre nos <span class="wrapper-input"><input type="text" data-answer="preparaba"><span class="solucion-feedback"></span></span> (preparar) una merienda deliciosa. <br><br>
+            
+            Pero un día, todo <span class="wrapper-input"><input type="text" data-answer="cambió"><span class="solucion-feedback"></span></span> (cambiar). Mi abuelo 
+            <span class="wrapper-input"><input type="text" data-answer="compró"><span class="solucion-feedback"></span></span> (comprar) una televisión 
+            y a partir de ese momento, nosotros <span class="wrapper-input"><input type="text" data-answer="pasamos"><span class="solucion-feedback"></span></span> (pasar) más tiempo dentro de casa.
+        </div>
+
+        <div class="acciones-bloque">
+            <button class="btn-comprobar" onclick="corregirBloque(2)">Comprobar Texto 2</button>
+            <button class="btn-reiniciar" onclick="reiniciarBloque(2)">Reiniciar</button>
+            <span class="resultado-parcial" id="res-2"></span>
+        </div>
+    </div>
+
+    <!-- TEXTO 3 -->
+    <div class="bloque-ejercicio" id="bloque-3">
+        <h2>Texto 3: Una tarde en Madrid</h2>
+        <p class="instrucciones">Presta atención al contraste de pasados y a las expresiones de la vida cotidiana.</p>
+        
+        <div class="texto-ejercicio">
+            Ayer <span class="wrapper-input"><input type="text" data-answer="fue"><span class="solucion-feedback"></span></span> (ser) un día genial. El cielo 
+            <span class="wrapper-input"><input type="text" data-answer="estaba"><span class="solucion-feedback"></span></span> (estar) despejado 
+            y <span class="wrapper-input"><input type="text" data-answer="hacía"><span class="solucion-feedback"></span></span> (hacer) un tiempo buenísimo en Madrid. Yo 
+            <span class="wrapper-input"><input type="text" data-answer="quedé"><span class="solucion-feedback"></span></span> (quedar) con mi amiga Sofía para tomar un café en la Plaza Mayor. <br><br>
+            
+            Cuando <span class="wrapper-input"><input type="text" data-answer="llegué"><span class="solucion-feedback"></span></span> (llegar) a la cafetería, Sofía ya 
+            <span class="wrapper-input"><input type="text" data-answer="estaba"><span class="solucion-feedback"></span></span> (estar) allí. 
+            ¡<span class="wrapper-input"><input type="text" data-answer="llevaba"><span class="solucion-feedback"></span></span> (llevar) un vestido precioso! Nos 
+            <span class="wrapper-input"><input type="text" data-answer="saludamos"><span class="solucion-feedback"></span></span> (saludar) con dos besos 
+            y <span class="wrapper-input"><input type="text" data-answer="pedimos"><span class="solucion-feedback"></span></span> (pedir) unos churros. Mientras 
+            <span class="wrapper-input"><input type="text" data-answer="hablábamos"><span class="solucion-feedback"></span></span> (hablar) de los exámenes, 
+            Sofía se <span class="wrapper-input"><input type="text" data-answer="dio"><span class="solucion-feedback"></span></span> (dar) cuenta de que 
+            <span class="wrapper-input"><input type="text" data-answer="era"><span class="solucion-feedback"></span></span> (ser) tardísimo. ¡Madre mía! 
+            <span class="wrapper-input"><input type="text" data-answer="salimos"><span class="solucion-feedback"></span></span> (salir) corriendo porque el metro 
+            <span class="wrapper-input"><input type="text" data-answer="cerraba"><span class="solucion-feedback"></span></span> (cerrar) pronto.
+        </div>
+
+        <div class="acciones-bloque">
+            <button class="btn-comprobar" onclick="corregirBloque(3)">Comprobar Texto 3</button>
+            <button class="btn-reiniciar" onclick="reiniciarBloque(3)">Reiniciar</button>
+            <span class="resultado-parcial" id="res-3"></span>
+        </div>
+    </div>
+
+    <!-- TEXTO 4 -->
+    <div class="bloque-ejercicio" id="bloque-4">
+        <h2>Texto 4: Una pintora famosa</h2>
+        <p class="instrucciones">Completa esta pequeña biografía prestando atención a datos históricos y descripciones de estado.</p>
+        
+        <div class="texto-ejercicio">
+            Frida Kahlo <span class="wrapper-input"><input type="text" data-answer="fue"><span class="solucion-feedback"></span></span> (ser) una artista mexicana muy famosa. Cuando 
+            <span class="wrapper-input"><input type="text" data-answer="era"><span class="solucion-feedback"></span></span> (ser) joven, 
+            Frida <span class="wrapper-input"><input type="text" data-answer="quería"><span class="solucion-feedback"></span></span> (querer) estudiar medicina, pero en 1925 
+            <span class="wrapper-input"><input type="text" data-answer="tuvo"><span class="solucion-feedback"></span></span> (tener) un terrible accidente de autobús. <br><br>
+            
+            A causa del accidente, ella <span class="wrapper-input"><input type="text" data-answer="debió"><span class="solucion-feedback"></span></span> (deber) pasar mucho tiempo en la cama. Como se 
+            <span class="wrapper-input"><input type="text" data-answer="aburría"><span class="solucion-feedback"></span></span> (aburrir), 
+            <span class="wrapper-input"><input type="text" data-answer="empezó"><span class="solucion-feedback"></span></span> (empezar) a pintar sus famosos autorretratos. Mientras ella 
+            <span class="wrapper-input"><input type="text" data-answer="pintaba"><span class="solucion-feedback"></span></span> (pintar), 
+            su madre <span class="wrapper-input"><input type="text" data-answer="colocó"><span class="solucion-feedback"></span></span> (colocar) un espejo en el techo para que pudiera verse. Así 
+            <span class="wrapper-input"><input type="text" data-answer="comenzó"><span class="solucion-feedback"></span></span> (comenzar) su carrera artística.
+        </div>
+
+        <div class="acciones-bloque">
+            <button class="btn-comprobar" onclick="corregirBloque(4)">Comprobar Texto 4</button>
+            <button class="btn-reiniciar" onclick="reiniciarBloque(4)">Reiniciar</button>
+            <span class="resultado-parcial" id="res-4"></span>
+        </div>
+    </div>
+
+    <!-- TEXTO 5 -->
+    <div class="bloque-ejercicio" id="bloque-5">
+        <h2>Texto 5: Un susto a medianoche</h2>
+        <p class="instrucciones">Usa el Imperfecto para las circunstancias de la noche y el Indefinido para las acciones que rompen la calma.</p>
+        
+        <div class="texto-ejercicio">
+            Anoche <span class="wrapper-input"><input type="text" data-answer="era"><span class="solucion-feedback"></span></span> (ser) la una de la madrugada y todo el mundo 
+            <span class="wrapper-input"><input type="text" data-answer="dormía"><span class="solucion-feedback"></span></span> (dormir) en casa. 
+            Fuera, el viento <span class="wrapper-input"><input type="text" data-answer="soplaba"><span class="solucion-feedback"></span></span> (soplar) con mucha fuerza y 
+            <span class="wrapper-input"><input type="text" data-answer="hacía"><span class="solucion-feedback"></span></span> (hacer) bastante frío. <br><br>
+            
+            De repente, yo <span class="wrapper-input"><input type="text" data-answer="escuché"><span class="solucion-feedback"></span></span> (escuchar) un ruido extraño en la cocina. ¡Qué miedo! Me 
+            <span class="wrapper-input"><input type="text" data-answer="levanté"><span class="solucion-feedback"></span></span> (levantar) despacio. 
+            La casa <span class="wrapper-input"><input type="text" data-answer="estaba"><span class="solucion-feedback"></span></span> (estar) completamente oscura. Cuando 
+            <span class="wrapper-input"><input type="text" data-answer="entré"><span class="solucion-feedback"></span></span> (entrar) in la cocina y 
+            <span class="wrapper-input"><input type="text" data-answer="encendí"><span class="solucion-feedback"></span></span> (encender) la luz, 
+            <span class="wrapper-input"><input type="text" data-answer="vi"><span class="solucion-feedback"></span></span> (ver) a mi gato jugando con una bolsa de plástico. Al final, nos 
+            <span class="wrapper-input"><input type="text" data-answer="reímos"><span class="solucion-feedback"></span></span> (reír) mucho.
+        </div>
+
+        <div class="acciones-bloque">
+            <button class="btn-comprobar" onclick="corregirBloque(5)">Comprobar Texto 5</button>
+            <button class="btn-reiniciar" onclick="reiniciarBloque(5)">Reiniciar</button>
+            <span class="resultado-parcial" id="res-5"></span>
+        </div>
+    </div>
+
+    <!-- TEXTO 6 -->
+    <div class="bloque-ejercicio" id="bloque-6">
+        <h2>Texto 6: Una cena desastrosa</h2>
+        <p class="instrucciones">Completa la historia combinando los pasados con expresiones comunes del lenguaje en uso.</p>
+        
+        <div class="texto-ejercicio">
+            El sábado pasado, mis hermanos y yo <span class="wrapper-input"><input type="text" data-answer="organizamos"><span class="solucion-feedback"></span></span> (organizar) una cena sorpresa para mis padres porque 
+            <span class="wrapper-input"><input type="text" data-answer="era"><span class="solucion-feedback"></span></span> (ser) su aniversario. 
+            Nosotros <span class="wrapper-input"><input type="text" data-answer="queríamos"><span class="solucion-feedback"></span></span> (querer) cocinar una lasaña deliciosa. <br><br>
+            
+            Mientras mi hermano <span class="wrapper-input"><input type="text" data-answer="cortaba"><span class="solucion-feedback"></span></span> (cortar) las verduras, la sartén 
+            <span class="wrapper-input"><input type="text" data-answer="empezó"><span class="solucion-feedback"></span></span> (empezar) a quemarse. 
+            ¡Menos mal que mi hermana <span class="wrapper-input"><input type="text" data-answer="abrió"><span class="solucion-feedback"></span></span> (abrir) la ventana rápidamente! Justo en ese momento, mis padres 
+            <span class="wrapper-input"><input type="text" data-answer="llegaron"><span class="solucion-feedback"></span></span> (llegar) a casa. 
+            Al final, no <span class="wrapper-input"><input type="text" data-answer="pudimos"><span class="solucion-feedback"></span></span> (poder) comer la lasaña, así que 
+            <span class="wrapper-input"><input type="text" data-answer="llamamos"><span class="solucion-feedback"></span></span> (llamar) a una pizzería y la velada 
+            <span class="wrapper-input"><input type="text" data-answer="terminó"><span class="solucion-feedback"></span></span> (terminar) siendo muy divertida.
+        </div>
+
+        <div class="acciones-bloque">
+            <button class="btn-comprobar" onclick="corregirBloque(6)">Comprobar Texto 6</button>
+            <button class="btn-reiniciar" onclick="reiniciarBloque(6)">Reiniciar</button>
+            <span class="resultado-parcial" id="res-6"></span>
+        </div>
+    </div>
+
+    <footer>
+        <p>Portal Escolar - Práctica de Gramática. Esta página no almacena datos personales ni utiliza cookies (DSGVO compliant).</p>
+    </footer>
+</div>
+
+<script>
+    function corregirBloque(numBloque) {
+        const bloque = document.getElementById(`bloque-${numBloque}`);
+        const inputs = bloque.querySelectorAll('input[type="text"]');
+        let correctas = 0;
+        let totales = inputs.length;
+
+        inputs.forEach(input => {
+            const respuestaUsuario = input.value.trim().toLowerCase();
+            const respuestaCorrecta = input.getAttribute('data-answer').toLowerCase();
+            const feedbackSpan = input.nextElementSibling;
+
+            if (respuestaUsuario === respuestaCorrecta) {
+                input.classList.remove('incorrect');
+                input.classList.add('correct');
+                feedbackSpan.style.display = 'none'; // Esconde la solución si es correcto
+                correctas++;
+            } else {
+                input.classList.remove('correct');
+                input.classList.add('incorrect');
+                // Muestra la respuesta correcta al lado
+                feedbackSpan.textContent = `(Solución: ${input.getAttribute('data-answer')})`;
+                feedbackSpan.style.display = 'inline-block';
+            }
+        });
+
+        // Mostrar contador de aciertos específico del bloque
+        const resultadoSpan = document.getElementById(`res-${numBloque}`);
+        resultadoSpan.innerHTML = `Resultado: ${correctas} / ${totales}`;
+        if (correctas === totales) {
+            resultadoSpan.style.color = '#27ae60';
+            resultadoSpan.innerHTML += " ¡Perfecto! 🎉";
+        } else {
+            resultadoSpan.style.color = '#333';
+        }
+    }
+
+    function reiniciarBloque(numBloque) {
+        const bloque = document.getElementById(`bloque-${numBloque}`);
+        const inputs = bloque.querySelectorAll('input[type="text"]');
+        const feedbacks = bloque.querySelectorAll('.solucion-feedback');
+        const resultadoSpan = document.getElementById(`res-${numBloque}`);
+
+        // Limpiar inputs
+        inputs.forEach(input => {
+            input.value = '';
+            input.classList.remove('correct', 'incorrect');
+        });
+
+        // Ocultar soluciones mostradas
+        feedbacks.forEach(fb => {
+            fb.style.display = 'none';
+            fb.textContent = '';
+        });
+
+        // Limpiar el texto del resultado
+        resultadoSpan.innerHTML = '';
+    }
+</script>
+
+</body>
+</html>

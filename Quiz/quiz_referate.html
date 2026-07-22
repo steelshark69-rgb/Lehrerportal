@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informatik & Technik Quiz</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --success: #22c55e;
+            --error: #ef4444;
+            --neutral: #f3f4f6;
+            --text: #1f2937;
+            --card-bg: #ffffff;
+            --font-stack: 'Inter', 'Roboto', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-stack);
+            background-color: var(--neutral);
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background: var(--card-bg);
+            width: 100%;
+            max-width: 600px;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            text-align: center;
+            position: relative;
+        }
+
+        h1 { margin-bottom: 1.5rem; font-size: 1.8rem; color: var(--primary-dark); }
+        h2 { margin-bottom: 1rem; font-size: 1.4rem; }
+        p { margin-bottom: 1.5rem; line-height: 1.5; }
+
+        /* Inputs & Buttons */
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--primary);
+        }
+
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            width: 100%;
+            font-weight: 600;
+        }
+
+        .btn:hover { background-color: var(--primary-dark); }
+        .btn:active { transform: scale(0.98); }
+        .btn:disabled { background-color: #9ca3af; cursor: not-allowed; }
+
+        /* Quiz UI */
+        .progress-container {
+            width: 100%;
+            background-color: #e5e7eb;
+            border-radius: 999px;
+            height: 10px;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: var(--primary);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .question-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: #6b7280;
+            margin-bottom: 1rem;
+        }
+
+        .level-badge {
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        .level-leicht { background-color: #d1fae5; color: #065f46; }
+        .level-schwer { background-color: #fee2e2; color: #991b1b; }
+
+        .options-grid {
+            display: grid;
+            gap: 10px;
+            margin-bottom: 1.5rem;
+        }
+
+        .option-btn {
+            background-color: white;
+            border: 2px solid #e5e7eb;
+            color: var(--text);
+            text-align: left;
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 1rem;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            border-color: var(--primary);
+            background-color: #eff6ff;
+        }
+
+        /* Feedback States */
+        .option-btn.correct {
+            background-color: var(--success) !important;
+            border-color: var(--success) !important;
+            color: white !important;
+        }
+
+        .option-btn.wrong {
+            background-color: var(--error) !important;
+            border-color: var(--error) !important;
+            color: white !important;
+        }
+
+        .option-btn.correct-highlight {
+            border-color: var(--success) !important;
+            box-shadow: 0 0 0 2px var(--success);
+            font-weight: bold;
+        }
+
+        /* Result Screen */
+        .result-card {
+            padding: 20px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            background: #f9fafb;
+        }
+
+        .grade-display {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin: 10px 0;
+        }
+
+        .status-msg {
+            font-size: 0.9rem;
+            color: #6b7280;
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        /* Utility */
+        .hidden { display: none !important; }
+
+    </style>
+</head>
+<body>
+
+    <div class="container" id="main-container">
+        
+        <div id="start-screen">
+            <h1>Informatik & Technik Quiz</h1>
+            <p>Willkommen! Teste dein Wissen zu den Themen "Frauen in der Informatik", "Smart Home" und "Computer-Grundlagen".</p>
+            <p>Bitte gib deinen Namen ein, um zu starten.</p>
+            <input type="text" id="username" placeholder="Dein Vor- und Nachname" autocomplete="off">
+            <button class="btn" id="start-btn">Quiz Starten</button>
+        </div>
+
+        <div id="quiz-screen" class="hidden">
+            <div class="progress-container">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
+            
+            <div class="question-meta">
+                <span id="question-count">Frage 1/30</span>
+                <span id="difficulty-badge" class="level-badge level-leicht">Leicht</span>
+            </div>
+
+            <h2 id="question-text">Frage Text hier...</h2>
+
+            <div class="options-grid" id="options-container">
+                </div>
+
+            <button class="btn hidden" id="next-btn">Nächste Frage</button>
+        </div>
+
+        <div id="result-screen" class="hidden">
+            <h1>Ergebnis</h1>
+            <div class="result-card" id="result-card-content">
+                <p>Teilnehmer: <strong id="result-name">Name</strong></p>
+                <p>Erreichte Punkte: <span id="result-score">0</span> von <span id="total-questions">30</span></p>
+                <p>Prozent: <span id="result-percent">0%</span></p>
+                <div class="grade-display" id="result-grade">Note</div>
+            </div>
+            <p class="status-msg" id="email-status">Ergebnis wird gesendet...</p>
+            <button class="btn" id="screenshot-btn">Screenshot speichern 📸</button>
+            <br><br>
+            <button class="btn" onclick="location.reload()" style="background-color: #6b7280;">Neustart</button>
+        </div>
+
+    </div>
+
+<script>
+    // --- Konfiguration ---
+    const EMAILJS_PUBLIC_KEY = "HnZ28X9AihlD5y9XH";
+    const EMAILJS_SERVICE_ID = "service_qoofink";
+    const EMAILJS_TEMPLATE_ID = "template_cu0x1bc";
+
+    // --- Quiz Daten (Basierend auf den analysierten Dateien) ---
+    const rawQuestions = [
+        // --- Datei 1: Mia_FrauenTechnik.pptx ---
+        {
+            q: "Wer schrieb den allerersten Algorithmus der Welt?",
+            a: ["Ada Lovelace", "Grace Hopper", "Alan Turing", "Steve Jobs"],
+            correct: 0,
+            level: "Leicht"
+        },
+        {
+            q: "Was hat Grace Hopper erfunden?",
+            a: ["Den ersten Compiler", "Das Internet", "Die Computermaus", "Den Touchscreen"],
+            correct: 0,
+            level: "Leicht"
+        },
+        {
+            q: "Wie hoch ist der Frauenanteil in der Informatik an der UZH (Uni Zürich)?",
+            a: ["ca. 15–18 %", "ca. 50 %", "ca. 5 %", "ca. 80 %"],
+            correct: 0,
+            level: "Schwer"
+        },
+        {
+            q: "Was beschreibt der Begriff „Leaky Pipeline“?",
+            a: ["Verlust von Talenten auf dem Karriereweg", "Ein kaputtes Wasserkühlsystem", "Eine langsame Internetleitung", "Ein Software-Sicherheitsleck"],
+            correct: 0,
+            level: "Leicht"
+        },
+        {
+            q: "Warum ist Diversität in Entwicklungsteams wichtig?",
+            a: ["Um Bias (Vorurteile) in Algorithmen zu vermeiden", "Weil es gesetzlich vorgeschrieben ist", "Damit die Büros bunter sind", "Um Kosten zu sparen"],
+            correct: 0,
+            level: "Schwer"
+        },
+        {
+            q: "Was passierte in den 1970er/80er Jahren in der IT?",
+            a: ["Maskulinisierung durch das „Nerd“-Bild", "Frauen übernahmen die Führung", "Das Internet wurde abgeschaltet", "Computer wurden verboten"],
+            correct: 0,
+            level: "Leicht"
+        },
+        {
+            q: "Was ist das „Imposter-Syndrom“?",
+            a: ["Selbstzweifel trotz hoher Kompetenz", "Eine Computerkrankheit", "Angst vor Robotern", "Ein Programmierfehler"],
+            correct: 0,
+            level: "Schwer"
+        },
+        {
+            q: "Welche historische Rolle spielten Frauen in der frühen IT?",
+            a: ["Sie waren Pionierinnen und „menschliche Computer“", "Sie durften Computer nicht anfassen", "Sie bauten nur Hardware", "Sie arbeiteten nur im Verkauf"],
+            correct: 0,
+            level: "Schwer"
+        },
+        {
+            q: "Was ist laut Präsentation eine Hauptursache für den Frauenmangel in der IT?",
+            a: ["Veraltete Rollenbilder & Konditionierung", "Fehlendes biologisches Talent", "Zu schwere Mathematik", "Desinteresse an Geld"],
+            correct: 0,
+            level: "Leicht"
+        },
+        {
+            q: "Wie hoch ist der Gesamtanteil an Frauen an der UZH (alle Fächer)?",
+            a: ["ca. 59 %", "ca. 30 %", "ca. 10 %", "ca. 90 %"],
+            correct: 0,
+            level: "Schwer"
+        },
+
+        // --- Datei 2: SmartHome_Viki.pptx ---
+        {
+            q: "Was ist ein Hauptziel eines Smart Homes?",
+            a: ["Komfort, Effizienz und Sicherheit", "Nur Spielerei", "Stromverbrauch erhöhen", "Manuelle Arbeit"],
+            correct: 0,
+            level: "Leicht"
+        },
+        {
+            q: "Welche Technologie wird typischerweise im Smart Home genutzt?",
+            a: ["ZigBee", "Dampfmaschine", "Diskette", "Dieselgenerator"],
+            correct: 0,
+            level: "Leicht"
+        },
+        {
+            q: "Was ist ein großes Risiko bei Smart Homes?",
+            a: ["Hackerangriffe und Datenschutz", "Dass das Haus wegläuft", "Zu viel frische Luft", "Geringere Stromrechnung"],
+            correct: 0,
+            level: "Leicht"
+        },
+        {
+            q: "Was bedeutet „Penetrationsrate“ im Kontext der Präsentation?",
+            a: ["Anteil der Haushalte mit Smart Home", "Geschwindigkeit des WLANs", "Härte der Wände", "Anzahl der Einbrüche"],
+            correct: 0,
+            level: "Schwer"
+        },
+        {
+            q: "Wie können Smart Home Geräte gesteuert werden?",
+            a: ["App, Sprache oder Sensoren", "Nur mit Gedanken", "Gar nicht", "Nur per Briefpost"],
+            correct: 0,
+            level: "Leicht"
+        },
+        {
+            q: "Wo werden sensible Daten oft gespeichert, was ein Risiko darstellt?",
+            a: ["In der Cloud", "Im Keller", "Auf Papier", "Im Safe"],
+            correct: 0,
+            level: "Schwer"
+        },
+        {
+            q: "Was ist ein genannter Nachteil von Smart Homes?",
+            a: ["Hohe Anschaffungs- und Installationskosten", "Man muss nie wieder aufstehen", "Es ist zu leise", "Die Wände werden dünner"],
+            correct: 0,
+            level: "Leicht"
+        },
+        {
+            q: "Welche Abhängigkeit besteht bei Smart Homes?",
+            a: ["Internet & Strom", "Wasserdruck", "Tageslicht", "Windstärke"],
+            correct: 0,
+            level: "Schwer"
+        },
+        {
+            q: "Welche Kommunikationsstandards werden genannt?",
+            a: ["WLAN, ZigBee, Z-Wave", "UKW, Mittelwelle", "Morsecode", "Rauchzeichen"],
+            correct: 0,
+            level: "Schwer"
+        },
+        {
+            q: "Welchen Vorteil bietet ein Smart Home im Bereich Energie?",
+            a: ["Energieeinsparungen", "Höherer Verbrauch", "Stromausfälle", "Keinen"],
+            correct: 0,
+            level: "Leicht"
+        },
+
+        // --- Datei 3: Wie funktioniert der Computer.odp (Allgemeinwissen IT) ---
+        {
+            q: "Wofür steht die Abkürzung CPU?",
+            a: ["Central Processing Unit", "Computer Power Unit", "Central Power User", "Control Panel Unit"],
+            correct: 0,
+            level: "Leicht"
+        },
+        {
+            q: "Wie nennt man das Prinzip „Eingabe - Verarbeitung - Ausgabe“?",
+            a: ["EVA-Prinzip", "AVE-Prinzip", "Ablauf-Prinzip", "Computer-Gesetz"],
+            correct: 0,
+            level: "Leicht"
+        },
+        {
+            q: "Welche Komponente ist das „Kurzzeitgedächtnis“ des Computers?",
+            a: ["RAM (Arbeitsspeicher)", "Festplatte (HDD)", "Grafikkarte", "Netzteil"],
+            correct: 0,
+            level: "Schwer"
+        },
+        {
+            q: "Was ist die kleinste Informationseinheit im Computer?",
+            a: ["Bit", "Byte", "Megabyte", "Pixel"],
+            correct: 0,
+            level: "Schwer"
+        },
+        {
+            q: "Welches Gerät ist ein reines Ausgabegerät?",
+            a: ["Monitor", "Tastatur", "Maus", "Scanner"],
+            correct: 0,
+            level: "Leicht"
+        },
+        {
+            q: "Welches Zahlensystem verwendet ein Computer intern?",
+            a: ["Binärsystem (0 und 1)", "Dezimalsystem (0-9)", "Römisches System", "Hexadezimalsystem (nur F)"],
+            correct: 0,
+            level: "Leicht"
+        },
+        {
+            q: "Welche Aufgabe hat das Motherboard (Mainboard)?",
+            a: ["Verbindet alle Komponenten", "Kühlt den PC", "Speichert Daten dauerhaft", "Erzeugt den Strom"],
+            correct: 0,
+            level: "Schwer"
+        },
+        {
+            q: "Was ist der Unterschied zwischen Hardware und Software?",
+            a: ["Hardware kann man anfassen, Software sind Programme", "Software ist hart, Hardware ist weich", "Es gibt keinen Unterschied", "Hardware ist nur der Monitor"],
+            correct: 0,
+            level: "Leicht"
+        },
+        {
+            q: "Was passiert mit Daten im RAM, wenn der Strom ausfällt?",
+            a: ["Sie werden gelöscht", "Sie werden gespeichert", "Sie werden in die Cloud geladen", "Sie werden gedruckt"],
+            correct: 0,
+            level: "Schwer"
+        },
+        {
+            q: "Was ist ein typisches Eingabegerät?",
+            a: ["Maus", "Lautsprecher", "Drucker", "Bildschirm"],
+            correct: 0,
+            level: "Leicht"
+        }
+    ];
+
+    // --- State ---
+    let questions = [];
+    let currentQuestionIndex = 0;
+    let score = 0;
+    let userName = "";
+
+    // --- DOM Elemente ---
+    const startScreen = document.getElementById('start-screen');
+    const quizScreen = document.getElementById('quiz-screen');
+    const resultScreen = document.getElementById('result-screen');
+    const nameInput = document.getElementById('username');
+    const startBtn = document.getElementById('start-btn');
+    
+    const questionText = document.getElementById('question-text');
+    const optionsContainer = document.getElementById('options-container');
+    const nextBtn = document.getElementById('next-btn');
+    const progressEl = document.getElementById('progress-bar');
+    const qCountEl = document.getElementById('question-count');
+    const diffBadge = document.getElementById('difficulty-badge');
+
+    // --- Init ---
+    (function init() {
+        emailjs.init(EMAILJS_PUBLIC_KEY);
+        startBtn.addEventListener('click', startQuiz);
+        nextBtn.addEventListener('click', nextQuestion);
+        document.getElementById('screenshot-btn').addEventListener('click', takeScreenshot);
+    })();
+
+    // --- Logik ---
+
+    function startQuiz() {
+        const name = nameInput.value.trim();
+        if (!name) {
+            alert("Bitte gib deinen Namen ein.");
+            return;
+        }
+        userName = name;
+        
+        // Shuffle Questions
+        questions = shuffleArray([...rawQuestions]);
+        
+        // UI Switch
+        startScreen.classList.add('hidden');
+        quizScreen.classList.remove('hidden');
+        
+        loadQuestion();
+    }
+
+    function loadQuestion() {
+        const q = questions[currentQuestionIndex];
+        
+        // Update UI Text
+        questionText.textContent = q.q;
+        qCountEl.textContent = `Frage ${currentQuestionIndex + 1} von ${questions.length}`;
+        diffBadge.textContent = q.level;
+        diffBadge.className = `level-badge level-${q.level.toLowerCase()}`;
+        
+        // Progress Bar
+        const progress = ((currentQuestionIndex) / questions.length) * 100;
+        progressEl.style.width = `${progress}%`;
+
+        // Create Options (Shuffled options display, keep track of correct answer)
+        optionsContainer.innerHTML = '';
+        nextBtn.classList.add('hidden');
+
+        // Map answer options to original indices to track correct one
+        let optionsWithIndex = q.a.map((opt, idx) => ({ text: opt, originalIndex: idx }));
+        optionsWithIndex = shuffleArray(optionsWithIndex);
+
+        optionsWithIndex.forEach(optObj => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.textContent = optObj.text;
+            btn.onclick = () => checkAnswer(btn, optObj.originalIndex, q.correct);
+            optionsContainer.appendChild(btn);
+        });
+    }
+
+    function checkAnswer(selectedBtn, selectedIndex, correctIndex) {
+        // Disable all buttons
+        const allBtns = optionsContainer.querySelectorAll('.option-btn');
+        allBtns.forEach(btn => btn.disabled = true);
+
+        const isCorrect = selectedIndex === correctIndex;
+
+        if (isCorrect) {
+            selectedBtn.classList.add('correct');
+            score++;
+        } else {
+            selectedBtn.classList.add('wrong');
+            // Find and highlight correct answer
+            allBtns.forEach(btn => {
+                // We need to match the text content or find logic to identify the correct button
+                // Since we shuffled objects, let's look at the click handler closure or re-evaluate
+                // Easier: The button with the text equal to rawQuestions answer at correctIndex
+                // But text might be duplicate? Unlikely.
+                // Let's rely on the text comparison for simplicity in this DOM structure:
+                if (btn.textContent === questions[currentQuestionIndex].a[correctIndex]) {
+                    btn.classList.add('correct-highlight');
+                }
+            });
+        }
+
+        nextBtn.classList.remove('hidden');
+    }
+
+    function nextQuestion() {
+        currentQuestionIndex++;
+        if (currentQuestionIndex < questions.length) {
+            loadQuestion();
+        } else {
+            finishQuiz();
+        }
+    }
+
+    function finishQuiz() {
+        quizScreen.classList.add('hidden');
+        resultScreen.classList.remove('hidden');
+
+        // Berechnungen
+        const percent = Math.round((score / questions.length) * 100);
+        let grade = "";
+        
+        if (percent < 50) grade = "Nicht genügend";
+        else if (percent <= 63) grade = "Genügend";
+        else if (percent <= 77) grade = "Befriedigend";
+        else if (percent <= 89) grade = "Gut";
+        else grade = "Sehr gut";
+
+        // UI Update
+        document.getElementById('result-name').textContent = userName;
+        document.getElementById('result-score').textContent = score;
+        document.getElementById('total-questions').textContent = questions.length;
+        document.getElementById('result-percent').textContent = `${percent}%`;
+        document.getElementById('result-grade').textContent = grade;
+
+        // Email Senden
+        sendEmail(grade, percent);
+    }
+
+    function sendEmail(grade, percent) {
+        const statusEl = document.getElementById('email-status');
+        
+        const params = {
+            quiz_name: "Informatik & Technik Quiz",
+            from_name: userName,
+            score: `${score} von ${questions.length} (${percent}%)`,
+            message: `Zeitstempel: ${new Date().toLocaleString('de-AT')} | Note: ${grade}`
+        };
+
+        emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, params)
+            .then(function(response) {
+                console.log('SUCCESS!', response.status, response.text);
+                statusEl.textContent = "Ergebnis wurde erfolgreich an den Lehrer gesendet. ✅";
+                statusEl.style.color = "var(--success)";
+            }, function(error) {
+                console.log('FAILED...', error);
+                statusEl.textContent = "Senden fehlgeschlagen. Bitte Screenshot machen!";
+                statusEl.style.color = "var(--error)";
+                alert("Fehler beim Senden der Email. Bitte speichere einen Screenshot!");
+            });
+    }
+
+    function takeScreenshot() {
+        const resultCard = document.getElementById('result-card-content');
+        html2canvas(resultCard).then(canvas => {
+            const link = document.createElement('a');
+            link.download = `Quiz_Ergebnis_${userName}.png`;
+            link.href = canvas.toDataURL();
+            link.click();
+        });
+    }
+
+    // Helper: Fisher-Yates Shuffle
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+</script>
+</body>
+</html>

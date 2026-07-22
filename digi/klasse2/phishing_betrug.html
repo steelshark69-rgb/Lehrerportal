@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phishing & Betrugserkennung | Digitale Grundbildung</title>
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+        .component-card {
+            background: white;
+            border-left: 4px solid #f59e0b;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .component-card h3 {
+            color: #f59e0b;
+            margin-top: 0;
+        }
+        .component-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .red-flag {
+            background: #fee2e2;
+            border-left: 4px solid #dc2626;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 6px;
+        }
+        .red-flag strong {
+            color: #dc2626;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>🎣 Phishing & Betrugserkennung</h1>
+    <p>6. Klasse | Digitale Grundbildung</p>
+    <div class="back-nav">
+        <a href="../index.html" class="btn-back">⬅ Zurück</a>
+    </div>
+</header>
+
+<main style="max-width: 900px; margin: 0 auto; padding: 2rem 1rem;">
+
+    <section>
+        <h2>Was ist Phishing?</h2>
+        <p>Phishing ist ein <strong>Betrugsmuster, bei dem Kriminelle versuchen, deine persönlichen Daten zu stehlen</strong> - indem sie sich als vertrauenswürdige Person oder Unternehmen ausgeben.</p>
+        <p><strong>Der Name:</strong> Phishing = "Fishing" (Angeln) - Kriminelle werfen ihre "Angel" aus und hoffen, dass du anbissest!</p>
+    </section>
+
+    <section>
+        <h2>8 Rote Flaggen: Erkenne Phishing!</h2>
+
+        <div class="red-flag">
+            <strong>🚩 Rote Flagge 1: Dringende Aufforderung</strong>
+            <p>"Dein Account wird in 24 Stunden gelöscht!" oder "Bestätige deine Identität SOFORT!"</p>
+            <p><strong>Warum:</strong> Echte Unternehmen drängen dich nicht zu schnellen Entscheidungen</p>
+        </div>
+
+        <div class="red-flag">
+            <strong>🚩 Rote Flagge 2: Verdächtige Links</strong>
+            <p>Der Link sieht ähnlich aus, ist aber nicht exakt richtig:</p>
+            <p style="font-family: monospace;">
+                ❌ Falsch: https://www.goog1e.com (1 statt l)<br>
+                ✅ Richtig: https://www.google.com
+            </p>
+            <p><strong>Tipp:</strong> Fahre mit der Maus über den Link - der Browser zeigt die echte URL!</p>
+        </div>
+
+        <div class="red-flag">
+            <strong>🚩 Rote Flagge 3: Persönliche Daten werden abgefragt</strong>
+            <p>Passwort, Kreditkartennummer, Sozialversicherungsnummer, PIN</p>
+            <p><strong>Warum:</strong> Echte Unternehmen fragen dich NIE nach Passwörtern per Email!</p>
+        </div>
+
+        <div class="red-flag">
+            <strong>🚩 Rote Flagge 4: Grammatik- und Rechtschreibfehler</strong>
+            <p>"Lieber Kunte" oder "Ihr Kontø wurde verdächtigt"</p>
+            <p><strong>Warum:</strong> Große Unternehmen prüfen ihre Texte mehrfach</p>
+        </div>
+
+        <div class="red-flag">
+            <strong>🚩 Rote Flagge 5: Generische Anrede</strong>
+            <p>"Lieber Nutzer" statt "Lieber Max"</p>
+            <p><strong>Warum:</strong> Echte Unternehmen kennen deinen Namen</p>
+        </div>
+
+        <div class="red-flag">
+            <strong>🚩 Rote Flagge 6: Verdächtige Absender-Email</strong>
+            <p>❌ support@am@zon.com (doppeltes @)<br>
+            ❌ noreply@support-amazon.co (nicht amazon.com)<br>
+            ✅ account-update@amazon.com (vertraut)</p>
+            <p><strong>Tipp:</strong> Sende NIEMALS eine Antwort auf verdächtige Emails!</p>
+        </div>
+
+        <div class="red-flag">
+            <strong>🚩 Rote Flagge 7: Unerwartete Anhänge oder Geldtransfers</strong>
+            <p>"Klicke diese Datei an!" oder "Zahle sofort 50€!"</p>
+            <p><strong>Warum:</strong> Das ist typisches Betrugsmuster</p>
+        </div>
+
+        <div class="red-flag">
+            <strong>🚩 Rote Flagge 8: Verdächtige Konten oder Social-Media-Anfragen</strong>
+            <p>"Gratuliere! Du hast gewonnen!" oder "Bestätige dein Konto"</p>
+            <p><strong>Warum:</strong> Das sind häufige Angriffsmuster</p>
+        </div>
+    </section>
+
+    <section>
+        <h2>Die SIFT-Methode: So prüfst du Nachrichten</h2>
+
+        <div class="component-card">
+            <div class="component-icon">🔍</div>
+            <h3>S - Slow Down</h3>
+            <p><strong>Verlangsame dich!</strong> Phishing und Betrug funktionieren durch Zeitdruck.</p>
+            <p>Nimm dir Zeit zu prüfen, bevor du etwas anklickst!</p>
+        </div>
+
+        <div class="component-card">
+            <div class="component-icon">❓</div>
+            <h3>I - Investigate the Source</h3>
+            <p><strong>Prüfe die Quelle!</strong></p>
+            <ul>
+                <li>Wer sendet diese Nachricht?</li>
+                <li>Ist die Email-Adresse echt?</li>
+                <li>Kenne ich diese Person wirklich?</li>
+            </ul>
+        </div>
+
+        <div class="component-card">
+            <div class="component-icon">🔗</div>
+            <h3>F - Find Better Coverage</h3>
+            <p><strong>Finde bessere Quellen!</strong></p>
+            <p>Wenn die Email von einer Bank sagt "dein Konto ist gesperrt", gehe direkt zur Bank-Website - klicke NICHT auf den Link in der Email!</p>
+        </div>
+
+        <div class="component-card">
+            <div class="component-icon">✓</div>
+            <h3>T - Trace the Claims</h3>
+            <p><strong>Überprüfe die Behauptungen!</strong></p>
+            <p>Hat der "Amazon-Support" wirklich gesagt, dass dein Konto gelöscht wird? Prüfe es auf der echten Amazon-Website!</p>
+        </div>
+    </section>
+
+    <section>
+        <h2>Phishing-Typen</h2>
+
+        <div class="component-card">
+            <div class="component-icon">📧</div>
+            <h3>Email-Phishing</h3>
+            <p><strong>Häufigste Form.</strong> Fake-Email von angeblich Amazon, Google, Bank, etc.</p>
+            <p><strong>Beispiel:</strong> "Your Amazon account is locked - verify now"</p>
+        </div>
+
+        <div class="component-card">
+            <div class="component-icon">📱</div>
+            <h3>SMS-Phishing (Smishing)</h3>
+            <p><strong>Per Textmessage.</strong> "Klick hier um dein Konto zu bestätigen"</p>
+            <p><strong>Beispiel:</strong> "DHL Paket wartend - https://sh0rt.url/dhI"</p>
+        </div>
+
+        <div class="component-card">
+            <div class="component-icon">💬</div>
+            <h3>App-Phishing</h3>
+            <p><strong>Auf Messenger, WhatsApp, Instagram.</strong> "Hey, bist du das? Hier ist mein neuer Link..."</p>
+            <p><strong>Beispiel:</strong> Ein Freund sendet dir einen verdächtigen Link - sein Account wurde gehackt!</p>
+        </div>
+    </section>
+
+    <section>
+        <h2>Was du tun sollst, wenn du Phishing erkennst</h2>
+
+        <div style="background: #dcfce7; padding: 1.5rem; border-radius: 8px; margin: 1rem 0;">
+            <h3>✅ RICHTIG:</h3>
+            <ol style="line-height: 2;">
+                <li><strong>Nicht anklicken!</strong> Klicke auf keine Links oder Anhänge</li>
+                <li><strong>Bericht erstatten:</strong> Melde die Email/SMS als Phishing</li>
+                <li><strong>Löschen:</strong> Lösche die Nachricht</li>
+                <li><strong>Frag einen Erwachsenen:</strong> Wenn du unsicher bist</li>
+            </ol>
+        </div>
+
+        <div style="background: #fee2e2; padding: 1.5rem; border-radius: 8px; margin: 1rem 0;">
+            <h3>❌ FALSCH:</h3>
+            <ul style="line-height: 2;">
+                <li>Antworte NICHT auf die Email</li>
+                <li>Klicke NICHT auf Links</li>
+                <li>Öffne NICHT die Anhänge</li>
+                <li>Gebe NICHT dein Passwort ein</li>
+            </ul>
+        </div>
+    </section>
+
+    <section>
+        <h2>Notfall: Dein Account wurde gehackt!</h2>
+
+        <div style="background: #fff7ed; padding: 1.5rem; border-radius: 8px; margin: 1rem 0;">
+            <h3>So reagierst du schnell:</h3>
+            <ol style="line-height: 2;">
+                <li><strong>Passwort sofort ändern!</strong> Von einem anderen Gerät</li>
+                <li><strong>Zwei-Faktor-Authentifizierung aktivieren</strong></li>
+                <li><strong>Überprüfe verdächtige Aktivitäten</strong> im Account</li>
+                <li><strong>Benachrichtige den Support</strong> des Unternehmens</li>
+                <li><strong>Überwache deine Konten</strong> auf weitere Anomalien</li>
+                <li><strong>Frag Eltern/Lehrer</strong> um Hilfe</li>
+            </ol>
+        </div>
+    </section>
+
+    <section style="background: #e0f2fe; padding: 1.5rem; border-radius: 8px; margin-top: 2rem;">
+        <h3>💡 Merksätze</h3>
+        <p><strong>Echte Unternehmen fragen NIEMALS nach Passwörtern!</strong></p>
+        <p><strong>SIFT:</strong> Slow Down → Investigate → Find Better Coverage → Trace Claims</p>
+        <p><strong>Im Zweifelsfall:</strong> Frag einen Erwachsenen!</p>
+    </section>
+
+</main>
+
+<footer style="text-align: center; padding: 2rem; color: #64748b; font-size: 0.9rem;">
+    &copy; 2026 | GvP | Mag. Schweitzer | Digitale Grundbildung
+</footer>
+
+</body>
+</html>

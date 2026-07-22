@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Einheit 5: Deep-Dive EVA-S-Prinzip</title>
+    <link rel="stylesheet" href="../../style.css">
+    
+    <style>
+        :root {
+            --it-primary: #107c41; /* Informatik Grün */
+            --it-dark: #064e3b;
+            --bg-gray: #f8fafc;
+            --text-dark: #0f172a;
+            --text-muted: #475569;
+        }
+
+        body { background-color: var(--bg-gray); }
+        .module-container { max-width: 1000px; margin: 0 auto; padding: 2rem 1.5rem; }
+        
+        /* Layouts */
+        .grid-3 { display: grid; grid-template-columns: 1fr; gap: 1.5rem; margin-bottom: 3rem; }
+        @media(min-width: 768px) { .grid-3 { grid-template-columns: repeat(3, 1fr); } }
+        
+        /* Cards */
+        .intro-box { background: white; border-radius: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); padding: 2rem; border: 1px solid #e2e8f0; margin-bottom: 3rem; font-size: 1.1rem; color: var(--text-muted); line-height: 1.6; }
+        
+        .pillar-card { background: white; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); padding: 1.5rem; border-top: 4px solid; transition: transform 0.2s; }
+        .pillar-card:hover { transform: translateY(-5px); }
+        .pillar-e { border-top-color: #3b82f6; } /* Blau */
+        .pillar-v { border-top-color: #a855f7; } /* Lila */
+        .pillar-a { border-top-color: #10b981; } /* Grün */
+        
+        .pillar-icon { display: inline-flex; justify-content: center; align-items: center; width: 40px; height: 40px; border-radius: 8px; font-size: 1.5rem; margin-bottom: 10px; }
+        
+        /* Dark Section (EVA-S) */
+        .dark-section { background: #1e293b; color: white; border-radius: 12px; padding: 2rem 2.5rem; margin-bottom: 3rem; box-shadow: 0 10px 15px rgba(0,0,0,0.1); }
+        .dark-card { background: #334155; padding: 1.5rem; border-radius: 8px; margin-top: 1rem; border-left: 4px solid; }
+
+        /* Why Box */
+        .reason-box { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 12px; padding: 2rem; }
+        .reason-card { background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); height: 100%; }
+
+        /* Quiz & Ticket Styles */
+        .quiz-question { background: white; padding: 1.5rem; border-radius: 8px; margin-bottom: 1rem; border-left: 4px solid var(--it-primary); box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .quiz-select { padding: 10px; font-size: 1rem; border: 2px solid #cbd5e1; border-radius: 4px; width: 100%; max-width: 400px; margin-top: 10px; outline: none; }
+        .btn-check { background: var(--it-primary); color: white; border: none; padding: 10px 20px; font-size: 1rem; font-weight: bold; border-radius: 6px; cursor: pointer; margin-top: 10px; transition: 0.2s; }
+        .btn-check:hover { background: var(--it-dark); }
+        
+        .feedback { display: none; font-weight: bold; margin-top: 10px; padding: 10px; border-radius: 4px; }
+        .fb-correct { background: #d1fae5; color: #065f46; border: 1px solid #10b981; }
+        .fb-wrong { background: #fee2e2; color: #991b1b; border: 1px solid #ef4444; }
+
+        .ticket-container { display: none; background: linear-gradient(135deg, #1e293b, #0ea5e9); color: white; padding: 3rem; border-radius: 16px; text-align: center; margin-top: 2rem; box-shadow: 0 10px 25px rgba(14, 165, 233, 0.4); position: relative; overflow: hidden; }
+        .ticket-watermark { position: absolute; top: -20px; right: -20px; font-size: 8rem; opacity: 0.1; transform: rotate(15deg); }
+    </style>
+</head>
+<body>
+
+<header style="background-color: var(--it-primary); color: white; padding: 3rem 1rem; text-align: center; border-bottom: 4px solid var(--it-dark);">
+    <div style="font-size: 3rem; margin-bottom: 10px;">🔄</div>
+    <h1 style="color: white; margin: 0; font-size: 2.5rem; letter-spacing: -1px;">Einheit 5: Das EVA-Prinzip</h1>
+    <p style="color: #dcfce7; margin-top: 10px; font-size: 1.2rem; max-width: 600px; margin-left: auto; margin-right: auto;">Das Grundfundament der Datenverarbeitung. Es beschreibt die chronologische Reihenfolge, in der Computer, Software und digitale Automaten arbeiten.</p>
+</header>
+
+<div class="back-nav"><a href="einheit4_bossfight.html" class="btn-back">← Zurück zu Einheit 4</a></div>
+
+<main class="module-container">
+
+    <section class="intro-box">
+        <p style="margin: 0;">Das EVA-Prinzip (Eingabe, Verarbeitung, Ausgabe) ist eines der wichtigsten Basiskonzepte der Informatik. Es beschreibt nicht nur grob die Hardware eines PCs, sondern den fundamentalen Datenfluss und die Schnittstellen zwischen der analogen, realen Welt und der digitalen, binären Welt. Es bildet die Vorstufe zur komplexeren <strong>Von-Neumann-Architektur</strong>.</p>
+    </section>
+
+    <section>
+        <h2 style="text-align: center; color: var(--text-dark); margin-bottom: 2rem; font-size: 2rem;">Die drei Grundsäulen (E-V-A)</h2>
+        <div class="grid-3">
+            
+            <div class="pillar-card pillar-e">
+                <div class="pillar-icon" style="background: #dbeafe; color: #2563eb;">⌨️</div>
+                <h3 style="margin-top: 0;">Eingabe (Input)</h3>
+                <p style="font-weight: bold; color: #3b82f6; font-size: 0.9rem; margin-top: -5px;">Die Digitalisierung der Welt.</p>
+                <ul style="padding-left: 1rem; font-size: 0.95rem; color: var(--text-muted); line-height: 1.5;">
+                    <li style="margin-bottom: 8px;"><strong>Analog-Digital-Wandlung:</strong> Die reale, analoge Welt wird in maschinenlesbaren Binärcode übersetzt.</li>
+                    <li style="margin-bottom: 8px;"><strong>Mensch-Maschine (HMI):</strong> Bewusste Interaktion durch Nutzer (Tastatur, Touchscreen).</li>
+                    <li><strong>Sensoren (M2M):</strong> Automatische Datenerfassung (Thermometer, GPS). Liefert große Datenströme.</li>
+                </ul>
+            </div>
+
+            <div class="pillar-card pillar-v">
+                <div class="pillar-icon" style="background: #f3e8ff; color: #9333ea;">🧠</div>
+                <h3 style="margin-top: 0;">Verarbeitung</h3>
+                <p style="font-weight: bold; color: #a855f7; font-size: 0.9rem; margin-top: -5px;">Das mathematische Herzstück.</p>
+                <ul style="padding-left: 1rem; font-size: 0.95rem; color: var(--text-muted); line-height: 1.5;">
+                    <li style="margin-bottom: 8px;"><strong>Prinzip y = f(x):</strong> Eingabedaten (x) werden durch Algorithmen (f) manipuliert, um ein Ergebnis (y) zu erzielen.</li>
+                    <li style="margin-bottom: 8px;"><strong>Die CPU:</strong> Das Rechenwerk (ALU) führt Operationen aus, das Steuerwerk koordiniert die Befehle.</li>
+                    <li><strong>Algorithmen:</strong> Vorgegebene Rezepte zur Problemlösung.</li>
+                </ul>
+            </div>
+
+            <div class="pillar-card pillar-a">
+                <div class="pillar-icon" style="background: #d1fae5; color: #059669;">🖨️</div>
+                <h3 style="margin-top: 0;">Ausgabe (Output)</h3>
+                <p style="font-weight: bold; color: #10b981; font-size: 0.9rem; margin-top: -5px;">Rückübersetzung in die Realität.</p>
+                <ul style="padding-left: 1rem; font-size: 0.95rem; color: var(--text-muted); line-height: 1.5;">
+                    <li style="margin-bottom: 8px;"><strong>Digital-Analog-Wandlung:</strong> Binäre Daten werden für Menschen wieder wahrnehmbar gemacht.</li>
+                    <li style="margin-bottom: 8px;"><strong>Informative Ausgabe:</strong> Bildschirme, Drucker und Lautsprecher visualisieren oder vertonen Ergebnisse.</li>
+                    <li><strong>Aktoren:</strong> Setzen digitale Befehle in physische Bewegungen um (z.B. Roboterarm, Motor).</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="dark-section">
+        <h2 style="margin-top: 0; color: #38bdf8; display: flex; align-items: center; gap: 15px;">
+            <span>💾</span> Die Erweiterung: Das EVA-S-Prinzip
+        </h2>
+        <p style="font-size: 1.1rem; line-height: 1.6; color: #cbd5e1;">Ohne Speicher wäre jede Verarbeitung flüchtig und das System hätte kein "Gedächtnis". In der Praxis wird das Modell daher zwingend um ein <strong>S für Speicherung (Storage)</strong> ergänzt.</p>
+        
+        <div style="display: grid; grid-template-columns: 1fr; gap: 1rem; margin-top: 1.5rem;">
+            <div class="dark-card" style="border-left-color: #60a5fa;">
+                <h4 style="margin: 0 0 5px 0; color: #93c5fd;">Primärspeicher (RAM / Arbeitsspeicher)</h4>
+                <p style="margin: 0; font-size: 0.9rem; color: #94a3b8;">Extrem schnell, aber <em>flüchtig</em>. Verliert alle Daten bei Stromverlust. Hält nur die Daten, die die CPU in exakt diesem Moment verarbeitet.</p>
+            </div>
+            <div class="dark-card" style="border-left-color: #34d399;">
+                <h4 style="margin: 0 0 5px 0; color: #6ee7b7;">Sekundärspeicher (SSD / HDD / Cloud)</h4>
+                <p style="margin: 0; font-size: 0.9rem; color: #94a3b8;">Langsamer, aber <em>dauerhaft</em> (nicht-flüchtig). Bewahrt Betriebssysteme und Programme auf, bis sie für die Verarbeitung als "Eingabe" in den RAM geladen werden.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="reason-box">
+        <h2 style="margin-top: 0; color: #1e3a8a; text-align: center; margin-bottom: 2rem;">Warum ist das EVA-Prinzip so zentral?</h2>
+        <div class="grid-3" style="margin-bottom: 0;">
+            <div class="reason-card">
+                <div style="font-size: 2rem; margin-bottom: 10px;">🌍</div>
+                <h4 style="margin: 0 0 10px 0; color: #1e40af;">1. Universelle Gültigkeit</h4>
+                <p style="margin: 0; font-size: 0.9rem; color: var(--text-muted);">Es gilt nicht nur für PCs. Auch eine Waschmaschine (Sensoren, Mikrocontroller, Trommel/Pumpe) oder ein Ticketautomat arbeiten strikt nach EVA.</p>
+            </div>
+            <div class="reason-card">
+                <div style="font-size: 2rem; margin-bottom: 10px;">💻</div>
+                <h4 style="margin: 0 0 10px 0; color: #1e40af;">2. Struktur für Code</h4>
+                <p style="margin: 0; font-size: 0.9rem; color: var(--text-muted);">Hilft beim Programmieren: Eine gute Funktion nimmt Parameter an (Eingabe), berechnet Werte (Verarbeitung) und gibt ein Resultat zurück (Ausgabe).</p>
+            </div>
+            <div class="reason-card">
+                <div style="font-size: 2rem; margin-bottom: 10px;">🐞</div>
+                <h4 style="margin: 0 0 10px 0; color: #1e40af;">3. Systematische Fehlersuche</h4>
+                <p style="margin: 0; font-size: 0.9rem; color: var(--text-muted);">Ermöglicht logische Diagnosen: Liegt der Defekt bei der Eingabe (Sensor kaputt), Verarbeitung (Software-Bug) oder Ausgabe (Display defekt)?</p>
+            </div>
+        </div>
+    </section>
+
+    <section style="margin-top: 4rem;">
+        <h2 style="color: var(--text-dark); border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">Security-Check: EVA-Master</h2>
+        <p>Beweise dein Expertenwissen, um das Zertifikat für diese Einheit freizuschalten.</p>
+
+        <div class="quiz-question" id="q1-box">
+            <p><strong>1. Was ist das Hauptmerkmal eines Primärspeichers (wie dem RAM)?</strong></p>
+            <select id="q1-ans" class="quiz-select">
+                <option value="0">-- Bitte wählen --</option>
+                <option value="wrong1">Er speichert Daten dauerhaft ab, auch ohne Strom.</option>
+                <option value="correct">Er ist extrem schnell, aber flüchtig (Daten gehen bei Stromverlust verloren).</option>
+                <option value="wrong2">Er ist hauptsächlich für die Bildschirmausgabe zuständig.</option>
+            </select>
+            <br><button class="btn-check" onclick="checkAnswer(1, 'correct')">Prüfen</button>
+            <div id="q1-feedback" class="feedback"></div>
+        </div>
+
+        <div class="quiz-question" id="q2-box">
+            <p><strong>2. Zu welchem Teil des EVA-Prinzips gehört ein intelligentes Heizungsventil (Aktor), das sich automatisch aufdreht?</strong></p>
+            <select id="q2-ans" class="quiz-select">
+                <option value="0">-- Bitte wählen --</option>
+                <option value="wrong1">Eingabe (Input)</option>
+                <option value="wrong2">Verarbeitung</option>
+                <option value="correct">Ausgabe (Output)</option>
+            </select>
+            <br><button class="btn-check" onclick="checkAnswer(2, 'correct')">Prüfen</button>
+            <div id="q2-feedback" class="feedback"></div>
+        </div>
+
+        <div class="quiz-question" id="q3-box">
+            <p><strong>3. Warum ist das EVA-Prinzip bei der Reparatur von Systemen hilfreich?</strong></p>
+            <select id="q3-ans" class="quiz-select">
+                <option value="0">-- Bitte wählen --</option>
+                <option value="correct">Es ermöglicht eine systematische Fehlersuche (Diagnose) nach Stationen.</option>
+                <option value="wrong1">Es repariert kaputte Hardware (wie Sensoren) automatisch.</option>
+                <option value="wrong2">Es verschlüsselt die Daten auf der SSD vor Hackern.</option>
+            </select>
+            <br><button class="btn-check" onclick="checkAnswer(3, 'correct')">Prüfen</button>
+            <div id="q3-feedback" class="feedback"></div>
+        </div>
+    </section>
+
+    <div style="margin-top: 3rem; background: white; border: 2px solid var(--it-primary); padding: 2rem; border-radius: 8px; text-align: center;">
+        <h3 style="color: var(--it-dark); margin-top: 0;">Zertifikat generieren</h3>
+        <p>Erst wenn alle 3 Fragen grün markiert sind, kannst du das Ticket ausstellen.</p>
+        
+        <input type="text" id="student-name" style="width: 250px; padding: 10px; font-size: 1rem; border: 2px solid #cbd5e1; border-radius: 4px; margin-bottom: 10px; outline: none;" placeholder="Dein Vor- und Nachname">
+        <br>
+        <button class="btn-check" style="font-size: 1.1rem; padding: 12px 24px;" onclick="generateTicket()">Zertifikat erstellen</button>
+        <p id="ticket-error" style="color: #ef4444; font-weight: bold; display: none; margin-top: 15px;">Fehler: Bitte beantworte erst alle Fragen richtig und gib deinen Namen ein!</p>
+    </div>
+
+    <div id="certificate" class="ticket-container">
+        <div class="ticket-watermark">EVA</div>
+        <h2 style="margin: 0; color: #bae6fd;">SYSTEM-ARCHITEKT/IN</h2>
+        <div style="font-size: 2.5rem; font-weight: bold; margin: 1rem 0;">EXPERT-MODUS BESTANDEN</div>
+        <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px; font-family: monospace; font-size: 1.2rem; text-align: left; display: inline-block;">
+            <span style="color: #7dd3fc;">Name:</span> <span id="cert-name"></span><br>
+            <span style="color: #7dd3fc;">Thema:</span> EVA-S Prinzip & Architektur<br>
+            <span style="color: #7dd3fc;">Zeit:</span> <span id="cert-date"></span><br>
+            <span style="color: #7dd3fc;">Code:</span> <span id="cert-hash" style="color: #cbd5e1; font-size: 0.9rem;"></span>
+        </div>
+        <p style="margin-top: 25px; font-size: 1rem; font-weight: bold; color: #f1f5f9;">Bitte zeige diesen Bildschirm jetzt Prof. Schweitzer.</p>
+    </div>
+
+</main>
+
+<footer style="margin-top: 5rem; padding: 2rem 1rem; background-color: #f8fafc; border-top: 1px solid #e2e8f0; color: #64748b; font-size: 0.9rem;">
+    <div style="max-width: 800px; margin: 0 auto 2rem auto; text-align: left; background: white; padding: 1.5rem; border: 1px solid #cbd5e1; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+        <h4 style="margin-top: 0; color: #334155; font-size: 1.1rem;">Datenschutzhinweis (DSGVO)</h4>
+        <p style="margin-bottom: 0; line-height: 1.5;">Die Nutzung dieses Portals ist absolut datenschutzkonform. Es werden keine Eingaben an einen Server gesendet. Die Quiz-Auswertung und das Zertifikat werden rein lokal in deinem Browser erzeugt. Es sind keine externen Tracker oder Design-Frameworks eingebunden.</p>
+    </div>
+    <div style="text-align: center; font-weight: bold;">
+        &copy; 2026 | GvP | Mag. Schweitzer | Informatik 5. Klasse
+    </div>
+</footer>
+
+<script>
+    let solvedQuestions = { 1: false, 2: false, 3: false };
+
+    function checkAnswer(qNum, correctVal) {
+        let selectElement = document.getElementById('q' + qNum + '-ans');
+        let feedback = document.getElementById('q' + qNum + '-feedback');
+        let box = document.getElementById('q' + qNum + '-box');
+
+        if (selectElement.value === correctVal) {
+            feedback.innerHTML = "✅ Richtig!";
+            feedback.className = "feedback fb-correct";
+            feedback.style.display = "block";
+            box.style.borderLeftColor = "#10b981";
+            solvedQuestions[qNum] = true;
+        } else if (selectElement.value !== "0") {
+            feedback.innerHTML = "❌ Das stimmt noch nicht ganz. Lies den Text nochmal genau!";
+            feedback.className = "feedback fb-wrong";
+            feedback.style.display = "block";
+            box.style.borderLeftColor = "#ef4444";
+            solvedQuestions[qNum] = false;
+        }
+    }
+
+    function generateTicket() {
+        let name = document.getElementById('student-name').value.trim();
+        let errorMsg = document.getElementById('ticket-error');
+        
+        let allSolved = solvedQuestions[1] && solvedQuestions[2] && solvedQuestions[3];
+
+        if (!allSolved || name === "") {
+            errorMsg.style.display = "block";
+            return;
+        }
+
+        errorMsg.style.display = "none";
+        
+        document.getElementById('cert-name').innerText = name;
+        let now = new Date();
+        let timeString = now.toLocaleDateString('de-AT') + " | " + now.toLocaleTimeString('de-AT');
+        document.getElementById('cert-date').innerText = timeString;
+
+        let hash = "EVA-" + (name.length * 5) + "-" + now.getHours() + now.getMinutes() + "-SEC";
+        document.getElementById('cert-hash').innerText = hash;
+
+        document.getElementById('certificate').style.display = "block";
+        document.getElementById('certificate').scrolltoView({ behavior: 'smooth' });
+    }
+</script>
+
+</body>
+</html>

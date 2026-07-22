@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sichere Passwörter | Digitale Grundbildung</title>
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+        .component-card {
+            background: white;
+            border-left: 4px solid #f59e0b;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .component-card h3 {
+            color: #f59e0b;
+            margin-top: 0;
+        }
+        .component-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .password-example {
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            border: 2px solid #e2e8f0;
+        }
+        .weak {
+            background: #fee2e2;
+            color: #991b1b;
+            border-color: #fecaca;
+        }
+        .medium {
+            background: #fef3c7;
+            color: #92400e;
+            border-color: #fcd34d;
+        }
+        .strong {
+            background: #dcfce7;
+            color: #15803d;
+            border-color: #86efac;
+        }
+        .strength-meter {
+            width: 100%;
+            height: 10px;
+            background: #e2e8f0;
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 0.5rem 0;
+        }
+        .strength-bar {
+            height: 100%;
+            transition: width 0.3s;
+        }
+        .strength-bar.weak {
+            width: 33%;
+            background: #ef4444;
+        }
+        .strength-bar.medium {
+            width: 66%;
+            background: #f59e0b;
+        }
+        .strength-bar.strong {
+            width: 100%;
+            background: #10b981;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>🔐 Sichere Passwörter</h1>
+    <p>6. Klasse | Digitale Grundbildung</p>
+    <div class="back-nav">
+        <a href="../index.html" class="btn-back">⬅ Zurück</a>
+    </div>
+</header>
+
+<main style="max-width: 900px; margin: 0 auto; padding: 2rem 1rem;">
+
+    <section>
+        <h2>Warum sind sichere Passwörter wichtig?</h2>
+        <p>Dein Passwort ist wie der Schlüssel zu deinem Haus. Ein <strong>schwaches Passwort</strong> kann Hacker in wenigen Sekunden knacken!</p>
+    </section>
+
+    <section>
+        <h2>Anforderungen für sichere Passwörter</h2>
+
+        <div class="component-card">
+            <div class="component-icon">📏</div>
+            <h3>Mindestlänge: 12 Zeichen oder mehr</h3>
+            <p><strong>Warum:</strong> Längere Passwörter sind exponentiell schwerer zu knacken</p>
+            <p><strong>Faustregel:</strong> Mind. 12 Zeichen, noch besser 16-20+</p>
+        </div>
+
+        <div class="component-card">
+            <div class="component-icon">🔤</div>
+            <h3>Groß- und Kleinbuchstaben</h3>
+            <p><strong>Warum:</strong> Erhöht die Anzahl der möglichen Kombinationen</p>
+            <p><strong>Beispiel:</strong> "Passwort" ist besser als "passwort"</p>
+        </div>
+
+        <div class="component-card">
+            <div class="component-icon">🔢</div>
+            <h3>Zahlen und Sonderzeichen</h3>
+            <p><strong>Warum:</strong> Zahlen und Sonderzeichen (!@#$%^&*) sind schwer zu erraten</p>
+            <p><strong>Beispiel:</strong> "Pass2024!" ist besser als "Passwort"</p>
+        </div>
+
+        <div class="component-card">
+            <div class="component-icon">❌</div>
+            <h3>NICHT verwenden:</h3>
+            <ul>
+                <li>Dein Name oder Geburtsdatum</li>
+                <li>Wiederholende Zeichen (11111, aaaaa)</li>
+                <li>Tastatur-Muster (qwerty, asdfgh)</li>
+                <li>Häufige Wörter wie "password", "1234"</li>
+                <li>Wörter aus deinen sozialen Medien (Lieblingsfigur, Haustier-Name)</li>
+            </ul>
+        </div>
+    </section>
+
+    <section>
+        <h2>Passwort-Beispiele: Von schwach bis stark</h2>
+
+        <div style="margin: 2rem 0;">
+            <h3>❌ SCHWACHES Passwort</h3>
+            <div class="password-example weak">
+                password123
+            </div>
+            <div class="strength-meter">
+                <div class="strength-bar weak"></div>
+            </div>
+            <p><strong>Probleme:</strong> Nur 11 Zeichen, häufiges Wort, keine Sonderzeichen</p>
+            <p><strong>Knackbar in:</strong> Sekunden</p>
+        </div>
+
+        <div style="margin: 2rem 0;">
+            <h3>⚠️ MITTLERES Passwort</h3>
+            <div class="password-example medium">
+                MyPassword2024
+            </div>
+            <div class="strength-meter">
+                <div class="strength-bar medium"></div>
+            </div>
+            <p><strong>Besser:</strong> 14 Zeichen, Groß- und Kleinbuchstaben, Zahlen</p>
+            <p><strong>Aber:</strong> Kein Sonderzeichen, leicht erratbar (Jahreszahl!)</p>
+            <p><strong>Knackbar in:</strong> Stunden bis Tage</p>
+        </div>
+
+        <div style="margin: 2rem 0;">
+            <h3>✅ STARKES Passwort</h3>
+            <div class="password-example strong">
+                7kL@pQ2$mX9vR#w1
+            </div>
+            <div class="strength-meter">
+                <div class="strength-bar strong"></div>
+            </div>
+            <p><strong>Sehr gut:</strong> 16 Zeichen, Groß+Klein+Zahlen+Sonderzeichen</p>
+            <p><strong>Zufällig:</strong> Keine erkennbaren Muster</p>
+            <p><strong>Knackbar in:</strong> Jahren (praktisch unmöglich)</p>
+        </div>
+
+        <div style="margin: 2rem 0;">
+            <h3>✅ STARKES Passwort (mit Merksatz)</h3>
+            <div class="password-example strong">
+                Mk@T2B3&Sc5Ö
+            </div>
+            <p><strong>Merksatz-Technik:</strong> "Mein Kaninchen aß Tomaten zu Breakfast 3 Bananen&Spargel 5x Öl"</p>
+            <p><strong>Vorteil:</strong> Leicht zu merken, aber schwer zu erraten</p>
+        </div>
+    </section>
+
+    <section>
+        <h2>Zwei-Faktor-Authentifizierung (2FA)</h2>
+
+        <div class="component-card">
+            <div class="component-icon">📱</div>
+            <h3>Was ist 2FA?</h3>
+            <p>Du brauchst zwei verschiedene Dinge zum Einloggen:</p>
+            <ol>
+                <li><strong>Etwas, das du weißt:</strong> Dein Passwort</li>
+                <li><strong>Etwas, das du hast:</strong> Z.B. dein Handy</li>
+            </ol>
+            <p><strong>Vorteil:</strong> Selbst wenn jemand dein Passwort kennt, kann er nicht einloggen!</p>
+        </div>
+
+        <div style="background: #f0fdf4; padding: 1.5rem; border-radius: 8px; margin: 1rem 0;">
+            <h3>2FA Arten:</h3>
+            <ul style="line-height: 2;">
+                <li><strong>SMS-Code:</strong> Du bekommst einen Code per SMS</li>
+                <li><strong>Email-Code:</strong> Du bekommst einen Code per Email</li>
+                <li><strong>Authenticator App:</strong> Eine App wie Google Authenticator zeigt einen Code</li>
+                <li><strong>Sicherheitsschlüssel:</strong> Ein physischer USB-Schlüssel (sehr sicher!)</li>
+            </ul>
+        </div>
+    </section>
+
+    <section>
+        <h2>Passwort-Manager: Die beste Lösung</h2>
+
+        <div class="component-card">
+            <div class="component-icon">💼</div>
+            <h3>Was ist ein Passwort-Manager?</h3>
+            <p>Ein Programm, das deine Passwörter <strong>sicher speichert und verwaltet</strong>.</p>
+            <p><strong>Vorteil:</strong> Du brauchst nur EIN starkes Master-Passwort zu merken!</p>
+        </div>
+
+        <div style="background: #eff6ff; padding: 1.5rem; border-radius: 8px; margin: 1rem 0;">
+            <h3>Beliebte Passwort-Manager:</h3>
+            <ul style="line-height: 2;">
+                <li><strong>Bitwarden</strong> - Kostenlos, Open-Source, sehr sicher</li>
+                <li><strong>1Password</strong> - Premium, sehr benutzerfreundlich</li>
+                <li><strong>LastPass</strong> - Kostenlos mit Basis-Features</li>
+                <li><strong>KeePass</strong> - Kostenlos, selbst-gehostet</li>
+            </ul>
+        </div>
+
+        <div style="background: #fef3c7; padding: 1.5rem; border-radius: 8px; margin: 1rem 0;">
+            <h3>So funktioniert ein Passwort-Manager:</h3>
+            <ol style="line-height: 2;">
+                <li>Du erstellst 1 SEHR STARKES Master-Passwort</li>
+                <li>Der Manager generiert für jeden Service ein eigenes zufälliges Passwort</li>
+                <li>Der Manager speichert alle Passwörter verschlüsselt</li>
+                <li>Wenn du dich einloggen möchtest, füllt der Manager das Passwort automatisch aus</li>
+                <li>Nur du kennst das Master-Passwort - niemand anderes!</li>
+            </ol>
+        </div>
+    </section>
+
+    <section style="background: #e0f2fe; padding: 1.5rem; border-radius: 8px; margin-top: 2rem;">
+        <h3>💡 Merksätze</h3>
+        <p><strong>Mind. 12 Zeichen:</strong> Groß + Klein + Zahlen + Sonderzeichen = SICHER</p>
+        <p><strong>Niemals:</strong> Dein Name, Geburtsdatum, oder häufige Wörter</p>
+        <p><strong>Best Practice:</strong> Einzigartiges Passwort für jeden Account + Passwort-Manager</p>
+    </section>
+
+</main>
+
+<footer style="text-align: center; padding: 2rem; color: #64748b; font-size: 0.9rem;">
+    &copy; 2026 | GvP | Mag. Schweitzer | Digitale Grundbildung
+</footer>
+
+</body>
+</html>

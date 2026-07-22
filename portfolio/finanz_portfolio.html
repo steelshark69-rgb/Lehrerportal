@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Echtzeit Kurs-Dashboard - Mein Portfolio</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        body {
+            background-color: #0f172a;
+            color: #f8fafc;
+        }
+        .flash-update {
+            animation: flash 1s ease-out;
+        }
+        @keyframes flash {
+            0% { background-color: rgba(59, 130, 246, 0.3); }
+            100% { background-color: transparent; }
+        }
+    </style>
+</head>
+<body class="p-6 md:p-12">
+
+    <div class="max-w-7xl mx-auto">
+        
+        <!-- Header -->
+        <header class="mb-6 text-center md:text-left">
+            <h1 class="text-3xl md:text-4xl font-bold text-blue-400 mb-2">Mein Portfolio Dashboard</h1>
+            <p class="text-slate-400">Verwalte deine Bestände lokal mit Realtime Kursen (CoinGecko & Finnhub)</p>
+        </header>
+
+        <!-- Navigation zwischen den Seiten -->
+        <nav class="flex flex-wrap gap-4 mb-10 justify-center md:justify-start">
+            <a href="finanz_hauptwerte.html" class="px-5 py-2.5 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-lg font-semibold transition-colors duration-200">
+                📈 Hauptwerte (Charts)
+            </a>
+            <a href="finanz_altcoins.html" class="px-5 py-2.5 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-lg font-semibold transition-colors duration-200">
+                📋 Altcoin Watchlist
+            </a>
+            <a href="finanz_portfolio.html" class="px-5 py-2.5 bg-blue-600 text-white rounded-lg font-semibold shadow-lg">
+                💼 Mein Portfolio (Bestände)
+            </a>
+        </nav>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <!-- Linke Spalte (Eingaben) -->
+            <div class="lg:col-span-1 space-y-6">
+                
+                <!-- Portfolio Formular -->
+                <div class="bg-slate-800 rounded-xl p-6 shadow-lg border border-slate-700">
+                    <h2 class="text-xl font-bold mb-6 text-slate-200">Neuen Wert eintragen</h2>
+                    
+                    <form id="portfolio-form" class="space-y-4">
+                        <div class="flex gap-4 mb-2 p-3 bg-slate-900 rounded-lg border border-slate-700">
+                            <label class="flex items-center text-slate-300 cursor-pointer">
+                                <input type="radio" name="asset-type" value="crypto" checked class="mr-2 w-4 h-4 text-blue-600 bg-slate-700 border-slate-500 focus:ring-blue-500">
+                                Krypto
+                            </label>
+                            <label class="flex items-center text-slate-300 cursor-pointer">
+                                <input type="radio" name="asset-type" value="stock" class="mr-2 w-4 h-4 text-blue-600 bg-slate-700 border-slate-500 focus:ring-blue-500">
+                                US-Aktie
+                            </label>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-slate-400 mb-1">Ticker (z.B. BTC, PIN, RTX, COIN)</label>
+                            <input type="text" id="asset-name" required class="w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-2 text-white uppercase focus:outline-none focus:border-blue-500" placeholder="z.B. BTC">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-slate-400 mb-1">Menge / Bestand</label>
+                            <input type="number" step="any" id="asset-amount" required class="w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-blue-500" placeholder="z.B. 0.05">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-slate-400 mb-1">Dein Kaufpreis in $ (Ø)</label>
+                            <input type="number" step="any" id="asset-price" class="w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-blue-500" placeholder="z.B. 60000">
+                        </div>
+
+                        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-4 rounded-lg transition duration-200 mt-4">
+                            Speichern
+                        </button>
+                    </form>
+                </div>
+
+                <!-- API Key Einstellungen für Aktien -->
+                <div class="bg-slate-800 rounded-xl p-6 shadow-lg border border-slate-700">
+                    <h2 class="text-lg font-bold mb-3 text-slate-200">API Einstellungen (Aktien)</h2>
+                    <p class="text-xs text-slate-400 mb-4">Für Aktien-Kurse wird ein kostenloser API-Key von <a href="https://finnhub.io/" target="_blank" class="text-blue-400 underline">Finnhub.io</a> benötigt.</p>
+                    
+                    <div class="space-y-2">
+                        <input type="text" id="finnhub-api-key" class="w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-2 text-white text-sm focus:outline-none focus:border-purple-500" placeholder="Finnhub API Key hier einfügen...">
+                        <button onclick="saveApiKey()" class="w-full bg-purple-600 hover:bg-purple-500 text-white text-sm font-bold py-2 px-4 rounded-lg transition duration-200">
+                            Key lokal speichern
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Bestandsübersicht (Rechte Spalte) -->
+            <div class="lg:col-span-2">
+                <div class="bg-slate-800 rounded-xl p-6 shadow-lg border border-slate-700">
+                    
+                    <!-- Top Bar mit Live Gesamtwerten -->
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 bg-slate-900 p-4 rounded-lg border border-slate-700 shadow-inner">
+                        <div>
+                            <h2 class="text-xl font-bold text-slate-200">Dein Portfolio</h2>
+                            <div class="text-sm text-slate-400 mt-1">Investiert: <span id="total-invested">0.00 $</span></div>
+                        </div>
+                        <div class="text-left md:text-right mt-3 md:mt-0">
+                            <div class="text-sm text-slate-400">Aktueller Live-Wert</div>
+                            <div id="total-live-value" class="text-3xl font-bold font-mono text-white transition-colors duration-300">0.00 $</div>
+                            <!-- NEU: EUR Anzeige -->
+                            <div id="total-live-value-eur" class="text-sm font-bold font-mono text-blue-300 mt-0.5 opacity-80">~ 0,00 €</div>
+                            <div id="total-pnl" class="text-sm font-mono mt-1 font-bold">0.00 $ (0.00%)</div>
+                        </div>
+                    </div>
+
+                    <!-- NEU: Visual Dashboard (Aufteilung & Top 10) -->
+                    <div id="portfolio-visuals" class="mb-6 bg-slate-900 p-5 rounded-lg border border-slate-700 hidden">
+                        <!-- Asset Aufteilung -->
+                        <div class="mb-6">
+                            <h3 class="text-xs font-bold text-slate-400 mb-2 uppercase tracking-wider">Asset Aufteilung</h3>
+                            <div class="h-4 w-full bg-slate-800 rounded-full flex overflow-hidden mb-2 shadow-inner">
+                                <div id="bar-crypto" class="bg-blue-500 h-full transition-all duration-500" style="width: 0%"></div>
+                                <div id="bar-stock" class="bg-purple-500 h-full transition-all duration-500" style="width: 0%"></div>
+                            </div>
+                            <div class="flex justify-between text-xs font-mono text-slate-300">
+                                <div class="flex items-center"><span class="w-2 h-2 rounded-full bg-blue-500 mr-2"></span> Krypto: <span id="pct-crypto" class="ml-1 font-bold text-white">0%</span></div>
+                                <div class="flex items-center"><span class="w-2 h-2 rounded-full bg-purple-500 mr-2"></span> Aktien: <span id="pct-stock" class="ml-1 font-bold text-white">0%</span></div>
+                            </div>
+                        </div>
+
+                        <!-- Top 10 List -->
+                        <div>
+                            <h3 class="text-xs font-bold text-slate-400 mb-3 uppercase tracking-wider">Top Positionen</h3>
+                            <div id="top-positions-list" class="space-y-2.5">
+                                <!-- JS populated -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lade-Indikator für API -->
+                    <div id="api-status" class="text-xs text-blue-400 mb-4 flex items-center gap-2">
+                        <span class="relative flex h-3 w-3">
+                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                          <span class="relative inline-flex rounded-full h-3 w-3 bg-blue-500"></span>
+                        </span>
+                        Verbinde mit APIs...
+                    </div>
+
+                    <!-- Hier werden die Portfolio-Karten durch JavaScript generiert -->
+                    <div id="portfolio-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <p class="text-slate-500 italic col-span-full text-center py-8" id="empty-state">Noch keine Bestände eingetragen.</p>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- JavaScript für Portfolio Logik & API Abruf -->
+    <script>
+        let portfolio = JSON.parse(localStorage.getItem('myFinPortfolio')) || [];
+        let livePrices = {}; 
+        let updateInterval;
+        let usdToEurRate = 0.95; // Initialer Fallback
+
+        const form = document.getElementById('portfolio-form');
+        const grid = document.getElementById('portfolio-grid');
+        const totalInvestedEl = document.getElementById('total-invested');
+        const totalLiveValueEl = document.getElementById('total-live-value');
+        const totalLiveValueEurEl = document.getElementById('total-live-value-eur');
+        const totalPnlEl = document.getElementById('total-pnl');
+        const apiStatusEl = document.getElementById('api-status');
+        const apiKeyInput = document.getElementById('finnhub-api-key');
+        const visualsEl = document.getElementById('portfolio-visuals');
+
+        const formatCur = (val) => Number(val).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' $';
+        const formatEur = (val) => Number(val).toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
+
+        // Lade API Key beim Start in das Input-Feld
+        if(localStorage.getItem('finnhubApiKey')) {
+            apiKeyInput.value = localStorage.getItem('finnhubApiKey');
+        }
+
+        function saveApiKey() {
+            const key = apiKeyInput.value.trim();
+            localStorage.setItem('finnhubApiKey', key);
+            alert('API Key lokal gespeichert! Aktienkurse werden nun geladen.');
+            fetchLivePrices(); 
+        }
+
+        // --- NEU: Live Wechselkurs abrufen ---
+        async function fetchExchangeRate() {
+            try {
+                let res = await fetch('https://open.er-api.com/v6/latest/USD');
+                if (res.ok) {
+                    let data = await res.json();
+                    if (data && data.rates && data.rates.EUR) {
+                        usdToEurRate = data.rates.EUR;
+                    }
+                }
+            } catch (e) {
+                console.warn("Konnte EUR Wechselkurs nicht laden, nutze Fallback.", e);
+            }
+        }
+
+        // 1. Portfolio in HTML generieren (Unsortiert als Basis)
+        function renderPortfolioGrid() {
+            grid.innerHTML = '';
+            
+            if (portfolio.length === 0) {
+                grid.innerHTML = '<p class="text-slate-500 italic col-span-full text-center py-8">Noch keine Bestände eingetragen.</p>';
+                updateTotals(); 
+                return;
+            }
+
+            portfolio.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.id = `card-${index}`;
+                // Tailwind flexbox order respects the inline style order wir set later!
+                card.className = 'bg-slate-700 rounded-lg p-4 flex flex-col justify-between border border-slate-600 transition-all duration-300';
+                
+                const typeBadge = (!item.type || item.type === 'crypto') 
+                    ? '<span class="bg-blue-900 text-blue-300 text-[10px] px-2 py-0.5 rounded ml-2 align-middle">KRYPTO</span>' 
+                    : '<span class="bg-purple-900 text-purple-300 text-[10px] px-2 py-0.5 rounded ml-2 align-middle">AKTIE</span>';
+
+                card.innerHTML = `
+                    <div class="flex justify-between items-start mb-3">
+                        <h3 class="text-xl font-bold text-slate-100 uppercase truncate pr-2">${item.name} ${typeBadge}</h3>
+                        <button onclick="deleteItem(${index})" class="text-slate-400 hover:text-red-400 transition-colors flex-shrink-0" title="Löschen">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-y-2 text-sm border-b border-slate-600 pb-3 mb-3">
+                        <div class="text-slate-400">Bestand:</div>
+                        <div class="text-white font-mono text-right">${item.amount}</div>
+                        <div class="text-slate-400">Kaufpreis (Ø):</div>
+                        <div class="text-white font-mono text-right">${item.price !== null && item.price !== undefined ? formatCur(item.price) : 'k.A.'}</div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-y-2 text-sm">
+                        <div class="text-slate-400">Live Preis:</div>
+                        <div id="live-price-${index}" class="text-white font-mono text-right">Lade...</div>
+                        
+                        <div class="text-slate-400">Aktueller Wert:</div>
+                        <div id="live-value-${index}" class="text-white font-bold font-mono text-right">Lade...</div>
+                        
+                        <div class="text-slate-400">G/V:</div>
+                        <div id="live-pnl-${index}" class="font-bold font-mono text-right">---</div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+            
+            updateTotals();
+        }
+
+        // 2. Echtzeit Kurse über CoinGecko (Krypto) & Finnhub (Aktien) holen
+        async function fetchLivePrices() {
+            if (portfolio.length === 0) {
+                apiStatusEl.innerHTML = '<span class="text-slate-400">Warte auf Eingaben...</span>';
+                return;
+            }
+
+            try {
+                let cryptos = portfolio.filter(p => !p.type || p.type === 'crypto');
+                let stocks = portfolio.filter(p => p.type === 'stock');
+                let statusMessage = [];
+
+                // --- SCHRITT A: COINGECKO FÜR KRYPTOS ---
+                if (cryptos.length > 0) {
+                    let missingCg = cryptos.filter(c => !c.cgId && c.cgId !== 'NOT_FOUND');
+                    for (let c of missingCg) {
+                        try {
+                            let res = await fetch(`https://api.coingecko.com/api/v3/search?query=${c.name}`);
+                            let data = await res.json();
+                            let match = data.coins.find(x => x.symbol.toUpperCase() === c.name.toUpperCase());
+                            c.cgId = match ? match.id : 'NOT_FOUND';
+                        } catch (e) { console.warn("CoinGecko Search Error", e); }
+                    }
+                    
+                    if (missingCg.length > 0) localStorage.setItem('myFinPortfolio', JSON.stringify(portfolio));
+
+                    let cgIdsToFetch = cryptos.filter(c => c.cgId && c.cgId !== 'NOT_FOUND').map(c => c.cgId).join(',');
+                    if (cgIdsToFetch) {
+                        try {
+                            let res = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${cgIdsToFetch}&vs_currencies=usd`);
+                            let data = await res.json();
+                            cryptos.forEach(c => {
+                                if (c.cgId && data[c.cgId] && data[c.cgId].usd) {
+                                    livePrices[c.name.toUpperCase()] = data[c.cgId].usd;
+                                }
+                            });
+                            statusMessage.push("Krypto ok");
+                        } catch (e) { console.warn("CoinGecko Price Error", e); }
+                    }
+                }
+
+                // --- SCHRITT B: FINNHUB FÜR AKTIEN ---
+                if (stocks.length > 0) {
+                    const apiKey = localStorage.getItem('finnhubApiKey');
+                    if (!apiKey) {
+                        statusMessage.push("<span class='text-red-400'>API Key für Aktien fehlt!</span>");
+                    } else {
+                        let stockSuccess = true;
+                        for (let s of stocks) {
+                            let sym = s.name.toUpperCase();
+                            try {
+                                let res = await fetch(`https://finnhub.io/api/v1/quote?symbol=${sym}&token=${apiKey}`);
+                                if (res.ok) {
+                                    let data = await res.json();
+                                    if (data.c && data.c > 0) {
+                                        livePrices[sym] = data.c;
+                                    }
+                                } else {
+                                    stockSuccess = false;
+                                }
+                            } catch (e) {
+                                console.warn("Finnhub Error für", sym, e);
+                                stockSuccess = false;
+                            }
+                        }
+                        if(stockSuccess) {
+                            statusMessage.push("Aktien ok");
+                        } else {
+                            statusMessage.push("<span class='text-orange-400'>Aktien-Limit erreicht?</span>");
+                        }
+                    }
+                }
+
+                if(statusMessage.length > 0) {
+                    apiStatusEl.innerHTML = `<span class="text-green-400 flex items-center gap-1"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Live-Kurse aktiv (${statusMessage.join(' | ')})</span>`;
+                }
+
+                updateTotals();
+
+            } catch (error) {
+                console.error("Fehler beim API-Abruf:", error);
+                apiStatusEl.innerHTML = '<span class="text-red-400 flex items-center gap-1">⚠ Netzwerkfehler beim Aktualisieren.</span>';
+            }
+        }
+
+        // 3. Karten, Sortierung und Dashboard mit Live-Daten updaten
+        function updateTotals() {
+            let totalInvested = 0;
+            let totalCurrent = 0;
+            let cryptoValue = 0;
+            let stockValue = 0;
+            
+            let mappedItems = []; // Für die Sortierung und das Dashboard speichern wir die Daten zwischen
+
+            portfolio.forEach((item, index) => {
+                const investValue = item.amount * (item.price || 0);
+                totalInvested += investValue;
+
+                let sym = item.name.toUpperCase().trim();
+                let currentPrice = livePrices[sym] || item.price || 0; 
+                const currentValue = item.amount * currentPrice;
+                
+                totalCurrent += currentValue;
+
+                // Werte für die Aufteilung sammeln
+                if (!item.type || item.type === 'crypto') {
+                    cryptoValue += currentValue;
+                } else {
+                    stockValue += currentValue;
+                }
+
+                // Array für spätere Sortierung füllen
+                mappedItems.push({ index, item, currentPrice, currentValue, investValue });
+
+                // DOM Elemente (Einzelne Kacheln) aktualisieren
+                const priceEl = document.getElementById(`live-price-${index}`);
+                const valueEl = document.getElementById(`live-value-${index}`);
+                const pnlEl = document.getElementById(`live-pnl-${index}`);
+                const cardEl = document.getElementById(`card-${index}`);
+
+                if (priceEl && valueEl && pnlEl) {
+                    if(priceEl.innerText !== formatCur(currentPrice) && priceEl.innerText !== "Lade...") {
+                        cardEl.classList.add('flash-update');
+                        setTimeout(() => cardEl.classList.remove('flash-update'), 1000);
+                    }
+
+                    if (currentPrice === 0 && !item.price) {
+                        if (item.type === 'stock' && !localStorage.getItem('finnhubApiKey')) {
+                            priceEl.innerText = "API Key fehlt";
+                        } else {
+                            priceEl.innerText = (item.type === 'crypto' && item.cgId === 'NOT_FOUND') ? "Symbol unbekannt" : "Lädt / Fehler";
+                        }
+                        valueEl.innerText = "0.00 $";
+                    } else {
+                        priceEl.innerText = formatCur(currentPrice);
+                        valueEl.innerText = formatCur(currentValue);
+                    }
+
+                    if (item.price !== null && item.price >= 0 && currentPrice > 0) {
+                        const pnl = currentValue - investValue;
+                        const pnlPercent = investValue > 0 ? (pnl / investValue) * 100 : 0;
+                        const sign = pnl >= 0 ? '+' : '';
+                        const percentStr = investValue > 0 ? ` (${sign}${pnlPercent.toFixed(2)}%)` : '';
+                        
+                        pnlEl.innerText = `${sign}${formatCur(pnl)}${percentStr}`;
+                        pnlEl.className = `font-bold font-mono text-right ${pnl >= 0 ? 'text-green-400' : 'text-red-400'}`;
+                    } else {
+                        pnlEl.innerText = '---';
+                        pnlEl.className = 'font-bold font-mono text-right text-slate-500';
+                    }
+                }
+            });
+
+            // --- NEU: Visual Dashboard aktualisieren ---
+            if (portfolio.length > 0 && totalCurrent > 0) {
+                visualsEl.classList.remove('hidden');
+
+                // Aufteilungs-Balken
+                const cryptoPct = (cryptoValue / totalCurrent * 100).toFixed(1);
+                const stockPct = (stockValue / totalCurrent * 100).toFixed(1);
+                
+                document.getElementById('bar-crypto').style.width = `${cryptoPct}%`;
+                document.getElementById('bar-stock').style.width = `${stockPct}%`;
+                document.getElementById('pct-crypto').innerText = `${cryptoPct}%`;
+                document.getElementById('pct-stock').innerText = `${stockPct}%`;
+
+                // Top 10 sortieren & rendern
+                mappedItems.sort((a, b) => b.currentValue - a.currentValue);
+                
+                // CSS Grid/Flexbox Sortierung für die physischen Kacheln anwenden
+                mappedItems.forEach((mItem, rank) => {
+                    const cardEl = document.getElementById(`card-${mItem.index}`);
+                    if(cardEl) cardEl.style.order = rank;
+                });
+
+                let topHtml = '';
+                let top10 = mappedItems.slice(0, 10);
+                let restValue = mappedItems.slice(10).reduce((sum, el) => sum + el.currentValue, 0);
+
+                top10.forEach((mItem, i) => {
+                    let pct = (mItem.currentValue / totalCurrent * 100).toFixed(1);
+                    let barColor = (!mItem.item.type || mItem.item.type === 'crypto') ? 'bg-blue-500' : 'bg-purple-500';
+                    
+                    topHtml += `
+                        <div class="flex items-center text-sm group">
+                            <div class="w-6 text-slate-500 font-mono text-xs">${i+1}.</div>
+                            <div class="w-20 font-bold text-slate-200 truncate pr-2">${mItem.item.name}</div>
+                            <div class="flex-grow bg-slate-800 h-2 rounded-full mx-2 overflow-hidden shadow-inner">
+                                <div class="${barColor} h-full rounded-full transition-all duration-500" style="width: ${pct}%"></div>
+                            </div>
+                            <div class="w-24 text-right text-slate-300 font-mono text-xs">${formatCur(mItem.currentValue)}</div>
+                            <div class="w-14 text-right text-slate-400 font-mono text-xs">${pct}%</div>
+                        </div>
+                    `;
+                });
+
+                // "Rest" Position hinzufügen, falls es mehr als 10 Coins/Aktien gibt
+                if (restValue > 0) {
+                    let restPct = (restValue / totalCurrent * 100).toFixed(1);
+                    topHtml += `
+                        <div class="flex items-center text-sm mt-3 pt-3 border-t border-slate-700/50">
+                            <div class="w-6 text-slate-600 font-mono text-xs">-</div>
+                            <div class="w-20 font-bold text-slate-400 italic">Sonstige</div>
+                            <div class="flex-grow bg-slate-800 h-2 rounded-full mx-2 overflow-hidden">
+                                <div class="bg-slate-500 h-full rounded-full transition-all duration-500" style="width: ${restPct}%"></div>
+                            </div>
+                            <div class="w-24 text-right text-slate-400 font-mono text-xs">${formatCur(restValue)}</div>
+                            <div class="w-14 text-right text-slate-500 font-mono text-xs">${restPct}%</div>
+                        </div>
+                    `;
+                }
+
+                document.getElementById('top-positions-list').innerHTML = topHtml;
+            } else {
+                visualsEl.classList.add('hidden');
+            }
+
+            // --- Gesamtsummen (Header) aktualisieren ---
+            totalInvestedEl.innerText = formatCur(totalInvested);
+            totalLiveValueEl.innerText = formatCur(totalCurrent);
+            
+            // EUR Umrechnung anzeigen
+            if(totalCurrent > 0) {
+                totalLiveValueEurEl.innerText = '~ ' + formatEur(totalCurrent * usdToEurRate);
+            } else {
+                totalLiveValueEurEl.innerText = '~ 0,00 €';
+            }
+
+            const totalPnl = totalCurrent - totalInvested;
+            if (portfolio.length > 0) {
+                const totalPnlPercent = totalInvested > 0 ? (totalPnl / totalInvested) * 100 : 0;
+                const totalSign = totalPnl >= 0 ? '+' : '';
+                const totalPctStr = totalInvested > 0 ? ` (${totalSign}${totalPnlPercent.toFixed(2)}%)` : '';
+                
+                totalPnlEl.innerText = `${totalSign}${formatCur(totalPnl)}${totalPctStr}`;
+                
+                totalLiveValueEl.classList.remove('text-white', 'text-green-400', 'text-red-400');
+                totalPnlEl.classList.remove('text-white', 'text-green-400', 'text-red-400');
+                
+                if (totalPnl > 0) {
+                    totalLiveValueEl.classList.add('text-green-400');
+                    totalPnlEl.classList.add('text-green-400');
+                } else if (totalPnl < 0) {
+                    totalLiveValueEl.classList.add('text-red-400');
+                    totalPnlEl.classList.add('text-red-400');
+                } else {
+                    totalLiveValueEl.classList.add('text-white');
+                    totalPnlEl.classList.add('text-slate-400');
+                }
+            } else {
+                totalPnlEl.innerText = '0.00 $ (0.00%)';
+                totalLiveValueEl.classList.add('text-white');
+            }
+        }
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const typeInput = document.querySelector('input[name="asset-type"]:checked').value;
+            const nameInput = document.getElementById('asset-name').value.trim().toUpperCase();
+            const amountInput = parseFloat(document.getElementById('asset-amount').value);
+            const priceInput = document.getElementById('asset-price').value !== "" ? parseFloat(document.getElementById('asset-price').value) : null;
+
+            const existingIndex = portfolio.findIndex(item => item.name === nameInput && item.type === typeInput);
+
+            if (existingIndex >= 0) {
+                portfolio[existingIndex].amount = amountInput;
+                if (priceInput !== null) portfolio[existingIndex].price = priceInput;
+            } else {
+                portfolio.push({ 
+                    name: nameInput, 
+                    amount: amountInput, 
+                    price: priceInput,
+                    type: typeInput,
+                    cgId: null
+                });
+            }
+
+            localStorage.setItem('myFinPortfolio', JSON.stringify(portfolio));
+            
+            form.reset();
+            document.getElementById('asset-name').focus();
+            
+            renderPortfolioGrid();
+            fetchLivePrices(); 
+        });
+
+        window.deleteItem = function(index) {
+            if(confirm('Möchtest du diesen Eintrag wirklich löschen?')) {
+                portfolio.splice(index, 1);
+                localStorage.setItem('myFinPortfolio', JSON.stringify(portfolio));
+                renderPortfolioGrid();
+            }
+        };
+
+        // --- Startsequenz ---
+        fetchExchangeRate().then(() => {
+            renderPortfolioGrid();       
+            fetchLivePrices();           
+        });
+        
+        // Aktualisierung alle 30 Sekunden (verhindert Rate-Limits bei Finnhub Free Tier)
+        updateInterval = setInterval(fetchLivePrices, 30000);
+
+    </script>
+</body>
+</html>

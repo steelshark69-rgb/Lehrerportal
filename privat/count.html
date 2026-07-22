@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Mein Zähler</title>
+    <!-- Tailwind CSS via CDN für das Styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js für das Balkendiagramm -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Phosphor Icons für die Symbole -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2563eb',
+                        success: '#10b981',
+                        pinky: '#ec4899',
+                        danger: '#ef4444',
+                        purpley: '#8b5cf6'
+                    },
+                    fontFamily: {
+                        sans: ['system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Versteckt die Scrollbar für ein sauberes App-Feeling, erlaubt aber Scrollen */
+        ::-webkit-scrollbar {
+            display: none;
+        }
+        body {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        /* Custom Checkbox Animationen */
+        .custom-checkbox-wrapper input:checked + div {
+            background-color: #2563eb;
+            border-color: #2563eb;
+        }
+        .custom-checkbox-wrapper input:checked + div svg {
+            display: block;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen">
+
+    <!-- DSGVO Hinweis (Nur für den Code, unsichtbar) -->
+    <!-- Diese App speichert alle Daten lokal im Browser (localStorage). Es werden keine Daten an externe Server gesendet. -->
+
+    <!-- Mobile Container (Max width constraint for desktop viewing) -->
+    <div class="max-w-md mx-auto relative min-h-screen pb-24">
+        
+        <!-- Header / Main Content -->
+        <div class="p-4 space-y-4">
+            
+            <!-- Top Cards -->
+            <div class="grid grid-cols-3 gap-2">
+                <!-- Dieses Jahr -->
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-3 flex flex-col justify-between">
+                    <div>
+                        <div class="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center mb-2">
+                            <i class="ph ph-calendar-blank text-lg"></i>
+                        </div>
+                        <div class="text-slate-500 text-[11px] font-medium mb-0.5 leading-tight">Dieses Jahr</div>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-bold text-slate-900 leading-tight" id="stat-current-year">0</div>
+                        <div class="text-slate-400 text-[10px] mt-0.5 whitespace-nowrap" id="stat-days-passed">In 0 Tagen</div>
+                    </div>
+                </div>
+                
+                <!-- Hochrechnung -->
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-3 flex flex-col justify-between">
+                    <div>
+                        <div class="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center mb-2">
+                            <i class="ph ph-trend-up text-lg"></i>
+                        </div>
+                        <div class="text-slate-500 text-[11px] font-medium mb-0.5 leading-tight">Hochrechnung</div>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-bold text-slate-900 leading-tight" id="stat-projection">0</div>
+                        <div class="text-slate-400 text-[10px] mt-0.5 whitespace-nowrap">Bis Jahresende</div>
+                    </div>
+                </div>
+
+                <!-- Ziel 100 -->
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-3 flex flex-col justify-between">
+                    <div>
+                        <div class="w-8 h-8 rounded-full bg-purple-500 text-white flex items-center justify-center mb-2">
+                            <i class="ph ph-flag text-lg"></i>
+                        </div>
+                        <div class="text-slate-500 text-[11px] font-medium mb-0.5 leading-tight">Ziel 100</div>
+                    </div>
+                    <div>
+                        <div class="text-base font-bold text-slate-900 leading-tight truncate" id="stat-target-100">--.--.----</div>
+                        <div class="text-slate-400 text-[10px] mt-0.5" id="stat-target-100-days">In -- Tagen</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Summary Stats -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-4 flex justify-between text-center">
+                <div class="flex-1 border-r border-slate-100 last:border-0">
+                    <div class="text-[10px] font-bold text-blue-500 tracking-wider mb-1 uppercase">Michael</div>
+                    <div class="text-xl font-bold text-slate-900" id="stat-opt1">0</div>
+                </div>
+                <div class="flex-1 border-r border-slate-100 last:border-0">
+                    <div class="text-[10px] font-bold text-pink-500 tracking-wider mb-1 uppercase">Sabine</div>
+                    <div class="text-xl font-bold text-slate-900" id="stat-opt2">0</div>
+                </div>
+                <div class="flex-1 border-r border-slate-100 last:border-0">
+                    <div class="text-[10px] font-bold text-purple-500 tracking-wider mb-1 uppercase">Beide</div>
+                    <div class="text-xl font-bold text-slate-900" id="stat-opt3">0</div>
+                </div>
+                <div class="flex-1">
+                    <div class="text-[10px] font-bold text-red-500 tracking-wider mb-1 uppercase">Leider Nein</div>
+                    <div class="text-xl font-bold text-slate-900" id="stat-opt4">0</div>
+                </div>
+            </div>
+
+            <!-- Chart -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-5">
+                <div class="flex items-center gap-2 mb-4 font-bold text-slate-900">
+                    <i class="ph ph-chart-bar text-blue-500 text-xl"></i>
+                    Verlauf
+                </div>
+                <div class="relative h-48 w-full">
+                    <canvas id="historyChart"></canvas>
+                </div>
+            </div>
+
+            <!-- List Header -->
+            <div class="flex justify-between items-end mt-8 mb-4 px-1">
+                <h2 class="text-lg font-bold text-slate-900">Letzte Einträge</h2>
+                <span class="text-slate-400 text-xs font-medium" id="stat-total-entries">0 Gesamt</span>
+            </div>
+
+            <!-- List of Entries -->
+            <div id="entries-list" class="space-y-3">
+                <!-- Entries will be injected here via JS -->
+            </div>
+
+        </div>
+
+        <!-- Floating Action Button -->
+        <button onclick="openModal()" class="fixed bottom-6 right-6 w-14 h-14 bg-blue-600 rounded-full shadow-lg shadow-blue-600/30 text-white flex items-center justify-center hover:bg-blue-700 transition-transform active:scale-95 z-40 lg:absolute">
+            <i class="ph ph-plus text-2xl"></i>
+        </button>
+
+    </div>
+
+    <!-- Modal Backdrop -->
+    <div id="modal-backdrop" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 hidden opacity-0 transition-opacity duration-300">
+        
+        <!-- Modal Content -->
+        <div class="fixed bottom-0 left-0 right-0 bg-white rounded-t-3xl p-6 transform translate-y-full transition-transform duration-300 max-h-[90vh] overflow-y-auto sm:max-w-md sm:mx-auto sm:relative sm:rounded-3xl sm:top-1/2 sm:-translate-y-1/2 sm:bottom-auto" id="modal-content">
+            
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-bold text-slate-900">Neuer Eintrag</h2>
+                <button onclick="closeModal()" class="w-8 h-8 flex items-center justify-center bg-slate-100 rounded-full text-slate-500">
+                    <i class="ph ph-x"></i>
+                </button>
+            </div>
+
+            <!-- Form -->
+            <form id="entry-form" onsubmit="saveEntry(event)">
+                
+                <div class="mb-6">
+                    <label class="block text-xs font-bold text-slate-400 tracking-wider mb-2 uppercase">Datum</label>
+                    <div class="relative">
+                        <i class="ph ph-calendar-blank absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg pointer-events-none"></i>
+                        <input type="date" id="entry-date" required class="w-full bg-slate-50 border border-slate-100 rounded-xl py-3 pl-12 pr-4 text-slate-900 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all appearance-none">
+                    </div>
+                </div>
+
+                <div class="mb-8">
+                    <label class="block text-xs font-bold text-slate-400 tracking-wider mb-2 uppercase">Optionen</label>
+                    <div class="space-y-3">
+                        
+                        <!-- Checkbox 1 -->
+                        <label class="custom-checkbox-wrapper flex items-center justify-between p-4 bg-white border border-slate-200 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors">
+                            <span class="font-semibold text-slate-700">Michael</span>
+                            <input type="checkbox" id="opt-michael" class="peer hidden">
+                            <div class="w-6 h-6 rounded-full border-2 border-slate-200 flex items-center justify-center transition-colors">
+                                <i class="ph ph-check text-white text-sm hidden"></i>
+                            </div>
+                        </label>
+
+                        <!-- Checkbox 2 -->
+                        <label class="custom-checkbox-wrapper flex items-center justify-between p-4 bg-white border border-slate-200 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors">
+                            <span class="font-semibold text-slate-700">Sabine</span>
+                            <input type="checkbox" id="opt-sabine" class="peer hidden">
+                            <div class="w-6 h-6 rounded-full border-2 border-slate-200 flex items-center justify-center transition-colors">
+                                <i class="ph ph-check text-white text-sm hidden"></i>
+                            </div>
+                        </label>
+
+                        <!-- Checkbox 3 -->
+                        <label class="custom-checkbox-wrapper flex items-center justify-between p-4 bg-white border border-slate-200 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors">
+                            <span class="font-semibold text-slate-700">Beide</span>
+                            <input type="checkbox" id="opt-beide" class="peer hidden">
+                            <div class="w-6 h-6 rounded-full border-2 border-slate-200 flex items-center justify-center transition-colors">
+                                <i class="ph ph-check text-white text-sm hidden"></i>
+                            </div>
+                        </label>
+
+                        <!-- Checkbox 4 -->
+                        <label class="custom-checkbox-wrapper flex items-center justify-between p-4 bg-white border border-slate-200 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors">
+                            <span class="font-semibold text-slate-700">Leider Nein</span>
+                            <input type="checkbox" id="opt-leider-nein" class="peer hidden">
+                            <div class="w-6 h-6 rounded-full border-2 border-slate-200 flex items-center justify-center transition-colors">
+                                <i class="ph ph-check text-white text-sm hidden"></i>
+                            </div>
+                        </label>
+
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full bg-blue-600 text-white font-bold text-lg py-4 rounded-xl shadow-lg shadow-blue-600/20 active:scale-[0.98] transition-transform">
+                    Speichern
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- App Logic -->
+    <script>
+        // State Management
+        const STORAGE_KEY = 'pixel10_tracker_data_v2'; // Changed key to avoid conflict
+        
+        // Initial data from Excel screenshot
+        const initialEntries = [
+            { id: 'init-1', date: '2026-01-01', options: { michael: true, sabine: true, beide: true, leiderNein: false } },
+            { id: 'init-2', date: '2026-01-03', options: { michael: true, sabine: true, beide: true, leiderNein: false } },
+            { id: 'init-3', date: '2026-01-04', options: { michael: true, sabine: true, beide: true, leiderNein: false } },
+            { id: 'init-4', date: '2026-01-06', options: { michael: true, sabine: true, beide: true, leiderNein: false } },
+            { id: 'init-5', date: '2026-01-08', options: { michael: false, sabine: false, beide: false, leiderNein: true } },
+            { id: 'init-6', date: '2026-01-09', options: { michael: false, sabine: true, beide: false, leiderNein: false } },
+            { id: 'init-7', date: '2026-01-10', options: { michael: false, sabine: false, beide: false, leiderNein: true } },
+            { id: 'init-8', date: '2026-01-17', options: { michael: true, sabine: true, beide: true, leiderNein: false } },
+            { id: 'init-9', date: '2026-01-18', options: { michael: false, sabine: false, beide: false, leiderNein: true } },
+            { id: 'init-10', date: '2026-01-18', options: { michael: false, sabine: true, beide: false, leiderNein: false } },
+            { id: 'init-11', date: '2026-01-20', options: { michael: true, sabine: true, beide: true, leiderNein: false } },
+            { id: 'init-12', date: '2026-01-23', options: { michael: false, sabine: true, beide: false, leiderNein: false } },
+            { id: 'init-13', date: '2026-01-24', options: { michael: false, sabine: false, beide: false, leiderNein: true } },
+            { id: 'init-14', date: '2026-01-24', options: { michael: true, sabine: false, beide: false, leiderNein: false } },
+            { id: 'init-15', date: '2026-01-26', options: { michael: true, sabine: true, beide: true, leiderNein: false } },
+            { id: 'init-16', date: '2026-02-01', options: { michael: true, sabine: false, beide: false, leiderNein: false } },
+            { id: 'init-17', date: '2026-02-01', options: { michael: false, sabine: true, beide: false, leiderNein: false } },
+            { id: 'init-18', date: '2026-02-04', options: { michael: true, sabine: false, beide: false, leiderNein: false } },
+            { id: 'init-19', date: '2026-02-08', options: { michael: false, sabine: true, beide: false, leiderNein: false } },
+            { id: 'init-20', date: '2026-02-08', options: { michael: true, sabine: false, beide: false, leiderNein: false } },
+            { id: 'init-21', date: '2026-02-10', options: { michael: false, sabine: true, beide: false, leiderNein: false } },
+            { id: 'init-22', date: '2026-02-14', options: { michael: true, sabine: true, beide: true, leiderNein: false } },
+            { id: 'init-23', date: '2026-02-14', options: { michael: false, sabine: true, beide: false, leiderNein: false } },
+            { id: 'init-24', date: '2026-02-15', options: { michael: false, sabine: false, beide: false, leiderNein: true } },
+            { id: 'init-25', date: '2026-02-15', options: { michael: false, sabine: true, beide: false, leiderNein: false } },
+            { id: 'init-26', date: '2026-02-15', options: { michael: true, sabine: false, beide: false, leiderNein: false } },
+            { id: 'init-27', date: '2026-02-18', options: { michael: false, sabine: true, beide: false, leiderNein: false } },
+            { id: 'init-28', date: '2026-02-18', options: { michael: true, sabine: false, beide: false, leiderNein: false } },
+            { id: 'init-29', date: '2026-02-18', options: { michael: true, sabine: false, beide: false, leiderNein: false } },
+            { id: 'init-30', date: '2026-02-21', options: { michael: true, sabine: true, beide: true, leiderNein: false } },
+            { id: 'init-31', date: '2026-02-22', options: { michael: false, sabine: true, beide: false, leiderNein: false } },
+            { id: 'init-32', date: '2026-02-22', options: { michael: false, sabine: false, beide: false, leiderNein: true } },
+            { id: 'init-33', date: '2026-02-28', options: { michael: true, sabine: false, beide: false, leiderNein: false } },
+            { id: 'init-34', date: '2026-03-01', options: { michael: false, sabine: false, beide: false, leiderNein: true } },
+            { id: 'init-35', date: '2026-03-01', options: { michael: true, sabine: true, beide: true, leiderNein: false } },
+            { id: 'init-36', date: '2026-03-07', options: { michael: true, sabine: false, beide: false, leiderNein: false } },
+            { id: 'init-37', date: '2026-03-07', options: { michael: false, sabine: true, beide: false, leiderNein: false } },
+            { id: 'init-38', date: '2026-03-08', options: { michael: false, sabine: true, beide: false, leiderNein: false } },
+            { id: 'init-39', date: '2026-03-08', options: { michael: true, sabine: false, beide: false, leiderNein: false } },
+            { id: 'init-40', date: '2026-03-12', options: { michael: true, sabine: true, beide: true, leiderNein: false } },
+            { id: 'init-41', date: '2026-03-15', options: { michael: true, sabine: true, beide: true, leiderNein: false } },
+            { id: 'init-42', date: '2026-03-15', options: { michael: true, sabine: false, beide: false, leiderNein: false } },
+            { id: 'init-43', date: '2026-03-17', options: { michael: false, sabine: true, beide: false, leiderNein: false } },
+            { id: 'init-44', date: '2026-03-20', options: { michael: true, sabine: true, beide: true, leiderNein: false } },
+            { id: 'init-45', date: '2026-03-21', options: { michael: false, sabine: true, beide: false, leiderNein: false } },
+            { id: 'init-46', date: '2026-03-22', options: { michael: false, sabine: true, beide: false, leiderNein: false } },
+            { id: 'init-47', date: '2026-03-28', options: { michael: true, sabine: true, beide: true, leiderNein: false } },
+            { id: 'init-48', date: '2026-03-28', options: { michael: true, sabine: false, beide: false, leiderNein: false } }
+        ];
+
+        let entries = JSON.parse(localStorage.getItem(STORAGE_KEY));
+        let chartInstance = null;
+
+        // Init
+        document.addEventListener('DOMContentLoaded', () => {
+            // Load initial data if localStorage is empty
+            if (!entries || entries.length === 0) {
+                entries = [...initialEntries];
+                entries.sort((a, b) => new Date(b.date) - new Date(a.date));
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+            }
+            
+            // Setze heutiges Datum im Modal als Standard
+            document.getElementById('entry-date').valueAsDate = new Date();
+            updateDashboard();
+        });
+
+        // --- Core Logic ---
+
+        function saveEntry(e) {
+            e.preventDefault();
+            
+            const dateVal = document.getElementById('entry-date').value;
+            const isMichael = document.getElementById('opt-michael').checked;
+            const isSabine = document.getElementById('opt-sabine').checked;
+            const isBeide = document.getElementById('opt-beide').checked;
+            const isLeiderNein = document.getElementById('opt-leider-nein').checked;
+
+            const newEntry = {
+                id: Date.now().toString(),
+                date: dateVal,
+                options: {
+                    michael: isMichael,
+                    sabine: isSabine,
+                    beide: isBeide,
+                    leiderNein: isLeiderNein
+                }
+            };
+
+            // Füge hinzu und sortiere absteigend nach Datum
+            entries.push(newEntry);
+            entries.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+            
+            // UI Reset & Update
+            e.target.reset();
+            document.getElementById('entry-date').valueAsDate = new Date();
+            closeModal();
+            updateDashboard();
+        }
+
+        function deleteEntry(id) {
+            if(confirm('Eintrag wirklich löschen?')) {
+                entries = entries.filter(e => e.id !== id);
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+                updateDashboard();
+            }
+        }
+
+        function updateDashboard() {
+            const now = new Date();
+            const currentYear = now.getFullYear();
+            
+            // 1. Calculations for the current year
+            const startOfYear = new Date(currentYear, 0, 1);
+            const diffTime = Math.abs(now - startOfYear);
+            const daysPassed = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) || 1; // Prevent division by 0
+            const daysInYear = (currentYear % 4 === 0 && currentYear % 100 !== 0) || currentYear % 400 === 0 ? 366 : 365;
+
+            const currentYearEntries = entries.filter(e => new Date(e.date).getFullYear() === currentYear);
+            const currentYearCount = currentYearEntries.length;
+            
+            // Projection calculation
+            const projection = Math.round((currentYearCount / daysPassed) * daysInYear);
+
+            // Calculation for Target 100
+            const targetEl = document.getElementById('stat-target-100');
+            const targetDaysEl = document.getElementById('stat-target-100-days');
+
+            if (currentYearCount >= 100) {
+                targetEl.innerText = "Erreicht!";
+                targetDaysEl.innerText = "Ziel geschafft";
+            } else if (currentYearCount === 0) {
+                targetEl.innerText = "--.--.----";
+                targetDaysEl.innerText = "Keine Daten";
+            } else {
+                const ratePerDay = currentYearCount / daysPassed;
+                const remainingEntries = 100 - currentYearCount;
+                const remainingDays = Math.ceil(remainingEntries / ratePerDay);
+                
+                const targetDate = new Date();
+                targetDate.setDate(now.getDate() + remainingDays);
+                
+                targetEl.innerText = targetDate.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
+                targetDaysEl.innerText = `In ${remainingDays} Tagen`;
+            }
+
+            // Options summary (All time or current year? Let's do current year to match dashboard context)
+            let countMichael = 0, countSabine = 0, countBeide = 0, countLeiderNein = 0;
+            currentYearEntries.forEach(e => {
+                if(e.options.michael) countMichael++;
+                if(e.options.sabine) countSabine++;
+                if(e.options.beide) countBeide++;
+                if(e.options.leiderNein) countLeiderNein++;
+            });
+
+            // 2. Update DOM Elements
+            document.getElementById('stat-current-year').innerText = currentYearCount;
+            document.getElementById('stat-days-passed').innerText = `In ${daysPassed} Tagen`;
+            document.getElementById('stat-projection').innerText = projection;
+            
+            document.getElementById('stat-opt1').innerText = countMichael;
+            document.getElementById('stat-opt2').innerText = countSabine;
+            document.getElementById('stat-opt3').innerText = countBeide;
+            document.getElementById('stat-opt4').innerText = countLeiderNein;
+
+            document.getElementById('stat-total-entries').innerText = `${entries.length} Gesamt`;
+
+            // 3. Update Chart & List
+            updateChart(currentYearEntries);
+            renderList();
+        }
+
+        // --- UI Updates ---
+
+        function renderList() {
+            const listEl = document.getElementById('entries-list');
+            listEl.innerHTML = '';
+
+            if (entries.length === 0) {
+                listEl.innerHTML = `
+                    <div class="text-center py-8 text-slate-400">
+                        <i class="ph ph-note-blank text-4xl mb-2"></i>
+                        <p>Noch keine Einträge vorhanden.</p>
+                    </div>`;
+                return;
+            }
+
+            entries.forEach(entry => {
+                const dateObj = new Date(entry.date);
+                const monthName = dateObj.toLocaleDateString('de-DE', { month: 'short' }).toUpperCase();
+                const dayNum = dateObj.toLocaleDateString('de-DE', { day: '2-digit' });
+                const fullDateStr = dateObj.toLocaleDateString('de-DE', { weekday: 'long', year: 'numeric' });
+
+                // Erstelle die Farbpunkte basierend auf Auswahl
+                let dotsHtml = '';
+                if(entry.options.michael) dotsHtml += `<div class="w-2 h-2 rounded-full bg-blue-500"></div>`;
+                if(entry.options.sabine) dotsHtml += `<div class="w-2 h-2 rounded-full bg-pink-500"></div>`;
+                if(entry.options.beide) dotsHtml += `<div class="w-2 h-2 rounded-full bg-purple-500"></div>`;
+                if(entry.options.leiderNein) dotsHtml += `<div class="w-2 h-2 rounded-full bg-red-500"></div>`;
+
+                const cardHtml = `
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-4 flex items-center gap-4 relative overflow-hidden">
+                        <div class="flex flex-col items-center justify-center w-12 h-12 bg-slate-50 rounded-xl shrink-0">
+                            <span class="text-[10px] font-bold text-blue-500 uppercase">${monthName}</span>
+                            <span class="text-lg font-black text-slate-800 leading-none">${dayNum}</span>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="font-bold text-slate-900">${fullDateStr}</h3>
+                            <div class="flex gap-1.5 mt-1.5 h-3 items-center">
+                                ${dotsHtml || '<span class="text-xs text-slate-400 italic">Keine Optionen gewählt</span>'}
+                            </div>
+                        </div>
+                        <button onclick="deleteEntry('${entry.id}')" class="w-8 h-8 text-slate-300 hover:text-red-500 flex items-center justify-center transition-colors">
+                            <i class="ph ph-trash"></i>
+                        </button>
+                    </div>
+                `;
+                listEl.insertAdjacentHTML('beforeend', cardHtml);
+            });
+        }
+
+        function updateChart(currentYearEntries) {
+            const ctx = document.getElementById('historyChart').getContext('2d');
+            
+            // Prepare Data (12 Monate)
+            const monthlyData = new Array(12).fill(0);
+            currentYearEntries.forEach(e => {
+                const monthIndex = new Date(e.date).getMonth();
+                monthlyData[monthIndex]++;
+            });
+
+            const labels = ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'];
+
+            if (chartInstance) {
+                chartInstance.destroy();
+            }
+
+            chartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Einträge',
+                        data: monthlyData,
+                        backgroundColor: '#3b82f6', // Tailwind blue-500
+                        borderRadius: 4,
+                        barThickness: 16
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: '#1e293b',
+                            padding: 10,
+                            displayColors: false,
+                            callbacks: {
+                                title: () => null,
+                                label: (context) => `${context.raw} Eintrag/Einträge`
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { stepSize: 1, color: '#94a3b8' },
+                            grid: {
+                                color: '#f1f5f9',
+                                borderDash: [5, 5],
+                                drawBorder: false,
+                            },
+                            border: { display: false }
+                        },
+                        x: {
+                            ticks: { color: '#94a3b8', font: { size: 11 } },
+                            grid: { display: false },
+                            border: { display: false }
+                        }
+                    }
+                }
+            });
+        }
+
+        // --- Modal Control ---
+
+        const modalBackdrop = document.getElementById('modal-backdrop');
+        const modalContent = document.getElementById('modal-content');
+
+        function openModal() {
+            modalBackdrop.classList.remove('hidden');
+            // Trigger reflow
+            void modalBackdrop.offsetWidth;
+            modalBackdrop.classList.remove('opacity-0');
+            modalContent.classList.remove('translate-y-full');
+            // Fix scrolling on body
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            modalBackdrop.classList.add('opacity-0');
+            modalContent.classList.add('translate-y-full');
+            
+            setTimeout(() => {
+                modalBackdrop.classList.add('hidden');
+                document.body.style.overflow = '';
+            }, 300); // Matches Tailwind duration-300
+        }
+
+        // Close on outside click
+        modalBackdrop.addEventListener('click', (e) => {
+            if (e.target === modalBackdrop) closeModal();
+        });
+
+    </script>
+</body>
+</html>

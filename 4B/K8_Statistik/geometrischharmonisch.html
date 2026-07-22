@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Erweiterte Lagemaße: Geometrisches & Harmonisches Mittel</title>
+    <link rel="stylesheet" href="../../style.css">
+    
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+
+<header>
+    <h1>Weitere Mittelwerte</h1>
+    <p>Geometrisches und harmonisches Mittel verstehen und anwenden</p>
+</header>
+
+<div class="back-nav">
+    <a href="../index.html" class="btn-back">← Zurück zur Übersicht</a>
+</div>
+
+<main>
+    <div style="background: var(--bg); border-left: 4px solid var(--doc-blue); padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem;">
+        <p style="margin: 0;">Das klassische (arithmetische) Mittel reicht nicht immer aus. Wenn es um <strong>Wachstumsfaktoren</strong> (z. B. Zinsen) oder <strong>Durchschnittsgeschwindigkeiten</strong> geht, liefert das arithmetische Mittel oft falsche Ergebnisse. Hier kommen zwei neue Mittelwerte ins Spiel!</p>
+    </div>
+
+    <section class="subject-group" id="geometrisch">
+        <div class="subject-header">
+            <span class="subject-badge bg-math">Erweiterung</span>
+            <h2 style="margin: 0; color: var(--primary);">1. Das geometrische Mittel</h2>
+        </div>
+        <p>Das geometrische Mittel verwendet man oft, wenn man einen durchschnittlichen <strong>Wachstumsfaktor</strong> sucht oder aus den Seitenlängen eines Rechtecks ein flächengleiches Quadrat berechnen möchte.</p>
+        
+        <div style="background: var(--card-bg); border: 1px solid #e2e8f0; padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem;">
+            <h4 style="margin-top: 0;">Formel</h4>
+            <p>Man multipliziert alle \(n\) Werte miteinander und zieht daraus die \(n\)-te Wurzel:</p>
+            <div style="text-align: center; font-size: 1.2rem; margin: 15px 0;">
+                \(\bar{x}_{geom} = \sqrt[n]{x_1 \cdot x_2 \cdot ... \cdot x_n}\)
+            </div>
+            
+            <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 1.5rem 0;">
+            
+            <h4 style="color: var(--primary); margin-top: 0;">Beispiel: Das flächengleiche Quadrat</h4>
+            <p>Ein Rechteck hat die Seitenlängen \(a = 4\) cm und \(b = 9\) cm. Die Fläche ist \(A = 4 \cdot 9 = 36\) cm².<br>
+            Wie lang muss die Seite \(s\) eines <strong>Quadrats</strong> sein, damit es dieselbe Fläche hat?</p>
+            <ul>
+                <li>Wir suchen das geometrische Mittel von 4 und 9 (da es 2 Werte sind, ziehen wir die 2. Wurzel bzw. Quadratwurzel):</li>
+                <li>\(\bar{x}_{geom} = \sqrt{4 \cdot 9} = \sqrt{36} = 6\) cm.</li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="subject-group" id="harmonisch">
+        <div class="subject-header">
+            <span class="subject-badge bg-math">Erweiterung</span>
+            <h2 style="margin: 0; color: var(--primary);">2. Das harmonische Mittel</h2>
+        </div>
+        <p>Das harmonische Mittel ist der Spezialist für <strong>Verhältniszahlen</strong> – der absolute Klassiker ist hier die <strong>Durchschnittsgeschwindigkeit</strong> bei gleicher Wegstrecke.</p>
+        
+        <div style="background: var(--card-bg); border: 1px solid #e2e8f0; padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem;">
+            <h4 style="margin-top: 0;">Formel</h4>
+            <p>Man teilt die Anzahl der Werte (\(n\)) durch die Summe der Kehrwerte aller Zahlen:</p>
+            <div style="text-align: center; font-size: 1.2rem; margin: 15px 0;">
+                \(\bar{x}_{harm} = \frac{n}{\frac{1}{x_1} + \frac{1}{x_2} + ... + \frac{1}{x_n}}\)
+            </div>
+
+            <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 1.5rem 0;">
+
+            <h4 style="color: var(--primary); margin-top: 0;">Beispiel: Die Durchschnittsgeschwindigkeit</h4>
+            <p>Du fährst mit dem Fahrrad einen Berg hinauf (Geschwindigkeit: <strong>10 km/h</strong>). Oben angekommen, fährst du dieselbe Strecke sofort wieder hinunter (Geschwindigkeit: <strong>30 km/h</strong>).</p>
+            <p style="color: var(--pdf-red); font-weight: bold;">Achtung Falle! Die Durchschnittsgeschwindigkeit ist NICHT 20 km/h!</p>
+            <p>Weil du bergauf für dieselbe Strecke viel länger gebraucht hast als bergab, warst du viel länger langsam unterwegs. Wir berechnen das harmonische Mittel:</p>
+            <ul>
+                <li>\(n = 2\) (zwei Geschwindigkeiten)</li>
+                <li>\(\bar{x}_{harm} = \frac{2}{\frac{1}{10} + \frac{1}{30}} = \frac{2}{\frac{3}{30} + \frac{1}{30}} = \frac{2}{\frac{4}{30}} = 2 \cdot \frac{30}{4} = \frac{60}{4} = 15\) km/h.</li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="subject-group" id="labor">
+        <div class="subject-header">
+            <span class="subject-badge bg-info">Labor</span>
+            <h2 style="margin: 0; color: var(--primary);">Interaktives Mittelwert-Labor</h2>
+        </div>
+        <p>In der Mathematik gibt es ein faszinierendes Gesetz: <strong>Die Ungleichung der Mittelwerte</strong>. Bei beliebigen positiven Zahlen ist das harmonische Mittel immer das kleinste, das geometrische liegt in der Mitte und das arithmetische ist das größte (außer alle Zahlen sind genau gleich, dann sind auch alle Mittelwerte gleich).</p>
+        
+        <div style="background: white; border: 2px solid var(--primary); padding: 1.5rem; border-radius: 12px;">
+            <div style="margin-bottom: 1.5rem;">
+                <p style="font-weight: bold; margin-bottom: 0.5rem;">Gib zwei beliebige positive Zahlen ein:</p>
+                <div style="display: flex; gap: 15px; align-items: center;">
+                    <div>
+                        <label for="valA" style="font-size: 0.9rem; color: var(--text-muted);">Zahl 1 (a):</label><br>
+                        <input type="number" id="valA" value="4" min="0.1" step="any" style="width: 100px; padding: 0.6rem; border: 1px solid #e2e8f0; border-radius: 8px;">
+                    </div>
+                    <div>
+                        <label for="valB" style="font-size: 0.9rem; color: var(--text-muted);">Zahl 2 (b):</label><br>
+                        <input type="number" id="valB" value="9" min="0.1" step="any" style="width: 100px; padding: 0.6rem; border: 1px solid #e2e8f0; border-radius: 8px;">
+                    </div>
+                    <div style="margin-top: 1.2rem;">
+                        <button class="nav-toggle active" onclick="calculateAllMeans()" style="border: none;">Vergleichen</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="results" style="display: none; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #e2e8f0;">
+                <div style="display: flex; flex-direction: column; gap: 1rem;">
+                    
+                    <div style="background: var(--bg); border-left: 5px solid var(--pdf-red); padding: 1rem; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong style="color: var(--text-main);">Harmonisches Mittel</strong><br>
+                            <span style="font-size: 0.85rem; color: var(--text-muted);">\(\frac{2}{\frac{1}{a} + \frac{1}{b}}\)</span>
+                        </div>
+                        <strong style="font-size: 1.5rem; color: var(--pdf-red);" id="resHarm">-</strong>
+                    </div>
+
+                    <div style="background: var(--bg); border-left: 5px solid var(--dgb-color); padding: 1rem; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong style="color: var(--text-main);">Geometrisches Mittel</strong><br>
+                            <span style="font-size: 0.85rem; color: var(--text-muted);">\(\sqrt{a \cdot b}\)</span>
+                        </div>
+                        <strong style="font-size: 1.5rem; color: var(--dgb-color);" id="resGeom">-</strong>
+                    </div>
+
+                    <div style="background: var(--bg); border-left: 5px solid var(--doc-blue); padding: 1rem; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong style="color: var(--text-main);">Arithmetisches Mittel</strong><br>
+                            <span style="font-size: 0.85rem; color: var(--text-muted);">\(\frac{a + b}{2}\)</span>
+                        </div>
+                        <strong style="font-size: 1.5rem; color: var(--doc-blue);" id="resArith">-</strong>
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin-top: 1.5rem; font-size: 1.2rem; font-weight: bold; color: var(--primary);" id="inequalityResult">
+                    </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <p>Mathematik verstehen 4 | Beschreibende Statistik & Mittelwerte</p>
+</footer>
+
+<script>
+    function calculateAllMeans() {
+        const a = parseFloat(document.getElementById('valA').value);
+        const b = parseFloat(document.getElementById('valB').value);
+
+        if (isNaN(a) || isNaN(b) || a <= 0 || b <= 0) {
+            alert("Bitte gib zwei positive Zahlen ein.");
+            return;
+        }
+
+        // 1. Harmonisches Mittel berechnen: n / (1/x1 + 1/x2)
+        const harm = 2 / ((1 / a) + (1 / b));
+        
+        // 2. Geometrisches Mittel berechnen: sqrt(x1 * x2)
+        const geom = Math.sqrt(a * b);
+        
+        // 3. Arithmetisches Mittel berechnen: (x1 + x2) / 2
+        const arith = (a + b) / 2;
+
+        // UI Updates
+        document.getElementById('resHarm').innerText = harm.toFixed(3).replace('.', ',');
+        document.getElementById('resGeom').innerText = geom.toFixed(3).replace('.', ',');
+        document.getElementById('resArith').innerText = arith.toFixed(3).replace('.', ',');
+
+        // Ungleichung anzeigen
+        let symbol1 = harm === geom ? "=" : "<";
+        let symbol2 = geom === arith ? "=" : "<";
+        
+        document.getElementById('inequalityResult').innerHTML = 
+            `\(\\bar{x}_{harm} \\le \\bar{x}_{geom} \\le \\bar{x}_{arithm}\) <br> <span style="font-size:1rem; color: var(--text-muted);">${harm.toFixed(2).replace('.', ',')} ${symbol1} ${geom.toFixed(2).replace('.', ',')} ${symbol2} ${arith.toFixed(2).replace('.', ',')}</span>`;
+
+        document.getElementById('results').style.display = 'block';
+
+        if (typeof MathJax !== 'undefined') {
+            MathJax.typesetPromise ? MathJax.typesetPromise() : MathJax.typeset();
+        }
+    }
+</script>
+
+</body>
+</html>

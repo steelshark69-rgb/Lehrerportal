@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1. Datenbanken: Vom Chaos zur Ordnung</title>
+    <link rel="stylesheet" href="../../style.css">
+    
+    <style>
+        /* Lokales CSS für Lesbarkeit und Interaktivität */
+        body {
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #2d3748;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Navigation Styles */
+        .nav-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #f8fafc;
+            padding: 10px 15px;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+            margin-bottom: 20px;
+            margin-top: 20px;
+        }
+        .nav-btn {
+            text-decoration: none;
+            background-color: #e2e8f0;
+            color: #334155;
+            padding: 8px 16px;
+            border-radius: 5px;
+            font-weight: 600;
+            transition: background-color 0.2s;
+        }
+        .nav-btn:hover {
+            background-color: #cbd5e1;
+            color: #0f172a;
+        }
+        .nav-btn.primary {
+            background-color: #3b82f6;
+            color: white;
+        }
+        .nav-btn.primary:hover {
+            background-color: #2563eb;
+        }
+        .nav-info {
+            font-size: 0.9em;
+            color: #64748b;
+            font-weight: bold;
+        }
+
+        h1 { color: #1a202c; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; }
+        h2 { color: #2b6cb0; margin-top: 30px; }
+        h3 { color: #4a5568; }
+        
+        .theory-box {
+            background-color: #ebf8ff;
+            border-left: 5px solid #3182ce;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .theory-box strong { color: #2c5282; }
+
+        .task-container {
+            background-color: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 30px 0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        .task-container h2 { margin-top: 0; color: #0f172a; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            background: #fff;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        th, td { border: 1px solid #e2e8f0; padding: 12px; text-align: left; }
+        th { background-color: #f1f5f9; color: #334155; }
+        
+        input[type="text"] {
+            width: 90%; padding: 8px; border: 2px solid #cbd5e1; border-radius: 4px;
+            transition: border-color 0.3s;
+        }
+        input[type="text"]:focus { outline: none; border-color: #3b82f6; }
+        
+        button.action-btn {
+            background-color: #2563eb; color: white; border: none;
+            padding: 10px 20px; border-radius: 5px; cursor: pointer;
+            font-size: 16px; font-weight: bold; transition: background 0.3s;
+            margin-top: 10px;
+        }
+        button.action-btn:hover { background-color: #1d4ed8; }
+        
+        .btn-choice {
+            background-color: #e2e8f0; color: #334155; margin-right: 10px; margin-bottom: 10px;
+            border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold;
+        }
+        .btn-choice:hover { background-color: #cbd5e1; }
+        .btn-choice.selected-wrong { background-color: #fee2e2; color: #b91c1c; }
+        .btn-choice.selected-right { background-color: #dcfce3; color: #15803d; }
+
+        .feedback {
+            margin-top: 15px; padding: 15px; border-radius: 5px;
+            display: none; line-height: 1.5;
+        }
+        .error { background-color: #fef2f2; color: #991b1b; border: 1px solid #f87171; }
+        .success { background-color: #f0fdf4; color: #166534; border: 1px solid #4ade80; }
+        .warning { background-color: #fffbeb; color: #92400e; border: 1px solid #fbbf24; }
+    </style>
+</head>
+<body>
+
+    <nav class="nav-bar">
+        <a href="../index.html" class="nav-btn">🔙 Übersicht</a>
+        <span class="nav-info">Einheit 1 von 8</span>
+        <a href="einheit3_4.html" class="nav-btn primary">Einheit 2 🔜</a>
+    </nav>
+
+    <h1>1. Das Geheimnis strukturierter Daten</h1>
+    <p>Jedes Mal, wenn du dich bei Instagram einloggst, einen Song auf Spotify suchst oder wir in der Schule eure Noten eintragen, arbeitet im Hintergrund eine <strong>Datenbank</strong>. Doch was ist das genau und warum reicht dafür nicht einfach ein großes Excel-Dokument?</p>
+
+    <div class="theory-box">
+        <h3>Begriffs-Check: DB vs. DBMS</h3>
+        <p>Oft sagen wir einfach "Datenbank", meinen aber eigentlich zwei verschiedene Dinge:</p>
+        <ul>
+            <li><strong>Datenbank (DB):</strong> Das ist die eigentliche Ansammlung der Daten. Stell dir vor, das ist der Aktenschrank voller Zettel.</li>
+            <li><strong>Datenbankmanagementsystem (DBMS):</strong> Das ist die Software, die diese Daten verwaltet, speichert und durchsucht. Das ist der intelligente Bibliothekar, der genau weiß, wo welcher Zettel liegt und aufpasst, dass niemand etwas Falsches einträgt. Beispiele sind <em>MySQL, Oracle oder SQLite</em>.</li>
+        </ul>
+    </div>
+
+    <h2>Die Gefahr der flachen Tabellen</h2>
+    <p>Wenn wir Daten einfach in einer einzigen, riesigen Tabelle ("flache Tabelle") speichern, wie man es oft in Excel macht, bekommen wir schnell Probleme. Diese Probleme nennt man in der Informatik <strong>Anomalien</strong>. Das häufigste Problem ist die <strong>Redundanz</strong>.</p>
+
+    <div class="theory-box">
+        <h3>Was ist Redundanz?</h3>
+        <p><strong>Redundanz</strong> bedeutet, dass dieselbe Information unnötigerweise mehrfach gespeichert wird. Das verschwendet nicht nur Speicherplatz, sondern führt fast immer zu Fehlern: Wenn sich ein Datum ändert, muss man es an zig Stellen gleichzeitig ändern. Vergisst man eine Stelle, widersprechen sich die Daten plötzlich. Das nennt man <strong>Dateninkonsistenz</strong>.</p>
+    </div>
+
+    <div class="task-container">
+        <h2>Aufgabe 1: Das Listen-Chaos erleben</h2>
+        <p>Hier ist die Ausleihliste unserer Schulbibliothek. <strong>Szenario:</strong> Die Schülerin <em>Laura Huber</em> ist umgezogen. Ihre neue Adresse lautet <strong>"Hauptplatz 1"</strong>.</p>
+        <p><strong>Dein Auftrag:</strong> Ändere ihre Adresse in der Tabelle und klicke auf Speichern.</p>
+        
+        <table id="flatTable">
+            <tr>
+                <th>Schüler_Name</th>
+                <th>Adresse</th>
+                <th>Ausgeliehenes_Buch</th>
+            </tr>
+            <tr>
+                <td>Laura Huber</td>
+                <td><input type="text" id="addr1" value="Waldweg 5"></td>
+                <td>Mathematik verstehen 5</td>
+            </tr>
+            <tr>
+                <td>Felix Maier</td>
+                <td>Dorfstraße 12</td>
+                <td>Informatik Basics</td>
+            </tr>
+            <tr>
+                <td>Laura Huber</td>
+                <td><input type="text" id="addr2" value="Waldweg 5"></td>
+                <td>Python für Anfänger</td>
+            </tr>
+            <tr>
+                <td>Laura Huber</td>
+                <td><input type="text" id="addr3" value="Waldweg 5"></td>
+                <td>Englisch Vokabeln</td>
+            </tr>
+        </table>
+        
+        <button class="action-btn" onclick="checkTask1()">Änderungen speichern</button>
+        <div id="feedback1" class="feedback"></div>
+    </div>
+
+    <h2>Die Rettung: Das Relationale Modell</h2>
+    <p>Um Redundanz zu vermeiden, zerlegen wir die große Tabelle in mehrere kleine, logische Tabellen (z. B. eine Tabelle nur für <em>Schüler</em> und eine nur für <em>Bücher</em>). Diese Tabellen nennt man <strong>Relationen</strong>. Damit wir später noch wissen, welcher Schüler welches Buch hat, müssen wir die Tabellen verknüpfen. Dafür brauchen wir sogenannte <strong>Schlüssel</strong>.</p>
+
+    <div class="theory-box">
+        <h3>Der Primärschlüssel (Primary Key - PK)</h3>
+        <p>Jede Zeile (wir nennen sie <strong>Datensatz</strong>) in einer Tabelle muss <em>absolut eindeutig</em> erkennbar sein. Dafür definieren wir eine Spalte als Primärschlüssel. Ein Primärschlüssel darf niemals leer sein und sein Wert darf in der Tabelle nur ein einziges Mal vorkommen.</p>
+    </div>
+
+    <div class="task-container">
+        <h2>Aufgabe 2: Den perfekten Primärschlüssel wählen</h2>
+        <p>Wir erstellen eine Tabelle für unsere Klasse. Welches der folgenden Attribute (Spalten) eignet sich am besten als <strong>Primärschlüssel</strong>, um jeden Schüler jederzeit eindeutig zu identifizieren?</p>
+        
+        <div id="pk-buttons">
+            <button class="btn-choice" onclick="checkPK('name', this)">Vorname & Nachname</button>
+            <button class="btn-choice" onclick="checkPK('alter', this)">Geburtsdatum</button>
+            <button class="btn-choice" onclick="checkPK('email', this)">E-Mail-Adresse</button>
+            <button class="btn-choice" onclick="checkPK('id', this)">Eine generierte Schüler_ID</button>
+        </div>
+        <div id="feedback-pk" class="feedback"></div>
+    </div>
+
+    <div class="theory-box" id="fk-theory" style="display: none;">
+        <h3>Der Fremdschlüssel (Foreign Key - FK)</h3>
+        <p>Jetzt haben wir saubere Tabellen. Um sie zu verknüpfen, nehmen wir den Primärschlüssel aus der einen Tabelle und tragen ihn als "Hinweis" in die andere Tabelle ein. Dort nennt man ihn dann <strong>Fremdschlüssel</strong>. Er ist sozusagen das Verbindungskabel zwischen den Tabellen.</p>
+    </div>
+
+    <div class="task-container" id="task3-container" style="display: none;">
+        <h2>Aufgabe 3: Tabellen sauber verknüpfen</h2>
+        <p>Schauen wir uns die aufgeteilten Daten an. Die Adressen stehen jetzt sauber in einer eigenen Tabelle und müssen bei einem Umzug nur noch <strong>ein einziges Mal</strong> geändert werden.</p>
+        <p><strong>Dein Auftrag:</strong> Trage bei den Büchern den richtigen <strong>Fremdschlüssel</strong> ein, damit wir wissen, wer welches Buch ausgeliehen hat. (Tipp: Schau bei Aufgabe 1 nach, wer was gelesen hat!)</p>
+
+        <h3>Tabelle: Schüler</h3>
+        <table>
+            <tr><th>Schüler_ID (PK)</th><th>Name</th><th>Adresse</th></tr>
+            <tr><td><strong>101</strong></td><td>Laura Huber</td><td>Hauptplatz 1</td></tr>
+            <tr><td><strong>102</strong></td><td>Felix Maier</td><td>Dorfstraße 12</td></tr>
+        </table>
+
+        <h3>Tabelle: Ausleihe</h3>
+        <table>
+            <tr><th>Ausleih_ID (PK)</th><th>Buch_Titel</th><th>Schüler_ID (FK)</th></tr>
+            <tr><td>1</td><td>Informatik Basics</td><td><input type="text" id="fk1" placeholder="z.B. 101" style="width: 80px;"></td></tr>
+            <tr><td>2</td><td>Mathematik verstehen 5</td><td><input type="text" id="fk2" placeholder="z.B. 101" style="width: 80px;"></td></tr>
+            <tr><td>3</td><td>Python für Anfänger</td><td><input type="text" id="fk3" placeholder="z.B. 101" style="width: 80px;"></td></tr>
+        </table>
+
+        <button class="action-btn" onclick="checkTask3()">Verknüpfungen prüfen</button>
+        <div id="feedback3" class="feedback"></div>
+    </div>
+
+    <nav class="nav-bar">
+        <a href="../index.html" class="nav-btn">🔙 Übersicht</a>
+        <a href="einheit3_4.html" class="nav-btn primary">Weiter zu Einheit 2 🔜</a>
+    </nav>
+
+    <script>
+        // Aufgabe 1: Redundanz
+        function checkTask1() {
+            const a1 = document.getElementById('addr1').value.trim();
+            const a2 = document.getElementById('addr2').value.trim();
+            const a3 = document.getElementById('addr3').value.trim();
+            const fb = document.getElementById('feedback1');
+            
+            fb.style.display = 'block';
+            
+            let count = 0;
+            if(a1 === "Hauptplatz 1") count++;
+            if(a2 === "Hauptplatz 1") count++;
+            if(a3 === "Hauptplatz 1") count++;
+
+            if (count === 3) {
+                fb.className = 'feedback success';
+                fb.innerHTML = "<strong>✅ Gut gemacht!</strong> Aber stell dir vor, das wäre eine Datenbank mit 5000 Einträgen von Laura. Du müsstest 5000 Zeilen ändern! Das ist extrem ineffizient und fehleranfällig.";
+            } else if (count > 0) {
+                fb.className = 'feedback warning';
+                fb.innerHTML = `<strong>⚠️ Dateninkonsistenz!</strong> Du hast die Adresse ${count}x geändert, aber andere Einträge vergessen. Laut Datenbank wohnt Laura jetzt an verschiedenen Orten gleichzeitig. Das System ist nun kaputt.`;
+            } else {
+                fb.className = 'feedback error';
+                fb.innerHTML = "<strong>❌ Fehler:</strong> Du hast die Adresse noch nicht auf 'Hauptplatz 1' geändert.";
+            }
+        }
+
+        // Aufgabe 2: Primärschlüssel
+        function checkPK(choice, btn) {
+            const fb = document.getElementById('feedback-pk');
+            const buttons = document.querySelectorAll('.btn-choice');
+            buttons.forEach(b => { b.classList.remove('selected-wrong', 'selected-right'); });
+            
+            fb.style.display = 'block';
+            
+            if(choice === 'name') {
+                btn.classList.add('selected-wrong');
+                fb.className = 'feedback error';
+                fb.innerHTML = "<strong>❌ Schlechte Wahl.</strong> Was passiert, wenn zwei Schüler 'Michael Müller' heißen? Ein Name ist fast nie eindeutig genug.";
+            } else if(choice === 'alter') {
+                btn.classList.add('selected-wrong');
+                fb.className = 'feedback error';
+                fb.innerHTML = "<strong>❌ Schlechte Wahl.</strong> Mehrere Schüler haben am selben Tag Geburtstag. Außerdem ist es schlecht, wenn sich ein Primärschlüssel (wie das Alter) im Laufe der Zeit ändert.";
+            } else if(choice === 'email') {
+                btn.classList.add('selected-wrong');
+                fb.className = 'feedback warning';
+                fb.innerHTML = "<strong>⚠️ Schon besser, aber gefährlich.</strong> E-Mail-Adressen sind zwar weltweit eindeutig, aber Schüler können ihre E-Mail ändern. Ein Primärschlüssel sollte sich idealerweise nie ändern.";
+            } else if(choice === 'id') {
+                btn.classList.add('selected-right');
+                fb.className = 'feedback success';
+                fb.innerHTML = "<strong>✅ Perfekt!</strong> Ein künstlich erzeugter Schlüssel (Surrogate Key), wie eine fortlaufende Schülernummer (101, 102...), ist eindeutig, ändert sich nie und ist für den Computer sehr schnell zu verarbeiten. <em>Scrolle weiter für die nächste Aufgabe!</em>";
+                
+                // Nächste Theorie & Aufgabe freischalten
+                document.getElementById('fk-theory').style.display = 'block';
+                document.getElementById('task3-container').style.display = 'block';
+            }
+        }
+
+        // Aufgabe 3: Fremdschlüssel
+        function checkTask3() {
+            const f1 = document.getElementById('fk1').value.trim();
+            const f2 = document.getElementById('fk2').value.trim();
+            const f3 = document.getElementById('fk3').value.trim();
+            const fb = document.getElementById('feedback3');
+            
+            fb.style.display = 'block';
+            
+            // Felix (102) hat Basics, Laura (101) hat Mathe und Python
+            if (f1 === "102" && f2 === "101" && f3 === "101") {
+                fb.className = 'feedback success';
+                fb.innerHTML = "<strong>✅ Richtig verknüpft!</strong> Die Tabelle 'Ausleihe' weiß jetzt genau, wer welches Buch hat. Wenn Laura nun umzieht, ändern wir das in der 'Schüler'-Tabelle bei ID 101 nur <strong>ein einziges Mal</strong>. Das Problem der Redundanz ist gelöst!";
+            } else {
+                fb.className = 'feedback error';
+                fb.innerHTML = "<strong>❌ Noch nicht ganz.</strong> Erinnerung: Felix (102) hatte Informatik Basics. Laura (101) hatte Mathematik und Python. Trage die korrekten IDs ein.";
+            }
+        }
+    </script>
+</body>
+</html>

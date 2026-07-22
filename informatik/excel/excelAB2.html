@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arbeitsauftrag | Excel Datenanalyse</title>
+    <link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+
+    <header>
+        <h1>Arbeitsauftrag: Datenanalyse</h1>
+        <p>ZÄHLENWENN, SUMMEWENN, SVERWEIS & XVERWEIS in der Praxis</p>
+    </header>
+
+    <div class="back-nav">
+        <a href="../index.html" class="btn-back">← Zurück zur Übersicht</a>
+    </div>
+
+    <main>
+        <div style="background: var(--card-bg); border-left: 5px solid var(--excel-green); padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+            <h2 style="margin-top: 0; color: var(--excel-green-dark); border: none; padding: 0;">Szenario: Der eigene Sneaker-Store 👟</h2>
+            <p style="margin-bottom: 0;">Du hast einen eigenen kleinen Sneaker-Store eröffnet. Die Verkäufe der letzten Woche hast du in einer Excel-Tabelle notiert. Nun willst du herausfinden, welche Marken sich am besten verkaufen, wie viel Umsatz du gemacht hast und du möchtest eine automatische Preisabfrage für deine Kassa bauen.</p>
+        </div>
+
+        <section>
+            <h2>🎯 Schritt 1: Wissen aneignen</h2>
+            <p>Öffne unser Informatik-Portal und studiere die beiden neuen Artikel sorgfältig durch. Erst wenn du die Logik hinter den Formeln verstanden hast, öffnest du Excel!</p>
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                <a href="summewenn.html" style="background: white; border: 1px solid var(--excel-border); padding: 1rem 1.5rem; border-radius: 8px; text-decoration: none; color: var(--highlight-blue); font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">📖 Excel: ZÄHLENWENN & SUMMEWENN</a>
+                <a href="verweis.html" style="background: white; border: 1px solid var(--excel-border); padding: 1rem 1.5rem; border-radius: 8px; text-decoration: none; color: var(--highlight-blue); font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">📖 Excel: SVERWEIS & XVERWEIS</a>
+            </div>
+        </section>
+
+        <section>
+            <h2>📊 Schritt 2: Die Datenbank anlegen</h2>
+            <p>Öffne eine leere Excel-Arbeitsmappe und erstelle exakt die folgende Tabelle (Zellen A1 bis D8). Formatiere die Spalte "Preis" anschließend als Währung (€).</p>
+
+            <div class="excel-mockup">
+                <table class="excel-table">
+                    <tr>
+                        <th style="width: 30px;"></th>
+                        <th>A</th>
+                        <th>B</th>
+                        <th>C</th>
+                        <th>D</th>
+                    </tr>
+                    <tr>
+                        <th class="row-number">1</th>
+                        <td style="background: #e2e8f0;"><strong>Art-Nr.</strong></td>
+                        <td style="background: #e2e8f0;"><strong>Marke</strong></td>
+                        <td style="background: #e2e8f0;"><strong>Modell</strong></td>
+                        <td style="background: #e2e8f0;"><strong>Preis</strong></td>
+                    </tr>
+                    <tr>
+                        <th class="row-number">2</th>
+                        <td>1001</td>
+                        <td>Nike</td>
+                        <td>Air Max</td>
+                        <td>130,00 €</td>
+                    </tr>
+                    <tr>
+                        <th class="row-number">3</th>
+                        <td>1002</td>
+                        <td>Adidas</td>
+                        <td>Ultraboost</td>
+                        <td>160,00 €</td>
+                    </tr>
+                    <tr>
+                        <th class="row-number">4</th>
+                        <td>1003</td>
+                        <td>Nike</td>
+                        <td>Air Force</td>
+                        <td>110,00 €</td>
+                    </tr>
+                    <tr>
+                        <th class="row-number">5</th>
+                        <td>1004</td>
+                        <td>Puma</td>
+                        <td>RS-X</td>
+                        <td>100,00 €</td>
+                    </tr>
+                    <tr>
+                        <th class="row-number">6</th>
+                        <td>1005</td>
+                        <td>Vans</td>
+                        <td>Old Skool</td>
+                        <td>80,00 €</td>
+                    </tr>
+                    <tr>
+                        <th class="row-number">7</th>
+                        <td>1006</td>
+                        <td>Nike</td>
+                        <td>Dunk Low</td>
+                        <td>120,00 €</td>
+                    </tr>
+                    <tr>
+                        <th class="row-number">8</th>
+                        <td>1007</td>
+                        <td>Adidas</td>
+                        <td>Superstar</td>
+                        <td>100,00 €</td>
+                    </tr>
+                </table>
+            </div>
+        </section>
+
+        <section>
+            <h2>🧮 Schritt 3: ZÄHLENWENN & SUMMEWENN (Die Auswertung)</h2>
+            <p>Erstelle rechts neben deiner Datenbank (ab Spalte F) einen kleinen Auswertungsbereich.</p>
+            <div style="background: white; border: 1px solid var(--excel-border); padding: 1.5rem; border-radius: 8px;">
+                <ol style="margin: 0; padding-left: 1.5rem; line-height: 1.8;">
+                    <li><strong>ZÄHLENWENN:</strong> Schreibe in Zelle <strong>F2</strong> die Frage: <em>"Wie viele Nike-Schuhe haben wir im Sortiment?"</em><br>
+                    Berechne das Ergebnis in Zelle <strong>G2</strong> mit der Funktion <span class="code-snippet">=ZÄHLENWENN(...)</span>.</li>
+                    <li style="margin-top: 1rem;"><strong>SUMMEWENN:</strong> Schreibe in Zelle <strong>F3</strong> die Frage: <em>"Wie hoch ist der Gesamtwert aller Adidas-Schuhe?"</em><br>
+                    Berechne das Ergebnis in Zelle <strong>G3</strong> mit der Funktion <span class="code-snippet">=SUMMEWENN(...)</span>.</li>
+                </ol>
+            </div>
+        </section>
+
+        <section>
+            <h2>🔍 Schritt 4: SVERWEIS (Die automatische Kassa)</h2>
+            <p>Baue dir in den Zellen F6 bis G8 eine kleine Suchmaske für deine Kassa:</p>
+            <ul style="line-height: 1.8;">
+                <li>Trage in <strong>F6</strong> das Wort <strong>"Such-Nr:"</strong> ein. In die Zelle <strong>G6</strong> daneben schreibst du zum Testen die Artikelnummer <strong>1004</strong>.</li>
+                <li>Trage in <strong>F7</strong> das Wort <strong>"Preis:"</strong> ein.</li>
+                <li><strong>Deine Aufgabe:</strong> Verwende in Zelle <strong>G7</strong> den <strong>SVERWEIS</strong>, damit Excel automatisch den Preis zur Artikelnummer aus G6 sucht. <em>Tipp: Wenn du die Nummer in G6 auf 1006 änderst, muss sich der Preis automatisch anpassen!</em></li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>🚀 Schritt 5: XVERWEIS (Der Härtetest)</h2>
+            <p>Der SVERWEIS hat eine große Schwäche: Er kann nur nach rechts schauen.</p>
+            <ul style="line-height: 1.8;">
+                <li>Trage in <strong>F8</strong> das Wort <strong>"Marke:"</strong> ein.</li>
+                <li><strong>Deine Aufgabe:</strong> Versuche, mit einer Funktion die <strong>Marke</strong> zur Such-Nummer aus G6 herauszufinden.</li>
+                <li><em>Überlege:</em> Warum scheitert der SVERWEIS hier kläglich, wenn du die Tabelle nicht umbauen darfst? Löse das Problem in Zelle <strong>G8</strong> mithilfe des modernen <strong>XVERWEIS</strong>!</li>
+            </ul>
+        </section>
+
+        <div class="important-note" style="border-left-color: var(--highlight-green); background: #f0fdf4;">
+            <h3 style="margin-top: 0; color: var(--excel-green-dark);">🏆 Zusatzaufgabe (für Profis)</h3>
+            Was passiert in deiner Kassa (G7 und G8), wenn du bei "Such-Nr" versehentlich die Nummer <strong>9999</strong> eingibst, die es in deinem Geschäft gar nicht gibt? <br><br>
+            Passe deinen XVERWEIS in Zelle <strong>G8</strong> so an, dass Excel nicht die fehlerhafte Meldung <code>#NV</code> ausspuckt, sondern stattdessen automatisch den Text <strong>"Artikel nicht gefunden"</strong> anzeigt! <em>(Tipp: Schau dir den Bonus-Tipp im Portal-Artikel zum XVERWEIS nochmal genau an!)</em>
+        </div>
+
+    </main>
+
+    <footer>
+        &copy; 2026 | GvP | Mag. Schweitzer | Mathematik & Informatik
+    </footer>
+
+</body>
+</html>

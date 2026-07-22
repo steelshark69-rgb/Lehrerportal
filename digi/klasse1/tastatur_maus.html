@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tastatur & Maus | Digitale Grundbildung</title>
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+        .input-device-card {
+            background: white;
+            border-left: 4px solid #f59e0b;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .input-device-card h3 {
+            color: #f59e0b;
+            margin-top: 0;
+        }
+        .key-row {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+            margin: 1rem 0;
+        }
+        .key-btn {
+            width: 50px;
+            height: 50px;
+            background: #e5e7eb;
+            border: 2px solid #999;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.1s;
+        }
+        .key-btn:hover {
+            background: #f59e0b;
+            color: white;
+        }
+        .key-btn.special {
+            width: 80px;
+        }
+        .interactive-box {
+            background: #fef3c7;
+            border: 2px solid #f59e0b;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+        }
+        .typing-area {
+            background: white;
+            border: 2px solid #f59e0b;
+            padding: 1rem;
+            border-radius: 5px;
+            min-height: 50px;
+            font-family: monospace;
+            font-size: 1.2rem;
+        }
+        .mouse-demo {
+            width: 100%;
+            height: 200px;
+            background: #f3f4f6;
+            border: 2px dashed #999;
+            border-radius: 8px;
+            position: relative;
+            margin: 1rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: crosshair;
+        }
+        .cursor-demo {
+            width: 30px;
+            height: 30px;
+            background: #f59e0b;
+            border-radius: 50%;
+            position: absolute;
+            pointer-events: none;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>⌨️ Tastatur & Maus - Eingabegeräte erkunden</h1>
+    <p>1. Klasse | Digitale Grundbildung</p>
+    <div class="back-nav">
+        <a href="index.html" class="btn-back">⬅ Zurück</a>
+    </div>
+</header>
+
+<main style="max-width: 900px; margin: 0 auto; padding: 2rem 1rem;">
+
+    <section>
+        <h2>🖥️ Eingabegeräte - Die Vermittler zwischen dir und dem Computer</h2>
+        <p>Um mit dem Computer zu kommunizieren, brauchst du Eingabegeräte. Die wichtigsten sind:</p>
+    </section>
+
+    <div class="input-device-card">
+        <div style="font-size: 3rem; margin-bottom: 1rem;">⌨️</div>
+        <h3>Tastatur</h3>
+        <p><strong>Funktion:</strong> Ermöglicht es dir, Text und Befehle einzugeben.</p>
+        <p><strong>Tasten-Typen:</strong></p>
+        <ul>
+            <li>🔤 <strong>Buchstaben:</strong> A-Z, a-z</li>
+            <li>🔢 <strong>Zahlen:</strong> 0-9 (oben auf der Tastatur)</li>
+            <li>⌃ <strong>Sondertasten:</strong> Ctrl, Alt, Shift, Enter</li>
+            <li>🔒 <strong>Caps Lock:</strong> Schaltet auf Großbuchstaben um</li>
+            <li>⌫ <strong>Backspace:</strong> Löscht das letzte Zeichen</li>
+            <li>↹ <strong>Tab:</strong> Springt zum nächsten Feld</li>
+        </ul>
+        <p><strong>Beispiel:</strong> Um Großbuchstaben zu schreiben, halte Shift gedrückt oder drücke Caps Lock.</p>
+    </div>
+
+    <div class="input-device-card">
+        <div style="font-size: 3rem; margin-bottom: 1rem;">🖱️</div>
+        <h3>Maus (oder Touchpad)</h3>
+        <p><strong>Funktion:</strong> Bewegt den Cursor und klickt auf Objekte.</p>
+        <p><strong>Maus-Tasten:</strong></p>
+        <ul>
+            <li>🖱️ <strong>Linker Klick:</strong> Hauptaktion - öffnet Dateien, drückt Buttons</li>
+            <li>🖱️ <strong>Rechter Klick:</strong> Zeigt Kontextmenü (Optionen)</li>
+            <li>🔄 <strong>Doppelklick:</strong> Schneller zweimal klicken - öffnet Programme</li>
+            <li>📜 <strong>Scroll-Rad:</strong> Zum Scrollen nach oben/unten</li>
+        </ul>
+        <p><strong>Beispiel:</strong> Um eine Datei zu öffnen → Doppelklick. Um eine Datei zu löschen → Rechtsklick → Löschen.</p>
+    </div>
+
+    <div class="interactive-box">
+        <h2>🎯 Interaktive Demo: Maus-Bewegung testen</h2>
+        <p>Bewege deine Maus über das Feld und beobachte den Cursor!</p>
+        <div class="mouse-demo" id="mouseDemo">
+            <p>Bewege deine Maus hier! →</p>
+        </div>
+    </div>
+
+    <div class="input-device-card">
+        <div style="font-size: 3rem; margin-bottom: 1rem;">👆</div>
+        <h3>Touchpad (Laptop)</h3>
+        <p><strong>Funktion:</strong> Alternative zur Maus auf Laptops.</p>
+        <ul>
+            <li>1 Finger = Cursor bewegen</li>
+            <li>2 Finger = Scrollen</li>
+            <li>Doppeltipp = Doppelklick</li>
+            <li>Rechts unten tippen = Rechtsklick</li>
+        </ul>
+    </div>
+
+    <section>
+        <h2>💡 Tipps für schnellere Arbeit</h2>
+        <div class="input-device-card">
+            <h3>⌨️ Praktische Tastaturkürzel</h3>
+            <table style="width: 100%; border-collapse: collapse;">
+                <tr style="background: #f0f0f0;">
+                    <th style="padding: 10px; text-align: left; border: 1px solid #ddd;"><strong>Kürzel</strong></th>
+                    <th style="padding: 10px; text-align: left; border: 1px solid #ddd;"><strong>Funktion</strong></th>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ddd;">Ctrl + C</td>
+                    <td style="padding: 10px; border: 1px solid #ddd;">Kopieren</td>
+                </tr>
+                <tr style="background: #f9f9f9;">
+                    <td style="padding: 10px; border: 1px solid #ddd;">Ctrl + V</td>
+                    <td style="padding: 10px; border: 1px solid #ddd;">Einfügen</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ddd;">Ctrl + Z</td>
+                    <td style="padding: 10px; border: 1px solid #ddd;">Rückgängig</td>
+                </tr>
+                <tr style="background: #f9f9f9;">
+                    <td style="padding: 10px; border: 1px solid #ddd;">Ctrl + S</td>
+                    <td style="padding: 10px; border: 1px solid #ddd;">Speichern</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ddd;">Alt + Tab</td>
+                    <td style="padding: 10px; border: 1px solid #ddd;">Zwischen Programmen wechseln</td>
+                </tr>
+                <tr style="background: #f9f9f9;">
+                    <td style="padding: 10px; border: 1px solid #ddd;">Windows + E</td>
+                    <td style="padding: 10px; border: 1px solid #ddd;">Datei-Explorer öffnen</td>
+                </tr>
+            </table>
+        </div>
+    </section>
+
+</main>
+
+<footer style="margin-top: 5rem; padding: 2rem 1rem; background-color: #f8fafc; border-top: 1px solid #e2e8f0; color: #64748b; font-size: 0.9rem; text-align: center;">
+    &copy; 2026 | GvP | Mag. Schweitzer | Digitale Grundbildung
+</footer>
+
+<script>
+    const mouseDemo = document.getElementById('mouseDemo');
+    let cursorDemo = null;
+
+    mouseDemo.addEventListener('mousemove', (e) => {
+        if (!cursorDemo) {
+            cursorDemo = document.createElement('div');
+            cursorDemo.className = 'cursor-demo';
+            mouseDemo.appendChild(cursorDemo);
+        }
+        
+        const rect = mouseDemo.getBoundingClientRect();
+        cursorDemo.style.left = (e.clientX - rect.left - 15) + 'px';
+        cursorDemo.style.top = (e.clientY - rect.top - 15) + 'px';
+    });
+
+    mouseDemo.addEventListener('mouseleave', () => {
+        if (cursorDemo) {
+            cursorDemo.remove();
+            cursorDemo = null;
+        }
+    });
+</script>
+
+</body>
+</html>

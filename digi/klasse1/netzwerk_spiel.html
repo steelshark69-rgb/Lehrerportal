@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Netzwerk-Spiel | Digitale Grundbildung</title>
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+        .game-board {
+            background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+            padding: 2rem;
+            border-radius: 10px;
+            color: white;
+            max-width: 900px;
+            margin: 2rem auto;
+        }
+        .network-container {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px dashed white;
+            padding: 2rem;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        .device {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            min-width: 120px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        .device.active {
+            animation: pulse 0.5s;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        .device-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .device-name {
+            font-weight: bold;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+        .device-ip {
+            font-size: 0.85rem;
+            color: #6b7280;
+            font-family: monospace;
+        }
+        .packet-animation {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: #fbbf24;
+            border-radius: 50%;
+            border: 2px solid #f59e0b;
+            animation: travel 2s linear forwards;
+        }
+        @keyframes travel {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+        .info-box {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1rem 0;
+        }
+        .step-display {
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>🎯 Netzwerk-Spiel - Wie Daten reisen</h1>
+    <p>1. Klasse | Digitale Grundbildung</p>
+    <div class="back-nav">
+        <a href="index.html" class="btn-back">⬅ Zurück</a>
+    </div>
+</header>
+
+<main style="max-width: 1000px; margin: 0 auto; padding: 2rem 1rem;">
+
+    <section style="background: #dbeafe; border-left: 4px solid #3b82f6; padding: 1.5rem; border-radius: 5px; margin-bottom: 2rem;">
+        <h2>📡 Wie funktioniert ein Netzwerk?</h2>
+        <p>Klicke auf die Geräte und schau, wie eine Datei von einem Computer zum anderen reist!</p>
+    </section>
+
+    <div class="game-board">
+        <h2 style="text-align: center; margin-top: 0;">Sende eine Datei durchs Netzwerk!</h2>
+        
+        <div class="network-container" id="networkContainer">
+            <!-- Geräte werden hier eingefügt -->
+        </div>
+
+        <div class="step-display" id="stepDisplay">
+            <p id="stepText" style="text-align: center; margin: 0; font-size: 1.1rem;">
+                Klick auf <strong>Dein Computer</strong> um zu starten! 🖱️
+            </p>
+        </div>
+
+        <div class="info-box">
+            <p id="infoText" style="margin: 0;"></p>
+        </div>
+    </div>
+
+    <section style="background: white; padding: 2rem; border-radius: 8px; margin-top: 2rem;">
+        <h2>🔄 Der Weg einer Datei durchs Netzwerk</h2>
+        
+        <ol style="line-height: 1.8;">
+            <li><strong>Dein Computer 🖥️</strong> - Du klickst auf "Datei senden"</li>
+            <li><strong>Datei aufteilen 📦</strong> - Die Datei wird in kleine Pakete zerlegt</li>
+            <li><strong>Router 🌐</strong> - Der Router verbindet dich mit dem Internet</li>
+            <li><strong>Internet 🌍</strong> - Die Pakete reisen durch Glasfaserkabel</li>
+            <li><strong>Ziel-Router 🌐</strong> - Der Router des Empfängers empfängt die Pakete</li>
+            <li><strong>Ziel-Computer 🖥️</strong> - Die Pakete werden wieder zusammengefügt</li>
+            <li><strong>Datei angekommen ✅</strong> - Fertig!</li>
+        </ol>
+
+        <div style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 1.5rem; border-radius: 5px; margin-top: 2rem;">
+            <h3>💡 Interessante Fakten:</h3>
+            <ul>
+                <li>Eine Datei wird in tausende kleine Pakete aufgeteilt!</li>
+                <li>Die Pakete reisen über verschiedene Wege durchs Internet</li>
+                <li>Alles passiert in Millisekunden (1/1000 Sekunde!)</li>
+                <li>Die Geschwindigkeit ist NICHT immer gleich - es kommt auf die Route an</li>
+                <li>Glasfaserkabel sind der schnellste Weg (Licht-Geschwindigkeit!)</li>
+            </ul>
+        </div>
+    </section>
+
+    <section style="background: #dcfce7; border-left: 4px solid #10b981; padding: 1.5rem; border-radius: 5px; margin-top: 2rem;">
+        <h2>🔒 Netzwerk-Sicherheit</h2>
+        <ul>
+            <li><strong>Firewall:</strong> Schützt dein Netzwerk vor Hackern</li>
+            <li><strong>Verschlüsselung:</strong> Datenpakete können nicht einfach abgefangen werden</li>
+            <li><strong>HTTPS:</strong> Das "S" = Sichere, verschlüsselte Verbindung</li>
+            <li><strong>WiFi-Passwort:</strong> Nur du und deine Familie sollten ins Netzwerk können</li>
+        </ul>
+    </section>
+
+</main>
+
+<footer style="margin-top: 5rem; padding: 2rem 1rem; background-color: #f8fafc; border-top: 1px solid #e2e8f0; color: #64748b; font-size: 0.9rem; text-align: center;">
+    &copy; 2026 | GvP | Mag. Schweitzer | Digitale Grundbildung
+</footer>
+
+<script>
+    const devices = [
+        { name: "Dein Computer", icon: "🖥️", ip: "192.168.1.10", id: "sender" },
+        { name: "Router", icon: "🌐", ip: "192.168.1.1", id: "router" },
+        { name: "Internet", icon: "🌍", ip: "8.8.8.8", id: "internet" },
+        { name: "Anderer Router", icon: "🌐", ip: "10.0.0.1", id: "router2" },
+        { name: "Ziel-Computer", icon: "🖥️", ip: "10.0.0.50", id: "receiver" }
+    ];
+
+    let currentStep = -1;
+    let gamePlaying = false;
+
+    function initGame() {
+        const container = document.getElementById('networkContainer');
+        container.innerHTML = '';
+        devices.forEach((device, index) => {
+            const div = document.createElement('div');
+            div.className = 'device';
+            div.id = device.id;
+            div.innerHTML = `
+                <div class="device-icon">${device.icon}</div>
+                <div class="device-name">${device.name}</div>
+                <div class="device-ip">${device.ip}</div>
+            `;
+            div.style.cursor = 'pointer';
+            div.onclick = () => clickDevice(index);
+            container.appendChild(div);
+        });
+        currentStep = -1;
+        gamePlaying = false;
+    }
+
+    function clickDevice(index) {
+        if (currentStep === -1 && index === 0) {
+            startGame();
+        } else if (gamePlaying && index === currentStep + 1) {
+            nextStep();
+        }
+    }
+
+    function startGame() {
+        gamePlaying = true;
+        currentStep = 0;
+        updateDisplay();
+    }
+
+    function nextStep() {
+        currentStep++;
+        updateDisplay();
+    }
+
+    function updateDisplay() {
+        // Aktive Geräte markieren
+        document.querySelectorAll('.device').forEach((el, i) => {
+            if (i <= currentStep) {
+                el.style.background = '#dcfce7';
+                el.style.borderLeft = '4px solid #10b981';
+            } else {
+                el.style.background = 'rgba(255, 255, 255, 0.95)';
+                el.style.borderLeft = 'none';
+            }
+        });
+
+        const steps = [
+            {
+                text: "📤 <strong>Dein Computer</strong> bereitet die Datei vor...",
+                info: "Dein Computer bereitet eine Datei vor, um sie zu versenden. Die Datei wird in kleine Datenpakete zerlegt."
+            },
+            {
+                text: "🌐 <strong>Router</strong> empfängt die Datei...",
+                info: "Der Router verbindet dein Zuhause mit dem Internet. Er kümmert sich darum, dass die Pakete zur richtigen Adresse gehen."
+            },
+            {
+                text: "🌍 <strong>Internet</strong> leitet Datenpakete weiter...",
+                info: "Die Datenpakete reisen durch Glasfaserkabel über große Entfernungen. Alles passiert in Millisekunden!"
+            },
+            {
+                text: "🌐 <strong>Anderer Router</strong> empfängt die Pakete...",
+                info: "Der Router des Empfängers nimmt die ankommenden Datenpakete entgegen und leitet sie weiter."
+            },
+            {
+                text: "📥 <strong>Ziel-Computer</strong> empfängt Datei!",
+                info: "Alle Datenpakete sind angekommen! Der Computer setzt sie wieder zusammen. Die Datei ist komplett! ✅"
+            }
+        ];
+
+        if (currentStep < steps.length) {
+            document.getElementById('stepText').innerHTML = steps[currentStep].text;
+            document.getElementById('infoText').innerHTML = steps[currentStep].info;
+            
+            const nextBtn = document.createElement('p');
+            if (currentStep < steps.length - 1) {
+                nextBtn.innerHTML = `<br><strong>Klick auf ${devices[currentStep + 1].name} um fortzufahren →</strong>`;
+            } else {
+                nextBtn.innerHTML = `<br><strong>✅ Datei erfolgreich übertragen!</strong>`;
+                gamePlaying = false;
+            }
+            document.getElementById('stepText').innerHTML += nextBtn.innerHTML;
+        }
+    }
+
+    initGame();
+</script>
+
+</body>
+</html>

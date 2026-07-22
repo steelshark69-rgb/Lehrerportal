@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>IoT Quiz - Internet of Things</title>
+    <!-- Bibliotheken -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        :root {
+            --primary: #005691;
+            --secondary: #eef2f5;
+            --success: #28a745;
+            --error: #dc3545;
+            --text: #333;
+            --white: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--secondary);
+            color: var(--text);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        #app-container {
+            background: var(--white);
+            width: 100%;
+            max-width: 700px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* iPad Optimierungen */
+        h1 { font-size: 24px; text-align: center; color: var(--primary); }
+        p { font-size: 18px; line-height: 1.5; }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            font-size: 18px; /* Verhindert Zoom auf iOS */
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            outline: none;
+        }
+
+        button {
+            width: 100%;
+            min-height: 50px; /* Touch Target */
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 10px;
+        }
+
+        button:active {
+            background-color: #003d66;
+            transform: scale(0.98);
+        }
+
+        button:disabled {
+            background-color: #ccc;
+        }
+
+        /* Timer */
+        #timer-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 10px;
+            font-weight: bold;
+            font-size: 20px;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            display: none;
+        }
+
+        /* Quiz UI */
+        .question-box { display: none; }
+        .active { display: block; }
+
+        .answer-list {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+
+        .answer-item {
+            background: #f8f9fa;
+            border: 2px solid #eee;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            font-size: 17px;
+        }
+
+        .answer-item:active { background: #e9ecef; }
+        .answer-item.correct { background: var(--success); color: white; border-color: var(--success); }
+        .answer-item.wrong { background: var(--error); color: white; border-color: var(--error); }
+
+        /* Spinner */
+        .loader-container {
+            display: none;
+            text-align: center;
+            padding: 40px;
+        }
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* Result Screen */
+        #result-screen { text-align: center; display: none; }
+        .grade-badge {
+            font-size: 48px;
+            font-weight: bold;
+            margin: 20px 0;
+            color: var(--primary);
+        }
+
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+    <div id="timer-bar">Zeit: 07:30</div>
+
+    <div id="app-container">
+        <!-- START SCREEN -->
+        <div id="start-screen">
+            <h1>Quiz: Internet of Things (IoT)</h1>
+            <p>Willkommen zum IoT-Quiz. Teste dein Wissen über Sensoren, Smart Homes und die digitale Zukunft.</p>
+            <div style="margin: 20px 0;">
+                <label for="student-name">Vorname & 1. Buchstabe Nachname:</label>
+                <input type="text" id="student-name" placeholder="z.B. Max M." autocomplete="off">
+            </div>
+            <p><strong>Info:</strong> Du hast insgesamt <strong>7:30 Minuten</strong> Zeit für 15 Fragen.</p>
+            <button id="btn-start">Quiz starten</button>
+        </div>
+
+        <!-- QUIZ SCREEN -->
+        <div id="quiz-screen" class="hidden">
+            <div id="question-container">
+                <!-- Fragen werden dynamisch geladen -->
+            </div>
+            <button id="btn-next" class="hidden">Nächste Frage</button>
+        </div>
+
+        <!-- RESULT SCREEN -->
+        <div id="result-screen">
+            <h2>Dein Ergebnis</h2>
+            <p id="res-name" style="font-weight: bold;"></p>
+            <div id="res-score" style="font-size: 20px;">Punkte: 0 / 15</div>
+            <div id="res-grade" class="grade-badge">-</div>
+            <p id="res-timeout" style="color: var(--error); font-weight: bold;" class="hidden">Zeit abgelaufen!</p>
+            
+            <div id="process-status" class="loader-container">
+                <div class="spinner"></div>
+                <p id="status-text">Verarbeite Ergebnisse...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- KONFIGURATION & DATEN ---
+        const CONFIG = {
+            totalQuestions: 15,
+            timeLimit: 7.5 * 60, // 450 Sekunden
+            emailjs: {
+                publicKey: "HnZ28X9AihlD5y9XH",
+                serviceID: "service_qoofink",
+                templateID: "template_cu0x1bc"
+            }
+        };
+
+        const QUESTIONS = [
+            // LEICHT (5)
+            { q: "Was bedeutet die Abkürzung 'IoT'?", a: ["Internet of Things", "Input of Technology", "Integration of Tools", "Internal Object Transfer"], c: 0, d: "e" },
+            { q: "Was ist ein typisches Beispiel für ein Smart Home Gerät?", a: ["Eine smarte Glühbirne", "Ein normaler Besen", "Ein analoges Thermometer", "Ein mechanischer Wecker"], c: 0, d: "e" },
+            { q: "Was sammelt Daten in einem IoT-System?", a: ["Sensoren", "Aktoren", "Batterien", "Gehäuse"], c: 0, d: "e" },
+            { q: "Ein 'Digitaler Zwilling' ist...", a: ["eine digitale Kopie eines echten Objekts", "ein zweites identisches Smartphone", "ein Roboter, der wie ein Mensch aussieht", "eine Backup-Datei auf einem USB-Stick"], c: 0, d: "e" },
+            { q: "Welches Gerät misst im Gesundheitsbereich meistens Schritte und Puls?", a: ["Fitnessarmband / Smartwatch", "Smarte Waage", "Smarte Kaffeemaschine", "Smarte Türklingel"], c: 0, d: "e" },
+            // MITTEL (5)
+            { q: "Was macht ein 'Aktor' im IoT-System?", a: ["Er führt eine physische Aktion aus (z.B. Motor drehen)", "Er speichert nur Daten", "Er misst die Temperatur", "Er stellt die Internetverbindung her"], c: 0, d: "m" },
+            { q: "Was ist der Vorteil von Edge Computing?", a: ["Daten werden direkt am Gerät verarbeitet", "Daten werden immer in die USA geschickt", "Es wird kein Strom benötigt", "Die Cloud wird komplett ersetzt"], c: 0, d: "m" },
+            { q: "Welches Protokoll ist typisch für die IoT-Kommunikation?", a: ["MQTT", "HTTP/1.1", "FTP", "SMTP"], c: 0, d: "m" },
+            { q: "Warum sind Standards wie 'Matter' wichtig?", a: ["Damit Geräte verschiedener Hersteller zusammenarbeiten", "Damit das Internet schneller wird", "Damit Geräte weniger Strom verbrauchen", "Damit Akkus länger halten"], c: 0, d: "m" },
+            { q: "Was bedeutet 'Predictive Maintenance' in der Industrie?", a: ["Vorausschauende Wartung: Maschinen sagen Defekte vorher", "Maschinen werden jeden Tag repariert", "Maschinen werden nur bei Defekt ersetzt", "Manuelle Kontrolle durch Techniker"], c: 0, d: "m" },
+            // SCHWER (5)
+            { q: "Welcher Funkstandard gehört zu LPWAN (Low Power Wide Area Network)?", a: ["LoRaWAN", "Bluetooth 4.0", "WLAN (Wi-Fi 6)", "ZigBee"], c: 0, d: "s" },
+            { q: "Was ist ein großes Risiko bei IoT-Geräten?", a: ["Hacking und Datenschutz-Probleme", "Dass sie zu viel Licht erzeugen", "Dass sie zu schwer sind", "Dass sie keine Farben anzeigen"], c: 0, d: "s" },
+            { q: "Was passiert, wenn die Interoperabilität fehlt?", a: ["Systeme verschiedener Marken können nicht kommunizieren", "Das Gerät wird zu heiß", "Die Internetverbindung bricht immer ab", "Die Sensoren messen falsch"], c: 0, d: "s" },
+            { q: "Wie entsteht ein Digitaler Zwilling primär?", a: ["Durch kontinuierliche Echtzeit-Daten von Sensoren", "Durch ein einmaliges Foto", "Durch eine Skizze auf Papier", "Durch manuelle Eingabe aller Werte"], c: 0, d: "s" },
+            { q: "Wofür steht 'NB-IoT'?", a: ["Narrowband Internet of Things", "New Basic IoT", "Network Binary IoT", "Node Based IoT"], c: 0, d: "s" }
+        ];
+
+        // --- STATE ---
+        let state = {
+            currentIdx: 0,
+            score: 0,
+            name: "",
+            timer: CONFIG.timeLimit,
+            timerInterval: null,
+            isLocked: false,
+            questions: [],
+            timeoutOccurred: false
+        };
+
+        // --- INITIALISIERUNG ---
+        emailjs.init(CONFIG.emailjs.publicKey);
+
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function getGrade(percent) {
+            if (percent >= 90) return "Sehr gut";
+            if (percent >= 78) return "Gut";
+            if (percent >= 64) return "Befriedigend";
+            if (percent >= 50) return "Genügend";
+            return "Nicht genügend";
+        }
+
+        // --- CORE LOGIK ---
+        document.getElementById('btn-start').addEventListener('click', () => {
+            const nameInput = document.getElementById('student-name').value.trim();
+            if (nameInput.length < 3) {
+                alert("Bitte gib deinen Namen ein (min. 3 Zeichen).");
+                return;
+            }
+            state.name = nameInput;
+            startQuiz();
+        });
+
+        function startQuiz() {
+            // Fragen vorbereiten
+            state.questions = shuffle([...QUESTIONS]).slice(0, CONFIG.totalQuestions);
+            state.questions.forEach(q => {
+                const correctText = q.a[q.c];
+                q.a = shuffle([...q.a]);
+                q.c = q.a.indexOf(correctText);
+            });
+
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('hidden');
+            document.getElementById('timer-bar').style.display = 'block';
+
+            renderQuestion();
+            startTimer();
+        }
+
+        function startTimer() {
+            state.timerInterval = setInterval(() => {
+                state.timer--;
+                updateTimerDisplay();
+                if (state.timer <= 0) {
+                    state.timeoutOccurred = true;
+                    endQuiz();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const mins = Math.floor(state.timer / 60).toString().padStart(2, '0');
+            const secs = (state.timer % 60).toString().padStart(2, '0');
+            document.getElementById('timer-bar').innerText = `Zeit: ${mins}:${secs}`;
+            if (state.timer < 60) document.getElementById('timer-bar').style.background = '#dc3545';
+        }
+
+        function renderQuestion() {
+            state.isLocked = false;
+            const container = document.getElementById('question-container');
+            const qData = state.questions[state.currentIdx];
+            
+            let html = `
+                <div class="question-box active">
+                    <p style="color: #666; font-size: 14px;">Frage ${state.currentIdx + 1} von ${CONFIG.totalQuestions}</p>
+                    <p><strong>${qData.q}</strong></p>
+                    <div class="answer-list">
+                        ${qData.a.map((ans, i) => `<div class="answer-item" onclick="checkAnswer(${i})">${ans}</div>`).join('')}
+                    </div>
+                </div>
+            `;
+            container.innerHTML = html;
+            document.getElementById('btn-next').classList.add('hidden');
+        }
+
+        window.checkAnswer = function(idx) {
+            if (state.isLocked) return;
+            state.isLocked = true;
+
+            const qData = state.questions[state.currentIdx];
+            const items = document.querySelectorAll('.answer-item');
+            
+            if (idx === qData.c) {
+                items[idx].classList.add('correct');
+                state.score++;
+            } else {
+                items[idx].classList.add('wrong');
+                items[qData.c].classList.add('correct');
+            }
+
+            document.getElementById('btn-next').classList.remove('hidden');
+        };
+
+        document.getElementById('btn-next').addEventListener('click', () => {
+            state.currentIdx++;
+            if (state.currentIdx < state.questions.length) {
+                renderQuestion();
+            } else {
+                endQuiz();
+            }
+        });
+
+        async function endQuiz() {
+            clearInterval(state.timerInterval);
+            document.getElementById('timer-bar').style.display = 'none';
+            document.getElementById('quiz-screen').classList.add('hidden');
+            document.getElementById('result-screen').style.display = 'block';
+
+            // Ergebnis berechnen
+            const percent = Math.round((state.score / CONFIG.totalQuestions) * 100);
+            const grade = getGrade(percent);
+
+            document.getElementById('res-name').innerText = state.name;
+            document.getElementById('res-score').innerText = `Punkte: ${state.score} / ${CONFIG.totalQuestions} (${percent}%)`;
+            document.getElementById('res-grade').innerText = grade;
+            if (state.timeoutOccurred) document.getElementById('res-timeout').classList.remove('hidden');
+
+            // Prozessierung starten
+            document.getElementById('process-status').style.display = 'block';
+
+            try {
+                // 1. Screenshot
+                const canvas = await html2canvas(document.getElementById('app-container'), { scale: 2 });
+                const link = document.createElement('a');
+                link.download = `Ergebnis_${state.name.replace(/\s/g, '_')}.png`;
+                link.href = canvas.toDataURL();
+                link.click();
+
+                // 2. EmailJS
+                const emailData = {
+                    quiz_name: "Quiz: Internet of Things",
+                    from_name: state.name,
+                    score: `${state.score} / ${CONFIG.totalQuestions}`,
+                    message: `Note: ${grade} | Zeit abgelaufen: ${state.timeoutOccurred ? 'Ja' : 'Nein'}`
+                };
+
+                await emailjs.send(CONFIG.emailjs.serviceID, CONFIG.emailjs.templateID, emailData);
+                
+                document.getElementById('status-text').innerText = "Fertig! Screenshot gespeichert und E-Mail versendet.";
+                document.querySelector('.spinner').style.display = 'none';
+            } catch (error) {
+                alert("Fehler bei der Verarbeitung: " + (error.text || error));
+                document.getElementById('status-text').innerText = "Vorgang mit Fehlern abgeschlossen.";
+            }
+        }
+    </script>
+</body>
+</html>

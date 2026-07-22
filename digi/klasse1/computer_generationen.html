@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Computer-Generationen | Digitale Grundbildung</title>
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+        .timeline {
+            position: relative;
+            padding: 2rem 0;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 100%;
+            background: #3b82f6;
+            top: 0;
+        }
+        .timeline-item {
+            margin-bottom: 3rem;
+            position: relative;
+        }
+        .timeline-item:nth-child(odd) .content {
+            margin-left: 0;
+            margin-right: auto;
+            width: 45%;
+            text-align: right;
+            padding-right: 3rem;
+        }
+        .timeline-item:nth-child(even) .content {
+            margin-left: auto;
+            margin-right: 0;
+            width: 45%;
+            padding-left: 3rem;
+        }
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 20px;
+            background: #3b82f6;
+            border: 4px solid white;
+            border-radius: 50%;
+            top: 20px;
+            z-index: 1;
+        }
+        .content {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .year {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #3b82f6;
+            margin-bottom: 0.5rem;
+        }
+        .description {
+            font-size: 1rem;
+            color: #666;
+            line-height: 1.6;
+        }
+        .icon {
+            font-size: 3rem;
+            margin: 1rem 0;
+        }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+        }
+        .comparison-table th,
+        .comparison-table td {
+            padding: 15px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        .comparison-table th {
+            background: #3b82f6;
+            color: white;
+        }
+        .comparison-table tr:nth-child(even) {
+            background: #f0f9ff;
+        }
+        @media (max-width: 768px) {
+            .timeline::before {
+                left: 20px;
+            }
+            .timeline-dot {
+                left: 20px;
+            }
+            .timeline-item:nth-child(odd) .content,
+            .timeline-item:nth-child(even) .content {
+                width: calc(100% - 60px);
+                margin-left: auto;
+                margin-right: 0;
+                padding-left: 3rem;
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>🕹️ Computer-Generationen - Die Geschichte des Computers</h1>
+    <p>1. Klasse | Digitale Grundbildung</p>
+    <div class="back-nav">
+        <a href="index.html" class="btn-back">⬅ Zurück</a>
+    </div>
+</header>
+
+<main style="max-width: 1000px; margin: 0 auto; padding: 2rem 1rem;">
+
+    <section style="background: #dbeafe; border-left: 4px solid #3b82f6; padding: 1.5rem; border-radius: 5px; margin-bottom: 2rem;">
+        <h2>📚 Von der Schreibmaschine zum Smartphone</h2>
+        <p>Wer hätte gedacht, dass Computer einmal so klein und schnell sein würden? Schau dir die Reise an!</p>
+    </section>
+
+    <div class="timeline" id="timeline">
+        <!-- Timeline wird dynamisch eingefügt -->
+    </div>
+
+    <section style="background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 1.5rem; border-radius: 5px; margin-top: 3rem;">
+        <h2>📊 Vergleich: Damals vs. Heute</h2>
+        <table class="comparison-table">
+            <tr>
+                <th>Eigenschaft</th>
+                <th>1970er (Altair 8800)</th>
+                <th>1980er (IBM PC)</th>
+                <th>2000er (PC)</th>
+                <th>2020er (Laptop/Handy)</th>
+            </tr>
+            <tr>
+                <td><strong>Gewicht</strong></td>
+                <td>10 kg</td>
+                <td>11 kg</td>
+                <td>3-4 kg</td>
+                <td>0,2-0,5 kg</td>
+            </tr>
+            <tr>
+                <td><strong>RAM</strong></td>
+                <td>256 Bytes</td>
+                <td>64 KB</td>
+                <td>512 MB</td>
+                <td>4-12 GB</td>
+            </tr>
+            <tr>
+                <td><strong>Speicher</strong></td>
+                <td>-</td>
+                <td>20 MB</td>
+                <td>80 GB</td>
+                <td>256-1000 GB</td>
+            </tr>
+            <tr>
+                <td><strong>Preis</strong></td>
+                <td>$10.000</td>
+                <td>$5.000</td>
+                <td>$1.000</td>
+                <td>$500-1500</td>
+            </tr>
+            <tr>
+                <td><strong>Geschwindigkeit</strong></td>
+                <td>0,001 GHz</td>
+                <td>0,005 GHz</td>
+                <td>1-2 GHz</td>
+                <td>2-3 GHz</td>
+            </tr>
+        </table>
+    </section>
+
+    <section style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 1.5rem; border-radius: 5px; margin-top: 2rem;">
+        <h2>🚀 Die Zukunft des Computers</h2>
+        <ul>
+            <li><strong>🤖 KI-Integration:</strong> Computer werden immer intelligenter und können Aufgaben selbstständig lernen</li>
+            <li><strong>⚡ Quantencomputer:</strong> Extrem schnelle Computer für komplexe Probleme</li>
+            <li><strong>🥽 Virtual Reality:</strong> Immersive Erlebnisse mit VR-Brillen</li>
+            <li><strong>📱 Wearables:</strong> Computer direkt am Körper (Smartwatches, Augmented Reality Brillen)</li>
+            <li><strong>☁️ Cloud Computing:</strong> Alle Daten und Programme im Internet statt lokal</li>
+            <li><strong>🧬 Bioinformatik:</strong> Computer helfen bei Gentechnologie und Medizin</li>
+        </ul>
+    </section>
+
+</main>
+
+<footer style="margin-top: 5rem; padding: 2rem 1rem; background-color: #f8fafc; border-top: 1px solid #e2e8f0; color: #64748b; font-size: 0.9rem; text-align: center;">
+    &copy; 2026 | GvP | Mag. Schweitzer | Digitale Grundbildung
+</footer>
+
+<script>
+    const timelineData = [
+        {
+            year: "1940er - ENIAC",
+            icon: "🔧",
+            description: "Der erste elektronische Computer ENIAC wiegt über 27 Tonnen und nimmt einen ganzen Raum ein. Rechengeschwindigkeit: 5.000 Additionen pro Sekunde."
+        },
+        {
+            year: "1960er - Großrechner",
+            icon: "💾",
+            description: "Mainframe-Computer werden standard in Unternehmen. Größe: Kühlschrank. Preis: eine Million Dollar. Nur Fachleute können sie bedienen."
+        },
+        {
+            year: "1970er - Personal Computer",
+            icon: "🖥️",
+            description: "Der Altair 8800 (1975) kostet $10.000 und wird der erste PC zum Kaufen. Apple II (1977) bringt den Computer in die Wohnzimmer."
+        },
+        {
+            year: "1980er - IBM PC Ära",
+            icon: "⌨️",
+            description: "IBM PC definiert den Standard. Betriebssystem: MS-DOS. Erste Grafische Benutzeroberfläche mit Windows 1.0 (1985)."
+        },
+        {
+            year: "1990er - Internet & Grafik",
+            icon: "🌐",
+            description: "Das Internet kommt in die Häuser! Windows 95 revolutioniert die Bedienung. 3D-Grafik wird Standard. Game-PCs werden beliebt."
+        },
+        {
+            year: "2000er - Mobilcomputer",
+            icon: "💻",
+            description: "Laptops werden leichter und schneller. iPod (2001) startet die digitale Musik. Handys bekommen Kameras und Internet-Zugang."
+        },
+        {
+            year: "2010er - Smartphone-Ära",
+            icon: "📱",
+            description: "Das iPhone revolutioniert alles! Touchscreen statt Tastaturen. Tablets (iPad) erscheinen. Cloud-Dienste boomen. Apps ersetzen Programme."
+        },
+        {
+            year: "2020er - KI & Cloud",
+            icon: "🤖",
+            description: "Künstliche Intelligenz wird überall eingebaut: ChatGPT, DALL-E, etc. Remote-Arbeit wird normal. Quantum-Computing macht Fortschritte."
+        }
+    ];
+
+    function initTimeline() {
+        const timeline = document.getElementById('timeline');
+        timeline.innerHTML = '';
+        
+        timelineData.forEach((item, index) => {
+            const div = document.createElement('div');
+            div.className = 'timeline-item';
+            div.innerHTML = `
+                <div class="timeline-dot"></div>
+                <div class="content">
+                    <div class="year">${item.year}</div>
+                    <div class="icon">${item.icon}</div>
+                    <div class="description">${item.description}</div>
+                </div>
+            `;
+            timeline.appendChild(div);
+        });
+    }
+
+    initTimeline();
+</script>
+
+</body>
+</html>

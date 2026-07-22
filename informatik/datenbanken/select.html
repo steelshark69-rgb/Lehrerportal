@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQL Tutorial: Der SELECT-Befehl</title>
+    <link rel="stylesheet" href="../../style.css">
+    
+    <style>
+        /* Lokales CSS für Lesbarkeit und Interaktivität */
+        body {
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #2d3748;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8fafc;
+        }
+        
+        /* Navigation Styles */
+        .nav-bar {
+            display: flex; justify-content: space-between; align-items: center;
+            background-color: #fff; padding: 10px 15px; border-radius: 8px;
+            border: 1px solid #cbd5e1; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .nav-btn {
+            text-decoration: none; background-color: #e2e8f0; color: #334155;
+            padding: 8px 16px; border-radius: 5px; font-weight: 600; transition: 0.2s;
+        }
+        .nav-btn:hover { background-color: #cbd5e1; color: #0f172a; }
+        
+        h1 { color: #1e293b; border-bottom: 3px solid #3b82f6; padding-bottom: 10px; }
+        h2 { color: #2563eb; margin-top: 35px; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px;}
+        h3 { color: #334155; }
+        
+        .theory-box {
+            background-color: #fff; border-left: 5px solid #3b82f6;
+            padding: 20px; margin: 20px 0; border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .sql-keyword { color: #2563eb; font-weight: bold; font-family: monospace; font-size: 1.1em;}
+        .sql-string { color: #16a34a; font-family: monospace; }
+        .sql-block { background: #1e293b; color: #f8fafc; padding: 15px; border-radius: 6px; font-family: monospace; font-size: 1.1em; overflow-x: auto; margin: 15px 0;}
+        
+        .task-container {
+            background-color: #fff; border: 1px solid #e2e8f0; border-radius: 8px;
+            padding: 25px; margin: 30px 0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        /* SQL Console Styles */
+        .console-container {
+            background: #0f172a; border-radius: 8px; padding: 20px; color: #f8fafc; margin-top: 15px;
+            border: 2px solid #334155;
+        }
+        .console-input-wrapper { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; flex-wrap: wrap;}
+        .prompt { font-weight: bold; color: #10b981; font-family: monospace; font-size: 1.2em;}
+        input[type="text"].sql-input {
+            flex-grow: 1; min-width: 300px; background: transparent; border: none; border-bottom: 1px solid #64748b;
+            color: #f8fafc; font-family: monospace; font-size: 1.2em; padding: 5px; outline: none;
+        }
+        input[type="text"].sql-input:focus { border-bottom: 1px solid #3b82f6; }
+        button.run-btn {
+            background-color: #3b82f6; color: white; border: none; padding: 8px 15px;
+            border-radius: 5px; cursor: pointer; font-weight: bold; font-family: monospace; transition: 0.3s;
+        }
+        button.run-btn:hover { background-color: #2563eb; }
+
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; background: #fff; color: #1e293b; font-size: 0.95em; }
+        th, td { border: 1px solid #cbd5e1; padding: 10px; text-align: left; }
+        th { background-color: #f1f5f9; font-weight: bold; color: #334155;}
+        
+        .error-msg { color: #f87171; font-family: monospace; margin-top: 10px; display: none; padding: 10px; background: rgba(248, 113, 113, 0.1); border-radius: 4px; border-left: 4px solid #f87171;}
+        .success-msg { color: #10b981; font-weight: bold; margin-top: 10px; display: none; }
+        
+        .badge { display: inline-block; padding: 3px 8px; border-radius: 12px; font-size: 0.8em; font-weight: bold; background: #e2e8f0; color: #475569; margin-left: 10px;}
+        .level-1 { background: #dcfce3; color: #166534; }
+        .level-2 { background: #fef08a; color: #854d0e; }
+        .level-3 { background: #fed7aa; color: #9a3412; }
+    </style>
+</head>
+<body>
+
+    <nav class="nav-bar">
+        <a href="../index.html" class="nav-btn">🔙 Zurück zur Übersicht</a>
+    </nav>
+
+    <h1>Deep Dive: Der SELECT-Befehl</h1>
+    <p>Daten in einer Datenbank zu speichern ist nur die halbe Miete. Die wahre Stärke einer Datenbank ist es, genau die Daten extrem schnell wiederzufinden, die man gerade braucht. Dafür nutzen wir die Sprache <strong>SQL</strong> und ihren wichtigsten Befehl: <span class="sql-keyword">SELECT</span>.</p>
+
+    
+
+    <div class="theory-box">
+        <h3>Die Grundstruktur (Die "Satzbausteine")</h3>
+        <p>Ein SQL-Befehl liest sich fast wie ein englischer Satz. Man kann ihn durch verschiedene Bausteine (Klauseln) erweitern:</p>
+        <ul style="line-height: 1.8;">
+            <li><span class="sql-keyword">SELECT</span> <em>Spaltenname(n)</em> <br> <small>(Pflicht! Welche Infos willst du sehen?)</small></li>
+            <li><span class="sql-keyword">FROM</span> <em>Tabellenname</em> <br> <small>(Pflicht! Aus welchem "Aktenschrank" kommen die Daten?)</small></li>
+            <li><span class="sql-keyword">WHERE</span> <em>Bedingung</em> <br> <small>(Optional: Filtere die Daten, z.B. Preis < 20)</small></li>
+            <li><span class="sql-keyword">ORDER BY</span> <em>Spaltenname</em> <br> <small>(Optional: Sortiere das Ergebnis alphabetisch oder numerisch)</small></li>
+            <li><span class="sql-keyword">LIMIT</span> <em>Zahl</em> <br> <small>(Optional: Zeige nur die ersten X Ergebnisse an)</small></li>
+        </ul>
+    </div>
+
+    <h2>Unsere Trainings-Datenbank</h2>
+    <p>Für die folgenden interaktiven Aufgaben sind wir die Datenbank-Admins eines Elektronik-Shops. Unsere Tabelle heißt <strong><code>produkte</code></strong>. Hier ist der aktuelle Inhalt der Tabelle:</p>
+    
+    <div id="full-db-view" style="overflow-x: auto; box-shadow: 0 2px 4px rgba(0,0,0,0.05); border-radius: 8px;"></div>
+
+    <div class="task-container">
+        <h2>Level 1: Alles oder Nichts <span class="badge level-1">Anfänger</span></h2>
+        <p>Der einfachste SELECT-Befehl nutzt einen Stern (<strong>*</strong>). Der Stern bedeutet einfach: <em>"Zeige mir alle Spalten!"</em>.</p>
+        <div class="sql-block">
+            SELECT * FROM produkte;
+        </div>
+        <p>Wenn du nicht alle Spalten brauchst, zählst du sie einfach mit einem Komma getrennt auf:</p>
+        <div class="sql-block">
+            SELECT name, preis FROM produkte;
+        </div>
+
+        <h3 style="margin-top: 25px;">Deine Aufgabe:</h3>
+        <p>Wir wollen eine kurze Preisliste für die Kassa ausdrucken. Schreibe einen Befehl, der <strong>nur</strong> die Spalten <code>id</code>, <code>name</code> und <code>preis</code> anzeigt.</p>
+        
+        <div class="console-container">
+            <div class="console-input-wrapper">
+                <span class="prompt">SQL></span>
+                <input type="text" id="sql-input1" class="sql-input" placeholder="Tippe hier..." autocomplete="off" spellcheck="false" onkeydown="if(event.key === 'Enter') checkTask1()">
+                <button class="run-btn" onclick="checkTask1()">Ausführen</button>
+            </div>
+            <div id="error1" class="error-msg"></div>
+            <div id="success1" class="success-msg">✅ Super! Du hast die Spalten erfolgreich eingeschränkt.</div>
+            <div id="result1"></div>
+        </div>
+    </div>
+
+    <div class="task-container">
+        <h2>Level 2: Die Filter-Magie <span class="badge level-2">Fortgeschritten</span></h2>
+        <p>Jetzt wird es interessant. Mit <span class="sql-keyword">WHERE</span> können wir genaue Kriterien festlegen. Dafür nutzen wir Operatoren wie <code>=</code> (gleich), <code>&lt;</code> (kleiner), <code>&gt;</code> (größer) oder <code>&lt;=</code> (kleiner gleich).</p>
+        <p><em>Achtung: Text muss in SQL immer in einfachen Anführungszeichen stehen! (z.B. <span class="sql-string">'Gaming'</span>). Zahlen schreibt man ohne Anführungszeichen.</em></p>
+        <div class="sql-block">
+            SELECT * FROM produkte WHERE kategorie = 'Audio';<br>
+            SELECT name FROM produkte WHERE preis &gt; 100;
+        </div>
+
+        <h3 style="margin-top: 25px;">Deine Aufgabe:</h3>
+        <p>Unser Chef möchte wissen, welche Artikel fast ausverkauft sind. Schreibe einen Befehl, der <strong>alle Spalten (*)</strong> der Tabelle anzeigt, aber <strong>nur</strong> für Produkte, deren <code>lagerbestand</code> <strong>kleiner als 10</strong> ist.</p>
+        
+        <div class="console-container">
+            <div class="console-input-wrapper">
+                <span class="prompt">SQL></span>
+                <input type="text" id="sql-input2" class="sql-input" placeholder="Tippe hier..." autocomplete="off" spellcheck="false" onkeydown="if(event.key === 'Enter') checkTask2()">
+                <button class="run-btn" onclick="checkTask2()">Ausführen</button>
+            </div>
+            <div id="error2" class="error-msg"></div>
+            <div id="success2" class="success-msg">✅ Perfekt! Der WHERE-Filter funktioniert.</div>
+            <div id="result2"></div>
+        </div>
+    </div>
+
+    <div class="task-container">
+        <h2>Level 3: Sortieren und Begrenzen <span class="badge level-3">Profi</span></h2>
+        <p>Wenn wir hunderte Produkte haben, wollen wir das Ergebnis sortieren. Das machen wir mit <span class="sql-keyword">ORDER BY</span>. Standardmäßig wird aufsteigend sortiert (ASC). Wenn du absteigend sortieren willst, hängst du ein <span class="sql-keyword">DESC</span> an.</p>
+        <p>Oft wollen wir auch nur die "Top 3" sehen. Dafür gibt es ganz am Ende den Befehl <span class="sql-keyword">LIMIT</span>.</p>
+        <div class="sql-block">
+            /* Zeigt die 2 teuersten Produkte an */<br>
+            SELECT name, preis FROM produkte ORDER BY preis DESC LIMIT 2;
+        </div>
+
+        <h3 style="margin-top: 25px;">Deine Aufgabe:</h3>
+        <p>Schreibe einen Befehl, der <strong>alle Spalten (*)</strong> anzeigt. Sortiere die Produkte nach dem <code>preis</code> absteigend (das Teuerste zuerst). Zeige <strong>nur die ersten 3</strong> Ergebnisse an (LIMIT).</p>
+        
+        <div class="console-container">
+            <div class="console-input-wrapper">
+                <span class="prompt">SQL></span>
+                <input type="text" id="sql-input3" class="sql-input" placeholder="SELECT ..." autocomplete="off" spellcheck="false" onkeydown="if(event.key === 'Enter') checkTask3()">
+                <button class="run-btn" onclick="checkTask3()">Ausführen</button>
+            </div>
+            <div id="error3" class="error-msg"></div>
+            <div id="success3" class="success-msg">✅ Meisterhaft! ORDER BY und LIMIT in Kombination.</div>
+            <div id="result3"></div>
+        </div>
+    </div>
+
+    <script>
+        // Mock Database (inklusive "mwst" Vorgabe)
+        const db = [
+            { id: 1, name: "Gaming Maus RGB", kategorie: "Zubehör", preis: 49.99, mwst: "20%", lagerbestand: 15 },
+            { id: 2, name: "Mechanische Tastatur", kategorie: "Zubehör", preis: 129.50, mwst: "20%", lagerbestand: 8 },
+            { id: 3, name: "27 Zoll 4K Monitor", kategorie: "Monitore", preis: 349.00, mwst: "20%", lagerbestand: 2 },
+            { id: 4, name: "Bluetooth Kopfhörer", kategorie: "Audio", preis: 89.90, mwst: "20%", lagerbestand: 25 },
+            { id: 5, name: "USB-C Kabel 2m", kategorie: "Kabel", preis: 12.50, mwst: "20%", lagerbestand: 50 },
+            { id: 6, name: "Studio Mikrofon", kategorie: "Audio", preis: 199.00, mwst: "20%", lagerbestand: 5 }
+        ];
+
+        // Init: Tabelle rendern
+        window.onload = () => {
+            let html = '<table><tr><th>id</th><th>name</th><th>kategorie</th><th>preis</th><th>mwst</th><th>lagerbestand</th></tr>';
+            db.forEach(row => {
+                html += `<tr><td>${row.id}</td><td>${row.name}</td><td>${row.kategorie}</td><td>${row.preis.toFixed(2)} €</td><td>${row.mwst}</td><td>${row.lagerbestand}</td></tr>`;
+            });
+            html += '</table>';
+            document.getElementById('full-db-view').innerHTML = html;
+        };
+
+        // Robuster lokaler SQL Parser für die 3 Aufgaben
+        function parseSQL(query, errorId, resultId, expectedConditionFunc) {
+            const errorOut = document.getElementById(errorId);
+            const resultOut = document.getElementById(resultId);
+            const successOut = document.getElementById('success' + errorId.replace('error', ''));
+            
+            errorOut.style.display = 'none';
+            successOut.style.display = 'none';
+            resultOut.innerHTML = '';
+
+            if (query.trim() === '') return;
+
+            // Normalize Query
+            let q = query.trim().replace(/;$/, '').replace(/\s+/g, ' ');
+            
+            // Extract clauses sequentially
+            let limitVal = null;
+            let orderByCol = null;
+            let orderDir = 'ASC';
+            let whereClause = null;
+            let selectCols = null;
+            let tableName = null;
+
+            // Parse LIMIT
+            const limitMatch = q.match(/ LIMIT (\d+)$/i);
+            if (limitMatch) {
+                limitVal = parseInt(limitMatch[1]);
+                q = q.replace(/ LIMIT \d+$/i, '');
+            }
+
+            // Parse ORDER BY
+            const orderMatch = q.match(/ ORDER BY ([a-zA-Z0-9_]+)(?: (ASC|DESC))?$/i);
+            if (orderMatch) {
+                orderByCol = orderMatch[1].toLowerCase();
+                if (orderMatch[2]) orderDir = orderMatch[2].toUpperCase();
+                q = q.replace(/ ORDER BY [a-zA-Z0-9_]+(?: (ASC|DESC))?$/i, '');
+            }
+
+            // Parse WHERE
+            const whereMatch = q.match(/ WHERE (.+)$/i);
+            if (whereMatch) {
+                whereClause = whereMatch[1];
+                q = q.replace(/ WHERE .+$/i, '');
+            }
+
+            // Parse SELECT FROM
+            const selectMatch = q.match(/^SELECT (.+) FROM ([a-zA-Z0-9_]+)$/i);
+            if (!selectMatch) {
+                errorOut.innerText = "Syntax-Fehler! Baue den Satz auf wie: SELECT spalten FROM tabelle";
+                errorOut.style.display = 'block';
+                return;
+            }
+
+            selectCols = selectMatch[1].split(',').map(s => s.trim().toLowerCase());
+            tableName = selectMatch[2].toLowerCase();
+
+            if (tableName !== 'produkte') {
+                errorOut.innerText = `Tabelle '${tableName}' nicht gefunden. Versuche 'produkte'.`;
+                errorOut.style.display = 'block';
+                return;
+            }
+
+            // Execute logic
+            let resultData = [...db];
+
+            // 1. WHERE
+            if (whereClause) {
+                const wMatch = whereClause.match(/^([a-zA-Z0-9_]+)\s*(=|<|>|<=|>=)\s*(.+)$/);
+                if (wMatch) {
+                    const col = wMatch[1].toLowerCase();
+                    const op = wMatch[2];
+                    let val = wMatch[3].replace(/['"]/g, '').trim();
+
+                    if (!db[0].hasOwnProperty(col)) {
+                        errorOut.innerText = `Spalte '${col}' existiert nicht in WHERE.`;
+                        errorOut.style.display = 'block';
+                        return;
+                    }
+                    if (!isNaN(val)) val = parseFloat(val);
+
+                    resultData = resultData.filter(row => {
+                        if (op === '=') return row[col].toString().toLowerCase() === val.toString().toLowerCase();
+                        if (op === '<') return row[col] < val;
+                        if (op === '>') return row[col] > val;
+                        if (op === '<=') return row[col] <= val;
+                        if (op === '>=') return row[col] >= val;
+                        return true;
+                    });
+                } else {
+                    errorOut.innerText = "WHERE-Bedingung fehlerhaft. Nutze Spalte, Operator und Wert (z.B. preis < 50).";
+                    errorOut.style.display = 'block';
+                    return;
+                }
+            }
+
+            // 2. ORDER BY
+            if (orderByCol) {
+                if (!db[0].hasOwnProperty(orderByCol)) {
+                    errorOut.innerText = `Spalte '${orderByCol}' existiert nicht in ORDER BY.`;
+                    errorOut.style.display = 'block';
+                    return;
+                }
+                resultData.sort((a, b) => {
+                    let valA = a[orderByCol];
+                    let valB = b[orderByCol];
+                    if (valA < valB) return orderDir === 'ASC' ? -1 : 1;
+                    if (valA > valB) return orderDir === 'ASC' ? 1 : -1;
+                    return 0;
+                });
+            }
+
+            // 3. LIMIT
+            if (limitVal !== null) {
+                resultData = resultData.slice(0, limitVal);
+            }
+
+            // 4. Render output
+            renderTable(resultData, selectCols, resultOut, errorOut);
+
+            // 5. Validation Logic specific to task
+            if (errorOut.style.display !== 'block') {
+                if (expectedConditionFunc(selectCols, whereClause, orderByCol, orderDir, limitVal, resultData)) {
+                    successOut.style.display = 'block';
+                } else {
+                    errorOut.innerText = "Der Code funktioniert syntaktisch, löst aber nicht exakt die gestellte Aufgabe. Lies die Angabe nochmal genau.";
+                    errorOut.style.display = 'block';
+                }
+            }
+        }
+
+        function renderTable(data, cols, container, errorContainer) {
+            if (data.length === 0) {
+                container.innerHTML = "<p style='color: #64748b; font-style: italic;'>Abfrage erfolgreich: 0 Ergebnisse gefunden.</p>";
+                return;
+            }
+
+            let showAll = cols.includes('*');
+            let actualCols = showAll ? Object.keys(data[0]) : cols;
+
+            // Validate columns
+            if (!showAll) {
+                for (let c of actualCols) {
+                    if (!data[0].hasOwnProperty(c)) {
+                        errorContainer.innerText = `Spalte '${c}' existiert nicht in der Tabelle.`;
+                        errorContainer.style.display = 'block';
+                        container.innerHTML = '';
+                        return;
+                    }
+                }
+            }
+
+            let html = '<table><tr>';
+            actualCols.forEach(c => { html += `<th>${c}</th>`; });
+            html += '</tr>';
+
+            data.forEach(row => {
+                html += '<tr>';
+                actualCols.forEach(c => { 
+                    let val = row[c];
+                    if (c === 'preis') val = parseFloat(val).toFixed(2) + ' €';
+                    html += `<td>${val}</td>`; 
+                });
+                html += '</tr>';
+            });
+            html += '</table>';
+            
+            container.innerHTML = html;
+        }
+
+        // --- Task Specific Checks ---
+        function checkTask1() {
+            const query = document.getElementById('sql-input1').value;
+            parseSQL(query, 'error1', 'result1', (cols) => {
+                return cols.length === 3 && cols.includes('id') && cols.includes('name') && cols.includes('preis');
+            });
+        }
+
+        function checkTask2() {
+            const query = document.getElementById('sql-input2').value;
+            parseSQL(query, 'error2', 'result2', (cols, where, orderC, orderD, limit, resData) => {
+                const isAllCols = cols.includes('*');
+                const hasCorrectWhere = where && where.replace(/\s/g, '').toLowerCase().includes('lagerbestand<10');
+                return isAllCols && hasCorrectWhere;
+            });
+        }
+
+        function checkTask3() {
+            const query = document.getElementById('sql-input3').value;
+            parseSQL(query, 'error3', 'result3', (cols, where, orderC, orderD, limit, resData) => {
+                return cols.includes('*') && orderC === 'preis' && orderD === 'DESC' && limit === 3;
+            });
+        }
+    </script>
+</body>
+</html>

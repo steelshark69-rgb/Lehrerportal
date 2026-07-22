@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operation Zeugnis-Rettung | System kompromittiert</title>
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+        /* Spezifisches Hacker-Theme für die Rallye */
+        body {
+            background-color: #0f172a; /* Dunkelblau/Schwarz */
+            color: #f8fafc;
+        }
+        
+        /* Überschreibe den Standard-Header für das Hacker-Feeling */
+        header {
+            background-color: #020617;
+            border-bottom: 1px solid #22c55e;
+            color: #22c55e;
+        }
+        header h1 {
+            color: #22c55e;
+            font-family: 'Courier New', Courier, monospace;
+            text-shadow: 0 0 5px rgba(34, 197, 94, 0.5);
+        }
+        header p {
+            color: #4ade80;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        .btn-back {
+            color: #94a3b8;
+            border-color: #334155;
+        }
+        .btn-back:hover {
+            background-color: #1e293b;
+            color: #f8fafc;
+        }
+
+        /* Das Terminal-Fenster */
+        .terminal-box {
+            background-color: #000000;
+            border: 2px solid #22c55e;
+            border-radius: 8px;
+            padding: 2rem;
+            font-family: 'Courier New', Courier, monospace;
+            color: #22c55e;
+            box-shadow: 0 0 20px rgba(34, 197, 94, 0.2);
+            margin-top: 2rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .terminal-header {
+            border-bottom: 1px dashed #22c55e;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .sys-msg {
+            color: #ef4444; /* Rot für Warnungen */
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 5px rgba(239, 68, 68, 0.5);
+        }
+
+        .hacker-text {
+            line-height: 1.8;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        .highlight {
+            background-color: #22c55e;
+            color: #000000;
+            padding: 2px 6px;
+            font-weight: bold;
+        }
+
+        /* Start-Button Animation */
+        .btn-hack {
+            display: block;
+            width: 100%;
+            text-align: center;
+            background-color: #000000;
+            color: #22c55e;
+            border: 2px solid #22c55e;
+            padding: 1rem;
+            font-size: 1.2rem;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .btn-hack:hover {
+            background-color: #22c55e;
+            color: #000000;
+            box-shadow: 0 0 15px #22c55e;
+        }
+
+        /* Blinkender Cursor */
+        .cursor {
+            display: inline-block;
+            width: 10px;
+            height: 1.2rem;
+            background-color: #22c55e;
+            animation: blink 1s step-end infinite;
+            vertical-align: middle;
+            margin-left: 5px;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>> CONNECTION_ESTABLISHED</h1>
+    <p>Netzwerk: AHS // Port: 4B // Status: UNKNOWN</p>
+    <div class="back-nav">
+        <a href="../index.html" class="btn-back">⬅ Verbindung trennen & Zurück</a>
+    </div>
+</header>
+
+<main>
+    <div class="terminal-box">
+        <div class="terminal-header">
+            <span>root@phantom-server:~#</span>
+            <span>[ENCRYPTED]</span>
+        </div>
+
+        <div class="sys-msg">
+            >>> CRITICAL ERROR: DATENBANK "ZEUGNISSE_4B" GESPERRT <<<
+        </div>
+
+        <div class="hacker-text">
+            Seid gegrüßt, Klasse 4B.<br><br>
+            
+            Ich bin der <span class="highlight">Phantom-Algorithmus</span>. Ich bin in das Schulnetzwerk eingedrungen und habe sämtliche Abschlusszeugnisse verschlüsselt. Euer Klassenvorstand kann sie nicht mehr ausdrucken.<br><br>
+            
+            Ihr wollt in die Oberstufe? Dann beweist mir, dass ihr es verdient habt! Ich habe die Zeugnisse hinter vier mächtigen mathematischen Firewalls versteckt. Nur wahre Meister der Logik, Algebra und Geometrie können den Code knacken.<br><br>
+            
+            Die Regeln sind simpel:<br>
+            1. Löst die mathematischen Rätsel auf jeder Ebene.<br>
+            2. Berechnet aus euren Ergebnissen das Passwort für die nächste Firewall.<br>
+            3. Ein einziger Rechenfehler... und ihr bleibt für immer in der 4. Klasse stecken.<br><br>
+            
+            Die Uhr tickt. Eure erste Herausforderung wartet.<br>
+            Möge die Mathematik mit euch sein.
+        </div>
+
+        <a href="station_1.html" class="btn-hack">
+            > SYSTEM-HACK STARTEN <span class="cursor"></span>
+        </a>
+    </div>
+</main>
+
+<footer style="margin-top: 5rem; padding: 2rem 1rem; text-align: center; color: #475569; font-size: 0.9rem; border-top: 1px solid #1e293b;">
+    &copy; 2026 | Operation Zeugnis-Rettung | Prof. Schweitzer
+</footer>
+
+</body>
+</html>

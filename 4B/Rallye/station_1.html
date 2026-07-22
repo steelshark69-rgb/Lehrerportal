@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firewall 1 | Operation Zeugnis-Rettung</title>
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+        /* Hacker-Theme für die Rallye */
+        body {
+            background-color: #0f172a;
+            color: #f8fafc;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        
+        header {
+            background-color: #020617;
+            border-bottom: 1px solid #22c55e;
+        }
+        header h1 {
+            color: #22c55e;
+            text-shadow: 0 0 5px rgba(34, 197, 94, 0.5);
+        }
+        header p {
+            color: #4ade80;
+        }
+        .btn-back {
+            color: #94a3b8;
+            border-color: #334155;
+            font-family: sans-serif;
+        }
+        .btn-back:hover {
+            background-color: #1e293b;
+            color: #f8fafc;
+        }
+
+        .terminal-box {
+            background-color: #000000;
+            border: 2px solid #22c55e;
+            border-radius: 8px;
+            padding: 2rem;
+            color: #22c55e;
+            box-shadow: 0 0 20px rgba(34, 197, 94, 0.1);
+            margin-top: 2rem;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .terminal-header {
+            border-bottom: 1px dashed #22c55e;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .task-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .task-block {
+            background-color: #022c16; /* Sehr dunkles Grün */
+            border: 1px solid #15803d;
+            padding: 1.5rem;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .task-content {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .task-title {
+            color: #86efac;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+
+        .task-math {
+            font-size: 1.2rem;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+        }
+
+        .task-input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .task-input {
+            background-color: #000000;
+            border: 1px solid #22c55e;
+            color: #22c55e;
+            padding: 10px;
+            font-size: 1.2rem;
+            font-family: 'Courier New', Courier, monospace;
+            width: 80px;
+            text-align: center;
+            border-radius: 4px;
+        }
+        .task-input:focus {
+            outline: none;
+            box-shadow: 0 0 10px rgba(34, 197, 94, 0.5);
+        }
+
+        .btn-hack {
+            display: block;
+            width: 100%;
+            text-align: center;
+            background-color: #000000;
+            color: #22c55e;
+            border: 2px solid #22c55e;
+            padding: 1.5rem;
+            font-size: 1.3rem;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-hack:hover {
+            background-color: #22c55e;
+            color: #000000;
+            box-shadow: 0 0 15px #22c55e;
+        }
+
+        .feedback-msg {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            min-height: 3rem;
+        }
+        
+        .sys-warning { color: #ef4444; }
+        .sys-success { color: #22c55e; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>> FIREWALL_1 :: ALGEBRA</h1>
+    <p>Status: LOCKED // Verschlüsselung: Lineares System</p>
+    <div class="back-nav">
+        <a href="start.html" class="btn-back">⬅ Verbindungsabbruch (Zurück)</a>
+    </div>
+</header>
+
+<main>
+    <div class="terminal-box">
+        <div class="terminal-header">
+            <span>root@phantom-server:~/firewall_1#</span>
+            <span>[10 DATENBLÖCKE ZUR ENTSCHLÜSSELUNG]</span>
+        </div>
+
+        <p style="margin-bottom: 2rem; line-height: 1.6; color: #86efac;">
+            <strong>SYSTEMNACHRICHT:</strong> Um diese Firewall zu durchbrechen, musst du die 10 beschädigten Datenblöcke reparieren (lösen). Das System wird anschließend die Summe deiner Ergebnisse bilden und als Master-Passcode verwenden. Ein einziger Fehler führt zum Verbindungsabbruch.
+        </p>
+
+        <div class="task-grid">
+            
+            <div class="task-block">
+                <div class="task-content">
+                    <div class="task-title">Block 01: Termberechnung</div>
+                    <div class="task-math">T = 3<i>x</i> - 5</div>
+                    <div>Berechne den Wert des Terms für <i>x</i> = 4.</div>
+                </div>
+                <div class="task-input-wrapper">
+                    <label>Wert =</label>
+                    <input type="text" id="t1" class="task-input" autocomplete="off">
+                </div>
+            </div>
+
+            <div class="task-block">
+                <div class="task-content">
+                    <div class="task-title">Block 02: Termvereinfachung</div>
+                    <div class="task-math">5<i>a</i> + 3<i>b</i> - 2<i>a</i> - <i>b</i></div>
+                    <div>Fasse den Term zusammen. Welche Zahl steht danach vor dem <i>a</i> (Koeffizient)?</div>
+                </div>
+                <div class="task-input-wrapper">
+                    <label>Zahl =</label>
+                    <input type="text" id="t2" class="task-input" autocomplete="off">
+                </div>
+            </div>
+
+            <div class="task-block">
+                <div class="task-content">
+                    <div class="task-title">Block 03: Binomische Formel</div>
+                    <div class="task-math">(<i>x</i> + 5)<sup>2</sup></div>
+                    <div>Berechne die binomische Formel. Wie lautet das konstante Glied (die reine Zahl ohne <i>x</i>) am Ende?</div>
+                </div>
+                <div class="task-input-wrapper">
+                    <label>Zahl =</label>
+                    <input type="text" id="t3" class="task-input" autocomplete="off">
+                </div>
+            </div>
+
+            <div class="task-block">
+                <div class="task-content">
+                    <div class="task-title">Block 04: Einfache Gleichung</div>
+                    <div class="task-math">4<i>x</i> - 7 = 17</div>
+                    <div>Löse die Gleichung. Wie lautet <i>x</i>?</div>
+                </div>
+                <div class="task-input-wrapper">
+                    <label><i>x</i> =</label>
+                    <input type="text" id="t4" class="task-input" autocomplete="off">
+                </div>
+            </div>
+
+            <div class="task-block">
+                <div class="task-content">
+                    <div class="task-title">Block 05: Gleichung mit Klammern</div>
+                    <div class="task-math">3 &middot; (<i>x</i> - 2) = <i>x</i> + 10</div>
+                    <div>Löse die Gleichung. Wie lautet <i>x</i>?</div>
+                </div>
+                <div class="task-input-wrapper">
+                    <label><i>x</i> =</label>
+                    <input type="text" id="t5" class="task-input" autocomplete="off">
+                </div>
+            </div>
+
+            <div class="task-block">
+                <div class="task-content">
+                    <div class="task-title">Block 06: Bruchgleichung</div>
+                    <div class="task-math"><i>x</i> / 2 + <i>x</i> / 3 = 10</div>
+                    <div>Löse die Bruchgleichung. Welchen Wert hat <i>x</i>?</div>
+                </div>
+                <div class="task-input-wrapper">
+                    <label><i>x</i> =</label>
+                    <input type="text" id="t6" class="task-input" autocomplete="off">
+                </div>
+            </div>
+
+            <div class="task-block">
+                <div class="task-content">
+                    <div class="task-title">Block 07: Binomische Gleichung</div>
+                    <div class="task-math">(<i>x</i> + 3)<sup>2</sup> = <i>x</i><sup>2</sup> + 21</div>
+                    <div>Löse die Gleichung. Wie lautet <i>x</i>?</div>
+                </div>
+                <div class="task-input-wrapper">
+                    <label><i>x</i> =</label>
+                    <input type="text" id="t7" class="task-input" autocomplete="off">
+                </div>
+            </div>
+
+            <div class="task-block">
+                <div class="task-content">
+                    <div class="task-title">Block 08: Lineares Gleichungssystem I</div>
+                    <div class="task-math">I: <i>y</i> = 2<i>x</i><br>II: <i>x</i> + <i>y</i> = 15</div>
+                    <div>Nutze das Einsetzungsverfahren. Welchen Wert hat <strong><i>x</i></strong>?</div>
+                </div>
+                <div class="task-input-wrapper">
+                    <label><i>x</i> =</label>
+                    <input type="text" id="t8" class="task-input" autocomplete="off">
+                </div>
+            </div>
+
+            <div class="task-block">
+                <div class="task-content">
+                    <div class="task-title">Block 09: Lineares Gleichungssystem II</div>
+                    <div class="task-math">I: 2<i>x</i> + 3<i>y</i> = 12<br>II: 2<i>x</i> - <i>y</i> = 4</div>
+                    <div>Nutze z. B. das Additionsverfahren. Welchen Wert hat <strong><i>y</i></strong>?</div>
+                </div>
+                <div class="task-input-wrapper">
+                    <label><i>y</i> =</label>
+                    <input type="text" id="t9" class="task-input" autocomplete="off">
+                </div>
+            </div>
+
+            <div class="task-block">
+                <div class="task-content">
+                    <div class="task-title">Block 10: Textgleichung</div>
+                    <div class="task-math">"Das Doppelte einer Zahl vermehrt um 5 ist gleich dem Dreifachen der Zahl vermindert um 4."</div>
+                    <div>Stelle die Gleichung auf und löse sie. Wie heißt die Zahl?</div>
+                </div>
+                <div class="task-input-wrapper">
+                    <label>Zahl =</label>
+                    <input type="text" id="t10" class="task-input" autocomplete="off">
+                </div>
+            </div>
+
+        </div>
+
+        <button id="btnHack" class="btn-hack">> SUMME BERECHNEN & FIREWALL HACKEN</button>
+        
+        <div id="feedback" class="feedback-msg">
+            </div>
+
+    </div>
+</main>
+
+<script>
+    // 100% lokales JavaScript, DSGVO konform
+    document.addEventListener("DOMContentLoaded", function() {
+        // Die geheimen Lösungszahlen für Block 1 bis 10
+        // (7, 3, 25, 6, 8, 12, 2, 5, 2, 9)
+        const correctAnswers = [7, 3, 25, 6, 8, 12, 2, 5, 2, 9];
+        
+        const btnHack = document.getElementById("btnHack");
+        const feedback = document.getElementById("feedback");
+
+        btnHack.addEventListener("click", function() {
+            let allCorrect = true;
+            let sum = 0;
+            let errors = [];
+
+            // Alle 10 Felder durchlaufen und prüfen
+            for(let i = 0; i < 10; i++) {
+                let inputField = document.getElementById("t" + (i + 1));
+                let inputVal = inputField.value.trim().replace(',', '.');
+                
+                if (inputVal === "") {
+                    allCorrect = false;
+                    errors.push(i + 1);
+                    continue;
+                }
+
+                let parsedVal = parseFloat(inputVal);
+                
+                // Verschleierte Prüfung, damit man es nicht sofort im Quellcode ablesen kann
+                if (parsedVal === correctAnswers[i]) {
+                    sum += parsedVal;
+                    inputField.style.borderColor = "#22c55e"; // Grün für richtig
+                } else {
+                    allCorrect = false;
+                    errors.push(i + 1);
+                    inputField.style.borderColor = "#ef4444"; // Rot für Fehler
+                }
+            }
+
+            if (allCorrect) {
+                // HACK ERFOLGREICH
+                btnHack.disabled = true;
+                btnHack.style.backgroundColor = "#22c55e";
+                btnHack.style.color = "#000000";
+                btnHack.innerHTML = "> HACK ERFOLGREICH <";
+                
+                feedback.innerHTML = `<span class="sys-success">ZUGRIFF GEWÄHRT. Die berechnete Checksumme lautet [${sum}]. Firewall 1 deaktiviert.<br>Leite Datenstrom an Station 2 um...</span>`;
+                
+                // Nach 3 Sekunden zur nächsten Station weiterleiten
+                setTimeout(function() {
+                    window.location.href = "station_2.html";
+                }, 3000);
+            } else {
+                // HACK FEHLGESCHLAGEN
+                feedback.innerHTML = `<span class="sys-warning">ZUGRIFF VERWEIGERT.<br>Abgleich fehlgeschlagen. Dateninkonsistenz in Block: ${errors.join(", ")}</span>`;
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

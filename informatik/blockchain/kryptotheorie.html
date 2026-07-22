@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔐 Kryptowährungen & Blockchain - Master Class</title>
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+        body {
+            background-color: #f8fafc;
+            color: #334155;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+            color: white;
+            padding: 3rem 1rem;
+            text-align: center;
+            border-bottom: 3px solid #3730a3;
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            margin: 0 0 0.5rem 0;
+            font-weight: 700;
+        }
+        
+        header p {
+            font-size: 1.1rem;
+            margin: 0.5rem 0 1rem 0;
+            opacity: 0.95;
+        }
+        
+        .back-nav {
+            margin-top: 1rem;
+        }
+        
+        .back-nav a {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .back-nav a:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+        
+        section {
+            background: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border-left: 4px solid #4f46e5;
+        }
+        
+        section h2 {
+            color: #2d3748;
+            font-size: 1.8rem;
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .emoji-icon {
+            font-size: 1.5em;
+            line-height: 1;
+        }
+        
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 1.5rem 0;
+        }
+        
+        .comparison-card {
+            background: linear-gradient(135deg, #f8fafc 0%, #eff6ff 100%);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 2px solid #cbd5e1;
+            transition: all 0.3s ease;
+        }
+        
+        .comparison-card:hover {
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.15);
+            border-color: #4f46e5;
+        }
+        
+        .comparison-card h3 {
+            color: #4f46e5;
+            font-size: 1.3rem;
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .comparison-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 1rem 0 0 0;
+        }
+        
+        .comparison-card li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .comparison-card li:last-child {
+            border-bottom: none;
+        }
+        
+        .pros-cons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 1.5rem 0;
+        }
+        
+        .pros-list, .cons-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .pros-list li {
+            background: #f0fdf4;
+            border-left: 4px solid #10b981;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 6px;
+        }
+        
+        .cons-list li {
+            background: #fef2f2;
+            border-left: 4px solid #ef4444;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 6px;
+        }
+        
+        .code-box {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 1rem;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+            border-left: 4px solid #06b6d4;
+        }
+        
+        .example-box {
+            background: #eff6ff;
+            border: 2px solid #3b82f6;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+        }
+        
+        .example-box h4 {
+            color: #1e40af;
+            margin-top: 0;
+        }
+        
+        .wallet-types {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .wallet-card {
+            background: linear-gradient(135deg, #fef3c7 0%, #fef08a 100%);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid #f59e0b;
+        }
+        
+        .wallet-card.cold {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            border-left-color: #3b82f6;
+        }
+        
+        .wallet-card h4 {
+            color: #d97706;
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .wallet-card.cold h4 {
+            color: #1e40af;
+        }
+        
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .use-case-card {
+            background: linear-gradient(135deg, #f8fafc 0%, #eff6ff 100%);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 2px solid #cbd5e1;
+            text-align: center;
+        }
+        
+        .use-case-icon {
+            font-size: 2.5rem;
+            line-height: 1;
+            margin-bottom: 1rem;
+        }
+        
+        .use-case-card h4 {
+            color: #2d3748;
+            margin: 0.5rem 0;
+        }
+        
+        .use-case-card p {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+        
+        .quiz-container {
+            background: #f1f5f9;
+            padding: 2rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+        }
+        
+        .quiz-question {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 2px solid #cbd5e1;
+            display: none;
+        }
+        
+        .quiz-question.active {
+            display: block;
+        }
+        
+        .quiz-progress {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        
+        .quiz-question h4 {
+            color: #2d3748;
+            margin: 0 0 1rem 0;
+            font-size: 1.2rem;
+        }
+        
+        .quiz-answers {
+            display: grid;
+            gap: 0.75rem;
+        }
+        
+        .quiz-answer-btn {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 1rem;
+            border: 2px solid #cbd5e1;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+        
+        .quiz-answer-btn:hover {
+            border-color: #4f46e5;
+            background: #eff6ff;
+        }
+        
+        .quiz-answer-btn.correct {
+            background: #dcfce7;
+            border-color: #10b981;
+            color: #166534;
+        }
+        
+        .quiz-answer-btn.incorrect {
+            background: #fee2e2;
+            border-color: #ef4444;
+            color: #991b1b;
+        }
+        
+        .quiz-result {
+            text-align: center;
+            padding: 2rem;
+            background: white;
+            border-radius: 8px;
+            border: 2px solid #10b981;
+        }
+        
+        .quiz-result h3 {
+            color: #10b981;
+            font-size: 1.5rem;
+            margin: 0 0 0.5rem 0;
+        }
+        
+        .quiz-result p {
+            color: #64748b;
+        }
+        
+        footer {
+            background: #334155;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .nav-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .nav-tabs button {
+            padding: 0.75rem 1.5rem;
+            border: 2px solid #cbd5e1;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            color: #64748b;
+        }
+        
+        .nav-tabs button:hover {
+            border-color: #4f46e5;
+            color: #4f46e5;
+        }
+        
+        .nav-tabs button.active {
+            background: #4f46e5;
+            border-color: #4f46e5;
+            color: white;
+        }
+        
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .comparison-grid,
+            .pros-cons,
+            .wallet-types {
+                grid-template-columns: 1fr;
+            }
+            
+            section {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>🔐 Kryptowährungen & Blockchain</h1>
+    <p>Vollständiges Lehrmaterial: Von Keys über Mining bis Smart Contracts</p>
+    <div class="back-nav">
+        <a href="../index.html" class="btn-back">⬅ Zurück zur Informatik Übersicht</a>
+    </div>
+</header>
+
+<main>
+
+<!-- Section 1: Das Grundproblem -->
+<section>
+    <h2><span class="emoji-icon">❓</span> Das Grundproblem: Double Spending</h2>
+    <p>
+        Bei digitalen Dateien (z.B. MP3s) ist <strong>Kopieren einfach</strong>. Bei Geld ist das <strong>tödlich</strong>: 
+        Wenn ich eine digitale Münze ausgebe, darf ich sie nicht noch einmal behalten!
+    </p>
+    <div class="example-box">
+        <h4>Die klassische Lösung:</h4>
+        <p>
+            Eine <strong>Bank</strong> löst das Problem, indem sie ein zentrales Register führt: "Alice hat 100€, Bob hat 50€".
+            Wenn Alice Bob 30€ sendet, wird das zentral aktualisiert.
+        </p>
+        <p style="margin-bottom: 0;">
+            <strong>Aber:</strong> Die Bank ist eine Single Point of Failure. Sie kann gehackt werden, ausfallen oder politisch zensieren.
+        </p>
+    </div>
+    <p>
+        <strong>Blockchain löst das dezentral:</strong> Tausende von Computern führen gemeinsam das Register, 
+        gesichert durch Mathematik statt Vertrauen in eine Institution.
+    </p>
+</section>
+
+<!-- Section 2: Public & Private Keys -->
+<section>
+    <h2><span class="emoji-icon">🔑</span> Public & Private Keys: Die Basis</h2>
+    <p>
+        In der Krypto-Welt gibt es <strong>keine Benutzerkonten</strong> mit Passwort. Stattdessen nutzen wir ein <strong>Schlüsselpaar</strong>.
+        Das nennt man <strong>asymmetrische Kryptographie</strong> oder Public-Key-Kryptographie.
+    </p>
+    
+    <div class="comparison-grid">
+        <div class="comparison-card">
+            <h3><span class="emoji-icon">🔴</span> Private Key (Geheim!)</h3>
+            <p>Eine riesige Zufallszahl (256-bit = 2^256 Möglichkeiten).</p>
+            <ul>
+                <li>✅ <strong>Nur du</strong> darfst ihn kennen</li>
+                <li>✅ Darf <strong>nie</strong> das Gerät verlassen</li>
+                <li>✅ Wird genutzt, um Transaktionen zu <strong>signieren</strong> (Beweis, dass du die hast)</li>
+                <li>❌ Verlierst du ihn → Geld ist weg!</li>
+            </ul>
+        </div>
+        
+        <div class="comparison-card">
+            <h3><span class="emoji-icon">🟢</span> Public Key (Öffentlich)</h3>
+            <p>Mathematisch aus dem Private Key abgeleitet.</p>
+            <ul>
+                <li>✅ Kann <strong>gefahrlos</strong> geteilt werden (wie eine IBAN)</li>
+                <li>✅ <strong>Ergibt deine "Adresse"</strong> (z.B. für Empfang)</li>
+                <li>✅ Wird genutzt, um Signaturen zu <strong>überprüfen</strong></li>
+                <li>✅ Keiner kann Geld senden, nur mit dem Private Key signiert</li>
+            </ul>
+        </div>
+    </div>
+    
+    <h3>📊 Der Weg einer Transaktion:</h3>
+    <ol style="line-height: 2;">
+        <li><strong>Du möchtest senden:</strong> "Ich überweise 5 BTC an Bob"</li>
+        <li><strong>Lokal signieren:</strong> Dein Private Key + Transaktionsdaten = digitale Signatur</li>
+        <li><strong>Netzwerk überprüft:</strong> Passt diese Signatur zu deiner Public Key? → Ja = Transaktion gültig ✅</li>
+        <li><strong>Blockchain speichert:</strong> Die signierte Transaktion wird in einen Block aufgenommen</li>
+    </ol>
+</section>
+
+<!-- Section 3: Wallets -->
+<section>
+    <h2><span class="emoji-icon">👛</span> Wallets: Wo speichert man die Keys?</h2>
+    <p>Es gibt verschiedene Möglichkeiten, deine Keys zu lagern. Jede hat Vor- und Nachteile.</p>
+    
+    <div class="wallet-types">
+        <div class="wallet-card">
+            <h4><span class="emoji-icon">🔥</span> Hot Wallet (Online)</h4>
+            <p>Software auf Handy oder PC, ständig online.</p>
+            <ul style="margin: 1rem 0 0 0; padding-left: 1.5rem;">
+                <li>✅ Bequem & schnell</li>
+                <li>✅ Jederzeit verfügbar</li>
+                <li>❌ Risiko: Hacker, Malware</li>
+            </ul>
+            <p style="font-size: 0.9rem; color: #666; margin-bottom: 0;">
+                <strong>Beispiele:</strong> MetaMask, Phantom, Handy-Apps
+            </p>
+        </div>
+        
+        <div class="wallet-card cold">
+            <h4><span class="emoji-icon">❄️</span> Cold Wallet (Offline)</h4>
+            <p>Hardware-Geräte (USB-Sticks), <strong>nicht</strong> mit Internet verbunden.</p>
+            <ul style="margin: 1rem 0 0 0; padding-left: 1.5rem;">
+                <li>✅ Maximum Sicherheit</li>
+                <li>✅ Immune gegen Online-Hacker</li>
+                <li>❌ Unbequem für schnelle Transaktionen</li>
+            </ul>
+            <p style="font-size: 0.9rem; color: #666; margin-bottom: 0;">
+                <strong>Beispiele:</strong> Ledger, Trezor, Paper Wallet
+            </p>
+        </div>
+    </div>
+    
+    <div class="example-box">
+        <h4>💡 Best Practice:</h4>
+        <p>Viel Geld → Cold Wallet (Sicherheit). Wenig Geld → Hot Wallet (Komfort). Große Transaktionen → Cold Wallet signieren, Hot Wallet senden.</p>
+    </div>
+</section>
+
+<!-- Section 4: Hashing -->
+<section>
+    <h2><span class="emoji-icon">#️⃣</span> Hashing: Der Lawineneffekt</h2>
+    <p>
+        Eine <strong>Hash-Funktion</strong> (z.B. SHA-256) verwandelt beliebige Daten in einen "Fingerabdruck" fester Länge.
+        Dieser Fingerabdruck ist der "Beweis", dass die Daten nicht manipuliert wurden.
+    </p>
+    
+    <h3>Eigenschaften:</h3>
+    <ul style="line-height: 2;">
+        <li><strong>1️⃣ Einweg:</strong> Man kann aus dem Hash <strong>nicht</strong> die Originaldaten zurückrechnen.</li>
+        <li><strong>2️⃣ Deterministisch:</strong> Die gleichen Daten ergeben immer den gleichen Hash.</li>
+        <li><strong>3️⃣ Lawineneffekt:</strong> Ein einziges Zeichen anders = komplett neuer Hash!</li>
+    </ul>
+    
+    <h3>Beispiel:</h3>
+    <div class="code-box">
+Eingabe: "Hallo Welt"
+SHA-256: d2a84f4b8b650937ec8f73cd8be2c74add5a911ba64df27458ed8229da804a26
+
+Eingabe: "Hallo Welt!"  (nur ein "!" mehr!)
+SHA-256: c34045c1a1db8d1b3fca8a692198427f6e8a2db773531b71239564619f289d01
+    </div>
+    
+    <p>
+        Sieht den Unterschied? Die Hashes sind <strong>komplett verschieden</strong>, obwohl wir nur ein Zeichen geändert haben.
+        Das ist der <strong>Lawineneffekt</strong> und macht Blockchain manipulationssicher!
+    </p>
+</section>
+
+<!-- Section 5: Blockchain Struktur -->
+<section>
+    <h2><span class="emoji-icon">⛓️</span> Die Blockchain: Verkettung von Blöcken</h2>
+    <p>
+        Jeder Block in der Blockchain enthält:
+    </p>
+    <ul>
+        <li><strong>Daten:</strong> Alle Transaktionen des Blocks (z.B. "Alice → Bob: 5 BTC")</li>
+        <li><strong>Previous Hash:</strong> Der Hash des <strong>vorherigen Blocks</strong></li>
+        <li><strong>Dieser Hash:</strong> Der Hash dieses Blocks (berechnet aus Daten + Previous Hash)</li>
+    </ul>
+    
+    <div class="example-box">
+        <h4>🔗 Warum das sicher ist:</h4>
+        <p>
+            Wenn jemand Block #101 hackt und "Alice → Hacker: 1000 BTC" einfügt, ändert sich dessen Hash.
+            <br><br>
+            <strong>Aber:</strong> Block #102 erwartet den alten Hash als "Previous Hash".
+            Diese Verbindung ist jetzt kaputt. Das Netzwerk merkt sofort, dass etwas falsch ist.
+            <br><br>
+            Der Hacker müsste <strong>jeden nachfolgenden Block neu rechnen</strong> – und das schneller als die gesamte Community!
+            Das ist unmöglich.
+        </p>
+    </div>
+</section>
+
+<!-- Section 6: Konsensmechanismen -->
+<section>
+    <h2><span class="emoji-icon">🤝</span> Konsensmechanismen: Wer darf den Block schreiben?</h2>
+    <p>
+        In einem dezentralen Netzwerk gibt es <strong>keinen Chef</strong>. Wie einigt sich das Netzwerk auf eine gemeinsame Wahrheit?
+        Mit <strong>Konsensmechanismen</strong>:
+    </p>
+    
+    <div class="comparison-grid">
+        <div class="comparison-card">
+            <h3><span class="emoji-icon">⛏️</span> Proof of Work (PoW)</h3>
+            <p><strong>Klassisches Mining (Bitcoin, Ethereum alt)</strong></p>
+            <p style="font-size: 0.9rem; margin: 1rem 0;">
+                Computer liefern sich ein Wettrennen. Sie müssen eine Zahl ("Nonce") erraten, damit der Hash des Blocks 
+                mit vielen Nullen beginnt (z.B. 00000...). Das braucht riesige Rechenleistung. Wer es zuerst löst, 
+                darf den Block anhängen und bekommt Coins als Belohnung.
+            </p>
+            <ul>
+                <li>✅ Extrem sicher & bewährt</li>
+                <li>❌ Enormer Energieverbrauch</li>
+                <li>❌ Langsam (~7 TPS bei Bitcoin)</li>
+            </ul>
+        </div>
+        
+        <div class="comparison-card">
+            <h3><span class="emoji-icon">🌱</span> Proof of Stake (PoS)</h3>
+            <p><strong>Modernes Staking (Ethereum seit 2022)</strong></p>
+            <p style="font-size: 0.9rem; margin: 1rem 0;">
+                Es wird <strong>nicht</strong> gerechnet. Stattdessen hinterlegen Nutzer Coins als Pfand ("Stake"). 
+                Ein Algorithmus wählt per Zufall einen Validator aus. Je mehr Pfand, desto höher die Chance. 
+                Betrügt man, ist das Pfand weg.
+            </p>
+            <ul>
+                <li>✅ 99.9% weniger Energieverbrauch</li>
+                <li>✅ Schneller (~15-30 TPS)</li>
+                <li>⚠️ Risiko: "Reiche werden reicher"</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- Section 7: Bitcoin vs Ethereum -->
+<section>
+    <h2><span class="emoji-icon">⚖️</span> Der große Vergleich: Bitcoin vs Ethereum</h2>
+    
+    <div class="comparison-grid">
+        <div class="comparison-card">
+            <h3><span class="emoji-icon">₿</span> Bitcoin (BTC)</h3>
+            <p><strong>"Digitales Gold"</strong></p>
+            <ul>
+                <li><strong>Zweck:</strong> Reines Geld, Wertspeicher</li>
+                <li><strong>Limit:</strong> Max. 21 Mio. Coins</li>
+                <li><strong>Technik:</strong> Proof of Work</li>
+                <li><strong>Programm:</strong> Sehr limitiert</li>
+                <li><strong>Geschwindigkeit:</strong> ~7 Transaktionen/Sekunde</li>
+                <li><strong>Erste Blockchain:</strong> Seit 2009</li>
+            </ul>
+        </div>
+        
+        <div class="comparison-card">
+            <h3><span class="emoji-icon">Ξ</span> Ethereum (ETH)</h3>
+            <p><strong>"Weltcomputer"</strong></p>
+            <ul>
+                <li><strong>Zweck:</strong> Plattform für Apps (Smart Contracts)</li>
+                <li><strong>Limit:</strong> Kein hartes Limit</li>
+                <li><strong>Technik:</strong> Proof of Stake</li>
+                <li><strong>Programm:</strong> Beliebig programmierbar</li>
+                <li><strong>Geschwindigkeit:</strong> ~15-30 TPS (Tausende mit Layer-2)</li>
+                <li><strong>Gründung:</strong> 2015 (Smart Contracts möglich)</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- Section 8: Use Cases -->
+<section>
+    <h2><span class="emoji-icon">💡</span> Use Cases: Mehr als nur Geld</h2>
+    <p>Blockchain kann viel mehr als Bitcoin! Einige Beispiele:</p>
+    
+    <div class="resource-grid">
+        <div class="use-case-card">
+            <div class="use-case-icon">📦</div>
+            <h4>Supply Chain</h4>
+            <p>Lückenlose Rückverfolgbarkeit. Woher kommt der Kaffee? War die Kühlkette intakt?</p>
+        </div>
+        
+        <div class="use-case-card">
+            <div class="use-case-icon">🆔</div>
+            <h4>Digitale Identität</h4>
+            <p>Ausweis auf dem Handy, ohne Daten an Konzerne zu geben. Besitz der eigenen Daten!</p>
+        </div>
+        
+        <div class="use-case-card">
+            <div class="use-case-icon">🗳️</div>
+            <h4>Sichere Wahlen</h4>
+            <p>Manipulationssichere Stimmabgabe, die jeder überprüfen kann (Vorbild: Estland)</p>
+        </div>
+        
+        <div class="use-case-card">
+            <div class="use-case-icon">📄</div>
+            <h4>Smart Contracts</h4>
+            <p>Automatische Verträge, die sich selbst ausführen, wenn Bedingungen erfüllt sind</p>
+        </div>
+        
+        <div class="use-case-card">
+            <div class="use-case-icon">🎨</div>
+            <h4>NFTs & Kunst</h4>
+            <p>Digitaler Eigentumsnachweis. Künstler können Werke direkt verkaufen</p>
+        </div>
+        
+        <div class="use-case-card">
+            <div class="use-case-icon">💳</div>
+            <h4>Finanzielle Inklusion</h4>
+            <p>Banklose Menschen bekommen Zugang zum Weltwirtschaftssystem</p>
+        </div>
+    </div>
+</section>
+
+<!-- Section 9: Chancen & Risiken -->
+<section>
+    <h2><span class="emoji-icon">⚠️</span> Chancen & Risiken</h2>
+    
+    <div class="pros-cons">
+        <div>
+            <h3 style="color: #10b981;">✅ Chancen</h3>
+            <ul class="pros-list">
+                <li>
+                    <strong>🌍 Finanzielle Inklusion:</strong> 
+                    2 Mrd. Menschen ohne Bankkonto bekommen Zugang zum Weltwirtschaftssystem
+                </li>
+                <li>
+                    <strong>⚡ Geschwindigkeit:</strong> 
+                    Internationale Überweisungen in Sekunden statt Tagen (24/7)
+                </li>
+                <li>
+                    <strong>🔒 Zensurresistenz:</strong> 
+                    Niemand kann dein Konto einfrieren oder Transaktionen verbieten
+                </li>
+                <li>
+                    <strong>🤖 Programmierbarkeit:</strong> 
+                    Automatische Verträge ohne Mittelsmänner
+                </li>
+            </ul>
+        </div>
+        
+        <div>
+            <h3 style="color: #ef4444;">❌ Risiken</h3>
+            <ul class="cons-list">
+                <li>
+                    <strong>📉 Volatilität:</strong> 
+                    Preise schwanken extrem. Nicht stabil für den Alltag
+                </li>
+                <li>
+                    <strong>🔑 Eigenverantwortung:</strong> 
+                    "Not your keys, not your coins". Verlierst du alles → weg
+                </li>
+                <li>
+                    <strong>⚖️ Rechtliche Unsicherheit:</strong> 
+                    Staaten könnten Krypto verbieten oder stark regulieren
+                </li>
+                <li>
+                    <strong>🎯 Missbrauch:</strong> 
+                    Ransomware, Darknet-Märkte, Geldwäsche
+                </li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- Section 10: Zukunft -->
+<section>
+    <h2><span class="emoji-icon">🔮</span> Die Zukunft: Wohin geht's?</h2>
+    <p>
+        Blockchain wird bleiben – aber vielleicht anders, als wir denken. Einige Szenarien:
+    </p>
+    
+    <div class="comparison-grid">
+        <div class="comparison-card">
+            <h3>🏦 CBDCs</h3>
+            <p>
+                <strong>Digitales Zentralbankgeld</strong><br>
+                Staaten entwickeln E-Euro/E-Dollar, um die Kontrolle zu behalten. 
+                Teilweise auf Blockchain-Basis.
+            </p>
+        </div>
+        
+        <div class="comparison-card">
+            <h3>🏛️ Tokenisierung</h3>
+            <p>
+                <strong>Alles wird digital</strong><br>
+                Aktien, Immobilien, Kunst werden digitalisiert und 24/7 weltweit handelbar.
+            </p>
+        </div>
+        
+        <div class="comparison-card">
+            <h3>🌐 Web3</h3>
+            <p>
+                <strong>Neues Internet</strong><br>
+                Nutzer besitzen ihre Daten, statt sie an Tech-Giganten zu geben.
+            </p>
+        </div>
+        
+        <div class="comparison-card">
+            <h3>⛓️ Skalierung</h3>
+            <p>
+                <strong>Schneller & billiger</strong><br>
+                Layer-2 Lösungen (zB. Lightning Network) ermöglichen Millionen TPS.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- Section 11: Quiz -->
+<section>
+    <h2><span class="emoji-icon">📝</span> Abschlussquiz: Teste dein Wissen!</h2>
+    
+    <div class="nav-tabs">
+        <button class="active" onclick="showQuestion(1)">Frage 1/8</button>
+        <button onclick="showQuestion(2)">Frage 2/8</button>
+        <button onclick="showQuestion(3)">Frage 3/8</button>
+        <button onclick="showQuestion(4)">Frage 4/8</button>
+        <button onclick="showQuestion(5)">Frage 5/8</button>
+        <button onclick="showQuestion(6)">Frage 6/8</button>
+        <button onclick="showQuestion(7)">Frage 7/8</button>
+        <button onclick="showQuestion(8)">Frage 8/8</button>
+    </div>
+    
+    <div class="quiz-container">
+        <!-- Question 1 -->
+        <div class="quiz-question active" data-question="1">
+            <div class="quiz-progress">Frage 1 von 8</div>
+            <h4>Was ist das Problem beim "Double Spending"?</h4>
+            <div class="quiz-answers">
+                <button class="quiz-answer-btn" onclick="checkAnswer(this, false)">A) Der Hash ist zu lang</button>
+                <button class="quiz-answer-btn" onclick="checkAnswer(this, true)">B) Digitale Münzen können einfach kopiert werden</button>
+                <button class="quiz-answer-btn" onclick="checkAnswer(this, false)">C) Die Blockchain ist zu langsam</button>
+            </div>
+        </div>
+        
+        <!-- Question 2 -->
+        <div class="quiz-question" data-question="2">
+            <div class="quiz-progress">Frage 2 von 8</div>
+            <h4>Welche Wallet ist am sichersten gegen Hacker?</h4>
+            <div class="quiz-answers">
+                <button class="quiz-answer-btn" onclick="checkAnswer(this, false)">A) Hot Wallet (Handy-App)</button>
+                <button class="quiz-answer-btn" onclick="checkAnswer(this, true)">B) Cold Wallet (Hardware, offline)</button>
+                <button class="quiz-answer-btn" onclick="checkAnswer(this, false)">C) Paper Wallet (Ausgedruckt)</button>
+            </div>
+        </div>
+        
+        <!-- Question 3 -->
+        <div class="quiz-question" data-question="3">
+            <div class="quiz-progress">Frage 3 von 8</div>
+            <h4>Was ist der Hauptunterschied zwischen Bitcoin und Ethereum?</h4>
+            <div class="quiz-answers">
+                <button class="quiz-answer-btn" onclick="checkAnswer(this, false)">A) Bitcoin ist schneller</button>
+                <button class="quiz-answer-btn" onclick="checkAnswer(this, true)">B) Bitcoin = Geld, Ethereum = Plattform mit Smart Contracts</button>
+                <button class="quiz-answer-btn" onclick="checkAnswer(this, false)">C) Ethereum hat nur 21 Mio. Coins</button>
+            </div>
+        </div>
+        
+        <!-- Question 4 -->
+        <div class="quiz-question" data-question="4">
+            <div class="quiz-progress">Frage 4 von 8</div>
+            <h4>Welcher Konsensmechanismus verbraucht weniger Energie?</h4>
+            <div class="quiz-answers">
+                <button class="quiz-answer-btn" onclick="checkAnswer(this, false)">A) Proof of Work (PoW)</button>
+                <button class="quiz-answer-btn" onclick="checkAnswer(this, true)">B) Proof of Stake (PoS)</button>
+                <button class="quiz-answer-btn" onclick="checkAnswer(this, false)">C) Beide gleich</button>
+            </div>
+        </div>
+        
+        <!-- Question 5 -->
+        <div class="quiz-question" data-question="5">
+            <div class="quiz-progress">Frage 5 von 8</div>
+            <h4>Wofür wird der Private Key genutzt?</h4>
+            <div class="quiz-answers">
+                <button class="quiz-answer-btn" onclick="checkAnswer(this, true)">A) Zum Signieren von Transaktionen</button>
+                <button class="quiz-answer-btn" onclick="checkAnswer(this, false)">B) Zum Empfangen von Geld</button>
+                <button class="quiz-answer-btn" onclick="checkAnswer(this, false)">C) Um Blöcke zu minen</button>
+            </div>
+        </div>
+        
+        <!-- Question 6 -->
+        <div class="quiz-question" data-question="6">
+            <div class="quiz-progress">Frage 6 von 8</div>
+            <h4>Was bedeutet "Lawineneffekt" beim Hashing?</h4>
+            <div class="quiz-answers">
+                <button class="quiz-answer-btn" onclick="checkAnswer(this, true)">A) Ein Zeichen anders = komplett anderer Hash</button>
+                <button class="quiz-answer-btn" onclick="checkAnswer(this, false)">B) Der Hash wird mit jedem Block länger</button>
+                <button class="quiz-answer-btn" onclick="checkAnswer(this, false)">C) Mehrere Hashes kollabieren zusammen</button>
+            </div>
+        </div>
+        
+        <!-- Question 7 -->
+        <div class="quiz-question" data-question="7">
+            <div class="quiz-progress">Frage 7 von 8</div>
+            <h4>Wie viele Münzen kann es maximal bei Bitcoin geben?</h4>
+            <div class="quiz-answers">
+                <button class="quiz-answer-btn" onclick="checkAnswer(this, true)">A) 21 Millionen</button>
+                <button class="quiz-answer-btn" onclick="checkAnswer(this, false)">B) Unbegrenzt</button>
+                <button class="quiz-answer-btn" onclick="checkAnswer(this, false)">C) 1 Billion</button>
+            </div>
+        </div>
+        
+        <!-- Question 8 -->
+        <div class="quiz-question" data-question="8">
+            <div class="quiz-progress">Frage 8 von 8 (Letzte Frage)</div>
+            <h4>Was sind NFTs?</h4>
+            <div class="quiz-answers">
+                <button class="quiz-answer-btn" onclick="checkAnswer(this, true)">A) Einzigartige digitale Eigentumsrechte</button>
+                <button class="quiz-answer-btn" onclick="checkAnswer(this, false)">B) Neue Fiat Currencies Token</button>
+                <button class="quiz-answer-btn" onclick="checkAnswer(this, false)">C) Network File Transfer Systems</button>
+            </div>
+        </div>
+        
+        <!-- Result -->
+        <div class="quiz-result" style="display: none;">
+            <h3>🎉 Glückwunsch!</h3>
+            <p>Du hast alle Fragen beantwortet und die Grundlagen von Blockchain & Kryptografie gemeistert!</p>
+            <button class="btn-back" style="background: #4f46e5; color: white; padding: 0.75rem 1.5rem; margin-top: 1rem;" onclick="location.reload()">
+                Neu starten
+            </button>
+        </div>
+    </div>
+</section>
+
+</main>
+
+<footer>
+    <p><strong>🔐 Kryptowährungen & Blockchain - Master Class</strong></p>
+    <p>© 2026 | Prof. Schweitzer | Georg von Peuerbach Gymnasium</p>
+    <p style="font-size: 0.9rem; margin-top: 1rem; opacity: 0.8;">100% DSGVO konform • Keine externen Ressourcen • Lokal im Browser</p>
+</footer>
+
+<script>
+    function showQuestion(num) {
+        // Hide all questions
+        document.querySelectorAll('.quiz-question').forEach(q => q.classList.remove('active'));
+        document.querySelectorAll('.nav-tabs button').forEach(b => b.classList.remove('active'));
+        
+        // Show selected question
+        const question = document.querySelector(`.quiz-question[data-question="${num}"]`);
+        if (question) {
+            question.classList.add('active');
+        }
+        
+        // Mark button as active
+        event.target.classList.add('active');
+    }
+    
+    function checkAnswer(btn, isCorrect) {
+        const answers = btn.parentElement;
+        const buttons = answers.querySelectorAll('.quiz-answer-btn');
+        
+        // Disable all buttons
+        buttons.forEach(b => {
+            b.style.pointerEvents = 'none';
+            b.style.opacity = '0.5';
+        });
+        
+        if (isCorrect) {
+            btn.classList.add('correct');
+            btn.style.opacity = '1';
+        } else {
+            btn.classList.add('incorrect');
+            btn.style.opacity = '1';
+            
+            // Show correct answer
+            buttons.forEach(b => {
+                if (b.getAttribute('onclick').includes('true')) {
+                    b.classList.add('correct');
+                    b.style.opacity = '1';
+                }
+            });
+        }
+        
+        // Move to next question after delay
+        setTimeout(() => {
+            const currentQuestion = btn.closest('.quiz-question');
+            const currentNum = parseInt(currentQuestion.dataset.question);
+            
+            if (currentNum < 8) {
+                showQuestion(currentNum + 1);
+            } else {
+                // Show result
+                document.querySelectorAll('.quiz-question').forEach(q => q.style.display = 'none');
+                document.querySelector('.quiz-result').style.display = 'block';
+            }
+        }, 1500);
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1. Klasse - Digitale Grundbildung</title>
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+        /* Modulares Design */
+        .subject-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .subject-badge {
+            background: #dbeafe;
+            color: #1e40af;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        .subject-header h2 {
+            margin: 0;
+            color: #1f2937;
+        }
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+        .resource-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 1.5rem;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            transition: 0.3s;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .resource-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transform: translateY(-2px);
+            border-color: #3b82f6;
+        }
+        .resource-card h4 {
+            margin: 0 0 0.5rem 0;
+            color: #1f2937;
+        }
+        .resource-card p {
+            margin: 0;
+            color: #6b7280;
+            font-size: 0.95rem;
+        }
+        .back-nav {
+            margin: 2rem 0;
+        }
+        .btn-back {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background: #e5e7eb;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #1f2937;
+            transition: 0.2s;
+        }
+        .btn-back:hover {
+            background: #3b82f6;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>1. Klasse - Digitale Grundbildung</h1>
+    <p>Grundlagen: Hardware, Software, Internet, Sicherheit & mehr!</p>
+    <div class="back-nav">
+        <a href="../index.html" class="btn-back">⬅ Zurück zur Übersicht</a>
+    </div>
+</header>
+
+<main style="max-width: 1200px; margin: 0 auto; padding: 2rem 1rem;">
+
+    <section style="background: #dbeafe; border-left: 4px solid #3b82f6; padding: 1.5rem; border-radius: 5px; margin-bottom: 2rem;">
+        <h2>🎓 Willkommen zur 1. Klasse Digitale Grundbildung!</h2>
+        <p>In dieser Klasse lernst du die Grundlagen: Wie funktioniert ein Computer? Was ist das Internet? Wie schützt du dich online?</p>
+        <p><strong>13 interaktive Module</strong> warten auf dich - viel Spaß beim Lernen! 🚀</p>
+    </section>
+
+    <!-- Grundlagen Module -->
+    <section>
+        <div class="subject-header">
+            <span class="subject-badge">Grundlagen</span>
+            <h2>💻 Hardware, Software & Dateisystem</h2>
+        </div>
+        <div class="resource-grid">
+            <a href="hardware.html" class="resource-card">
+                <h4>💻 Hardware</h4>
+                <p>CPU, RAM, Speicher - die Komponenten deines Computers</p>
+            </a>
+            <a href="software.html" class="resource-card">
+                <h4>💿 Software</h4>
+                <p>Betriebssystem, Apps und Programme verstehen</p>
+            </a>
+            <a href="dateisystem.html" class="resource-card">
+                <h4>📁 Dateisystem</h4>
+                <p>Ordner, Dateien und Pfade organisieren</p>
+            </a>
+            <a href="tastatur_maus.html" class="resource-card">
+                <h4>⌨️ Tastatur & Maus</h4>
+                <p>Eingabegeräte erkunden und nutzen</p>
+            </a>
+            <a href="speichermedien.html" class="resource-card">
+                <h4>💾 Speichermedien</h4>
+                <p>USB-Stick, Cloud, externe Festplatte - wo speichern?</p>
+            </a>
+        </div>
+    </section>
+
+    <!-- Internet & Sicherheit -->
+    <section style="margin-top: 3rem;">
+        <div class="subject-header">
+            <span class="subject-badge" style="background: #fef3c7; color: #92400e;">Sicherheit</span>
+            <h2>🔒 Internet & Online-Sicherheit</h2>
+        </div>
+        <div class="resource-grid">
+            <a href="internet_basics.html" class="resource-card">
+                <h4>🌐 Internet Basics</h4>
+                <p>Wie funktioniert das Internet?</p>
+            </a>
+            <a href="netzwerk_spiel.html" class="resource-card">
+                <h4>🎯 Netzwerk-Spiel</h4>
+                <p>Wie reisen Daten durchs Internet?</p>
+            </a>
+            <a href="sicherheit_quiz.html" class="resource-card">
+                <h4>🛡️ Sicherheit-Quiz</h4>
+                <p>Gute Passwörter & sichere Logins testen</p>
+            </a>
+            <a href="datenschutz_anfaenger.html" class="resource-card">
+                <h4>🔒 Datenschutz für Anfänger</h4>
+                <p>Deine Daten sind wertvoll!</p>
+            </a>
+        </div>
+    </section>
+
+    <!-- Spiele & Abenteuer -->
+    <section style="margin-top: 3rem;">
+        <div class="subject-header">
+            <span class="subject-badge" style="background: #dcfce7; color: #065f46;">Interaktiv</span>
+            <h2>🎮 Spiele & Abenteuer</h2>
+        </div>
+        <div class="resource-grid">
+            <a href="binaersystem_spiel.html" class="resource-card">
+                <h4>🎮 Binärsystem-Spiel</h4>
+                <p>Zahlen in Binär umwandeln - wie denkt der Computer?</p>
+            </a>
+            <a href="computer_generationen.html" class="resource-card">
+                <h4>🕹️ Computer-Generationen</h4>
+                <p>Die Geschichte des Computers entdecken</p>
+            </a>
+            <a href="betriebssystem_scavenger.html" class="resource-card">
+                <h4>🔍 Betriebssystem Scavenger Hunt</h4>
+                <p>Erkunde dein Betriebssystem!</p>
+            </a>
+        </div>
+    </section>
+
+    <!-- Umwelt & Energie -->
+    <section style="margin-top: 3rem;">
+        <div class="subject-header">
+            <span class="subject-badge" style="background: #d1fae5; color: #065f46;">Umwelt</span>
+            <h2>♻️ Energie & Nachhaltigkeit</h2>
+        </div>
+        <div class="resource-grid">
+            <a href="energieverbrauch.html" class="resource-card">
+                <h4>⚡ Energieverbrauch</h4>
+                <p>Carbon Footprint berechnen & Strom sparen</p>
+            </a>
+        </div>
+    </section>
+
+    <!-- Info Box -->
+    <section style="background: #f0f9ff; border-left: 4px solid #3b82f6; padding: 2rem; border-radius: 8px; margin-top: 3rem;">
+        <h2>💡 Tipps zum Lernen</h2>
+        <ul style="line-height: 1.8;">
+            <li><strong>Schritt für Schritt:</strong> Beginne mit den Grundlagen-Modulen!</li>
+            <li><strong>Spiele probieren:</strong> Die interaktiven Spiele helfen beim Verstehen</li>
+            <li><strong>Ausprobieren:</strong> Führe bei der Scavenger Hunt deine Aufgaben am echten Computer durch!</li>
+            <li><strong>Fragen stellen:</strong> Wenn etwas unklar ist, frag deine Lehrerin!</li>
+            <li><strong>Spaß haben:</strong> Informatik ist cool und praktisch! 🚀</li>
+        </ul>
+    </section>
+
+    <!-- Lernziele -->
+    <section style="background: #dcfce7; border-left: 4px solid #10b981; padding: 2rem; border-radius: 8px; margin-top: 2rem;">
+        <h2>🎯 Das lernst du in dieser Klasse</h2>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div>
+                <h3 style="color: #065f46;">🖥️ Hardware & Software</h3>
+                <ul style="font-size: 0.95rem;">
+                    <li>Wie ein Computer aufgebaut ist</li>
+                    <li>Was ist ein Betriebssystem?</li>
+                    <li>Programme und Apps nutzen</li>
+                </ul>
+            </div>
+            <div>
+                <h3 style="color: #065f46;">🌐 Internet & Netzwerk</h3>
+                <ul style="font-size: 0.95rem;">
+                    <li>Wie funktioniert das Internet?</li>
+                    <li>IP-Adressen und URLs verstehen</li>
+                    <li>Datensicherheit im Netzwerk</li>
+                </ul>
+            </div>
+            <div>
+                <h3 style="color: #065f46;">🔒 Sicherheit & Schutz</h3>
+                <ul style="font-size: 0.95rem;">
+                    <li>Gute Passwörter erstellen</li>
+                    <li>Vor Phishing schützen</li>
+                    <li>Persönliche Daten schützen</li>
+                </ul>
+            </div>
+            <div>
+                <h3 style="color: #065f46;">♻️ Umwelt & Energie</h3>
+                <ul style="font-size: 0.95rem;">
+                    <li>Stromverbrauch von Computern</li>
+                    <li>CO₂-Fußabdruck berechnen</li>
+                    <li>Nachhaltig digital arbeiten</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<footer style="margin-top: 5rem; padding: 2rem 1rem; background-color: #f8fafc; border-top: 1px solid #e2e8f0; color: #64748b; font-size: 0.9rem; text-align: center;">
+    &copy; 2026 | GvP | Mag. Schweitzer | Digitale Grundbildung
+</footer>
+
+</body>
+</html>

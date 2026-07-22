@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Quiz: Neuronale Netze</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #1e293b;
+            --success: #22c55e;
+            --error: #ef4444;
+            --border: #e2e8f0;
+        }
+
+        * { 
+            box-sizing: border-box; 
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation; /* Verhindert Double-Tap-Zoom Verzögerung */
+        }
+
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: var(--bg); 
+            color: var(--text); 
+            margin: 0; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        #quiz-container {
+            width: 95%;
+            max-width: 600px;
+            background: var(--card);
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            margin: 10px;
+        }
+
+        .hidden { display: none !important; }
+
+        h1 { margin-top: 0; text-align: center; color: var(--primary); font-size: 1.5rem; }
+        
+        input[type="text"] {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--border);
+            border-radius: 0.5rem;
+            font-size: 1.1rem; /* Verhindert iOS-Auto-Zoom bei Fokus */
+            outline: none;
+            appearance: none;
+        }
+
+        .progress-container { width: 100%; height: 8px; background: var(--border); border-radius: 4px; margin-bottom: 1rem; }
+        #progress-bar { width: 0%; height: 100%; background: var(--primary); border-radius: 4px; transition: width 0.3s; }
+
+        .difficulty-badge { 
+            display: inline-block; 
+            padding: 0.25rem 0.75rem; 
+            border-radius: 999px; 
+            font-size: 0.75rem; 
+            font-weight: 600; 
+            margin-bottom: 0.5rem; 
+            background: #e0e7ff;
+            color: #4338ca;
+        }
+
+        .question { font-size: 1.2rem; font-weight: 600; margin-bottom: 1.5rem; line-height: 1.4; }
+        
+        .options-grid { display: grid; gap: 0.75rem; }
+        
+        .option-btn {
+            padding: 1.2rem;
+            border: 2px solid var(--border);
+            background: white;
+            border-radius: 0.75rem;
+            cursor: pointer;
+            text-align: left;
+            font-size: 1rem;
+            transition: background 0.2s, border-color 0.2s;
+            -webkit-appearance: none;
+        }
+
+        .option-btn.correct { background: var(--success) !important; color: white; border-color: var(--success); }
+        .option-btn.wrong { background: var(--error) !important; color: white; border-color: var(--error); }
+        .option-btn.highlight { border: 3px solid var(--success); }
+
+        #next-btn, #start-btn, .action-btn {
+            width: 100%;
+            padding: 1.2rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 0.75rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 1.5rem;
+            font-size: 1.1rem;
+            -webkit-appearance: none;
+        }
+
+        #result-container { text-align: center; }
+        .score-big { font-size: 3.5rem; font-weight: 800; color: var(--primary); margin: 1rem 0; }
+    </style>
+</head>
+<body>
+
+<div id="quiz-container">
+    <div id="start-screen">
+        <h1>Neuronale Netze Quiz</h1>
+        <div style="margin: 1.5rem 0;">
+            <input type="text" id="student-name" placeholder="Dein Name..." autocomplete="off">
+        </div>
+        <button id="start-btn">Quiz starten</button>
+    </div>
+
+    <div id="quiz-screen" class="hidden">
+        <div class="difficulty-badge" id="diff-display">Stufe</div>
+        <div class="progress-container"><div id="progress-bar"></div></div>
+        <div id="question-box">
+            <div class="question" id="q-text">Frage lädt...</div>
+            <div class="options-grid" id="options"></div>
+        </div>
+        <button id="next-btn" class="hidden">Nächste Frage</button>
+    </div>
+
+    <div id="result-container" class="hidden">
+        <h2>Ergebnis</h2>
+        <div class="score-big" id="final-score">0 / 15</div>
+        <div id="final-note" style="font-weight:bold; font-size:1.2rem; margin-bottom:10px;"></div>
+        <p id="final-percent"></p>
+        <div id="status-msg" style="margin: 1rem 0; color: #64748b;">Ergebnis wird gesendet...</div>
+        <button class="action-btn" id="screenshot-btn">📸 Screenshot speichern</button>
+    </div>
+</div>
+
+<script>
+    (function() { emailjs.init("HnZ28X9AihlD5y9XH"); })();
+
+    const questions = [
+        { q: "Was diente als biologisches Vorbild für künstliche neuronale Netze?", a: "Das menschliche Gehirn", o: ["Das Nervensystem der Pflanzen", "Das menschliche Gehirn", "Ein Computer-Prozessor", "Ein Uhrwerk"], d: "Leicht" },
+        { q: "Wie heißt die erste Schicht eines neuronalen Netzes, die Daten empfängt?", a: "Eingabeschicht", o: ["Verborgene Schicht", "Kontrollschicht", "Eingabeschicht", "Ausgabeschicht"], d: "Leicht" },
+        { q: "Welches Gerät nutzt du im Alltag oft, das auf neuronalen Netzen zur Spracherkennung basiert?", a: "Smartphone (Sprachassistent)", o: ["Toaster", "Smartphone (Sprachassistent)", "Taschenrechner", "Radiowecker"], d: "Leicht" },
+        { q: "Was ist ein Hauptziel beim 'Trainieren' eines neuronalen Netzes?", a: "Fehler minimieren", o: ["Daten löschen", "Hardware kühlen", "Strom sparen", "Fehler minimieren"], d: "Leicht" },
+        { q: "Woher bekommt ein neuronales Netz beim Lernen die Informationen?", a: "Aus riesigen Datenmengen", o: ["Vom Benutzer per Hand", "Aus riesigen Datenmengen", "Durch Zufallsgeneratoren", "Aus dem Bios-Chip"], d: "Leicht" },
+        { q: "Welche Schichten liegen zwischen Eingabe und Ausgabe?", a: "Hidden Layers (Verborgene Schichten)", o: ["Datenpuffer", "Control Layers", "Hidden Layers (Verborgene Schichten)", "Sicherheitsschichten"], d: "Mittel" },
+        { q: "Was wird während des Lernprozesses im Netz konkret angepasst?", a: "Gewichtungen und Verzerrungen", o: ["Die CPU-Taktung", "Gewichtungen und Verzerrungen", "Die Monitorauflösung", "Die Anzahl der Eingänge"], d: "Mittel" },
+        { q: "Was bedeutet 'Autonomes Fahren' im Kontext von KI?", a: "Das Fahrzeug erkennt Hindernisse und steuert selbst", o: ["Das Auto braucht keinen Treibstoff", "Das Fahrzeug erkennt Hindernisse und steuert selbst", "Das Auto wird ferngesteuert", "Das Auto fährt nur auf Schienen"], d: "Mittel" },
+        { q: "In der Medizin helfen neuronale Netze vor allem bei...", a: "der Diagnose von Krankheiten in Bildern", o: ["der Reinigung von OP-Sälen", "der Diagnose von Krankheiten in Bildern", "der Abrechnung mit Krankenkassen", "der Terminvergabe am Empfang"], d: "Mittel" },
+        { q: "Was ist ein 'Empfehlungssystem'?", a: "KI schlägt Produkte basierend auf Vorlieben vor", o: ["Ein Chef, der Mitarbeiter lobt", "KI schlägt Produkte basierend auf Vorlieben vor", "Ein Anti-Viren-Programm", "Ein System zur Wettervorhersage"], d: "Mittel" },
+        { q: "Was passiert bei der Fehlerkorrektur (Backpropagation)?", a: "Fehler werden zurückgerechnet, um Gewichte zu korrigieren", o: ["Das Programm wird neu installiert", "Das Netz löscht falsche Daten", "Fehler werden zurückgerechnet, um Gewichte zu korrigieren", "Der Computer startet neu"], d: "Schwer" },
+        { q: "Warum sind neuronale Netze für 'Cyber Security' wichtig?", a: "Sie erkennen komplexe Angriffsmuster in Echtzeit", o: ["Sie machen Passwörter länger", "Sie erkennen komplexe Angriffsmuster in Echtzeit", "Sie ersetzen die Firewall komplett", "Sie schalten den PC bei Gefahr aus"], d: "Schwer" },
+        { q: "Was ist eine aktuelle Herausforderung für die Zukunft der KI?", a: "Ethische Fragen und Nachhaltigkeit", o: ["Mangel an Plastik", "Ethische Fragen und Nachhaltigkeit", "Zu viele Tastaturen", "Fehlende Internetanschlüsse"], d: "Schwer" },
+        { q: "Wie nennt man den Grundbaustein eines neuronalen Netzes?", a: "Künstliches Neuron", o: ["Digitaler Atomkern", "Künstliches Neuron", "Bit-Zelle", "Logic-Gate"], d: "Schwer" },
+        { q: "Was unterscheidet die Logik eines NN von klassischer Programmierung?", a: "NN lernen aus Beispielen statt festen Regeln", o: ["NN nutzen keine Elektrizität", "NN sind immer 100% fehlerfrei", "NN lernen aus Beispielen statt festen Regeln", "Es gibt keinen Unterschied"], d: "Schwer" }
+    ];
+
+    let currentQuestions = [];
+    let currentIdx = 0;
+    let score = 0;
+    let studentName = "";
+
+    const startBtn = document.getElementById("start-btn");
+    const nextBtn = document.getElementById("next-btn");
+    const startScreen = document.getElementById("start-screen");
+    const quizScreen = document.getElementById("quiz-screen");
+    const resultScreen = document.getElementById("result-container");
+    const screenshotBtn = document.getElementById("screenshot-btn");
+
+    // Unified Click/Touch Handler
+    function attachEvent(el, fn) {
+        el.addEventListener('click', (e) => { e.preventDefault(); fn(); });
+    }
+
+    attachEvent(startBtn, () => {
+        studentName = document.getElementById("student-name").value.trim();
+        if(!studentName) return alert("Bitte Name eingeben!");
+        startQuiz();
+    });
+
+    attachEvent(nextBtn, () => {
+        currentIdx++;
+        if(currentIdx < currentQuestions.length) showQuestion();
+        else showResults();
+    });
+
+    attachEvent(screenshotBtn, () => {
+        html2canvas(document.getElementById("quiz-container")).then(canvas => {
+            const link = document.createElement("a");
+            link.download = `Ergebnis_${studentName}.png`;
+            link.href = canvas.toDataURL();
+            link.click();
+        });
+    });
+
+    function startQuiz() {
+        currentQuestions = [...questions].sort(() => Math.random() - 0.5);
+        startScreen.classList.add("hidden");
+        quizScreen.classList.remove("hidden");
+        showQuestion();
+    }
+
+    function showQuestion() {
+        nextBtn.classList.add("hidden");
+        const q = currentQuestions[currentIdx];
+        document.getElementById("diff-display").textContent = `Stufe: ${q.d}`;
+        document.getElementById("q-text").textContent = q.q;
+        document.getElementById("progress-bar").style.width = `${(currentIdx / currentQuestions.length) * 100}%`;
+
+        const optionsBox = document.getElementById("options");
+        optionsBox.innerHTML = "";
+        [...q.o].sort(() => Math.random() - 0.5).forEach(opt => {
+            const btn = document.createElement("button");
+            btn.className = "option-btn";
+            btn.textContent = opt;
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                checkAnswer(btn, opt, q.a);
+            });
+            optionsBox.appendChild(btn);
+        });
+    }
+
+    function checkAnswer(btn, selected, correct) {
+        const buttons = document.querySelectorAll(".option-btn");
+        if (buttons[0].disabled) return;
+        buttons.forEach(b => b.disabled = true);
+
+        if(selected === correct) {
+            btn.classList.add("correct");
+            score++;
+        } else {
+            btn.classList.add("wrong");
+            buttons.forEach(b => { if(b.textContent === correct) b.classList.add("highlight"); });
+        }
+        nextBtn.classList.remove("hidden");
+    }
+
+    function showResults() {
+        quizScreen.classList.add("hidden");
+        resultScreen.classList.remove("hidden");
+        const percent = Math.round((score / currentQuestions.length) * 100);
+        let note = "Nicht aufgepasst?";
+        if(percent >= 90) note = "Sehr gut aufgepasst";
+        else if(percent >= 78) note = "Gut aufgepasst";
+        else if(percent >= 64) note = "Ok!";
+        else if(percent >= 50) note = "besser aufpassen";
+
+        document.getElementById("final-score").textContent = `${score} / ${currentQuestions.length}`;
+        document.getElementById("final-note").textContent = note;
+        document.getElementById("final-percent").textContent = `${percent}% korrekt`;
+
+        emailjs.send("service_qoofink", "template_cu0x1bc", {
+            quiz_name: "Quiz: Neuronale Netze",
+            from_name: studentName,
+            score: `${score} von 15`,
+            message: `Zeitstempel: ${new Date().toLocaleString()} | Note: ${note}`
+        }).then(() => {
+            document.getElementById("status-msg").textContent = "✅ Gesendet";
+        }).catch(() => {
+            document.getElementById("status-msg").textContent = "❌ Fehler beim Senden";
+        });
+    }
+</script>
+</body>
+</html>

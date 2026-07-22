@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="de" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kreta Gruppenurlaub 2026 ☀️</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Leaflet CSS for interactive maps -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <!-- Custom configuration for Mediterranean Tailwind colors -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        aegean: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0284c7',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        },
+                        olive: {
+                            100: '#f1f5e9',
+                            600: '#65a30d',
+                            800: '#3f6212',
+                        },
+                        terracotta: {
+                            100: '#ffedd5',
+                            500: '#f97316',
+                            600: '#ea580c',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Smooth transitions for interactive map popups */
+        .leaflet-popup-content-wrapper {
+            border-radius: 12px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            font-family: inherit;
+        }
+        .leaflet-popup-content {
+            margin: 12px;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-stone-50 text-slate-800 antialiased font-sans">
+
+    <!-- Portal Header -->
+    <header class="relative bg-gradient-to-r from-aegean-900 to-aegean-800 text-white overflow-hidden py-16 px-4">
+        <!-- Decorative subtle background pattern -->
+        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
+        <div class="max-w-5xl mx-auto text-center relative z-10">
+            <span class="inline-block bg-terracotta-600 text-white font-semibold text-xs px-3 py-1.5 rounded-full uppercase tracking-wider mb-3 shadow-md">
+                🇬🇷 24. Juli – 31. Juli 2026 • 8 Personen (4 Pärchen)
+            </span>
+            <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight">Kreta Gruppen-Urlaubsportal ☀️</h1>
+            <p class="mt-3 text-lg md:text-xl text-sky-100 max-w-2xl mx-auto">
+                Euer exklusiver Guide für Traumtage in Plaka, Chania & Iraklio. Pool-Vibe, Outdoorküche, Strände & kretischer Genuss.
+            </p>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-6xl mx-auto px-4 py-8">
+
+        <!-- Quick Navigation Bar -->
+        <nav class="grid grid-cols-2 md:grid-cols-5 gap-3 mb-8">
+            <a href="#fluege" class="flex flex-col items-center justify-center p-4 bg-white hover:bg-aegean-50 border border-slate-200 rounded-xl shadow-sm hover:shadow transition group text-center">
+                <span class="text-2xl mb-1 group-hover:scale-110 transition-transform">✈️</span>
+                <span class="font-bold text-xs text-aegean-900">Flüge & Transfers</span>
+            </a>
+            <a href="#villa-kochen" class="flex flex-col items-center justify-center p-4 bg-white hover:bg-aegean-50 border border-slate-200 rounded-xl shadow-sm hover:shadow transition group text-center">
+                <span class="text-2xl mb-1 group-hover:scale-110 transition-transform">🏡</span>
+                <span class="font-bold text-xs text-aegean-900">Villa & Outdoorküche</span>
+            </a>
+            <a href="#karte-section" class="flex flex-col items-center justify-center p-4 bg-white hover:bg-aegean-50 border border-slate-200 rounded-xl shadow-sm hover:shadow transition group text-center">
+                <span class="text-2xl mb-1 group-hover:scale-110 transition-transform">🗺️</span>
+                <span class="font-bold text-xs text-aegean-900">Interaktive Karte</span>
+            </a>
+            <a href="#kulinarik" class="flex flex-col items-center justify-center p-4 bg-white hover:bg-aegean-50 border border-slate-200 rounded-xl shadow-sm hover:shadow transition group text-center">
+                <span class="text-2xl mb-1 group-hover:scale-110 transition-transform">🍽️</span>
+                <span class="font-bold text-xs text-aegean-900">Gastro & Nightlife</span>
+            </a>
+            <a href="#unternehmungen" class="flex flex-col items-center justify-center p-4 bg-white hover:bg-aegean-50 border border-slate-200 rounded-xl shadow-sm hover:shadow transition group text-center col-span-2 md:col-span-1">
+                <span class="text-2xl mb-1 group-hover:scale-110 transition-transform">🏖️</span>
+                <span class="font-bold text-xs text-aegean-900">Strände & Kultur</span>
+            </a>
+        </nav>
+
+        <!-- Accommodation & Last Night Boxes -->
+        <div class="grid md:grid-cols-2 gap-4 mb-8">
+            <!-- Villa Plaka Info -->
+            <div class="bg-olive-100/60 border border-olive-100 rounded-xl p-5 flex flex-col justify-between shadow-sm">
+                <div class="flex items-start gap-4">
+                    <span class="text-3xl p-2.5 bg-olive-100 rounded-lg">🏡</span>
+                    <div>
+                        <h3 class="font-bold text-olive-800 text-lg">Villa Marisol, Almyrida (24.7. – 30.7.)</h3>
+                        <p class="text-slate-600 text-sm mt-1">
+                            <strong>Adresse:</strong> Villa Marisol, F644+8V, Vamos 730 08, Almirida 730 08, Griechenland<br>
+                            Traumpool mit Meerblick, eine gigantische Outdoorküche, Stellplätze für beide Mietautos & jede Menge Platz für euch 8! Check-in ab 15:00 Uhr.
+                        </p>
+                    </div>
+                </div>
+                <div class="mt-4 flex gap-2">
+                    <button onclick="focusOnMap(35.4524, 24.2084, 'Villa Marisol')" class="bg-olive-600 hover:bg-olive-700 text-white font-semibold text-xs py-2 px-4 rounded-lg shadow-sm transition">
+                        Auf Karte zeigen 📍
+                    </button>
+                    <span class="text-xs text-slate-500 self-center">Bestätigung: HMNADYQQ5D</span>
+                </div>
+            </div>
+
+            <!-- Capsis Astoria Info -->
+            <div class="bg-aegean-50 border border-aegean-100 rounded-xl p-5 flex flex-col justify-between shadow-sm">
+                <div class="flex items-start gap-4">
+                    <span class="text-3xl p-2.5 bg-aegean-100 rounded-lg">🏨</span>
+                    <div>
+                        <h3 class="font-bold text-aegean-900 text-lg">Capsis Astoria Heraklion (30.7. – 31.7.)</h3>
+                        <p class="text-slate-600 text-sm mt-1">
+                            Letzte Nacht direkt in Iraklio (Heraklion) am Eleftherias-Platz. Perfekt, um das Nachtleben der Hauptstadt zu erkunden und am nächsten Morgen stressfrei zum Flughafen zu kommen.
+                        </p>
+                    </div>
+                </div>
+                <div class="mt-4 flex gap-2">
+                    <button onclick="focusOnMap(35.3391, 25.1367, 'Capsis Astoria Heraklion')" class="bg-aegean-500 hover:bg-aegean-600 text-white font-semibold text-xs py-2 px-4 rounded-lg shadow-sm transition">
+                        Auf Karte zeigen 📍
+                    </button>
+                    <span class="text-xs text-slate-500 self-center">Perfekt für die letzte Nacht</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- FLÜGE & TRANSFERS -->
+        <section id="fluege" class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-100 mb-8">
+            <h2 class="text-2xl font-bold text-aegean-900 mb-6 flex items-center gap-2">
+                <span>✈️</span> Flugzeiten & Logistik-Tipps
+            </h2>
+            
+            <div class="grid md:grid-cols-2 gap-6 mb-8">
+                <!-- Flight Outbound -->
+                <div class="border border-slate-200 rounded-xl p-5 relative overflow-hidden bg-slate-50">
+                    <div class="absolute right-0 top-0 bg-aegean-900 text-white text-xs font-bold px-3 py-1 rounded-bl-lg uppercase">
+                        Hinflug
+                    </div>
+                    <span class="text-xs font-bold text-aegean-500 uppercase">AUSTRIAN AIRLINES / CHARTER</span>
+                    <h3 class="text-xl font-extrabold text-slate-900 mt-1">Freitag, 24. Juli</h3>
+                    <div class="mt-4 flex items-center justify-between border-t border-slate-200 pt-4">
+                        <div>
+                            <p class="text-xs text-slate-500 uppercase">Abflug</p>
+                            <p class="text-lg font-bold text-slate-900">11:20 Uhr</p>
+                            <p class="text-xs text-slate-500">Linz (LNZ)</p>
+                        </div>
+                        <div class="text-slate-400 text-xl font-bold">✈️</div>
+                        <div class="text-right">
+                            <p class="text-xs text-slate-500 uppercase">Ankunft</p>
+                            <p class="text-lg font-bold text-slate-900">15:10 Uhr</p>
+                            <p class="text-xs text-slate-500">Heraklion (HER)</p>
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-400 mt-3">Flugzeit: 2 Std. 50 Min. • Buchungsnr: 1122-614-361</p>
+                </div>
+
+                <!-- Flight Return -->
+                <div class="border border-slate-200 rounded-xl p-5 relative overflow-hidden bg-slate-50">
+                    <div class="absolute right-0 top-0 bg-terracotta-600 text-white text-xs font-bold px-3 py-1 rounded-bl-lg uppercase">
+                        Rückflug
+                    </div>
+                    <span class="text-xs font-bold text-terracotta-500 uppercase">AUSTRIAN AIRLINES / CHARTER</span>
+                    <h3 class="text-xl font-extrabold text-slate-900 mt-1">Freitag, 31. Juli</h3>
+                    <div class="mt-4 flex items-center justify-between border-t border-slate-200 pt-4">
+                        <div>
+                            <p class="text-xs text-slate-500 uppercase">Abflug</p>
+                            <p class="text-lg font-bold text-slate-900">08:45 Uhr</p>
+                            <p class="text-xs text-slate-500">Heraklion (HER)</p>
+                        </div>
+                        <div class="text-slate-400 text-xl font-bold">✈️</div>
+                        <div class="text-right">
+                            <p class="text-xs text-slate-500 uppercase">Ankunft</p>
+                            <p class="text-lg font-bold text-slate-900">10:40 Uhr</p>
+                            <p class="text-xs text-slate-500">Linz (LNZ)</p>
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-400 mt-3">Flugzeit: 2 Std. 55 Min. • Buchungsnr: 1122-614-361</p>
+                </div>
+            </div>
+
+            <!-- Rental Car Advice -->
+            <div class="bg-amber-50 border border-amber-200 rounded-xl p-5">
+                <h3 class="font-bold text-amber-900 mb-2 flex items-center gap-1.5 text-base">
+                    <span>🚗</span> Transport- & Logistik-Strategie mit 2 Mietwagen:
+                </h3>
+                <p class="text-sm text-slate-700 leading-relaxed mb-3">
+                    Ihr habt für den **gesamten Urlaub 2 Mietwagen** zur Verfügung. Das ist bei einer Gruppengröße von 8 Personen (4 Pärchen) die perfekte Lösung, um sowohl das gesamte Gepäck flexibel zu transportieren als auch vor Ort getrennte Ausflüge machen zu können!
+                </p>
+                <div class="grid sm:grid-cols-2 gap-4 text-xs text-slate-600">
+                    <div class="bg-white p-3 rounded-lg border border-slate-200">
+                        <strong class="text-slate-800 block mb-1">Ankunft & Fahrt zur Villa Marisol:</strong>
+                        Direkt nach der Landung in Heraklion (15:10 Uhr) nehmt ihr eure Autos am Flughafen in Empfang. Da ihr zu acht seid, verteilt ihr Gepäck und Personen entspannt auf zwei Autos. Die Fahrt zur Villa Marisol nach Almyrida/Vamos beträgt ca. 120 km (Fahrzeit ca. 1 Std. 45 Min.) über die Nationalstraße.
+                    </div>
+                    <div class="bg-white p-3 rounded-lg border border-slate-200">
+                        <strong class="text-slate-800 block mb-1">Rückgabe am Abreisetag (31.07.):</strong>
+                        Am Donnerstag (30.07.) fahrt ihr entspannt mit beiden Autos nach Heraklion zum Hotel Capsis Astoria (Parkhäuser sind in direkter Hotelnähe verfügbar). Am Freitag (31.07.) solltet ihr um ca. 06:15 Uhr am Flughafen Heraklion sein, um beide Fahrzeuge stressfrei vor dem Rückflug um 08:45 Uhr abzugeben!
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VILLA, EINKAUFEN & OUTDOORKÜCHE -->
+        <section id="villa-kochen" class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-100 mb-8">
+            <h2 class="text-2xl font-bold text-olive-800 mb-6 flex items-center gap-2">
+                <span>🏡</span> Kochen in der Traumvilla & Einkaufstipps
+            </h2>
+            
+            <p class="text-slate-600 text-sm mb-6 -mt-2">
+                Eure Villa bietet einen traumhaften Pool und eine voll ausgestattete Outdoorküche. Perfekt, um gemeinsame Abende bei gutem Wein, gegrilltem Fisch und Meeresrauschen zu verbringen. Hier erfahrt ihr, wo ihr die besten Zutaten bekommt:
+            </p>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Shopping locations -->
+                <div class="space-y-4">
+                    <h3 class="font-bold text-slate-800 text-base flex items-center gap-1.5 border-b pb-2">
+                        <span>🛒</span> Die besten Supermärkte & Händler
+                    </h3>
+                    
+                    <div class="border border-slate-100 rounded-lg p-4 bg-slate-50/50">
+                        <h4 class="font-bold text-slate-800 text-sm">Lokaler Supermarkt in Plaka (fußläufig)</h4>
+                        <p class="text-xs text-slate-500 mt-1">
+                            Für frische Brötchen am Morgen, kretischen Honig, kühles Mythos-Bier und spontane Besorgungen. In Plaka gibt es gut sortierte Minimärkte in Gehweite der Villa.
+                        </p>
+                    </div>
+
+                    <div class="border border-slate-100 rounded-lg p-4 bg-slate-50/50">
+                        <h4 class="font-bold text-slate-800 text-sm">SYN.KA Supermarkt in Kalyves (5 Min. Fahrtzeit)</h4>
+                        <p class="text-xs text-slate-500 mt-1">
+                            Großer, regionaler Supermarkt mit fantastischer Frischetheke. Ideal für den ersten großen Gemeinschaftseinkauf (Getränke, Fleisch, Käse, kretisches Olivenöl).
+                        </p>
+                        <button onclick="focusOnMap(35.4503, 24.1748, 'Kalyves Supermarkt (SYN.KA)')" class="text-olive-600 hover:text-olive-800 font-semibold text-xs mt-2 flex items-center gap-1">
+                            Auf Karte zeigen 📍
+                        </button>
+                    </div>
+
+                    <div class="border border-slate-100 rounded-lg p-4 bg-slate-50/50">
+                        <h4 class="font-bold text-slate-800 text-sm">Wochenmarkt (Laiki) in Chania</h4>
+                        <p class="text-xs text-slate-500 mt-1">
+                            Jeden Donnerstag (und Samstag) findet in Chania ein phänomenaler Wochenmarkt statt. Perfekt für fangfrischen Fisch, sonnengereiftes Gemüse, kretischen Feta und frische Kräuter für eure Outdoorküche.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Recipe & Cooking tips -->
+                <div class="space-y-4">
+                    <h3 class="font-bold text-slate-800 text-base flex items-center gap-1.5 border-b pb-2">
+                        <span>🍳</span> Rezeptideen für die Outdoorküche (8 Personen)
+                    </h3>
+                    
+                    <div class="bg-olive-100/40 border border-olive-200/50 rounded-xl p-5 space-y-3">
+                        <div>
+                            <strong class="text-xs text-olive-800 uppercase tracking-wider block">Klassiker als Vorspeise</strong>
+                            <h4 class="font-bold text-slate-900 text-sm">Kretischer Dakos</h4>
+                            <p class="text-xs text-slate-600 mt-1">Gerstenzwieback (Dakos) leicht mit Wasser beträufeln, mit erstklassigem Olivenöl übergießen, geriebenen reifen Tomaten bestreichen und kretischem Mizithra-Käse (oder Feta) sowie Oregano garnieren. Superschnell & phänomenal!</p>
+                        </div>
+                        
+                        <div class="border-t border-olive-200/50 pt-3">
+                            <strong class="text-xs text-olive-800 uppercase tracking-wider block">Frisch auf den Grill</strong>
+                            <h4 class="font-bold text-slate-900 text-sm">Gegrillte Dorade (Tsipoura) mit Zitronenöl</h4>
+                            <p class="text-xs text-slate-600 mt-1">Beim Fischhändler in Kalyves oder Chania frische Doraden besorgen. Mit Meersalz, Knoblauch und Rosmarin füllen. Auf dem Außengrill knusprig garen und mit einer Emulsion aus frischem Zitronensaft und Olivenöl beträufeln.</p>
+                        </div>
+
+                        <div class="border-t border-olive-200/50 pt-3">
+                            <strong class="text-xs text-olive-800 uppercase tracking-wider block">Wichtig beim Kochen</strong>
+                            <p class="text-xs text-slate-500 italic">"Kretisches Olivenöl ist die geheime Zutat für absolut alles. Spart nicht am Olivenöl, es schmeckt himmlisch!"</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- INTERAKTIVE KARTE SECTION -->
+        <section id="karte-section" class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-100 mb-8">
+            <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold text-aegean-900 flex items-center gap-2">
+                        <span>🗺️</span> Euer interaktiver Kreta-Plan (Plaka & Iraklio)
+                    </h2>
+                    <p class="text-slate-500 text-sm mt-1">Filtert nach Interessen oder klickt auf die Symbole, um Details und Standorte sofort anzuzeigen.</p>
+                </div>
+                <!-- Interactive Filter Buttons -->
+                <div class="flex flex-wrap gap-2" id="map-filters">
+                    <button onclick="filterMarkers('all')" class="bg-aegean-900 text-white hover:bg-aegean-800 text-xs font-semibold px-3 py-1.5 rounded-lg shadow-sm transition" id="filter-all">Alle</button>
+                    <button onclick="filterMarkers('villa')" class="bg-slate-100 text-slate-700 hover:bg-slate-200 text-xs font-semibold px-3 py-1.5 rounded-lg transition" id="filter-villa">Unterkunft 🏡</button>
+                    <button onclick="filterMarkers('gastro')" class="bg-slate-100 text-slate-700 hover:bg-slate-200 text-xs font-semibold px-3 py-1.5 rounded-lg transition" id="filter-gastro">Tavernen & Bars 🍽️</button>
+                    <button onclick="filterMarkers('beach')" class="bg-slate-100 text-slate-700 hover:bg-slate-200 text-xs font-semibold px-3 py-1.5 rounded-lg transition" id="filter-beach">Strände 🏖️</button>
+                    <button onclick="filterMarkers('sight')" class="bg-slate-100 text-slate-700 hover:bg-slate-200 text-xs font-semibold px-3 py-1.5 rounded-lg transition" id="filter-sight">Kultur 🏰</button>
+                </div>
+            </div>
+
+            <!-- Leaflet Container -->
+            <div class="relative rounded-xl overflow-hidden border border-slate-200 shadow-inner">
+                <div id="map" class="w-full h-96 md:h-[480px]"></div>
+                <!-- Dynamic Quick Overlay on Map -->
+                <div class="absolute bottom-4 right-4 bg-white/95 backdrop-blur px-3 py-2 rounded-lg shadow-md border border-slate-200 z-[1000] text-xs pointer-events-none hidden sm:block">
+                    <p class="text-slate-500">Zentriert auf: <span id="map-focused-name" class="font-semibold text-aegean-900">Kreta</span></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- KULINARIK & NACHTLEBEN -->
+        <section id="kulinarik" class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-100 mb-8">
+            <h2 class="text-2xl font-bold text-aegean-900 mb-6 flex items-center gap-2">
+                <span>🍽️</span> Kulinarische Highlights & Nachtleben
+            </h2>
+
+            <div class="space-y-8">
+                <!-- Plaka & Umgebung (Apokoronas) -->
+                <div>
+                    <h3 class="text-lg font-bold text-slate-900 border-b border-slate-100 pb-2 mb-4 flex items-center gap-1.5">
+                        <span>🏡</span> Genuss rund um eure Villa (Plaka & Almyrida)
+                    </h3>
+                    
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <!-- Elpis Plaka -->
+                        <div class="border border-slate-200 hover:border-olive-200 rounded-xl p-5 hover:bg-olive-50/20 transition flex flex-col justify-between">
+                            <div class="space-y-2">
+                                <div class="flex items-center justify-between">
+                                    <span class="bg-olive-100 text-olive-800 text-[10px] font-bold px-2 py-0.5 rounded uppercase">Urig & Familiär</span>
+                                    <span class="text-slate-400 text-xs">⏱️ 3 Min. Fußweg</span>
+                                </div>
+                                <h4 class="font-bold text-slate-900">Sunset Taverna Elpis (Plaka)</h4>
+                                <p class="text-xs text-slate-600">
+                                    Nur ein Katzensprung von eurer Villa entfernt. Bekannt für traditionelle, kretische Hausmannskost unter einer gemütlichen Weinlaube. Die hausgemachten Moussaka und Lammgerichte sind sensationell!
+                                </p>
+                            </div>
+                            <div class="flex gap-2 pt-4 border-t border-slate-100 mt-4">
+                                <button onclick="focusOnMap(35.4528, 24.2091, 'Taverna Elpis')" class="border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-semibold text-xs py-1.5 px-3 rounded-lg transition w-full text-center">
+                                    Auf Karte zeigen 📍
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Psaros Almyrida -->
+                        <div class="border border-slate-200 hover:border-aegean-200 rounded-xl p-5 hover:bg-aegean-50/20 transition flex flex-col justify-between">
+                            <div class="space-y-2">
+                                <div class="flex items-center justify-between">
+                                    <span class="bg-aegean-100 text-aegean-800 text-[10px] font-bold px-2 py-0.5 rounded uppercase">Seafood direkt am Meer</span>
+                                    <span class="text-slate-400 text-xs">⏱️ 3 Min. Autofahrt</span>
+                                </div>
+                                <h4 class="font-bold text-slate-900">Psaros Fish Taverna (Almyrida)</h4>
+                                <p class="text-xs text-slate-600">
+                                    Direkt an der Strandpromenade des Nachbarortes Almyrida gelegen. Tische stehen fast im Sand. Fangfrische Tintenfische, gegrillte Shrimps und erstklassiger offener Weißwein bei romantischem Meeresrauschen.
+                                </p>
+                            </div>
+                            <div class="flex gap-2 pt-4 border-t border-slate-100 mt-4">
+                                <button onclick="focusOnMap(35.4485, 24.2008, 'Psaros Fish Taverna')" class="border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-semibold text-xs py-1.5 px-3 rounded-lg transition w-full text-center">
+                                    Auf Karte zeigen 📍
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Nightlife & Chania Town -->
+                <div>
+                    <h3 class="text-lg font-bold text-slate-900 border-b border-slate-100 pb-2 mb-4 flex items-center gap-1.5">
+                        <span>🍸</span> Nachtleben für 4 Pärchen (Chania & Iraklio)
+                    </h3>
+                    
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <!-- Chania Nightlife -->
+                        <div class="space-y-3">
+                            <h4 class="font-bold text-slate-800 text-sm uppercase tracking-wider text-aegean-900">Bar-Hopping im venezianischen Hafen von Chania</h4>
+                            <p class="text-xs text-slate-600">
+                                Chania liegt ca. 35 Minuten Autofahrt von Plaka entfernt und bietet eine fantastische Altstadt. Perfekt für einen schicken Ausgehabend als Gruppe:
+                            </p>
+                            <ul class="info-list text-xs text-slate-600 space-y-2">
+                                <li><strong>Sinagogi Bar:</strong> Eine der coolsten Open-Air-Cocktailbars der Insel, versteckt in den charmanten Mauern einer alten Synagogenruine. Erstklassige Musik und Drinks!</li>
+                                <li><strong>Nama:</strong> Modernes, direkt am Hafenbecken gelegenes Premium-Lokal mit tollem Blick auf den berühmten Leuchtturm.</li>
+                            </ul>
+                            <button onclick="focusOnMap(35.5186, 24.0180, 'Chania venezianischer Hafen')" class="text-aegean-500 hover:text-aegean-800 font-semibold text-xs flex items-center gap-1 pt-1">
+                                Chania Hafen auf Karte zeigen 📍
+                            </button>
+                        </div>
+
+                        <!-- Heraklion Nightlife -->
+                        <div class="space-y-3">
+                            <h4 class="font-bold text-slate-800 text-sm uppercase tracking-wider text-terracotta-600">Eure letzte Nacht in Iraklio (30.07.)</h4>
+                            <p class="text-xs text-slate-600">
+                                Euer Hotel **Capsis Astoria** liegt mitten im Zentrum. Perfekt, um die Nacht in der lebhaften Studenten- und Hafenstadt ausklingen zu lassen:
+                            </p>
+                            <ul class="info-list text-xs text-slate-600 space-y-2">
+                                <li><strong>The Stone Project:</strong> Sehr angesagte Bar direkt um die Ecke beim Löwenbrunnen. Tolle Atmosphäre, kreative Cocktails und tolle DJs.</li>
+                                <li><strong>Wets & Drys Speakeasy Bar:</strong> Eine edle Cocktailbar der Spitzenklasse. Tolle Whiskey- und Cocktailkreationen für Genießer.</li>
+                                <li><strong>Platia Eleftherias:</strong> Direkt vor eurem Hotel Capis Astoria gelegen. Hier treffen sich am Abend Jung und Alt für kühlen Frappé, Raki und Loukoumades.</li>
+                            </ul>
+                            <button onclick="focusOnMap(35.3391, 25.1367, 'Capsis Astoria Heraklion')" class="text-terracotta-500 hover:text-terracotta-800 font-semibold text-xs flex items-center gap-1 pt-1">
+                                Heraklion Zentrum zeigen 📍
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- STRÄNDE & AUSFLÜGE -->
+        <section id="unternehmungen" class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-100 mb-8">
+            <h2 class="text-2xl font-bold text-aegean-900 mb-6 flex items-center gap-2">
+                <span>🏖️</span> Strände & spektakuläre Ausflüge
+            </h2>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Beaches section -->
+                <div class="space-y-6">
+                    <h3 class="text-lg font-bold text-slate-900 border-b border-slate-100 pb-2 flex items-center gap-1.5">
+                        <span>🏖️</span> Die besten Strände in der Nähe
+                    </h3>
+
+                    <!-- Almyrida Beach -->
+                    <div class="border border-slate-100 rounded-lg p-4 bg-slate-50/50">
+                        <div class="flex justify-between items-center mb-1">
+                            <h4 class="font-bold text-slate-800 text-sm">Almyrida Beach (Direkt vor der Nase)</h4>
+                            <span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded">Perfekt nah</span>
+                        </div>
+                        <p class="text-xs text-slate-500">
+                            Nur ca. 2–3 Minuten mit dem Auto (oder 15 Minuten Fußweg bergab) von der Villa. Ein familienfreundlicher, flach abfallender Sandstrand. Perfekt für Wassersport (Windsurfen, Kajak) und gesellige Beach-Tage.
+                        </p>
+                        <button onclick="focusOnMap(35.4485, 24.2008, 'Almyrida Beach')" class="text-aegean-500 hover:text-aegean-800 font-semibold text-xs mt-2 flex items-center gap-1">
+                            Auf Karte zeigen 📍
+                        </button>
+                    </div>
+
+                    <!-- Seitan Limania -->
+                    <div class="border border-slate-100 rounded-lg p-4 bg-slate-50/50">
+                        <div class="flex justify-between items-center mb-1">
+                            <h4 class="font-bold text-slate-800 text-sm">Seitan Limania (Instagram-Hotspot)</h4>
+                            <span class="bg-amber-100 text-amber-800 text-[10px] font-bold px-2 py-0.5 rounded">Abenteuerlich</span>
+                        </div>
+                        <p class="text-xs text-slate-500">
+                            Eine spektakuläre, tief in die Klippen eingeschnittene Bucht auf der Akrotiri-Halbinsel (ca. 45 Min. Fahrt).
+                        </p>
+                        <div class="bg-white p-3 rounded-md border border-slate-200 text-xs mt-2 text-slate-600">
+                            <strong>Wandertipp:</strong> Der Weg hinunter ist steil und steinig. Unbedingt festes Schuhwerk (Turnschuhe) anziehen! Nichts für Flip-Flops. Aber der Ausblick ist gigantisch.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Day Trips and sights -->
+                <div class="space-y-6">
+                    <h3 class="text-lg font-bold text-slate-900 border-b border-slate-100 pb-2 flex items-center gap-1.5">
+                        <span>🏰</span> Kultur & spektakuläre Ausflüge
+                    </h3>
+
+                    <!-- Kournas Lake -->
+                    <div class="border border-slate-100 rounded-lg p-4 bg-slate-50/50">
+                        <h4 class="font-bold text-slate-800 text-sm">Kournas-See (Der einzige Süßwassersee)</h4>
+                        <p class="text-xs text-slate-500 mt-1">
+                            Ca. 30 Minuten Fahrtzeit von eurer Villa entfernt. Eingebettet in malerische Berge. Ihr könnt Tretboote mieten, um kleine Wasserschildkröten zu beobachten. Perfekt für einen entspannten Halbtagsausflug als Pärchengruppe!
+                        </p>
+                        <button onclick="focusOnMap(35.3298, 24.2792, 'Kournas-See')" class="text-aegean-500 hover:text-aegean-800 font-semibold text-xs mt-2 flex items-center gap-1">
+                            Auf Karte zeigen 📍
+                        </button>
+                    </div>
+
+                    <!-- Knossos Heraklion -->
+                    <div class="border border-slate-100 rounded-lg p-4 bg-slate-50/50">
+                        <div class="flex justify-between items-center mb-1">
+                            <h4 class="font-bold text-slate-800 text-sm">Knossos & Archäologisches Museum</h4>
+                            <span class="bg-terracotta-100 text-terracotta-800 text-[10px] font-bold px-2 py-0.5 rounded">Weltkultur</span>
+                        </div>
+                        <p class="text-xs text-slate-500">
+                            Perfekt für den Donnerstag (30.07.), wenn ihr von Plaka nach Heraklion übersiedelt. Der weltberühmte Palast von Knossos liegt knapp außerhalb von Iraklio.
+                        </p>
+                        <div class="bg-white p-3 rounded-md border border-slate-200 text-xs mt-2 text-slate-600">
+                            <strong>Insider-Tipp:</strong> Besucht den Palast am besten nachmittags ab 16 Uhr, wenn die Hitze nachlässt und die großen Reisebusse weg sind. Sichert euch Kombitickets für Knossos und das Museum im Zentrum (direkt neben dem Capsis Astoria).
+                        </div>
+                        <button onclick="focusOnMap(35.2979, 25.1631, 'Palast von Knossos')" class="text-aegean-500 hover:text-aegean-800 font-semibold text-xs mt-2 flex items-center gap-1">
+                            Auf Karte zeigen 📍
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-10 px-4 mt-16 text-center border-t border-slate-800">
+        <div class="max-w-6xl mx-auto space-y-3">
+            <p class="text-sm font-semibold text-slate-200">Kreta Gruppenurlaub 2026 • Gemacht für 8 Freunde</p>
+            <p class="text-xs text-slate-500">Volllokalisiertes Onlineportal • DSGVO-konforme Leaflet-Karten ohne Tracking-Cookies</p>
+        </div>
+    </footer>
+
+    <!-- Leaflet JS CDN and Custom Interactive Map Logic -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script>
+        // Coordinate definitions
+        const locations = [
+            {
+                name: "Villa Marisol",
+                lat: 35.4524,
+                lng: 24.2084,
+                category: "villa",
+                emoji: "🏡",
+                colorClass: "bg-lime-600",
+                desc: "Eure exklusive Traumvilla in Almyrida mit privatem Pool, Outdoorküche & Platz für beide Mietwagen."
+            },
+            {
+                name: "Capsis Astoria Heraklion",
+                lat: 35.3391,
+                lng: 25.1367,
+                category: "villa",
+                emoji: "🏨",
+                colorClass: "bg-sky-600",
+                desc: "Euer Hotel für die letzte Nacht in Heraklion direkt im Zentrum."
+            },
+            {
+                name: "Taverna Elpis (Plaka)",
+                lat: 35.4528,
+                lng: 24.2091,
+                category: "gastro",
+                emoji: "🍽️",
+                colorClass: "bg-rose-500",
+                desc: "Super leckere kretische Küche, fußläufig von eurer Villa."
+            },
+            {
+                name: "Psaros Fish Taverna (Almyrida)",
+                lat: 35.4485,
+                lng: 24.2008,
+                category: "gastro",
+                emoji: "🐟",
+                colorClass: "bg-rose-500",
+                desc: "Frischer Fisch direkt an der Uferpromenade von Almyrida."
+            },
+            {
+                name: "Almyrida Beach (Hauptstrand)",
+                lat: 35.4482,
+                lng: 24.2012,
+                category: "beach",
+                emoji: "🏖️",
+                colorClass: "bg-emerald-500",
+                desc: "Schöner, flach abfallender Sandstrand direkt am Fuße des Hügels."
+            },
+            {
+                name: "Kournas-See (Wasserschildkröten)",
+                lat: 35.3298,
+                lng: 24.2792,
+                category: "sight",
+                emoji: "🐢",
+                colorClass: "bg-amber-500",
+                desc: "Ausflugsziel: Tretboot fahren und Schildkröten beobachten."
+            },
+            {
+                name: "Palast von Knossos",
+                lat: 35.2979,
+                lng: 25.1631,
+                category: "sight",
+                emoji: "🏰",
+                colorClass: "bg-amber-500",
+                desc: "Kulturgut: Der berühmte minoische Palast nahe Heraklion."
+            },
+            {
+                name: "Flughafen Heraklion (HER)",
+                lat: 35.3395,
+                lng: 25.1747,
+                category: "logistic",
+                emoji: "✈️",
+                colorClass: "bg-slate-600",
+                desc: "Euer Ankunfts- und Abflugsflughafen für die Flüge von/nach Linz."
+            },
+            {
+                name: "Chania Hafen & Altstadt",
+                lat: 35.5186,
+                lng: 24.0180,
+                category: "gastro",
+                emoji: "🍸",
+                colorClass: "bg-rose-500",
+                desc: "Venezianischer Hafen mit tollen Cocktailbars (Sinagogi)."
+            }
+        ];
+
+        let map;
+        let markersGroup = [];
+
+        window.onload = function() {
+            // Initializing map, center over central/west Crete
+            map = L.map('map', {
+                scrollWheelZoom: false // Prevent accidental zoom on scrolling past map
+            }).setView([35.4200, 24.5000], 9);
+
+            // Premium neutral-toned tile layer matching our system colors
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+                subdomains: 'abcd',
+                maxZoom: 20
+            }).addTo(map);
+
+            // Add all markers with fully custom CSS & HTML classes via divIcon
+            locations.forEach(loc => {
+                const customIcon = L.divIcon({
+                    className: 'custom-map-marker',
+                    html: `<div class="flex items-center justify-center w-9 h-9 rounded-full ${loc.colorClass} border-2 border-white shadow-md text-white font-bold text-base hover:scale-110 transition-transform">${loc.emoji}</div>`,
+                    iconSize: [36, 36],
+                    iconAnchor: [18, 18],
+                    popupAnchor: [0, -18]
+                });
+
+                const marker = L.marker([loc.lat, loc.lng], { icon: customIcon })
+                    .bindPopup(`
+                        <div class="space-y-1">
+                            <h4 class="font-extrabold text-aegean-900 text-sm flex items-center gap-1">${loc.emoji} ${loc.name}</h4>
+                            <p class="text-xs text-slate-600">${loc.desc}</p>
+                        </div>
+                    `);
+
+                marker.category = loc.category;
+                marker.addTo(map);
+                markersGroup.push(marker);
+            });
+        };
+
+        // Function to center/pan map from click actions on cards or buttons
+        function focusOnMap(lat, lng, name) {
+            if (!map) return;
+            
+            // Pan smoothly
+            map.setView([lat, lng], 14);
+            
+            // Highlight name overlay
+            document.getElementById('map-focused-name').innerText = name;
+            
+            // Auto open the popup of the corresponding marker
+            markersGroup.forEach(marker => {
+                const markerLatLng = marker.getLatLng();
+                if (Math.abs(markerLatLng.lat - lat) < 0.0001 && Math.abs(markerLatLng.lng - lng) < 0.0001) {
+                    marker.openPopup();
+                }
+            });
+
+            // Scroll map element beautifully into view
+            document.getElementById('karte-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Filtering markers based on categories
+        function filterMarkers(category) {
+            markersGroup.forEach(marker => {
+                if (category === 'all' || marker.category === category) {
+                    map.addLayer(marker);
+                } else {
+                    map.removeLayer(marker);
+                }
+            });
+
+            // Update UI filter button styling
+            const filterContainer = document.getElementById('map-filters');
+            const buttons = filterContainer.querySelectorAll('button');
+            buttons.forEach(btn => {
+                btn.className = "bg-slate-100 text-slate-700 hover:bg-slate-200 text-xs font-semibold px-3 py-1.5 rounded-lg transition";
+            });
+
+            const activeBtn = document.getElementById(`filter-${category}`);
+            if (activeBtn) {
+                activeBtn.className = "bg-aegean-900 text-white hover:bg-aegean-800 text-xs font-semibold px-3 py-1.5 rounded-lg shadow-sm transition";
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🤖 KI, Machine Learning & Computational Thinking</title>
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+        body {
+            background-color: #f8fafc;
+            color: #334155;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #7c3aed 0%, #8b5cf6 100%);
+            color: white;
+            padding: 3rem 1rem;
+            text-align: center;
+            border-bottom: 3px solid #6d28d9;
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            margin: 0 0 0.5rem 0;
+            font-weight: 700;
+        }
+        
+        header p {
+            font-size: 1.1rem;
+            margin: 0.5rem 0 1rem 0;
+            opacity: 0.95;
+        }
+        
+        .back-nav {
+            margin-top: 1rem;
+        }
+        
+        .back-nav a {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .back-nav a:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        main {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+        
+        section {
+            background: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border-left: 4px solid #7c3aed;
+        }
+        
+        section h2 {
+            color: #2d3748;
+            font-size: 1.8rem;
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .emoji-icon {
+            font-size: 1.5em;
+            line-height: 1;
+        }
+        
+        h3 {
+            color: #4f46e5;
+            font-size: 1.3rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .comparison-card {
+            background: linear-gradient(135deg, #f8fafc 0%, #eff6ff 100%);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 2px solid #cbd5e1;
+            transition: all 0.3s ease;
+        }
+        
+        .comparison-card:hover {
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.15);
+            border-color: #7c3aed;
+        }
+        
+        .comparison-card h4 {
+            color: #7c3aed;
+            font-size: 1.1rem;
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+        }
+        
+        .comparison-card p {
+            margin: 0.5rem 0;
+            font-size: 0.95rem;
+        }
+        
+        .comparison-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 0.5rem 0 0 0;
+        }
+        
+        .comparison-card li {
+            padding: 0.3rem 0;
+            margin: 0;
+        }
+        
+        .timeline {
+            list-style: none;
+            padding: 0;
+            margin: 1.5rem 0;
+        }
+        
+        .timeline li {
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #f0f4ff 0%, #f8fafc 100%);
+            border-left: 4px solid #7c3aed;
+            border-radius: 4px;
+        }
+        
+        .timeline li strong {
+            color: #7c3aed;
+        }
+        
+        .example-box {
+            background: linear-gradient(135deg, #f0f4ff 0%, #faf5ff 100%);
+            border: 2px solid #d8b4fe;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+        }
+        
+        .example-box h4 {
+            color: #7c3aed;
+            margin-top: 0;
+        }
+        
+        .algorithm-list {
+            list-style: none;
+            padding: 0;
+            margin: 1rem 0;
+        }
+        
+        .algorithm-list li {
+            background: white;
+            border: 2px solid #cbd5e1;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 6px;
+            border-left: 4px solid #7c3aed;
+        }
+        
+        .algorithm-list strong {
+            color: #7c3aed;
+        }
+        
+        .lab-container {
+            background: linear-gradient(135deg, #faf5ff 0%, #f8fafc 100%);
+            border: 2px dashed #d8b4fe;
+            padding: 2rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+        }
+        
+        .lab-title {
+            color: #7c3aed;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .canvas-container {
+            background: white;
+            border: 2px solid #cbd5e1;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+        
+        canvas {
+            border-radius: 6px;
+            display: inline-block;
+            background: #f8fafc;
+        }
+        
+        .slider-group {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 2px solid #cbd5e1;
+            margin: 1rem 0;
+        }
+        
+        .slider-group label {
+            display: block;
+            font-weight: 600;
+            color: #4f46e5;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .slider-group input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: #cbd5e1;
+            outline: none;
+            -webkit-appearance: none;
+        }
+        
+        .slider-group input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #7c3aed;
+            cursor: pointer;
+        }
+        
+        .slider-group input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #7c3aed;
+            cursor: pointer;
+            border: none;
+        }
+        
+        .accuracy-display {
+            text-align: center;
+            padding: 1rem;
+            background: white;
+            border-radius: 8px;
+            border: 2px solid #cbd5e1;
+            margin: 1rem 0;
+        }
+        
+        .accuracy-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #7c3aed;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .quiz-container {
+            background: #f1f5f9;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+        }
+        
+        .quiz-question {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 2px solid #cbd5e1;
+            display: none;
+            margin-bottom: 1rem;
+        }
+        
+        .quiz-question.active {
+            display: block;
+        }
+        
+        .quiz-progress {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        
+        .quiz-question h4 {
+            color: #2d3748;
+            margin: 0 0 1rem 0;
+            font-size: 1.1rem;
+        }
+        
+        .quiz-answers {
+            display: grid;
+            gap: 0.75rem;
+        }
+        
+        .quiz-answer-btn {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 1rem;
+            border: 2px solid #cbd5e1;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+        
+        .quiz-answer-btn:hover {
+            border-color: #7c3aed;
+            background: #faf5ff;
+        }
+        
+        .quiz-answer-btn.correct {
+            background: #dcfce7;
+            border-color: #10b981;
+            color: #166534;
+        }
+        
+        .quiz-answer-btn.incorrect {
+            background: #fee2e2;
+            border-color: #ef4444;
+            color: #991b1b;
+        }
+        
+        .quiz-result {
+            text-align: center;
+            padding: 2rem;
+            background: #dcfce7;
+            border: 2px solid #10b981;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .quiz-result.show {
+            display: block;
+        }
+        
+        .quiz-result h3 {
+            color: #10b981;
+            margin-top: 0;
+        }
+        
+        .nav-tabs {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .nav-tabs button {
+            padding: 0.5rem 1rem;
+            border: 2px solid #cbd5e1;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+        
+        .nav-tabs button:hover {
+            border-color: #7c3aed;
+            color: #7c3aed;
+        }
+        
+        .nav-tabs button.active {
+            background: #7c3aed;
+            border-color: #7c3aed;
+            color: white;
+        }
+        
+        footer {
+            background: #334155;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+        
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            section {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>🤖 KI, Machine Learning & Computational Thinking</h1>
+    <p>Die Evolution der Intelligenz: Von der Theorie zur Praxis</p>
+    <div class="back-nav">
+        <a href="../../index.html" class="btn-back">⬅ Zurück zur Hauptseite</a>
+    </div>
+</header>
+
+<main>
+
+<!-- Section 1: KI Grundlagen -->
+<section>
+    <h2><span class="emoji-icon">🧠</span> Kapitel 1: Grundlagen der Künstlichen Intelligenz</h2>
+    
+    <p>
+        <strong>KI ist keine isolierte Softwareanwendung</strong>, sondern eine fundamentale Basistechnologie. 
+        Sie bildet das Fundament, auf dem zukünftige gesellschaftliche Prozesse aufbauen – ähnlich wie früher Feuer, Rad, Buchdruck und Internet.
+    </p>
+    
+    <h3>Der "Schreibmaschinenmoment" der KI</h3>
+    <p>
+        Obwohl KI-Systeme seit Jahrzehnten im Hintergrund wirken (z.B. Google-Suche), markierte der Durchbruch von 
+        <strong>ChatGPT (2022)</strong> einen Wendepunkt. So wie die Schreibmaschine den Buchdruck für den Einzelnen 
+        zugänglich machte, senkte die generative KI die Einstiegshürde durch <strong>natürliche Sprache</strong>.
+    </p>
+    
+    <div class="example-box">
+        <h4>📊 Klassische Software vs. KI</h4>
+        <table style="width: 100%; border-collapse: collapse; font-size: 0.95rem;">
+            <tr style="background: #eff6ff; border-bottom: 2px solid #cbd5e1;">
+                <th style="padding: 0.75rem; text-align: left; color: #7c3aed; font-weight: 700;">Merkmal</th>
+                <th style="padding: 0.75rem; text-align: left; color: #7c3aed; font-weight: 700;">Klassische Software</th>
+                <th style="padding: 0.75rem; text-align: left; color: #7c3aed; font-weight: 700;">KI-Modelle</th>
+            </tr>
+            <tr style="border-bottom: 1px solid #e2e8f0;">
+                <td style="padding: 0.75rem;"><strong>Logik</strong></td>
+                <td style="padding: 0.75rem;">Regelbasiert ("Wenn-Dann")</td>
+                <td style="padding: 0.75rem;">Wahrscheinlichkeitsbasiert</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #e2e8f0;">
+                <td style="padding: 0.75rem;"><strong>Methodik</strong></td>
+                <td style="padding: 0.75rem;">Deterministisch (Rezept)</td>
+                <td style="padding: 0.75rem;">Mustererkennung</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #e2e8f0;">
+                <td style="padding: 0.75rem;"><strong>Ergebnis</strong></td>
+                <td style="padding: 0.75rem;">Explizit programmiert</td>
+                <td style="padding: 0.75rem;">Durch Training gelernt</td>
+            </tr>
+            <tr>
+                <td style="padding: 0.75rem;"><strong>Fehlertoleranz</strong></td>
+                <td style="padding: 0.75rem;">Null-Toleranz</td>
+                <td style="padding: 0.75rem;">Probabilistische Fehler OK</td>
+            </tr>
+        </table>
+    </div>
+    
+    <h3>AI Literacy: Die neue Grundkompetenz</h3>
+    <p>
+        Die Fähigkeit, mit KI umzugehen, wird zur <strong>neuen Grundkompetenz</strong>. 
+        Wer heute in Bezug auf KI "illiterate" bleibt, agiert in der digitalen Welt wie ein Analphabet nach der Erfindung des Buchdrucks.
+    </p>
+    <p>
+        Der Übergang verläuft von <strong>Automatisierung</strong> (ersetzen) zu <strong>Augmentation</strong> (erweitern). 
+        KI ersetzt den Menschen nicht, sondern erweitert dessen Fähigkeiten.
+    </p>
+</section>
+
+<!-- Section 2: Machine Learning -->
+<section>
+    <h2><span class="emoji-icon">📚</span> Kapitel 2: Machine Learning (ML)</h2>
+    
+    <p>
+        <strong>Maschinelles Lernen</strong> ist das methodische Rückgrat der KI. 
+        Es nutzt statistische Algorithmen, um Probleme zu lösen, deren Lösungsweg zu komplex für manuelle Regelbeschreibung ist.
+    </p>
+    
+    <h3>Die drei Lernstile</h3>
+    <div class="comparison-grid">
+        <div class="comparison-card">
+            <h4>🎯 Supervised Learning</h4>
+            <p>
+                Das System lernt mit <strong>gelabelten Daten</strong> (Eingabe + Zielwert).
+            </p>
+            <ul style="padding-left: 1.5rem; margin: 0.5rem 0;">
+                <li>✅ Spam-Filter</li>
+                <li>✅ Bilderkennung</li>
+                <li>✅ Preisvorhersage</li>
+            </ul>
+        </div>
+        
+        <div class="comparison-card">
+            <h4>🔍 Unsupervised Learning</h4>
+            <p>
+                Der Algorithmus sucht <strong>Strukturen ohne Labels</strong>.
+            </p>
+            <ul style="padding-left: 1.5rem; margin: 0.5rem 0;">
+                <li>✅ Kundensegmentierung</li>
+                <li>✅ Anomalieerkennung</li>
+                <li>✅ Datenclustering</li>
+            </ul>
+        </div>
+        
+        <div class="comparison-card">
+            <h4>🎮 Reinforcement Learning</h4>
+            <p>
+                Lernen durch <strong>Belohnung und Bestrafung</strong>.
+            </p>
+            <ul style="padding-left: 1.5rem; margin: 0.5rem 0;">
+                <li>✅ Schachcomputer</li>
+                <li>✅ Roboter-Navigation</li>
+                <li>✅ Game AI</li>
+            </ul>
+        </div>
+    </div>
+    
+    <h3>Meilensteine der ML-Geschichte</h3>
+    <ul class="timeline">
+        <li><strong>1943:</strong> McCulloch-Pitts-Zelle – Erstes mathematisches Modell eines Neurons</li>
+        <li><strong>1957:</strong> Das Perzeptron (Rosenblatt) – Einschichtiges neuronales Netz</li>
+        <li><strong>1969:</strong> KI-Winter beginnt – Minsky & Papert zeigen Grenzen auf</li>
+        <li><strong>1982:</strong> Backpropagation – Training tiefer Netze möglich</li>
+        <li><strong>2017:</strong> Transformer-Architektur – Revolution der Sprachmodelle</li>
+        <li><strong>2022:</strong> ChatGPT – Generative KI für die Masse</li>
+    </ul>
+    
+    <h3>Wichtige Algorithmen & Techniken</h3>
+    <ul class="algorithm-list">
+        <li>
+            <strong>Neuronale Netze (Deep Learning):</strong> 
+            Mehrschichtige Netzwerke, die komplexe Muster lernen. 
+            Basis für große Sprachmodelle.
+        </li>
+        <li>
+            <strong>Decision Trees / Random Forests:</strong> 
+            Hierarchische Entscheidungsfindung. Interpretierbar und robust.
+        </li>
+        <li>
+            <strong>Support Vector Machines (SVM):</strong> 
+            Trennlinie in hochdimensionalen Räumen finden (Kernel-Trick).
+        </li>
+        <li>
+            <strong>K-Means Clustering:</strong> 
+            Unüberwachtes Lernen zur Datensegmentierung.
+        </li>
+        <li>
+            <strong>Transformers:</strong> 
+            Moderne Architektur für NLP. Ermöglicht ChatGPT, Claude, Llama.
+        </li>
+    </ul>
+</section>
+
+<!-- Section 3: Interaktives Labor -->
+<section>
+    <h2><span class="emoji-icon">🔬</span> Praxis-Labor: Supervised Learning Simulator</h2>
+    
+    <p>
+        Wir simulieren ein einfaches <strong>lineares Modell (Perzeptron)</strong>. 
+        Ziel: <strong>Möwen (Blau)</strong> von <strong>Papageien (Orange)</strong> trennen.
+    </p>
+    
+    <p>
+        Das Modell ist eine Gerade: <strong>y = w·x + b</strong><br>
+        <strong>w</strong> = Gewichtung (Steigung) | <strong>b</strong> = Bias (Verschiebung)
+    </p>
+    
+    <div class="lab-container">
+        <div class="lab-title">🎮 Interaktive Steuerung</div>
+        
+        <div class="slider-group">
+            <label for="weightSlider">Gewichtung (w): Steigung der Trennlinie</label>
+            <input type="range" id="weightSlider" min="-2" max="4" step="0.1" value="0.5" oninput="updateVisualization()">
+            <span style="color: #64748b; font-size: 0.9rem;" id="weightValue">0.5</span>
+        </div>
+        
+        <div class="slider-group">
+            <label for="biasSlider">Bias (b): Vertikale Verschiebung</label>
+            <input type="range" id="biasSlider" min="-50" max="150" step="1" value="50" oninput="updateVisualization()">
+            <span style="color: #64748b; font-size: 0.9rem;" id="biasValue">50</span>
+        </div>
+        
+        <div class="accuracy-display">
+            <div style="font-size: 0.9rem; color: #64748b;">Modell-Genauigkeit</div>
+            <div class="accuracy-value" id="accuracyDisplay">0%</div>
+        </div>
+        
+        <div class="canvas-container">
+            <canvas id="labCanvas" width="500" height="400"></canvas>
+        </div>
+        
+        <p style="font-size: 0.9rem; color: #64748b; text-align: center; margin-top: 1rem;">
+            💡 Tipp: Verschiebe die Schieberegler, um die Gerade anzupassen. 
+            Ziel: Alle Möwen oberhalb, alle Papageien unterhalb der Linie.
+        </p>
+    </div>
+</section>
+
+<!-- Section 4: Computational Thinking -->
+<section>
+    <h2><span class="emoji-icon">🧩</span> Kapitel 3: Informatisches Denken (Computational Thinking)</h2>
+    
+    <p>
+        <em>"CT ist die Art, wie Menschen denken – nicht wie wir Computer zum Denken bringen."</em> 
+        – Jeannette M. Wing
+    </p>
+    
+    <p>
+        <strong>Informatisches Denken</strong> ist eine universelle Problemlösungskompetenz. 
+        Menschen sind klug und einfallsreich; Computer sind "dumm", aber extrem schnell. 
+        CT schlägt die Brücke.
+    </p>
+    
+    <h3>Der mentale Werkzeugkasten</h3>
+    <div class="comparison-grid">
+        <div class="comparison-card">
+            <h4>🔽 Dekomposition</h4>
+            <p>
+                Zerlegung komplexer Systeme in kleinere, unabhängige Module.
+            </p>
+        </div>
+        <div class="comparison-card">
+            <h4>🎨 Abstraktion</h4>
+            <p>
+                Weglassen von unnötigen Details, Fokus auf das Wesentliche.
+            </p>
+        </div>
+        <div class="comparison-card">
+            <h4>🔄 Mustererkennung</h4>
+            <p>
+                Ähnlichkeiten und Strukturen in Problemen finden.
+            </p>
+        </div>
+        <div class="comparison-card">
+            <h4>📝 Algorithmusentwicklung</h4>
+            <p>
+                Schritt-für-Schritt Anleitung zur Lösung formulieren.
+            </p>
+        </div>
+        <div class="comparison-card">
+            <h4>🔁 Rekursion</h4>
+            <p>
+                Konzepte auf sich selbst anwenden (fraktale Logik).
+            </p>
+        </div>
+        <div class="comparison-card">
+            <h4>🛡️ Fehlertoleranz</h4>
+            <p>
+                Design für den Ernstfall durch Redundanz.
+            </p>
+        </div>
+    </div>
+    
+    <h3>CT im Alltag: Praktische Beispiele</h3>
+    <div class="example-box">
+        <h4>💼 Szenarien aus dem echten Leben</h4>
+        <ul style="padding-left: 1.5rem; line-height: 2;">
+            <li>
+                <strong>Caching/Prefetching:</strong> 
+                Du packst deine Schultasche mit den Büchern, die du den ganzen Tag brauchst – 
+                Daten in einen schnellen Speicher laden.
+            </li>
+            <li>
+                <strong>Backtracking:</strong> 
+                Du suchst systematisch nach deinen verlorenen Handschuhen, indem du deine Wege 
+                von Ende zu Anfang zurückverfolgst.
+            </li>
+            <li>
+                <strong>Leistungsmodellierung:</strong> 
+                Du berechnet mental, an welcher Supermarktkasse es am schnellsten geht 
+                (Anzahl Menschen × Artikel pro Person).
+            </li>
+            <li>
+                <strong>Redundanz:</strong> 
+                Du schreibst Hausaufgaben in zwei Hefte (Backup), falls eins verloren geht.
+            </li>
+        </ul>
+    </div>
+    
+    <h3>CT in der Bildung</h3>
+    <p>
+        <strong>CT muss als vierte Grundkompetenz</strong> neben Lesen, Schreiben und Rechnen 
+        etabliert werden. Es geht darum, Schülern Werkzeuge zu geben, um komplexe Probleme zu strukturieren – 
+        unabhängig davon, ob ein Computer zur Lösung eingesetzt wird.
+    </p>
+</section>
+
+<!-- Section 5: Quiz -->
+<section>
+    <h2><span class="emoji-icon">📝</span> Quiz: Teste dein Verständnis</h2>
+    
+    <div class="nav-tabs">
+        <button class="tab-btn active" onclick="showQuestion(1)">Frage 1/6</button>
+        <button class="tab-btn" onclick="showQuestion(2)">Frage 2/6</button>
+        <button class="tab-btn" onclick="showQuestion(3)">Frage 3/6</button>
+        <button class="tab-btn" onclick="showQuestion(4)">Frage 4/6</button>
+        <button class="tab-btn" onclick="showQuestion(5)">Frage 5/6</button>
+        <button class="tab-btn" onclick="showQuestion(6)">Frage 6/6</button>
+    </div>
+    
+    <div class="quiz-container">
+        <!-- Q1 -->
+        <div class="quiz-question active" data-question="1">
+            <div class="quiz-progress">Frage 1 von 6</div>
+            <h4>Was ist der Unterschied zwischen klassischer Software und KI?</h4>
+            <div class="quiz-answers">
+                <button class="quiz-answer-btn" onclick="checkAnswer(this, false)">A) Klassische Software ist schneller</button>
+                <button class="quiz-answer-btn" onclick="checkAnswer(this, true)">B) Klassische Software ist regelbasiert, KI ist wahrscheinlichkeitsbasiert</button>
+                <button class="quiz-answer-btn" onclick="checkAnswer(this, false)">C) KI ist älter als klassische Software</button>
+            </div>
+        </div>
+        
+        <!-- Q2 -->
+        <div class="quiz-question" data-question="2">
+            <div class="quiz-progress">Frage 2 von 6</div>
+            <h4>Welcher Lernstil braucht gelabelte Daten?</h4>
+            <div class="quiz-answers">
+                <button class="quiz-answer-btn" onclick="checkAnswer(this, true)">A) Supervised Learning</button>
+                <button class="quiz-answer-btn" onclick="checkAnswer(this, false)">B) Unsupervised Learning</button>
+                <button class="quiz-answer-btn" onclick="checkAnswer(this, false)">C) Reinforcement Learning</button>
+            </div>
+        </div>
+        
+        <!-- Q3 -->
+        <div class="quiz-question" data-question="3">
+            <div class="quiz-progress">Frage 3 von 6</div>
+            <h4>Was ist der "Schreibmaschinenmoment" der KI?</h4>
+            <div class="quiz-answers">
+                <button class="quiz-answer-btn" onclick="checkAnswer(this, true)">A) ChatGPT senkte die Einstiegshürde durch natürliche Sprache</button>
+                <button class="quiz-answer-btn" onclick="checkAnswer(this, false)">B) KI wurde 1957 erfunden</button>
+                <button class="quiz-answer-btn" onclick="checkAnswer(this, false)">C) KI ersetzt alle Jobs</button>
+            </div>
+        </div>
+        
+        <!-- Q4 -->
+        <div class="quiz-question" data-question="4">
+            <div class="quiz-progress">Frage 4 von 6</div>
+            <h4>Welches ist der neueste und erfolgreichste Algorithmus für Sprache?</h4>
+            <div class="quiz-answers">
+                <button class="quiz-answer-btn" onclick="checkAnswer(this, false)">A) Decision Trees</button>
+                <button class="quiz-answer-btn" onclick="checkAnswer(this, true)">B) Transformers</button>
+                <button class="quiz-answer-btn" onclick="checkAnswer(this, false)">C) Support Vector Machines</button>
+            </div>
+        </div>
+        
+        <!-- Q5 -->
+        <div class="quiz-question" data-question="5">
+            <div class="quiz-progress">Frage 5 von 6</div>
+            <h4>Was ist "Computational Thinking" NICHT?</h4>
+            <div class="quiz-answers">
+                <button class="quiz-answer-btn" onclick="checkAnswer(this, false)">A) Eine Problemlösungskompetenz</button>
+                <button class="quiz-answer-btn" onclick="checkAnswer(this, true)">B) Nur Programmieren können</button>
+                <button class="quiz-answer-btn" onclick="checkAnswer(this, false)">C) Dekomposition komplexer Probleme</button>
+            </div>
+        </div>
+        
+        <!-- Q6 -->
+        <div class="quiz-question" data-question="6">
+            <div class="quiz-progress">Frage 6 von 6 (Letzte)</div>
+            <h4>Was ist "AI Literacy"?</h4>
+            <div class="quiz-answers">
+                <button class="quiz-answer-btn" onclick="checkAnswer(this, true)">A) Die Fähigkeit, mit KI umzugehen – neue Grundkompetenz</button>
+                <button class="quiz-answer-btn" onclick="checkAnswer(this, false)">B) Nur Programmierer brauchen das</button>
+                <button class="quiz-answer-btn" onclick="checkAnswer(this, false)">C) Ein anderes Wort für ChatGPT</button>
+            </div>
+        </div>
+        
+        <!-- Result -->
+        <div class="quiz-result" id="quizResult">
+            <h3>🎉 Glückwunsch!</h3>
+            <p>Du hast alle Fragen beantwortet und die Grundlagen von KI, ML und CT gemeistert!</p>
+            <button style="background: #7c3aed; color: white; padding: 0.75rem 1.5rem; border: none; border-radius: 6px; cursor: pointer; margin-top: 1rem;" onclick="location.reload()">
+                Neu starten
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- Section 6: Fazit -->
+<section>
+    <h2><span class="emoji-icon">🎯</span> Fazit: Die Synthese von Denken und Rechnen</h2>
+    
+    <p>
+        Die Evolution der Intelligenz ist <strong>kein Prozess, bei dem die Maschine den Menschen ersetzt</strong>. 
+        Vielmehr erleben wir eine <strong>Symbiose</strong>.
+    </p>
+    
+    <div class="example-box">
+        <h4>🤝 Die Zukunft der Arbeit</h4>
+        <p>
+            <strong>Computational Thinking (CT)</strong> liefert die mentalen Modelle, um zu entscheiden, 
+            was überhaupt berechenbar ist.
+        </p>
+        <p>
+            <strong>KI und Machine Learning</strong> stellen die technologische Kraft bereit, um diese Konzepte 
+            auf massive Datenmengen anzuwenden.
+        </p>
+        <p style="margin-bottom: 0;">
+            <strong>Nur wer beide Seiten beherrscht</strong> – die mentale Logik UND das technologische Werkzeug – 
+            wird die Zukunft der digitalen Gesellschaft aktiv mitgestalten.
+        </p>
+    </div>
+</section>
+
+</main>
+
+<footer>
+    <p><strong>🤖 KI, Machine Learning & Computational Thinking</strong></p>
+    <p>© 2026 | Prof. Schweitzer | Georg von Peuerbach Gymnasium</p>
+    <p style="font-size: 0.9rem; margin-top: 1rem; opacity: 0.8;">100% DSGVO konform • Keine externen Ressourcen • Lokal im Browser</p>
+</footer>
+
+<script>
+    // ========== CANVAS LAB ==========
+    const canvas = document.getElementById('labCanvas');
+    const ctx = canvas.getContext('2d');
+    
+    // Generate mock data points
+    const seagulls = Array.from({length: 20}, () => ({ 
+        x: Math.random() * 300 + 50,
+        y: Math.random() * 150 + 150
+    }));
+    
+    const parrots = Array.from({length: 20}, () => ({ 
+        x: Math.random() * 300 + 50,
+        y: Math.random() * 150 + 50
+    }));
+    
+    function drawVisualization() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        // Background
+        ctx.fillStyle = '#f8fafc';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // Grid
+        ctx.strokeStyle = '#e2e8f0';
+        ctx.lineWidth = 1;
+        for (let i = 0; i < canvas.width; i += 50) {
+            ctx.beginPath();
+            ctx.moveTo(i, 0);
+            ctx.lineTo(i, canvas.height);
+            ctx.stroke();
+        }
+        for (let i = 0; i < canvas.height; i += 50) {
+            ctx.beginPath();
+            ctx.moveTo(0, i);
+            ctx.lineTo(canvas.width, i);
+            ctx.stroke();
+        }
+        
+        // Draw seagulls (blue)
+        seagulls.forEach(point => {
+            ctx.fillStyle = '#3b82f6';
+            ctx.beginPath();
+            ctx.arc(point.x, point.y, 6, 0, Math.PI * 2);
+            ctx.fill();
+        });
+        
+        // Draw parrots (orange)
+        parrots.forEach(point => {
+            ctx.fillStyle = '#f97316';
+            ctx.beginPath();
+            ctx.arc(point.x, point.y, 6, 0, Math.PI * 2);
+            ctx.fill();
+        });
+        
+        // Draw decision line
+        const w = parseFloat(document.getElementById('weightSlider').value);
+        const b = parseFloat(document.getElementById('biasSlider').value);
+        
+        ctx.strokeStyle = '#7c3aed';
+        ctx.lineWidth = 3;
+        ctx.setLineDash([5, 5]);
+        
+        const x1 = 0, y1 = b;
+        const x2 = canvas.width, y2 = w * canvas.width + b;
+        
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        
+        // Legend
+        ctx.font = 'bold 14px Arial';
+        ctx.fillStyle = '#3b82f6';
+        ctx.fillText('● Möwen', 20, 30);
+        ctx.fillStyle = '#f97316';
+        ctx.fillText('● Papageien', 180, 30);
+        ctx.fillStyle = '#7c3aed';
+        ctx.fillText('---- Entscheidungslinie', 320, 30);
+    }
+    
+    function updateVisualization() {
+        document.getElementById('weightValue').textContent = document.getElementById('weightSlider').value;
+        document.getElementById('biasValue').textContent = document.getElementById('biasSlider').value;
+        
+        drawVisualization();
+        calculateAccuracy();
+    }
+    
+    function calculateAccuracy() {
+        const w = parseFloat(document.getElementById('weightSlider').value);
+        const b = parseFloat(document.getElementById('biasSlider').value);
+        
+        let correct = 0;
+        const total = seagulls.length + parrots.length;
+        
+        // Seagulls should be above line (y > w*x + b)
+        seagulls.forEach(p => {
+            if (p.y > w * p.x + b) correct++;
+        });
+        
+        // Parrots should be below line (y < w*x + b)
+        parrots.forEach(p => {
+            if (p.y < w * p.x + b) correct++;
+        });
+        
+        const accuracy = Math.round((correct / total) * 100);
+        document.getElementById('accuracyDisplay').textContent = accuracy + '%';
+    }
+    
+    // ========== QUIZ LOGIC ==========
+    function showQuestion(num) {
+        document.querySelectorAll('.quiz-question').forEach(q => q.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        
+        const question = document.querySelector(`.quiz-question[data-question="${num}"]`);
+        if (question) {
+            question.classList.add('active');
+        }
+        
+        event.target.classList.add('active');
+    }
+    
+    function checkAnswer(btn, isCorrect) {
+        const answers = btn.parentElement;
+        const buttons = answers.querySelectorAll('.quiz-answer-btn');
+        
+        buttons.forEach(b => {
+            b.style.pointerEvents = 'none';
+        });
+        
+        if (isCorrect) {
+            btn.classList.add('correct');
+        } else {
+            btn.classList.add('incorrect');
+            
+            buttons.forEach(b => {
+                if (b.getAttribute('onclick').includes('true')) {
+                    b.classList.add('correct');
+                }
+            });
+        }
+        
+        setTimeout(() => {
+            const currentQuestion = btn.closest('.quiz-question');
+            const currentNum = parseInt(currentQuestion.dataset.question);
+            
+            if (currentNum < 6) {
+                showQuestion(currentNum + 1);
+            } else {
+                document.querySelectorAll('.quiz-question').forEach(q => q.style.display = 'none');
+                document.getElementById('quizResult').classList.add('show');
+            }
+        }, 1500);
+    }
+    
+    // Initialize
+    window.addEventListener('load', () => {
+        drawVisualization();
+    });
+</script>
+
+</body>
+</html>

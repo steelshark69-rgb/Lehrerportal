@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digitale Identität Szenarios | Digitale Grundbildung</title>
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+        .scenario-container {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            padding: 2rem;
+            border-radius: 10px;
+            color: white;
+            max-width: 900px;
+            margin: 2rem auto;
+        }
+        .scenario-card {
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+            padding: 2rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+        }
+        .scenario-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #1f2937;
+            margin-bottom: 1rem;
+        }
+        .scenario-text {
+            background: #f9fafb;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1rem 0;
+            line-height: 1.6;
+        }
+        .options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        .option-btn {
+            padding: 1rem;
+            border: 2px solid #e5e7eb;
+            background: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.2s;
+            text-align: left;
+            font-size: 0.95rem;
+        }
+        .option-btn:hover {
+            border-color: #10b981;
+            background: #f0fdf4;
+        }
+        .option-btn.selected {
+            border-color: #10b981;
+            background: #dcfce7;
+        }
+        .feedback {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+            display: none;
+        }
+        .feedback.show {
+            display: block;
+        }
+        .feedback-good {
+            background: #dcfce7;
+            border-left: 4px solid #10b981;
+            color: #065f46;
+        }
+        .feedback-bad {
+            background: #fee2e2;
+            border-left: 4px solid #ef4444;
+            color: #991b1b;
+        }
+        .next-btn {
+            width: 100%;
+            padding: 12px;
+            background: #10b981;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 1rem;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>🎭 Digitale Identität - Szenarios</h1>
+    <p>2. Klasse | Digitale Grundbildung</p>
+    <div class="back-nav">
+        <a href="index.html" class="btn-back">⬅ Zurück</a>
+    </div>
+</header>
+
+<main style="max-width: 1000px; margin: 0 auto; padding: 2rem 1rem;">
+
+    <section style="background: #d1fae5; border-left: 4px solid #10b981; padding: 1.5rem; border-radius: 5px; margin-bottom: 2rem;">
+        <h2>👤 Wie präsentierst du dich online?</h2>
+        <p>Jedes Foto, jeder Post und jeder Kommentar formt deine digitale Identität. Schau dir Szenarios an und entscheide richtig!</p>
+    </section>
+
+    <div class="scenario-container" id="scenarioContainer">
+        <!-- Szenarios werden hier eingefügt -->
+    </div>
+
+    <section style="background: white; padding: 2rem; border-radius: 8px; margin-top: 2rem;">
+        <h2>🎯 Was ist digitale Identität?</h2>
+        <p>Digitale Identität ist dein Bild im Internet. Es besteht aus:</p>
+        <ul style="line-height: 1.8;">
+            <li><strong>👤 Profil-Infos:</strong> Name, Alter, Schule, Wohnort (was du angibst)</li>
+            <li><strong>📸 Fotos & Videos:</strong> Was du hochlädst und wie dich andere taggen</li>
+            <li><strong>💬 Posts & Kommentare:</strong> Was du sagst und wie du dich ausdrückst</li>
+            <li><strong>👍 Likes & Reaktionen:</strong> Was du magst und was du interessiert</li>
+            <li><strong>🤝 Freundeslisten:</strong> Mit wem du online befreundet bist</li>
+            <li><strong>🔍 Suchverlauf:</strong> Was du gegoogelt hast (Google weiß alles!)</li>
+        </ul>
+    </section>
+
+</main>
+
+<footer style="margin-top: 5rem; padding: 2rem 1rem; background-color: #f8fafc; border-top: 1px solid #e2e8f0; color: #64748b; font-size: 0.9rem; text-align: center;">
+    &copy; 2026 | GvP | Mag. Schweitzer | Digitale Grundbildung
+</footer>
+
+<script>
+    const scenarios = [
+        {
+            title: "Szenario 1: Das Klassenfoto",
+            situation: "Du machst ein Foto mit deiner Klasse beim Ausflug. Das Foto ist witzig und zeigt euch alle lachend. Eine Freundin möchte es auf Instagram posten und euch alle taggen.",
+            options: [
+                { text: "✅ OK - mit Erlaubnis. Das Foto ist positiv und zeigt euch als gute Freunde.", correct: true },
+                { text: "❌ Nicht gut - Niemals Fotos von anderen ohne Erlaubnis posten!", correct: false }
+            ],
+            feedback: "Richtig! Solange du und alle anderen erlaubt hast, dass das Foto gepostet wird, ist das ok. Ein positives Foto hilft deinem Ruf online!"
+        },
+        {
+            title: "Szenario 2: Der peinliche Moment",
+            situation: "Du hattest einen Ausrutscher und bist in der Schule gestürzt. Ein Mitschüler hat ein Video davon gemacht und will es auf TikTok posten. Es ist lustig, aber auch peinlich für dich.",
+            options: [
+                { text: "❌ Erlauben - es ist ja lustig!", correct: false },
+                { text: "✅ Nicht erlauben! Das könnte deinem Ruf schaden.", correct: true }
+            ],
+            feedback: "Korrekt! Peinliche Videos können für immer online bleiben. Auch wenn es lustig ist, denk an deine Zukunft (Arbeitgeber googlen dich!)"
+        },
+        {
+            title: "Szenario 3: Der falsche Eindruck",
+            situation: "Du willst ein 'cooles' Profil-Bild mit Zigarette haben, obwohl du nicht rauchst. Du denkst, das sieht 'älter' und 'cooler' aus.",
+            options: [
+                { text: "❌ Machen - wer soll das schon sehen?", correct: false },
+                { text: "✅ Nicht machen - das gibt einen falschen Eindruck und schadet deinem Ruf!", correct: true }
+            ],
+            feedback: "Richtig! Ein falsches Profil-Bild schadet deiner digitalen Identität. Arbeitgeber, Schulen und Freunde beurteilen dich danach!"
+        },
+        {
+            title: "Szenario 4: Der gehässige Kommentar",
+            situation: "Du siehst einen Post von jemandem, der dir nicht besonders sympathisch ist. Du möchtest einen gehässigen Kommentar schreiben, um dich besser zu fühlen.",
+            options: [
+                { text: "❌ Machen - es ist ja anonym im Internet!", correct: false },
+                { text: "✅ Nicht machen - das bleibt für immer online und schadet beiden!", correct: true }
+            ],
+            feedback: "Korrekt! Gehässige Kommentare sind Cybermobbing und werden dir zugordnet. Das schadet deinem Ruf langfristig massiv!"
+        },
+        {
+            title: "Szenario 5: Die private Information",
+            situation: "Ein neuer Kontakt im Internet fragt dich nach deiner Adresse und Telefonnummer. Diese Person sagt, sie müsse dich besser kennen.",
+            options: [
+                { text: "❌ Geben - das ist normal beim Kennenlernen!", correct: false },
+                { text: "✅ Nicht geben - nie persönliche Daten an Fremde online!", correct: true }
+            ],
+            feedback: "Absolut richtig! Gib persönliche Daten NIEMALS an Fremde online! Das könnte zum Cyberstalking oder Identitätsdiebstahl führen!"
+        },
+        {
+            title: "Szenario 6: Das Übersharing",
+            situation: "Du machst einen Screenshot deines Instagram-Profils und siehst: Dein Wohnort, deine Schule, wo du gerade bist, und sogar die genaue Zeit (aus dem Foto). Alles öffentlich sichtbar.",
+            options: [
+                { text: "❌ Ist ok - alle posten so!", correct: false },
+                { text: "✅ Ist riskant! Zu viele Infos geben Fremden zu viel über dich.", correct: true }
+            ],
+            feedback: "Korrekt! Zu viele persönliche Informationen = zu hohes Sicherheitsrisiko. Stelle dein Profil auf privat und pass auf, was du teilst!"
+        }
+    ];
+
+    let currentScenario = 0;
+    let score = 0;
+
+    function loadScenario() {
+        const s = scenarios[currentScenario];
+        let html = `
+            <div class="scenario-card">
+                <div class="scenario-title">Frage ${currentScenario + 1} von ${scenarios.length}: ${s.title}</div>
+                <div class="scenario-text">${s.situation}</div>
+                <div class="options">
+        `;
+        
+        s.options.forEach((option, index) => {
+            html += `<button class="option-btn" onclick="selectOption(${index})">${option.text}</button>`;
+        });
+        
+        html += `
+                </div>
+                <div class="feedback" id="feedback"></div>
+                <button class="next-btn" id="nextBtn" onclick="nextScenario()">Nächstes Szenario →</button>
+            </div>
+        `;
+        
+        document.getElementById('scenarioContainer').innerHTML = html;
+    }
+
+    function selectOption(index) {
+        const s = scenarios[currentScenario];
+        const btns = document.querySelectorAll('.option-btn');
+        
+        btns[index].classList.add('selected');
+        
+        const feedback = document.getElementById('feedback');
+        feedback.classList.add('show');
+        
+        if (s.options[index].correct) {
+            feedback.classList.add('feedback-good');
+            score++;
+            feedback.innerHTML = `<strong>✅ Richtig!</strong><br>${s.feedback}`;
+        } else {
+            feedback.classList.add('feedback-bad');
+            feedback.innerHTML = `<strong>❌ Falsch!</strong><br>${s.feedback}`;
+        }
+        
+        document.getElementById('nextBtn').style.display = 'block';
+        
+        btns.forEach((btn, i) => {
+            btn.style.pointerEvents = 'none';
+            btn.style.opacity = '0.6';
+        });
+    }
+
+    function nextScenario() {
+        currentScenario++;
+        if (currentScenario < scenarios.length) {
+            loadScenario();
+        } else {
+            showFinalScore();
+        }
+    }
+
+    function showFinalScore() {
+        let message = score === scenarios.length ? '🌟 Perfekt!' : score >= scenarios.length - 1 ? '👍 Sehr gut!' : '✓ Gut gemacht!';
+        let html = `
+            <div class="scenario-card" style="text-align: center;">
+                <h2 style="margin-top: 0;">${message}</h2>
+                <p style="font-size: 1.2rem;">${score} von ${scenarios.length} Szenarios richtig bewertet!</p>
+                <button onclick="location.reload()" style="padding: 12px 30px; background: #10b981; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 1rem;">Nochmal spielen</button>
+            </div>
+        `;
+        document.getElementById('scenarioContainer').innerHTML = html;
+    }
+
+    loadScenario();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KI im Alltag - Interaktives Quiz</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --success: #22c55e;
+            --error: #ef4444;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* UI Elements */
+        h1 { font-size: 1.75rem; margin-bottom: 1rem; text-align: center; color: var(--primary); }
+        p { color: var(--text-light); text-align: center; margin-bottom: 1.5rem; }
+
+        .input-group { margin-bottom: 1.5rem; }
+        input[type="text"] {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        input[type="text"]:focus { border-color: var(--primary); }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--primary-dark); }
+        .btn-secondary { background: var(--text-light); color: white; margin-top: 1rem; }
+
+        /* Progress Bar */
+        .progress-container { margin-bottom: 20px; }
+        .difficulty-tag {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+        .diff-leicht { background: #dcfce7; color: #166534; }
+        .diff-mittel { background: #fef9c3; color: #854d0e; }
+        .diff-schwer { background: #fee2e2; color: #991b1b; }
+
+        .progress-bar {
+            height: 8px;
+            background: var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: var(--primary);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* Quiz Logic UI */
+        .question-box { font-size: 1.2rem; font-weight: 700; margin-bottom: 20px; }
+        .options-list { display: grid; gap: 12px; }
+        .option-btn {
+            padding: 14px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            background: white;
+            text-align: left;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .option-btn:hover:not(:disabled) { border-color: var(--primary); background: #f0f7ff; }
+        
+        /* Feedback Colors */
+        .correct { background: var(--success) !important; color: white !important; border-color: var(--success) !important; }
+        .wrong { background: var(--error) !important; color: white !important; border-color: var(--error) !important; }
+        .reveal { border-color: var(--success) !important; border-width: 3px !important; }
+
+        /* Result Screen */
+        .result-card { text-align: center; padding: 20px; }
+        .score-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 8px solid var(--primary);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 20px;
+        }
+        .score-num { font-size: 2rem; font-weight: 800; }
+        .status-msg { margin-top: 1rem; font-weight: 600; color: var(--text-light); }
+
+        @media (max-width: 480px) {
+            .container { padding: 20px; }
+            h1 { font-size: 1.4rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="quiz-app">
+        <!-- Start Screen -->
+        <div id="start-screen">
+            <h1>KI im Alltag Quiz</h1>
+            <p>Teste dein Wissen über künstliche Intelligenz, maschinelles Lernen und die Anwendungen der Zukunft!</p>
+            <div class="input-group">
+                <input type="text" id="student-name" placeholder="Dein vollständiger Name..." autocomplete="off">
+            </div>
+            <button class="btn btn-primary" id="start-btn">Quiz starten</button>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div id="quiz-screen" class="hidden">
+            <div class="progress-container">
+                <div id="difficulty-label" class="difficulty-tag">Leicht</div>
+                <div class="progress-bar">
+                    <div id="progress-fill" class="progress-fill"></div>
+                </div>
+            </div>
+            <div class="question-box" id="question-text">Lade Frage...</div>
+            <div class="options-list" id="options-container"></div>
+            <button class="btn btn-primary hidden" id="next-btn" style="margin-top: 20px;">Nächste Frage</button>
+        </div>
+
+        <!-- Result Screen -->
+        <div id="result-screen" class="hidden">
+            <div id="result-container" class="result-card">
+                <h1>Dein Ergebnis</h1>
+                <div class="score-circle">
+                    <span class="score-num" id="score-val">0</span>
+                    <span style="font-size: 0.8rem;">von 15</span>
+                </div>
+                <h2 id="grade-val">Note</h2>
+                <p id="result-name" style="font-weight: 700; color: var(--text);"></p>
+                <div id="send-status" class="status-msg">Ergebnis wird gesendet...</div>
+            </div>
+            <button class="btn btn-secondary" id="screenshot-btn">Screenshot speichern</button>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // EmailJS Config
+            emailjs.init("HnZ28X9AihlD5y9XH");
+
+            const questionsData = [
+                // LEICHT
+                { q: "Was ist die wichtigste Grundlage moderner KI?", o: ["Maschinelles Lernen", "Feste Regeln", "Klassische Mathematik", "Manuelle Programmierung"], a: 0, d: "leicht" },
+                { q: "Womit arbeitet eine KI im Gegensatz zu klassischen Programmen?", o: ["Wahrscheinlichkeiten", "Gefühlen", "Festen Ja/Nein-Regeln", "Eigener Kreativität"], a: 0, d: "leicht" },
+                { q: "Was erkennt eine KI in großen Datenmengen?", o: ["Muster", "Einzelne Wörter", "Nur Fehler", "Bilder von Menschen"], a: 0, d: "leicht" },
+                { q: "Welches Werkzeug wird primär für Bild- und Spracherkennung genutzt?", o: ["Neuronale Netze", "Taschenrechner", "Druckersoftware", "E-Mail-Server"], a: 0, d: "leicht" },
+                { q: "Kann eine KI echte Gefühle entwickeln?", o: ["Nein, sie arbeitet nur mit Daten", "Ja, nach langem Training", "Nur wenn sie im Internet ist", "In der Zukunft ist das geplant"], a: 0, d: "leicht" },
+                // MITTEL
+                { q: "Was bedeutet 'Generalisierung' bei einer KI?", o: ["Muster auf neue Situationen übertragen", "Alles auswendig lernen", "Fehler immer wiederholen", "Daten wahllos löschen"], a: 0, d: "mittel" },
+                { q: "Wie sieht der dritte Schritt im Lernprozess einer KI aus?", o: ["Der Fehler wird berechnet", "Ein Foto wird gemacht", "Das System wird gelöscht", "Eine Vorhersage wird getroffen"], a: 0, d: "mittel" },
+                { q: "Warum ist KI für moderne komplexe Systeme so wichtig?", o: ["Sie passt sich flexibel an Änderungen an", "Sie braucht keinen Strom", "Sie arbeitet langsamer als Menschen", "Sie ist billiger als ein USB-Stick"], a: 0, d: "mittel" },
+                { q: "Was versteht man unter 'Predictive Maintenance' in der Industrie?", o: ["Vorausschauende Wartung vor einem Defekt", "Reparatur erst wenn die Maschine brennt", "Maschinen per Hand ölen", "Wartung nach einem festen Kalenderblatt"], a: 0, d: "mittel" },
+                { q: "Welchen Vorteil bietet KI in der medizinischen Bildauswertung?", o: ["Präzisere Berechnung von Winkeln & Achsen", "Schnellere Terminvergabe", "Billigere Röntgengeräte", "Heilung durch bloßes Ansehen"], a: 0, d: "mittel" },
+                // SCHWER
+                { q: "Was passiert, wenn eine KI nicht generalisiert, sondern 'auswendig lernt'?", o: ["Sie scheitert bei neuen Perspektiven oder Lichtverhältnissen", "Sie wird extrem schlau", "Sie verbraucht weniger Speicher", "Sie kann besser sprechen"], a: 0, d: "schwer" },
+                { q: "Was ist ein Merkmal der 'Skalierbarkeit' von KI?", o: ["Ein trainiertes Modell ist weltweit gleichzeitig nutzbar", "KI-Modelle passen auf eine Waage", "KI kann nur auf einem Computer laufen", "Das Modell wird mit der Zeit immer kleiner"], a: 0, d: "schwer" },
+                { q: "Wie unterstützt KI die 'Personalisierte Medizin'?", o: ["Durch Analyse von Genetik & Krankheitsverlauf für individuelle Therapien", "Durch automatisches Verschicken von Rezepten", "Durch Standard-Behandlungen für alle", "Durch Ersetzen aller Ärzte"], a: 0, d: "schwer" },
+                { q: "Warum ist die Objektivität von KI ein Vorteil?", o: ["Entscheidungen sind frei von Stress oder Müdigkeit", "KI hat immer Recht", "KI mag keine Menschen", "KI braucht keine Daten"], a: 0, d: "schwer" },
+                { q: "Welche Herausforderung ist für die KI-Zukunft laut Handout besonders wichtig?", o: ["Datenschutz und Transparenz", "Höhere Stromkosten", "Bessere Monitore", "Schnellere Tastaturen"], a: 0, d: "schwer" }
+            ];
+
+            let questions = [];
+            let currentIdx = 0;
+            let score = 0;
+            let studentName = "";
+
+            const startScreen = document.getElementById('start-screen');
+            const quizScreen = document.getElementById('quiz-screen');
+            const resultScreen = document.getElementById('result-screen');
+            const nameInput = document.getElementById('student-name');
+            const questionText = document.getElementById('question-text');
+            const optionsContainer = document.getElementById('options-container');
+            const nextBtn = document.getElementById('next-btn');
+            const progressFill = document.getElementById('progress-fill');
+            const diffLabel = document.getElementById('difficulty-label');
+
+            // Start Quiz
+            document.getElementById('start-btn').addEventListener('click', () => {
+                studentName = nameInput.value.trim();
+                if (!studentName) {
+                    nameInput.style.borderColor = "var(--error)";
+                    return;
+                }
+                startQuiz();
+            });
+
+            function startQuiz() {
+                questions = shuffleArray([...questionsData]);
+                currentIdx = 0;
+                score = 0;
+                startScreen.classList.add('hidden');
+                quizScreen.classList.remove('hidden');
+                loadQuestion();
+            }
+
+            function loadQuestion() {
+                const q = questions[currentIdx];
+                questionText.textContent = q.q;
+                diffLabel.textContent = q.d;
+                diffLabel.className = `difficulty-tag diff-${q.d}`;
+                
+                // Shuffle options
+                const opts = q.o.map((text, i) => ({ text, isCorrect: i === q.a }));
+                const shuffledOpts = shuffleArray(opts);
+
+                optionsContainer.innerHTML = "";
+                shuffledOpts.forEach(opt => {
+                    const btn = document.createElement('button');
+                    btn.className = "option-btn";
+                    btn.textContent = opt.text;
+                    btn.onclick = () => checkAnswer(opt.isCorrect, btn);
+                    optionsContainer.appendChild(btn);
+                });
+
+                nextBtn.classList.add('hidden');
+                updateProgress();
+            }
+
+            function checkAnswer(isCorrect, clickedBtn) {
+                const btns = optionsContainer.querySelectorAll('.option-btn');
+                btns.forEach(b => b.disabled = true);
+
+                if (isCorrect) {
+                    clickedBtn.classList.add('correct');
+                    score++;
+                } else {
+                    clickedBtn.classList.add('wrong');
+                    // Reveal correct
+                    btns.forEach(b => {
+                        const originalQ = questions[currentIdx];
+                        if (b.textContent === originalQ.o[originalQ.a]) {
+                            b.classList.add('reveal');
+                        }
+                    });
+                }
+                nextBtn.classList.remove('hidden');
+            }
+
+            nextBtn.addEventListener('click', () => {
+                currentIdx++;
+                if (currentIdx < questions.length) {
+                    loadQuestion();
+                } else {
+                    finishQuiz();
+                }
+            });
+
+            function updateProgress() {
+                const percent = (currentIdx / questions.length) * 100;
+                progressFill.style.width = percent + "%";
+            }
+
+            function finishQuiz() {
+                quizScreen.classList.add('hidden');
+                resultScreen.classList.remove('hidden');
+                
+                const percent = Math.round((score / 15) * 100);
+                document.getElementById('score-val').textContent = score;
+                document.getElementById('result-name').textContent = studentName;
+                
+                const gradeInfo = getGradeInfo(percent);
+                document.getElementById('grade-val').textContent = gradeInfo.note;
+                
+                sendEmail(percent, gradeInfo.note);
+            }
+
+            function getGradeInfo(p) {
+                if (p >= 90) return { note: "Sehr gut aufgepasst" };
+                if (p >= 78) return { note: "Gut aufgepasst" };
+                if (p >= 64) return { note: "Ok!" };
+                if (p >= 50) return { note: "besser aufpassen" };
+                return { note: "Nicht aufgepasst?" };
+            }
+
+            function sendEmail(p, n) {
+                const payload = {
+                    quiz_name: "Quiz: KI im Alltag",
+                    from_name: studentName,
+                    score: `${score} von 15`,
+                    message: `Zeitstempel: ${new Date().toLocaleString()} | Note: ${n} (${p}%)`
+                };
+
+                emailjs.send("service_qoofink", "template_cu0x1bc", payload)
+                    .then(() => {
+                        document.getElementById('send-status').textContent = "Gesendet ✓";
+                        document.getElementById('send-status').style.color = "var(--success)";
+                    })
+                    .catch((err) => {
+                        console.error("EmailJS Error:", err);
+                        document.getElementById('send-status').textContent = "Fehler beim Senden.";
+                        document.getElementById('send-status').style.color = "var(--error)";
+                        alert("Senden fehlgeschlagen. Bitte Screenshot machen!");
+                    });
+            }
+
+            // Screenshot Function
+            document.getElementById('screenshot-btn').addEventListener('click', () => {
+                const container = document.getElementById('result-container');
+                html2canvas(container).then(canvas => {
+                    const link = document.createElement('a');
+                    link.download = `Ergebnis_KI_${studentName.replace(/\s+/g, '_')}.png`;
+                    link.href = canvas.toDataURL();
+                    link.click();
+                });
+            });
+
+            // Utils
+            function shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+                return array;
+            }
+        })();
+    </script>
+</body>
+</html>

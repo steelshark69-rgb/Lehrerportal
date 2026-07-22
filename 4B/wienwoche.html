@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wienwoche 4b - April 2026</title>
+    <!-- Verweis auf die zentrale CSS-Datei im Hauptordner -->
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        :root {
+            --primary-color: #003366;
+            --accent-color: #c4121a;
+            --bg-light: #f4f4f9;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background-color: var(--bg-light);
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: var(--primary-color);
+            text-align: center;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 10px;
+        }
+        .info-box {
+            background: #e7f3ff;
+            border-left: 5px solid var(--primary-color);
+            padding: 15px;
+            margin-bottom: 25px;
+        }
+        .day {
+            margin-bottom: 30px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 15px;
+        }
+        .day h2 {
+            color: var(--accent-color);
+            font-size: 1.4em;
+        }
+        .time-entry {
+            display: flex;
+            margin: 8px 0;
+        }
+        .time {
+            font-weight: bold;
+            min-width: 85px;
+            color: #555;
+        }
+        .activity {
+            flex: 1;
+        }
+        .location-info {
+            font-size: 0.9em;
+            color: #666;
+            font-style: italic;
+            display: block;
+            margin-top: 2px;
+        }
+        .dresscode-info {
+            font-size: 0.9em;
+            color: #0056b3;
+            background-color: #e6f2ff;
+            padding: 4px 8px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-top: 4px;
+        }
+        .map-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary-color);
+            transition: all 0.2s ease-in-out;
+        }
+        .map-link:hover {
+            color: var(--accent-color);
+            border-bottom-color: var(--accent-color);
+        }
+        .footer-note {
+            font-size: 0.85em;
+            color: #777;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        /* Fotogalerie-Link (DSGVO-Hinweis: Die Zielseite sollte passwortgeschützt sein) */
+        .gallery-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--accent-color);
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            margin: 10px auto 25px auto;
+            transition: background 0.2s;
+            gap: 8px;
+        }
+        .gallery-link:hover {
+            background-color: #900c12;
+        }
+        
+        /* Neue CSS-Klassen für die Tabs und Packliste */
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            background: #e7f3ff;
+            border-radius: 5px 5px 0 0;
+            font-weight: bold;
+            color: var(--primary-color);
+            transition: all 0.2s;
+            flex-grow: 1;
+            text-align: center;
+        }
+        .tab:hover {
+            background: #cce5ff;
+        }
+        .tab.active {
+            background: var(--primary-color);
+            color: white;
+        }
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .packing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .packing-category {
+            background: #fff;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .packing-category h3 {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 5px;
+            margin-top: 0;
+            font-size: 1.1em;
+        }
+        .packing-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .packing-list li {
+            margin-bottom: 8px;
+        }
+        .packing-list label {
+            display: flex;
+            align-items: flex-start;
+            cursor: pointer;
+        }
+        .packing-list input[type="checkbox"] {
+            margin-top: 5px;
+            margin-right: 10px;
+            cursor: pointer;
+            transform: scale(1.2);
+        }
+
+        /* Neue CSS-Klassen für die Zimmereinteilung */
+        .room-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .room-box {
+            background: #fff;
+            border: 1px solid #eee;
+            border-top: 4px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .room-title {
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+        }
+        .room-placeholder {
+            color: #888;
+            font-style: italic;
+            font-size: 0.9em;
+        }
+
+        /* Neue CSS-Klassen für das Formular und Drucken */
+        .print-button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+            transition: background 0.2s;
+        }
+        .print-button:hover {
+            background-color: #001a33;
+        }
+        .form-paper {
+            background: #fff;
+            padding: 30px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+            line-height: 1.8;
+            color: #000;
+        }
+        .form-paper input[type="text"] {
+            border: none;
+            border-bottom: 1px solid #000;
+            background: transparent;
+            font-family: inherit;
+            font-size: 1em;
+            padding: 2px 5px;
+            outline: none;
+        }
+        .form-question {
+            margin-top: 15px;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        .radio-group {
+            margin-left: 20px;
+            margin-bottom: 10px;
+        }
+        .radio-group label {
+            margin-right: 20px;
+            cursor: pointer;
+        }
+        .signature-area {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 60px;
+        }
+        .signature-line {
+            width: 45%;
+            border-top: 1px solid #000;
+            text-align: center;
+            padding-top: 5px;
+        }
+
+        /* CSS für die WebUntis Kopier-Box */
+        .copy-box {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            border-radius: 4px;
+            font-family: 'Courier New', Courier, monospace;
+            white-space: pre-wrap;
+            line-height: 1.5;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #333;
+        }
+
+        /* Druck-Layout: Blendet alles aus außer dem Formular */
+        @media print {
+            body { background: white; }
+            .container { box-shadow: none; margin: 0; padding: 0; max-width: 100%; }
+            .tabs, h1, .info-box, .footer-note, .print-button { display: none !important; }
+            p { display: none; }
+            #bestaetigung p, .form-paper p { display: block; }
+            #bestaetigung { display: block !important; width: 100%; position: absolute; top: 0; left: 0; }
+            .form-paper { border: none; box-shadow: none; padding: 0; }
+        }
+
+        @media (max-width: 600px) {
+            .container { padding: 15px; margin: 10px; }
+            .time-entry { flex-direction: column; }
+            .time { margin-bottom: 4px; color: var(--accent-color); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Wienwoche der 4b</h1>
+    <p style="text-align: center; font-weight: bold;">20.04. bis 24.04.2026</p>
+
+    <!-- Link zur Fotogalerie im Unterordner -->
+    <div style="text-align: center;">
+        <a href="Wienwoche/index.html" class="gallery-link">📸 Zur Fotogalerie der Wienwoche</a>
+    </div>
+
+    <!-- Tab-Navigation -->
+    <div class="tabs">
+        <div class="tab active" onclick="openTab(event, 'programm')">Programm</div>
+        <div class="tab" onclick="openTab(event, 'packliste')">Packliste</div>
+        <div class="tab" onclick="openTab(event, 'zimmer')">Zimmereinteilung</div>
+        <div class="tab" onclick="openTab(event, 'elterninfo')">Elterninfo</div>
+        <div class="tab" onclick="openTab(event, 'bestaetigung')">Bestätigung</div>
+    </div>
+
+    <!-- TAB: PROGRAMM -->
+    <div id="programm" class="tab-content active">
+        <div class="info-box">
+            <strong>🚩 Vorläufiges Programm</strong><br>
+            <strong>🚩 Treffpunkt & Abreise:</strong><br>
+            Datum: Montag, 20.04.2026<br>
+            Uhrzeit: <strong>09:00 Uhr</strong><br>
+            Ort: <a href="https://www.google.com/maps/search/?api=1&query=Georg-von-Peuerbach-Gymnasium+Linz" target="_blank" class="map-link">Georg-von-Peuerbach-Gymnasium</a><br>
+            <hr>
+            Uhrzeit: <strong>09:15 Uhr</strong><br>
+            Ort: <strong>Hauptbahnhof Linz Infopoint</strong><br>
+            <hr>
+            <strong>🚆 Hinfahrt:</strong> IC 545 | Linz Hbf (Bstg. 7A-F) ab 09:32 -> Wien Hbf (Bstg. 9A-B) an 11:03<br>
+            <strong>🏠 Unterkunft:</strong> <a href="https://www.google.com/maps/search/?api=1&query=a%26o+Hostel+Hauptbahnhof+Sonnwendgasse+11+1100+Wien" target="_blank" class="map-link">a&o Hostel Hauptbahnhof, Sonnwendgasse 11, 1100 Wien</a>
+        </div>
+
+    <!-- Montag -->
+    <div class="day">
+        <h2>Montag, 20. April</h2>
+        <div class="time-entry">
+            <span class="time">Vormittag</span>
+            <span class="activity">Ankunft & Check-in im <a href="https://www.google.com/maps/search/?api=1&query=a%26o+Hostel+Hauptbahnhof+Sonnwendgasse+11+1100+Wien" target="_blank" class="map-link">Hostel</a></span>
+        </div>
+        <div class="time-entry">
+            <span class="time">12:00 Uhr</span>
+            <span class="activity">Vorbesprechung (Rezeption Unterkunft)</span>
+        </div>
+        <div class="time-entry">
+            <span class="time">Mittag</span>
+            <span class="activity">Mittagessen</span>
+        </div>
+        <div class="time-entry">
+            <span class="time">15:00 Uhr</span>
+            <span class="activity"><a href="https://www.google.com/maps/dir/?api=1&origin=a%26o+Hostel+Hauptbahnhof,+Sonnwendgasse+11,+1100+Wien&destination=Naturhistorisches+Museum+Wien&travelmode=transit" target="_blank" class="map-link">Naturhistorisches Museum</a> <br><span class="location-info">Überblicksführung</span></span>
+        </div>
+    </div>
+
+    <!-- Dienstag -->
+    <div class="day">
+        <h2>Dienstag, 21. April</h2>
+        <div class="time-entry">
+            <span class="time">10:00 Uhr</span>
+            <span class="activity"><a href="https://www.google.com/maps/dir/?api=1&origin=a%26o+Hostel+Hauptbahnhof,+Sonnwendgasse+11,+1100+Wien&destination=Haus+der+Geschichte+Österreich+Neue+Burg+Heldenplatz+Wien&travelmode=transit" target="_blank" class="map-link">Haus der Geschichte Österreich</a> <br><span class="location-info">Neue Burg Heldenplatz</span></span>
+        </div>
+        <div class="time-entry">
+            <span class="time">Mittag</span>
+            <span class="activity">Mittagessen</span>
+        </div>
+        <div class="time-entry">
+            <span class="time">13:30 Uhr</span>
+            <span class="activity">Stephansdom <br><span class="location-info">Treffpunkt: <a href="https://www.google.com/maps/dir/?api=1&origin=a%26o+Hostel+Hauptbahnhof,+Sonnwendgasse+11,+1100+Wien&destination=Stephansdom+Riesentor+Wien&travelmode=transit" target="_blank" class="map-link">Riesentor</a></span></span>
+        </div>
+        <div class="time-entry">
+            <span class="time">Abend</span>
+            <span class="activity">
+                Kulturprogramm im <a href="https://www.google.com/maps/dir/?api=1&origin=a%26o+Hostel+Hauptbahnhof,+Sonnwendgasse+11,+1100+Wien&destination=Ronacher+Wien&travelmode=transit" target="_blank" class="map-link">Ronacher</a>: "Maria Theresia" <br>
+                <span class="dresscode-info">👔👗 <strong>Hinweis zur Kleidung:</strong> Dem Anlass entsprechend, aber Abendgarderobe ist nicht notwendig.</span>
+            </span>
+        </div>
+    </div>
+
+    <!-- Mittwoch -->
+    <div class="day">
+        <h2>Mittwoch, 22. April</h2>
+        <div class="time-entry">
+            <span class="time">10:00 Uhr</span>
+            <span class="activity">Parlament <br><span class="location-info">Treffpunkt: <a href="https://www.google.com/maps/dir/?api=1&origin=a%26o+Hostel+Hauptbahnhof,+Sonnwendgasse+11,+1100+Wien&destination=Parlament+Wien&travelmode=transit" target="_blank" class="map-link">Parlament</a></span></span>
+        </div>
+        <div class="time-entry">
+            <span class="time">Mittag</span>
+            <span class="activity">Mittagessen</span>
+        </div>
+        <div class="time-entry">
+            <span class="time">14:00 Uhr</span>
+            <span class="activity">TU Institut für Informatik <br><span class="location-info">1040 Wien, Favoritenstr. 9-11; Treffpunkt: <a href="https://www.google.com/maps/dir/?api=1&origin=a%26o+Hostel+Hauptbahnhof,+Sonnwendgasse+11,+1100+Wien&destination=TU+Wien+Favoritenstraße+9-11+Portier&travelmode=transit" target="_blank" class="map-link">Portier</a></span></span>
+        </div>
+    </div>
+
+    <!-- Donnerstag -->
+    <div class="day">
+        <h2>Donnerstag, 23. April</h2>
+        <div class="time-entry">
+            <span class="time">09:25 Uhr</span>
+            <span class="activity"><a href="https://www.google.com/maps/dir/?api=1&origin=a%26o+Hostel+Hauptbahnhof,+Sonnwendgasse+11,+1100+Wien&destination=Schloss+Schönbrunn+Wien&travelmode=transit" target="_blank" class="map-link">Schloss Schönbrunn</a></span>
+        </div>
+        <div class="time-entry">
+            <span class="time">Mittag</span>
+            <span class="activity">Mittagessen</span>
+        </div>
+        <div class="time-entry">
+            <span class="time">14:00 Uhr</span>
+            <span class="activity">Spaziergang entlang der Ringstraße zu Orten von Politik, Wissenschaft und Kunst <br><span class="location-info">Treffpunkt: <a href="https://www.google.com/maps/dir/?api=1&origin=a%26o+Hostel+Hauptbahnhof,+Sonnwendgasse+11,+1100+Wien&destination=Universität+Wien+Aula+Universitätsring+1&travelmode=transit" target="_blank" class="map-link">Universität - Aula, Universitätsring 1</a></span></span>
+        </div>
+    </div>
+
+    <!-- Freitag -->
+    <div class="day">
+        <h2>Freitag, 24. April</h2>
+        <div class="time-entry">
+            <span class="time">Vormittag</span>
+            <span class="activity">Abreise</span>
+        </div>
+        <div class="info-box" style="margin-top: 15px; border-left-color: var(--accent-color);">
+            <strong>🚆 Rückfahrt:</strong> IC 546 <br>
+            Wien Hbf (Bstg. 8A-B) ab 08:57 -> Linz Hbf (Bstg. 5A-F) an 10:28
+        </div>
+    </div>
+
+    <div class="footer-note">
+        Für die Programmabwicklung verantwortlich: <strong>ARätin Daniela Bandion</strong><br>
+        Kontakt: Wien-Aktion, Referat I/12a, wienaktion@bmb.gv.at, +43 1 531 20 2334
+    </div>
+    </div> <!-- Ende Tab Programm -->
+
+    <!-- TAB: PACKLISTE -->
+    <div id="packliste" class="tab-content">
+        <h2>Packliste für die Wienwoche</h2>
+        <p>Einfach abhaken, damit am Montag um 08:00 Uhr nichts fehlt!</p>
+        
+        <div class="packing-grid">
+            <div class="packing-category">
+                <h3>Wichtiges & Dokumente</h3>
+                <ul class="packing-list">
+                    <li><label><input type="checkbox"> E-Card (Krankenversicherung)</label></li>
+                    <li><label><input type="checkbox"> Schülerausweis / EduCard</label></li>
+                    <li><label><input type="checkbox"> Taschengeld</label></li>
+                    <li><label><input type="checkbox"> Ggf. Bankomatkarte</label></li>
+                </ul>
+            </div>
+            
+            <div class="packing-category">
+                <h3>Für Unterwegs (Tagesrucksack)</h3>
+                <ul class="packing-list">
+                    <li><label><input type="checkbox"> Kleiner Rucksack (Daypack)</label></li>
+                    <li><label><input type="checkbox"> Trinkflasche (auffüllbar)</label></li>
+                    <li><label><input type="checkbox"> Jause für die Zugfahrt</label></li>
+                    <li><label><input type="checkbox"> Regenschirm oder Regenjacke</label></li>
+                    <li><label><input type="checkbox"> Sonnenbrille / Kappe</label></li>
+                </ul>
+            </div>
+
+            <div class="packing-category">
+                <h3>Kleidung</h3>
+                <ul class="packing-list">
+                    <li><label><input type="checkbox"> SEHR bequeme Schuhe (wir gehen viel!)</label></li>
+                    <li><label><input type="checkbox"> Unterwäsche & Socken (5+ Tage)</label></li>
+                    <li><label><input type="checkbox"> T-Shirts & Pullover (Zwiebellook)</label></li>
+                    <li><label><input type="checkbox"> Bequeme Hosen / Jeans</label></li>
+                    <li><label><input type="checkbox"> Schickeres Outfit für Theater (Ronacher)</label></li>
+                    <li><label><input type="checkbox"> Pyjama / Schlafgewand</label></li>
+                    <li><label><input type="checkbox"> Hausschuhe fürs Hostel</label></li>
+                </ul>
+            </div>
+
+            <div class="packing-category">
+                <h3>Hygiene & Gesundheit</h3>
+                <ul class="packing-list">
+                    <li><label><input type="checkbox"> Zahnbürste & Zahnpasta</label></li>
+                    <li><label><input type="checkbox"> Duschgel, Shampoo & Deo</label></li>
+                    <li><label><input type="checkbox"> Haarbürste / Kamm</label></li>
+                    <li><label><input type="checkbox"> Eigenes Handtuch (zur Sicherheit)</label></li>
+                    <li><label><input type="checkbox"> Persönliche Medikamente</label></li>
+                    <li><label><input type="checkbox"> Blasenpflaster (wichtig!)</label></li>
+                    <li><label><input type="checkbox"> Taschentücher</label></li>
+                </ul>
+            </div>
+
+            <div class="packing-category">
+                <h3>Technik & Sonstiges</h3>
+                <ul class="packing-list">
+                    <li><label><input type="checkbox"> Smartphone</label></li>
+                    <li><label><input type="checkbox"> Ladekabel & Netzadapter</label></li>
+                    <li><label><input type="checkbox"> Powerbank (für lange Tage!)</label></li>
+                    <li><label><input type="checkbox"> Kopfhörer</label></li>
+                    <li><label><input type="checkbox"> Spiele/Karten für abends</label></li>
+                </ul>
+            </div>
+        </div>
+    </div> <!-- Ende Tab Packliste -->
+
+    <!-- TAB: ZIMMER -->
+    <div id="zimmer" class="tab-content">
+        <h2>Zimmereinteilung</h2>
+        <p>Hier findet ihr die genaue Aufteilung für unsere Zimmer im a&o Hostel.</p>
+        
+        <div class="room-grid">
+            <div class="room-box">
+                <div class="room-title">Zimmer 1</div>
+                <div style="text-align: left; padding-left: 10px; line-height: 1.8;">
+                    Bachmeier<br>
+                    Breuer<br>
+                    Haydn<br>
+                    Kerschbaumer<br>
+                    Ortner
+                </div>
+            </div>
+            <div class="room-box">
+                <div class="room-title">Zimmer 2</div>
+                <div style="text-align: left; padding-left: 10px; line-height: 1.8;">
+                    Dawari<br>
+                    Hametner<br>
+                    Madlmayr<br>
+                    Malfent<br>
+                    Oguzhan<br>
+                    Weilguni
+                </div>
+            </div>
+            <div class="room-box">
+                <div class="room-title">Zimmer 3</div>
+                <div style="text-align: left; padding-left: 10px; line-height: 1.8;">
+                    Engleder<br>
+                    Groiß<br>
+                    Miksch<br>
+                    Puchner<br>
+                    Reisenberger
+                </div>
+            </div>
+            <div class="room-box">
+                <div class="room-title">Zimmer 4</div>
+                <div style="text-align: left; padding-left: 10px; line-height: 1.8;">
+                    Al Mosafra<br>
+                    Bambur<br>
+                    Heider<br>
+                    Paltinger<br>
+                    Rechberger<br>
+                    Vicentic
+                </div>
+            </div>
+        </div>
+    </div> <!-- Ende Tab Zimmer -->
+
+    <!-- TAB: ELTERNINFO -->
+    <div id="elterninfo" class="tab-content">
+        <h2>Elterninformationen</h2>
+        <p>Hier finden Sie die wichtigsten Eckdaten, Kosten, sowie unsere Verhaltensvereinbarungen für die Projektwoche.</p>
+        
+        <div class="packing-grid">
+            <!-- Begleitpersonen -->
+            <div class="packing-category" style="grid-column: 1 / -1;">
+                <h3>Begleitpersonen</h3>
+                <ul style="line-height: 1.8; color: #555; list-style-type: none; padding-left: 0; margin-top: 10px;">
+                    <li><strong>KV 4A:</strong> Prof. Sabine Matscheko</li>
+                    <li><strong>KV 4B:</strong> Prof. Michael Schweitzer</li>
+                    <li><strong>KV 4B:</strong> Prof. Davina Vala</li>
+                    <li style="margin-top: 10px;"><strong>Begleitlehrer:</strong><br>Prof. Stefan Bauernfeind, Prof. Oketa Belegu</li>
+                </ul>
+            </div>
+
+            <!-- Kostenaufstellung -->
+            <div class="packing-category" style="grid-column: 1 / -1;">
+                <h3>Kostenaufstellung</h3>
+                <p style="font-size: 1.1em; margin-bottom: 10px;"><strong>Gesamtkosten: € ~250</strong></p>
+                <ul style="line-height: 1.8; color: #555;">
+                    <li>Zugfahrt (Linz - Wien retour): € folgen</li>
+                    <li>Unterkunft, Vollpension, Programm: € 187</li>
+                    <li>Tickets für öffentliche Verkehrsmittel (Wien): € [...]</li>
+                    <li>Sonstiges: Taschengeld</li>
+                </ul>
+            </div>
+
+            <!-- Digitale Medien -->
+            <div class="packing-category" style="grid-column: 1 / -1;">
+                <h3>Digitale Medien</h3>
+                <p>Wir weisen darauf hin, dass die Kinder <strong>Tablets, Spielekonsolen o.Ä. zu Hause lassen</strong> sollen. Die Handys werden <strong>abends eingesammelt</strong>.</p>
+                <p style="margin-bottom: 5px;">Während der Projektwoche sollten Handys nur hierfür verwendet werden:</p>
+                <ul style="color: #555; padding-left: 20px; margin-top: 0;">
+                    <li>Fotografieren (wenn von Lehrpersonen gestattet & Recht am eigenen Bild beachten!)</li>
+                    <li>Kontaktmöglichkeit in Notfällen</li>
+                    <li>Evtl. zur Kontaktaufnahme am Abend</li>
+                    <li>Für etwaige Projekte (nach Aufforderung)</li>
+                </ul>
+            </div>
+
+            <!-- Entlassung am Freitag -->
+            <div class="packing-category" style="grid-column: 1 / -1;">
+                <h3>Entlassung am Freitag</h3>
+                <p>Wir kommen am Freitag, den 24.04., mit dem IC 546 um <strong>10:28 Uhr am Linzer Hauptbahnhof</strong> an.</p>
+                
+                <div class="info-box" style="margin-top: 15px; padding: 12px; margin-bottom: 0;">
+                    <strong>⚠️ Wichtige Information:</strong><br><br>
+                    Sollte Ihr Kind nach der Ankunft am Hauptbahnhof Linz <strong>selbstständig den Heimweg</strong> antreten dürfen, benötigen wir dafür zwingend im Vorfeld eine <strong>schriftliche Einverständniserklärung</strong> von Ihnen.<br><br>
+                    <em>Ohne diese Bestätigung dürfen wir die Schülerinnen und Schüler am Bahnhof nicht entlassen!</em>
+                </div>
+            </div>
+
+            <!-- Verhalten (Volle Breite) -->
+            <div class="packing-category" style="grid-column: 1 / -1;">
+                <h3>Verhalten & Aufsichtspflicht</h3>
+                <p>Die Projektwoche ist eine Schulveranstaltung. Eine lückenlose Aufsicht ist bei derartigen Veranstaltungen manchmal nicht möglich, die Schülerinnen und Schüler werden sich an bestimmten, klar festgelegten Räumen (Museen etc.) in Gruppen mehrerer Personen bewegen.</p>
+                <p>Wir ersuchen Sie, dies mit Ihrer Unterschrift zur Kenntnis zu nehmen, ebenso wie die Verpflichtung der Schüler, <strong>pünktlich zu den vereinbarten Zeiten am jeweiligen Treffpunkt zu erscheinen</strong>. Außerdem ist es selbstverständlich, dass den Anforderungen der Lehrkräfte / Begleitpersonen Folge geleistet werden muss.</p>
+                
+                <div class="info-box" style="margin-top: 15px; padding: 12px; margin-bottom: 0; border-left-color: var(--accent-color); background-color: #fff5f5;">
+                    <strong>⚠️ Ausschluss von der Schulveranstaltung:</strong><br><br>
+                    Stört ein Schüler den geordneten Ablauf einer Schulveranstaltung in schwerwiegender Weise oder wird durch sein Verhalten die eigene oder die körperliche Sicherheit der anderen Teilnehmer gefährdet, kann der Leiter der Schulveranstaltung laut Schulveranstaltungsverordnung den Schüler/die Schülerin von der weiteren Teilnahme ausschließen. <br><br>
+                    <strong>Der Schüler/die Schülerin muss von den Erziehungsberechtigten auf deren Kosten abgeholt werden.</strong> Nach Rückkehr kann eine Disziplinarkonferenz einberufen werden.
+                </div>
+            </div>
+
+        </div>
+    </div> <!-- Ende Tab Elterninfo -->
+
+    <!-- TAB: BESTÄTIGUNG -->
+    <div id="bestaetigung" class="tab-content">
+        
+        <h2>Bestätigung via E-Mail</h2>
+        <p>Um es für Sie so einfach wie möglich zu machen, senden Sie mir die Einverständniserklärung bitte direkt als Nachricht an <strong><a href="mailto:michael.schweitzer@georgvonpeuerbach.at" class="map-link">michael.schweitzer@georgvonpeuerbach.at</a></strong>.</p>
+        <p>Sie können den folgenden Textblock einfach kopieren, die Angaben in den eckigen Klammern ergänzen und an mich senden:</p>
+        
+        <div class="copy-box" id="untis-text">Betreff: Einverständniserklärung Wienwoche 4b - [Name des Kindes]
+
+Lieber Herr Prof. Schweitzer,
+
+hiermit bestätige ich die Teilnahme meines Kindes [Name des Kindes] an der Projektwoche in Wien (20.04. - 24.04.2026). 
+
+Ich bestätige, dass ich alle Informationen, Kostenpunkte und Verhaltensregeln auf der Infoseite gelesen habe und diese vollumfänglich akzeptiere.
+
+Bezüglich Abreise am Montag:
+[Vorläufige Uhrzeiten sind auf der Programmseite, können sich noch ändern, wird aber rechtzeitig bekanntgegeben. BITTE WÄHLEN UND DAS ANDERE LÖSCHEN]
+- Mein Kind kommt direkt zum Bahnhof Linz.
+- Mein Kind kommt zur Schule.
+
+Bezüglich der Entlassung am Freitag (Ankunft 10:28 Uhr, Linz Hbf):
+[BITTE WÄHLEN UND DAS ANDERE LÖSCHEN]
+- Mein Kind darf vom Bahnhof Linz alleine nach Hause fahren.
+- Mein Kind wird nach Rückkehr zur Schule um ca. 11 Uhr entlassen.
+
+[FALLS SIE NOCH ETWAS ANMERKEN MÖCHTEN]
+Sonstige Anmerkungen: 
+
+
+Mit freundlichen Grüßen,
+[Ihr Name]</div>
+
+        <button onclick="copyUntisText()" class="print-button" style="margin-top: 20px;" id="copy-btn">📋 Text in die Zwischenablage kopieren</button>
+        
+    </div> <!-- Ende Tab Bestätigung -->
+
+</div>
+
+<!-- Script für Tab-Wechsel und Kopieren -->
+<script>
+    function openTab(evt, tabName) {
+        var i, tabcontent, tablinks;
+        
+        tabcontent = document.getElementsByClassName("tab-content");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+            tabcontent[i].classList.remove("active");
+        }
+        
+        tablinks = document.getElementsByClassName("tab");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].classList.remove("active");
+        }
+        
+        document.getElementById(tabName).style.display = "block";
+        
+        // Timeout für die Fade-In Animation
+        setTimeout(() => {
+            document.getElementById(tabName).classList.add("active");
+        }, 10);
+        
+        evt.currentTarget.classList.add("active");
+    }
+
+    function copyUntisText() {
+        const text = document.getElementById('untis-text').innerText;
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.select();
+        try {
+            document.execCommand('copy');
+            const btn = document.getElementById('copy-btn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = "✅ Erfolgreich kopiert!";
+            btn.style.backgroundColor = "#28a745"; // Grünes Feedback
+            setTimeout(() => { 
+                btn.innerHTML = originalText; 
+                btn.style.backgroundColor = ""; 
+            }, 3000);
+        } catch (err) {
+            console.error('Kopieren fehlgeschlagen', err);
+        }
+        document.body.removeChild(textArea);
+    }
+</script>
+
+</body>
+</html>

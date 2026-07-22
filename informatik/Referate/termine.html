@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terminübersicht | Referate Informatik</title>
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+        .date-header {
+            border-bottom: 3px solid var(--primary);
+            color: var(--primary);
+            padding-bottom: 0.5rem;
+            margin-top: 2.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .team-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-left: 5px solid var(--primary);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .team-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .team-names {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .team-title {
+            font-size: 1.25rem;
+            color: var(--doc-blue);
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+        .team-focus {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: 6px;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Themen & Termine</h1>
+    <p>Die Referate für Informatik (5. Klasse AHS)</p>
+</header>
+
+<div class="back-nav">
+    <a href="../index.html" class="btn-back">← Zurück zur Übersicht</a>
+</div>
+
+<main>
+    <section class="subject-group">
+        <p style="font-size: 1.1rem; margin-bottom: 2rem;">Hier findet ihr eure zugeteilten Themen und die genauen Arbeitstitel. Der "Fokus" zeigt euch, worauf ihr euch bei der Recherche besonders konzentrieren sollt, damit ihr euch nicht in unwichtigen Details verliert!</p>
+
+        <h2 class="date-header">📅 10. April</h2>
+        
+        <div class="team-card" style="border-left-color: var(--doc-blue);">
+            <div class="team-names">👥 Lena H. & Lilly</div>
+            <div class="team-title">Quantencomputer: Die nächste IT-Revolution?</div>
+            <div class="team-focus">
+                <strong>Fokus:</strong> Der Unterschied zwischen klassischen Bits (0 und 1) und Qubits. Was können Quantencomputer besser als normale Rechner und wo stehen wir aktuell in der Forschung?
+            </div>
+        </div>
+
+        <div class="team-card" style="border-left-color: var(--doc-blue);">
+            <div class="team-names">👥 Fini & Vali</div>
+            <div class="team-title">Kryptografie: Die Kunst der Datenverschlüsselung</div>
+            <div class="team-focus">
+                <strong>Fokus:</strong> Kurzer historischer Einstieg (z.B. Caesar-Verschlüsselung) und dann der Sprung in die Gegenwart: Wie funktioniert die Ende-zu-Ende-Verschlüsselung, die wir jeden Tag bei WhatsApp oder Signal nutzen?
+            </div>
+        </div>
+
+        <h2 class="date-header">📅 8. Mai</h2>
+
+        <div class="team-card" style="border-left-color: var(--xls-green);">
+            <div class="team-names">👥 Sharlenys & Luisa</div>
+            <div class="team-title">Wie funktioniert das Internet? Der unsichtbare Weg der Daten</div>
+            <div class="team-focus">
+                <strong>Fokus:</strong> Was passiert im Hintergrund, wenn ich eine Website aufrufe? Erklärung von grundlegenden Begriffen wie IP-Adressen, Servern, Routern, Datenpaketen und dem DNS (dem "Telefonbuch" des Internets).
+            </div>
+        </div>
+
+        <div class="team-card" style="border-left-color: var(--xls-green);">
+            <div class="team-names">👥 Lolo & Theo</div>
+            <div class="team-title">Hacking & Cyber-Bedrohungen: Wie Angreifer vorgehen</div>
+            <div class="team-focus">
+                <strong>Fokus:</strong> Abgrenzung zwischen Black-Hat- und White-Hat-Hackern. Vorstellung typischer Angriffsmethoden (Phishing, Malware/Ransomware, Social Engineering) und wie man sich davor schützen kann.
+            </div>
+        </div>
+
+        <div class="team-card" style="border-left-color: var(--xls-green);">
+            <div class="team-names">👥 Magdi & Klara S.</div>
+            <div class="team-title">Digitale Selbstverteidigung: Passwörter & 2FA</div>
+            <div class="team-focus">
+                <strong>Fokus:</strong> Warum "Passwort123" gefährlich ist (Brute-Force-Angriffe). Wie ein Passwortmanager funktioniert und warum die 2-Faktor-Authentifizierung (2FA) heute der wichtigste Schutz für unsere Accounts ist.
+            </div>
+        </div>
+
+        <div class="team-card" style="border-left-color: var(--xls-green);">
+            <div class="team-names">👥 Lena R. & Klara M.</div>
+            <div class="team-title">Siri, Alexa & Co.: Wie Computer unsere Sprache verstehen</div>
+            <div class="team-focus">
+                <strong>Fokus:</strong> Der Prozess von der Schallwelle zum Befehl: Spracherkennung (Voice-to-Text), Verarbeitung durch Künstliche Intelligenz (NLP - Natural Language Processing) und die Rückmeldung. Kurzer Blick auf den Datenschutz.
+            </div>
+        </div>
+
+        <h2 class="date-header">📅 19. Juni</h2>
+
+        <div class="team-card" style="border-left-color: var(--html-orange);">
+            <div class="team-names">👥 Ben & Oli</div>
+            <div class="team-title">Das Auto als Computer: Assistenzsysteme und Autonomes Fahren</div>
+            <div class="team-focus">
+                <strong>Fokus:</strong> Welche Sensoren, Kameras und Radarsysteme sind in modernen Autos verbaut? Wie verarbeitet die Software diese Daten, um Unfälle zu vermeiden (Spurhalteassistent, Notbremsung)?
+            </div>
+        </div>
+
+        <div class="team-card" style="border-left-color: var(--html-orange);">
+            <div class="team-names">👥 Junis & Raoul</div>
+            <div class="team-title">Die Magie hinter Videospielen: Wie Game Engines funktionieren</div>
+            <div class="team-focus">
+                <strong>Fokus:</strong> Was macht eine Game Engine (z.B. Unity, Unreal Engine) eigentlich? Erklärung der wichtigsten Bausteine wie Physik-Engine (Schwerkraft), Rendering (Grafik) und Kollisionsabfrage.
+            </div>
+        </div>
+
+        <div class="team-card" style="border-left-color: var(--html-orange);">
+            <div class="team-names">👥 Buchi & Paula</div>
+            <div class="team-title">Deep Fakes</div>
+            <div class="team-focus">
+                <strong>Fokus:</strong> 
+                <h3>Mögliche Leitfragen für 15 Minuten:</h3>
+            <ul>
+                <li><strong>Die Technik:</strong> Wie funktioniert die KI hinter Deepfakes (z.B. Machine Learning, GANs) einfach erklärt?</li>
+                <li><strong>Die Praxis:</strong> Welche legalen und illegalen Anwendungsbereiche gibt es?</li>
+                <li><strong>Gefahren & Ethik:</strong> Was bedeutet das für Wahlen, Fake News und unsere Gesellschaft?</li>
+                <li><strong>Erkennung:</strong> Auf welche Details in Bildern muss man achten, um einen Deepfake zu entlarven?</li>
+            </ul>
+            </div>
+        </div>
+
+        
+
+    </section>
+</main>
+
+<footer>
+    <p>Informatik 5. Klasse AHS | Prof. Schweitzer</p>
+</footer>
+
+</body>
+</html>

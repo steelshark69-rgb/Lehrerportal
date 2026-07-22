@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abschlussquiz: Datenbanken & SQL</title>
+    <link rel="stylesheet" href="../../style.css">
+    
+    <style>
+        /* Lokales CSS für das Quiz */
+        body {
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+            line-height: 1.6;
+            color: #2d3748;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f1f5f9;
+        }
+
+        .header-box {
+            background-color: #fff; padding: 20px; border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); margin-bottom: 20px;
+            border-top: 5px solid #3b82f6;
+        }
+        
+        .quiz-container { display: none; } /* Wird erst nach Namenseingabe gezeigt */
+        
+        .question-card {
+            background-color: #fff; border: 1px solid #cbd5e1; border-radius: 8px;
+            padding: 25px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .question-header {
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; margin-bottom: 15px;
+        }
+        .question-header h3 { margin: 0; color: #1e293b; }
+        .points-badge {
+            background-color: #e0f2fe; color: #0369a1; padding: 5px 12px;
+            border-radius: 20px; font-weight: bold; font-size: 0.9em;
+        }
+
+        /* Form Elements */
+        label.option-label {
+            display: block; padding: 12px 15px; margin: 8px 0; background-color: #f8fafc;
+            border: 1px solid #e2e8f0; border-radius: 6px; cursor: pointer; transition: 0.2s;
+        }
+        label.option-label:hover { background-color: #e2e8f0; }
+        input[type="radio"] { margin-right: 10px; transform: scale(1.2); cursor: pointer; }
+        
+        input[type="text"], select {
+            width: 100%; padding: 10px; margin-top: 10px; border: 2px solid #cbd5e1;
+            border-radius: 6px; font-size: 16px; font-family: monospace;
+        }
+        input[type="text"]:focus, select:focus { outline: none; border-color: #3b82f6; }
+
+        .btn {
+            background-color: #3b82f6; color: white; border: none; padding: 12px 25px;
+            border-radius: 6px; cursor: pointer; font-size: 18px; font-weight: bold;
+            transition: 0.3s; display: inline-block;
+        }
+        .btn:hover { background-color: #2563eb; }
+        .btn-submit { background-color: #10b981; width: 100%; font-size: 20px; margin-top: 20px; }
+        .btn-submit:hover { background-color: #059669; }
+
+        /* Result Box */
+        #result-box {
+            display: none; background-color: #fff; padding: 30px; border-radius: 8px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); text-align: center;
+            border-top: 8px solid #10b981; margin-top: 30px;
+        }
+        .score-display { font-size: 48px; font-weight: bold; color: #0f172a; margin: 20px 0; }
+        .info-text { color: #64748b; font-size: 1.1em; margin-bottom: 20px; }
+        
+        /* Tabellen Styling */
+        table.mock-db { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 0.9em;}
+        table.mock-db th, table.mock-db td { border: 1px solid #cbd5e1; padding: 8px; text-align: left; }
+        table.mock-db th { background-color: #f1f5f9; }
+
+        table.tf-table { width: 100%; border-collapse: collapse; margin-top: 15px;}
+        table.tf-table th, table.tf-table td { border: 1px solid #cbd5e1; padding: 12px; vertical-align: top; }
+        table.tf-table th { background-color: #e2e8f0; color: #1e293b; }
+        .code-snippet { font-family: monospace; background: #f8fafc; padding: 4px 8px; border-radius: 4px; border: 1px solid #e2e8f0; color: #2563eb; font-weight: bold; display: inline-block;}
+        .tf-radio-group label { display: block; cursor: pointer; margin-bottom: 5px; padding: 5px; border-radius: 4px;}
+        .tf-radio-group label:hover { background: #f1f5f9; }
+    </style>
+</head>
+<body>
+
+    <div class="header-box" id="start-screen">
+        <h1>Abschlussquiz: Datenbanken & SQL</h1>
+        <p>Willkommen zur Abschlussüberprüfung. Dieses Quiz dauert ca. 30 Minuten und prüft dein Wissen aus den Einheiten 1 bis 8. Du erhältst während des Quizzes <strong>kein</strong> Feedback, ob eine Antwort richtig oder falsch ist.</p>
+        <p>Am Ende wird automatisch ein Zertifikat als Bilddatei für dich generiert.</p>
+        
+        <hr style="border: 1px solid #e2e8f0; margin: 20px 0;">
+        
+        <label for="student-name" style="font-weight: bold; font-size: 1.2em;">Bitte gib deinen Vor- und Nachnamen ein:</label>
+        <input type="text" id="student-name" placeholder="z.B. Max Mustermann" style="font-family: inherit; margin-bottom: 20px;">
+        <button class="btn" onclick="startQuiz()">Quiz starten</button>
+    </div>
+
+    <div id="quiz-container" class="quiz-container">
+        
+        <div class="question-card">
+            <div class="question-header">
+                <h3>1. Das Problem der flachen Tabellen</h3>
+                <span class="points-badge">2 Punkte</span>
+            </div>
+            <p>Was versteht man in der Datenbank-Welt unter <strong>Redundanz</strong>?</p>
+            <label class="option-label"><input type="radio" name="q1" value="wrong"> Dass eine Datenbank zu viele Spalten hat und unübersichtlich wird.</label>
+            <label class="option-label"><input type="radio" name="q1" value="correct"> Dass dieselben Informationen unnötigerweise mehrfach gespeichert werden.</label>
+            <label class="option-label"><input type="radio" name="q1" value="wrong"> Dass das Datenbankmanagementsystem (DBMS) überlastet ist und abstürzt.</label>
+            <label class="option-label"><input type="radio" name="q1" value="wrong"> Dass Daten beim Herunterfahren des PCs automatisch gelöscht werden.</label>
+        </div>
+
+        <div class="question-card">
+            <div class="question-header">
+                <h3>2. Folgen von Redundanz</h3>
+                <span class="points-badge">2 Punkte</span>
+            </div>
+            <p>Was passiert am ehesten, wenn eine flache Tabelle (z.B. in Excel) viele redundante Daten enthält und ein Schüler umzieht?</p>
+            <label class="option-label"><input type="radio" name="q2" value="wrong"> Die alte Adresse wird zur Sicherheit automatisch in einen Fremdschlüssel umgewandelt.</label>
+            <label class="option-label"><input type="radio" name="q2" value="wrong"> Das DBMS erkennt den Umzug und aktualisiert alle doppelten Einträge vollautomatisch.</label>
+            <label class="option-label"><input type="radio" name="q2" value="correct"> Man muss die Adresse an zig Stellen ändern. Vergisst man eine, widersprechen sich die Daten (Inkonsistenz).</label>
+            <label class="option-label"><input type="radio" name="q2" value="wrong"> Die Datenbank stürzt ab, weil der Speicherplatz durch die Redundanz sofort voll ist.</label>
+        </div>
+
+        <div class="question-card">
+            <div class="question-header">
+                <h3>3. DB vs. DBMS</h3>
+                <span class="points-badge">2 Punkte</span>
+            </div>
+            <p>Worin liegt der genaue Unterschied zwischen DB und DBMS?</p>
+            <label class="option-label"><input type="radio" name="q3" value="wrong"> Das DBMS sind die reinen Daten, die DB ist das Programm auf dem PC.</label>
+            <label class="option-label"><input type="radio" name="q3" value="correct"> Die DB speichert die Daten, das DBMS ist die Software, die diese verwaltet.</label>
+            <label class="option-label"><input type="radio" name="q3" value="wrong"> Das DBMS ist die physische Hardware (der Server), die DB ist die Software.</label>
+            <label class="option-label"><input type="radio" name="q3" value="wrong"> Beide Begriffe sind Synonyme und bedeuten in der Informatik exakt dasselbe.</label>
+        </div>
+
+        <div class="question-card">
+            <div class="question-header">
+                <h3>4. Die Wahl des Primärschlüssels</h3>
+                <span class="points-badge">2 Punkte</span>
+            </div>
+            <p>Wir bauen eine Datenbank für gebrauchte Autos. Welches Attribut eignet sich am besten als <strong>Primärschlüssel (PK)</strong>?</p>
+            <label class="option-label"><input type="radio" name="q4" value="wrong"> Das Kennzeichen (z.B. L-123AB)</label>
+            <label class="option-label"><input type="radio" name="q4" value="correct"> Eine künstlich generierte und fortlaufende Auto_ID (z.B. 1, 2, 3...)</label>
+            <label class="option-label"><input type="radio" name="q4" value="wrong"> Die Marke und das Modell des Autos</label>
+            <label class="option-label"><input type="radio" name="q4" value="wrong"> Das Datum der Erstzulassung</label>
+        </div>
+
+        <div class="question-card">
+            <div class="question-header">
+                <h3>5. Die Aufgabe des Fremdschlüssels</h3>
+                <span class="points-badge">2 Punkte</span>
+            </div>
+            <p>Was ist die Hauptfunktion eines <strong>Fremdschlüssels (Foreign Key)</strong> in einer relationalen Datenbank?</p>
+            <label class="option-label"><input type="radio" name="q5" value="wrong"> Er verschlüsselt sensible Daten, damit sie vor Hackern sicher sind.</label>
+            <label class="option-label"><input type="radio" name="q5" value="correct"> Er verweist auf den Primärschlüssel einer anderen Tabelle, um die beiden Tabellen zu verknüpfen.</label>
+            <label class="option-label"><input type="radio" name="q5" value="wrong"> Er dient als automatisches Backup, falls der Primärschlüssel gelöscht wird.</label>
+            <label class="option-label"><input type="radio" name="q5" value="wrong"> Er sorgt dafür, dass ausländische Währungen oder Zeichen korrekt gespeichert werden.</label>
+        </div>
+
+        <div class="question-card">
+            <div class="question-header">
+                <h3>6. Entity-Relationship-Diagramme (ERD)</h3>
+                <span class="points-badge">3 Punkte</span>
+            </div>
+            <p>Ordne die Symbole der Chen-Notation ihren Bedeutungen zu.</p>
+            <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 200px;">
+                    <strong>Rechteck:</strong>
+                    <select id="q6a">
+                        <option value="">- Wähle -</option><option value="beziehung">Beziehung</option><option value="attribut">Attribut</option><option value="entitaet">Entität</option>
+                    </select>
+                </div>
+                <div style="flex: 1; min-width: 200px;">
+                    <strong>Oval:</strong>
+                    <select id="q6b">
+                        <option value="">- Wähle -</option><option value="beziehung">Beziehung</option><option value="attribut">Attribut</option><option value="entitaet">Entität</option>
+                    </select>
+                </div>
+                <div style="flex: 1; min-width: 200px;">
+                    <strong>Raute:</strong>
+                    <select id="q6c">
+                        <option value="">- Wähle -</option><option value="beziehung">Beziehung</option><option value="attribut">Attribut</option><option value="entitaet">Entität</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-header">
+                <h3>7. ERD: Entität vs. Attribut</h3>
+                <span class="points-badge">2 Punkte</span>
+            </div>
+            <p>In einem ER-Diagramm für unsere Schulbibliothek gibt es die Entität "Buch". Welcher der folgenden Begriffe wäre ein logisches <strong>Attribut</strong> für diese Entität?</p>
+            <label class="option-label"><input type="radio" name="q7" value="wrong"> Der Schüler / Die Schülerin</label>
+            <label class="option-label"><input type="radio" name="q7" value="correct"> Das Erscheinungsjahr</label>
+            <label class="option-label"><input type="radio" name="q7" value="wrong"> Das Ausleihen (Vorgang)</label>
+            <label class="option-label"><input type="radio" name="q7" value="wrong"> Die Bibliothek selbst</label>
+        </div>
+
+        <div class="question-card">
+            <div class="question-header">
+                <h3>8. Der Endgegner: Das m:n Problem</h3>
+                <span class="points-badge">4 Punkte</span>
+            </div>
+            <p>Ein Schüler liest viele Bücher. Ein Buch wird von vielen Schülern gelesen (m:n). Wie machen wir das für die Datenbank speicherbar?</p>
+            <label class="option-label"><input type="radio" name="q8" value="wrong"> Wir schreiben alle gelesenen Buch-IDs mit einem Beistrich getrennt in die Schüler-Tabelle.</label>
+            <label class="option-label"><input type="radio" name="q8" value="wrong"> Wir ignorieren das Problem, da moderne Datenbanken das out-of-the-box verarbeiten können.</label>
+            <label class="option-label"><input type="radio" name="q8" value="correct"> Wir erstellen eine Verknüpfungstabelle in der Mitte, die die Primärschlüssel beider Seiten aufnimmt.</label>
+            <label class="option-label"><input type="radio" name="q8" value="wrong"> Wir verknüpfen sie direkt mit einem Foreign Key in der Schüler-Tabelle.</label>
+        </div>
+
+        <div class="question-card">
+            <div class="question-header">
+                <h3>9. Datentypen in SQL</h3>
+                <span class="points-badge">2 Punkte</span>
+            </div>
+            <p>Welchen Datentyp wählst du für die Spalte <code>MwSt</code> (z.B. 20.0)?</p>
+            <select id="q9">
+                <option value="">- Wähle Datentyp -</option>
+                <option value="varchar">VARCHAR / TEXT</option>
+                <option value="integer">INTEGER</option>
+                <option value="real">REAL / DECIMAL</option>
+            </select>
+        </div>
+
+        <div class="question-card">
+            <div class="question-header">
+                <h3>10. SQL: Daten filtern</h3>
+                <span class="points-badge">2 Punkte</span>
+            </div>
+            <p>Welcher Befehl filtert die Tabelle <code>spiele</code> so, dass nur Spiele ab 12 Jahren freigegeben sind?</p>
+            <label class="option-label"><input type="radio" name="q10" value="wrong"> SELECT usk = 12 FROM spiele</label>
+            <label class="option-label"><input type="radio" name="q10" value="correct"> SELECT * FROM spiele WHERE usk = 12</label>
+            <label class="option-label"><input type="radio" name="q10" value="wrong"> FIND spiele WITH usk = 12</label>
+            <label class="option-label"><input type="radio" name="q10" value="wrong"> SELECT * FROM spiele FILTER usk = 12</label>
+        </div>
+
+        <div class="question-card">
+            <div class="question-header">
+                <h3>11. SQL: Daten sortieren</h3>
+                <span class="points-badge">2 Punkte</span>
+            </div>
+            <p>Du möchtest eine Schüler-Liste alphabetisch nach dem Nachnamen sortieren. Welcher SQL-Zusatz ist der richtige?</p>
+            <label class="option-label"><input type="radio" name="q11" value="wrong"> SORT BY nachname ALPHABETICAL</label>
+            <label class="option-label"><input type="radio" name="q11" value="wrong"> WHERE nachname = A-Z</label>
+            <label class="option-label"><input type="radio" name="q11" value="wrong"> GROUP BY nachname</label>
+            <label class="option-label"><input type="radio" name="q11" value="correct"> ORDER BY nachname ASC</label>
+        </div>
+
+        <div class="question-card">
+            <div class="question-header">
+                <h3>12. SQL SELECT Abfrage formulieren (Text)</h3>
+                <span class="points-badge">5 Punkte</span>
+            </div>
+            <p>Tabelle: <code>produkte</code> (Spalten: id, name, preis, mwst).</p>
+            <p>Formuliere einen SQL-Befehl, der <strong>alle Spalten</strong> anzeigt, aber nur Produkte, deren <strong>Preis unter 50</strong> liegt.</p>
+            <input type="text" id="q12" placeholder="Tippe deinen SQL Befehl hier..." autocomplete="off" spellcheck="false">
+        </div>
+
+        <div class="question-card">
+            <div class="question-header">
+                <h3>13. Die Königsdisziplin: JOIN</h3>
+                <span class="points-badge">6 Punkte</span>
+            </div>
+            <p>Verbinde die Tabelle <code>kunden</code> mit der Tabelle <code>rechnungen</code>. Welche <span style="font-family: monospace;">ON</span>-Bedingung ist die richtige?</p>
+            
+            <div style="display: flex; gap: 20px; margin-bottom: 15px;">
+                <table class="mock-db"><tr><th>kunden</th></tr><tr><td>id (PK)</td></tr><tr><td>name</td></tr></table>
+                <table class="mock-db"><tr><th>rechnungen</th></tr><tr><td>r_id (PK)</td></tr><tr><td>kunden_id (FK)</td></tr></table>
+            </div>
+
+            <p style="font-family: monospace; background: #f1f5f9; padding: 10px;">SELECT * FROM kunden JOIN rechnungen ON ...</p>
+            
+            <label class="option-label"><input type="radio" name="q13" value="wrong"> ON kunden.id = rechnungen.r_id</label>
+            <label class="option-label"><input type="radio" name="q13" value="wrong"> ON kunden + rechnungen</label>
+            <label class="option-label"><input type="radio" name="q13" value="correct"> ON kunden.id = rechnungen.kunden_id</label>
+            <label class="option-label"><input type="radio" name="q13" value="wrong"> ON kunden.name = rechnungen.kunden_id</label>
+        </div>
+
+        <div class="question-card">
+            <div class="question-header">
+                <h3>14. Code-Inspektor: Richtig oder Falsch?</h3>
+                <span class="points-badge">8 Punkte</span>
+            </div>
+            <p>Du bist der Datenbank-Admin. Sind diese 8 SQL-Befehle syntaktisch und logisch korrekt für das geforderte Ziel? Entscheide bei jedem Code-Schnipsel.</p>
+            
+            <table class="mock-db" style="margin-bottom: 15px; width: auto;">
+                <tr><th colspan="4" style="text-align: center; background-color: #cbd5e1;">Tabelle: filme</th></tr>
+                <tr><th>id (INT)</th><th>titel (VARCHAR)</th><th>erscheinungsjahr (INT)</th><th>bewertung (REAL)</th></tr>
+            </table>
+
+            <table class="tf-table">
+                <tr><th>Gefordertes Ziel</th><th>Geschriebener SQL-Code</th><th>Deine Bewertung</th></tr>
+                
+                <tr>
+                    <td>1. Alle Spalten der Tabelle anzeigen.</td>
+                    <td><span class="code-snippet">SELECT * FROM filme</span></td>
+                    <td class="tf-radio-group">
+                        <label><input type="radio" name="tf1" value="correct"> Richtig</label>
+                        <label><input type="radio" name="tf1" value="wrong"> Falsch</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>2. Alle Filme ab dem Jahr 2020 finden.</td>
+                    <td><span class="code-snippet">SELECT * filme WHERE erscheinungsjahr >= 2020</span></td>
+                    <td class="tf-radio-group">
+                        <label><input type="radio" name="tf2" value="wrong"> Richtig</label>
+                        <label><input type="radio" name="tf2" value="correct"> Falsch <small>(FROM fehlt)</small></label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>3. Nur Titel und Bewertung anzeigen.</td>
+                    <td><span class="code-snippet">SELECT titel, bewertung FROM filme</span></td>
+                    <td class="tf-radio-group">
+                        <label><input type="radio" name="tf3" value="correct"> Richtig</label>
+                        <label><input type="radio" name="tf3" value="wrong"> Falsch</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>4. Filme alphabetisch nach Titel sortieren.</td>
+                    <td><span class="code-snippet">SELECT * FROM filme SORT BY titel</span></td>
+                    <td class="tf-radio-group">
+                        <label><input type="radio" name="tf4" value="wrong"> Richtig</label>
+                        <label><input type="radio" name="tf4" value="correct"> Falsch <small>(ORDER BY, nicht SORT)</small></label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>5. Filme anzeigen, die besser als 8.0 bewertet sind.</td>
+                    <td><span class="code-snippet">SELECT * FROM filme WHERE bewertung > 8.0</span></td>
+                    <td class="tf-radio-group">
+                        <label><input type="radio" name="tf5" value="correct"> Richtig</label>
+                        <label><input type="radio" name="tf5" value="wrong"> Falsch</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>6. Exakt den Film "Avatar" finden.</td>
+                    <td><span class="code-snippet">SELECT * FROM filme WHERE titel = Avatar</span></td>
+                    <td class="tf-radio-group">
+                        <label><input type="radio" name="tf6" value="wrong"> Richtig</label>
+                        <label><input type="radio" name="tf6" value="correct"> Falsch <small>('Avatar' in Anführungszeichen)</small></label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>7. Filme nach Erscheinungsjahr absteigend sortieren.</td>
+                    <td><span class="code-snippet">SELECT * FROM filme ORDER BY erscheinungsjahr DESC</span></td>
+                    <td class="tf-radio-group">
+                        <label><input type="radio" name="tf7" value="correct"> Richtig</label>
+                        <label><input type="radio" name="tf7" value="wrong"> Falsch</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>8. Filme mit Bewertung 10.0 anzeigen.</td>
+                    <td><span class="code-snippet">SELECT FROM filme WHERE bewertung = 10.0</span></td>
+                    <td class="tf-radio-group">
+                        <label><input type="radio" name="tf8" value="wrong"> Richtig</label>
+                        <label><input type="radio" name="tf8" value="correct"> Falsch <small>(Fehlt Spalte oder *)</small></label>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <button class="btn btn-submit" onclick="submitQuiz()">Quiz abgeben & Beenden</button>
+
+    </div>
+
+    <div id="result-box">
+        <h2 style="color: #10b981;">Quiz erfolgreich abgegeben!</h2>
+        <div class="score-display" id="final-score">0 / 44 Punkte</div>
+        <p class="info-text" id="feedback-text"></p>
+        <p style="color: #3b82f6; font-weight: bold;">Dein Zertifikat wurde automatisch als Bild heruntergeladen!</p>
+        <a href="../index.html" class="btn" style="margin-top: 20px;">Zurück zum Portal</a>
+    </div>
+
+    <script>
+        let studentName = "";
+        const MAX_POINTS = 44; // 36 alt + 8 neu
+
+        function startQuiz() {
+            const nameInput = document.getElementById('student-name').value.trim();
+            if (nameInput === "") {
+                alert("Bitte gib deinen Namen ein, damit das Zertifikat erstellt werden kann!");
+                return;
+            }
+            studentName = nameInput;
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('quiz-container').style.display = 'block';
+            window.scrollTo(0, 0);
+        }
+
+        function submitQuiz() {
+            if(!confirm("Bist du sicher, dass du das Quiz abgeben möchtest? Danach sind keine Änderungen mehr möglich.")) return;
+
+            let score = 0;
+
+            const checkMC = (name, points) => {
+                const node = document.querySelector(`input[name="${name}"]:checked`);
+                if (node && node.value === 'correct') score += points;
+            };
+
+            // MC Fragen 1-5, 7-8, 10-11, 13
+            checkMC("q1", 2);
+            checkMC("q2", 2);
+            checkMC("q3", 2);
+            checkMC("q4", 2);
+            checkMC("q5", 2);
+            checkMC("q7", 2);
+            checkMC("q8", 4);
+            checkMC("q10", 2);
+            checkMC("q11", 2);
+            checkMC("q13", 6);
+
+            // Auswertung Dropdowns (Q6, Q9)
+            if (document.getElementById('q6a').value === 'entitaet') score += 1;
+            if (document.getElementById('q6b').value === 'attribut') score += 1;
+            if (document.getElementById('q6c').value === 'beziehung') score += 1;
+            if (document.getElementById('q9').value === 'real') score += 2;
+
+            // Auswertung Q12 (SQL Text)
+            const q12Str = document.getElementById('q12').value.toLowerCase().replace(/\s+/g, ' ').trim();
+            if (q12Str.includes('select *') && q12Str.includes('from produkte') && q12Str.includes('where') && q12Str.includes('preis') && q12Str.includes('<') && q12Str.includes('50')) {
+                score += 5;
+            } else if (q12Str.includes('select') && q12Str.includes('where')) {
+                score += 2; 
+            }
+
+            // Auswertung Code-Inspektor (Teil 4, tf1 bis tf8)
+            for (let i = 1; i <= 8; i++) {
+                checkMC(`tf${i}`, 1);
+            }
+
+            // UI Update
+            document.getElementById('quiz-container').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.style.display = 'block';
+            window.scrollTo(0, 0);
+
+            document.getElementById('final-score').innerText = `${score} / ${MAX_POINTS} Punkte`;
+            
+            const percent = (score / MAX_POINTS) * 100;
+            let fbText = "";
+            if(percent >= 85) fbText = "Hervorragend! Du bist ein wahrer Datenbank-Profi.";
+            else if(percent >= 60) fbText = "Gute Leistung! Du hast die wichtigsten Konzepte verstanden.";
+            else fbText = "Da gibt es noch etwas Luft nach oben. Sieh dir die Theorie-Kapitel am besten noch einmal an.";
+            
+            document.getElementById('feedback-text').innerText = fbText;
+
+            // Screenshot generieren
+            generateCertificate(score);
+        }
+
+        function generateCertificate(score) {
+            const canvas = document.createElement('canvas');
+            canvas.width = 800;
+            canvas.height = 450;
+            const ctx = canvas.getContext('2d');
+
+            // Hintergrund
+            ctx.fillStyle = '#f8fafc';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Rahmen
+            ctx.strokeStyle = '#3b82f6';
+            ctx.lineWidth = 15;
+            ctx.strokeRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.strokeStyle = '#cbd5e1';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(20, 20, canvas.width - 40, canvas.height - 40);
+
+            // Titel
+            ctx.fillStyle = '#0f172a';
+            ctx.font = 'bold 36px Arial, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('Zertifikat: Datenbanken & SQL', canvas.width / 2, 80);
+
+            // Schul-Branding
+            ctx.font = 'bold 20px Arial, sans-serif';
+            ctx.fillStyle = '#64748b';
+            ctx.fillText('GvP | Informatik', canvas.width / 2, 115);
+
+            ctx.beginPath();
+            ctx.moveTo(100, 140);
+            ctx.lineTo(700, 140);
+            ctx.stroke();
+
+            // Schülerdaten
+            ctx.fillStyle = '#1e293b';
+            ctx.font = '24px Arial, sans-serif';
+            ctx.textAlign = 'left';
+            ctx.fillText('Schüler: ' + studentName, 100, 200);
+            
+            const now = new Date();
+            const timeString = now.toLocaleDateString('de-AT') + ' - ' + now.toLocaleTimeString('de-AT');
+            ctx.fillText('Abgabe: ' + timeString, 100, 250);
+
+            // Punktestand
+            const percent = Math.round((score / MAX_POINTS) * 100);
+            ctx.font = 'bold 45px Arial, sans-serif';
+            ctx.textAlign = 'center';
+            
+            if (percent >= 60) {
+                ctx.fillStyle = '#10b981'; // Grün
+            } else {
+                ctx.fillStyle = '#ef4444'; // Rot
+            }
+            
+            ctx.fillText(`Ergebnis: ${score} / ${MAX_POINTS} Punkte`, canvas.width / 2, 340);
+            
+            ctx.font = 'bold 24px Arial, sans-serif';
+            ctx.fillText(`(${percent} %)`, canvas.width / 2, 380);
+
+            // Download
+            const link = document.createElement('a');
+            const safeName = studentName.replace(/[^a-zA-Z0-9]/g, '_');
+            link.download = `Zertifikat_DB_${safeName}.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+    </script>
+</body>
+</html>

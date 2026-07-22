@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programmierung - Einführung | Digitale Grundbildung</title>
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+        .component-card {
+            background: white;
+            border-left: 4px solid #f59e0b;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .component-card h3 {
+            color: #f59e0b;
+            margin-top: 0;
+        }
+        .component-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .lang-card {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            padding: 1rem;
+            margin: 0.75rem 0;
+            border-radius: 6px;
+        }
+        .lang-card strong {
+            color: #1e293b;
+        }
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 1rem;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            margin: 1rem 0;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>💻 Programmierung - Einführung</h1>
+    <p>8. Klasse | Digitale Grundbildung</p>
+    <div class="back-nav">
+        <a href="../index.html" class="btn-back">⬅ Zurück</a>
+    </div>
+</header>
+
+<main style="max-width: 900px; margin: 0 auto; padding: 2rem 1rem;">
+
+    <section>
+        <h2>Was ist Programmierung?</h2>
+        <p><strong>Programmierung ist die Kunst, dem Computer Befehle zu geben</strong> - so präzise und klar, dass er exakt das tut, was du willst.</p>
+        <p><strong>Die Analogie:</strong> Du schreibst ein Kochrezept für den Computer. Jeder Schritt muss perfekt erklärt sein, sonst versalzt er die Suppe!</p>
+    </section>
+
+    <section>
+        <h2>Warum ist Programmieren wichtig?</h2>
+
+        <div class="component-card">
+            <div class="component-icon">🌍</div>
+            <h3>Die Welt läuft auf Code</h3>
+            <p>Alles, was digital ist, wurde von jemandem programmiert:</p>
+            <ul>
+                <li>Instagram-App → Programmiert von tausenden Entwicklern</li>
+                <li>Dein Smartphone-OS → Millionen Zeilen Code</li>
+                <li>Banken-Systeme → Sicherheitscode vom Feinsten</li>
+                <li>Selbstfahrende Autos → Millionen Zeilen Code</li>
+            </ul>
+        </div>
+
+        <div class="component-card">
+            <div class="component-icon">💼</div>
+            <h3>Top-Karrierechancen</h3>
+            <p>Programmierer sind die gefragtesten Arbeitskräfte:</p>
+            <ul>
+                <li>💰 Sehr gute Gehälter (oft 60.000€+ pro Jahr)</li>
+                <li>🌐 Jobs überall auf der Welt (Remote möglich)</li>
+                <li>🚀 Schnelle Karriereaufstieg</li>
+                <li>🎯 Vielfältige Bereiche (Spiele, KI, Apps, Web, etc.)</li>
+            </ul>
+        </div>
+
+        <div class="component-card">
+            <div class="component-icon">🧠</div>
+            <h3>Denken lernen</h3>
+            <p>Programmieren lehrt dir, wie man Probleme systematisch löst:</p>
+            <ul>
+                <li>Problem zerlegen in kleine Schritte</li>
+                <li>Logisch denken und Fehler finden</li>
+                <li>Geduld und Durchhaltevermögen</li>
+                <li>Kreativität und Innovation</li>
+            </ul>
+        </div>
+    </section>
+
+    <section>
+        <h2>Programmiersprachen - Ein Überblick</h2>
+
+        <div class="lang-card">
+            <strong>🟡 Python</strong><br>
+            Einsteigerfreundlich, vielseitig. Verwendet für: Data Science, KI, Web-Entwicklung, Scripts. Beispiel: Instagram wurde teilweise in Python geschrieben.
+        </div>
+
+        <div class="lang-card">
+            <strong>🔵 JavaScript</strong><br>
+            Die Sprache des Web-Browsers. Verwendet für: Interaktive Websites, Web-Apps, Games. Läuft auf JEDEM Computer (im Browser).
+        </div>
+
+        <div class="lang-card">
+            <strong>☕ Java</strong><br>
+            Universell, zuverlässig. Verwendet für: Enterprise-Software, Banking-Systeme, Android-Apps. Motto: "Write once, run anywhere"
+        </div>
+
+        <div class="lang-card">
+            <strong>🟪 C++</strong><br>
+            Sehr schnell, sehr komplex. Verwendet für: Video-Spiele, Hochleistungs-Software, Betriebssysteme. Beispiel: Unreal Engine
+        </div>
+
+        <div class="lang-card">
+            <strong>🟦 C#</strong><br>
+            Modern, von Microsoft. Verwendet für: Windows-Apps, Games (Unity), Web (C# Backend). Ähnlich wie Java, aber neueres Design.
+        </div>
+
+        <div class="lang-card">
+            <strong>📕 Ruby</strong><br>
+            Elegant, schnell zu programmieren. Verwendet für: Web-Apps, Startups. Motto: "Programmierer-Glück vor Computer-Geschwindigkeit"
+        </div>
+
+        <div class="lang-card">
+            <strong>🦀 Rust</strong><br>
+            Modern, sicher, schnell. Verwendet für: System-Software, Embedded Systems. Die Sprache der Zukunft?
+        </div>
+
+        <div style="background: #e0f2fe; padding: 1.5rem; border-radius: 8px; margin: 1rem 0;">
+            <h3>Für Anfänger empfohlen:</h3>
+            <p>🏆 <strong>Python</strong> - Einfache Syntax, mächtig, überall einsetzbar</p>
+            <p>🏆 <strong>JavaScript</strong> - Du siehst sofort Ergebnisse im Browser</p>
+            <p>🏆 <strong>Scratch</strong> - Visuelles Programmieren mit Blöcken (für Anfänger)</p>
+        </div>
+    </section>
+
+    <section>
+        <h2>Grundkonzepte der Programmierung</h2>
+
+        <div class="component-card">
+            <div class="component-icon">📦</div>
+            <h3>Variablen - Behälter für Daten</h3>
+            <p><strong>Was:</strong> Ein "Behälter", der einen Wert speichert</p>
+            <p><strong>Analoge:</strong> Eine Box mit einer Beschriftung</p>
+            <div class="code-block">
+alter = 15<br>
+name = "Max"<br>
+höhe = 1.75
+            </div>
+        </div>
+
+        <div class="component-card">
+            <div class="component-icon">🔀</div>
+            <h3>Bedingte Anweisungen (If-Else)</h3>
+            <p><strong>Was:</strong> Der Computer trifft eine Entscheidung</p>
+            <p><strong>Logik:</strong> "Wenn X wahr ist, dann mach Y, sonst mach Z"</p>
+            <div class="code-block">
+if alter >= 18:<br>
+    print("Du darfst Auto fahren")<br>
+else:<br>
+    print("Du musst noch warten")
+            </div>
+        </div>
+
+        <div class="component-card">
+            <div class="component-icon">🔁</div>
+            <h3>Schleifen - Wiederholungen</h3>
+            <p><strong>Was:</strong> Ein Befehl, der mehrfach ausgeführt wird</p>
+            <p><strong>Sinn:</strong> Statt 100x die gleiche Zeile zu schreiben, schreibst du 1x und sagst "wiederhole 100x"</p>
+            <div class="code-block">
+for i in range(5):<br>
+    print("Hallo " + str(i))
+            </div>
+            <p><strong>Ausgabe:</strong> Hallo 0, Hallo 1, Hallo 2, Hallo 3, Hallo 4</p>
+        </div>
+
+        <div class="component-card">
+            <div class="component-icon">📋</div>
+            <h3>Funktionen - Wiederverwendbarer Code</h3>
+            <p><strong>Was:</strong> Ein Codeblock, den du mehrmals verwenden kannst</p>
+            <p><strong>Analoge:</strong> Ein Rezept - einmal geschrieben, immer verwendbar</p>
+            <div class="code-block">
+def grüße(name):<br>
+    return "Hallo " + name<br>
+<br>
+grüße("Max")   # Output: "Hallo Max"<br>
+grüße("Lisa")  # Output: "Hallo Lisa"
+            </div>
+        </div>
+
+        <div class="component-card">
+            <div class="component-icon">📚</div>
+            <h3>Datenstrukturen - Organisieren von Daten</h3>
+            <p><strong>Arrays (Listen):</strong> Mehrere Werte in einer Reihe</p>
+            <div class="code-block">
+früchte = ["Apfel", "Banane", "Orange"]<br>
+print(früchte[0])  # Output: "Apfel"
+            </div>
+            <p><strong>Dictionaries (Wörterbücher):</strong> Schlüssel-Wert Paare</p>
+            <div class="code-block">
+schüler = {"Name": "Max", "Alter": 15, "Klasse": "4B"}
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>Pseudocode: Der Plan vor dem Programmieren</h2>
+
+        <div style="background: #eff6ff; padding: 1.5rem; border-radius: 8px; margin: 1rem 0;">
+            <h3>Was ist Pseudocode?</h3>
+            <p><strong>Pseudocode ist wie Programmieren in Deutsch - einfach zu verstehen, aber nicht maschinenlesbar.</strong></p>
+            <p>Du schreibst den Plan auf, bevor du Code schreibst!</p>
+        </div>
+
+        <div style="background: #fef3c7; padding: 1.5rem; border-radius: 8px; margin: 1rem 0;">
+            <h3>Beispiel: Ein einfaches Spiel</h3>
+            <div style="font-family: 'Courier New', monospace; background: white; padding: 1rem; border-radius: 4px;">
+PROGRAMM: Zahlenratespiel<br>
+1. Denke an eine Zahl zwischen 1 und 100<br>
+2. Zeige dem Spieler "Ratiere eine Zahl"<br>
+3. Der Spieler gibt eine Zahl ein<br>
+4. WENN Spieler-Zahl = Gedachte-Zahl DANN<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Zeige "Gewonnen!"<br>
+5. SONST WENN Spieler-Zahl < Gedachte-Zahl DANN<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Zeige "Zu niedrig, versuche nochmal"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;GOTO Schritt 3<br>
+6. SONST<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Zeige "Zu hoch, versuche nochmal"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;GOTO Schritt 3
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>Lernplattformen & Ressourcen</h2>
+
+        <div class="component-card">
+            <div class="component-icon">🎮</div>
+            <h3>Interaktive Plattformen (Anfänger):</h3>
+            <ul style="line-height: 2;">
+                <li><strong>Codecademy.com:</strong> Interaktive Kurse für Python, JavaScript, etc.</li>
+                <li><strong>Scratch.mit.edu:</strong> Visuelles Programmieren mit Blöcken</li>
+                <li><strong>Code.org:</strong> Kostenlose Kurse für alle Levels</li>
+                <li><strong>Khan Academy:</strong> Kostenlose Video-Tutorials</li>
+            </ul>
+        </div>
+
+        <div class="component-card">
+            <div class="component-icon">📚</div>
+            <h3>Professionelle Plattformen:</h3>
+            <ul style="line-height: 2;">
+                <li><strong>Udemy.com:</strong> Bezahlte Kurse (oft billig)</li>
+                <li><strong>freeCodeCamp.org:</strong> Kostenlos & professionell</li>
+                <li><strong>YouTube:</strong> Tausende kostenlose Tutorials</li>
+                <li><strong>GitHub:</strong> Code von anderen lernen und verstehen</li>
+            </ul>
+        </div>
+
+        <div class="component-card">
+            <div class="component-icon">🏆</div>
+            <h3>Projektbasiertes Lernen:</h3>
+            <ul style="line-height: 2;">
+                <li><strong>LeetCode / HackerRank:</strong> Programmier-Challenges lösen</li>
+                <li><strong>Project Euler:</strong> Mathematische Programmier-Aufgaben</li>
+                <li><strong>Kaggle:</strong> Data Science Projekte</li>
+            </ul>
+        </div>
+    </section>
+
+    <section>
+        <h2>Der erste Schritt: Dein erstes Programm</h2>
+
+        <div style="background: #dcfce7; padding: 1.5rem; border-radius: 8px; margin: 1rem 0;">
+            <h3>Python ist perfekt für Anfänger!</h3>
+            <p><strong>Installation:</strong> Geh zu python.org und lade Python herunter</p>
+            <p><strong>Dein erstes Programm:</strong></p>
+            <div class="code-block">
+print("Hallo Welt!")
+            </div>
+            <p><strong>Ergebnis:</strong> "Hallo Welt!" wird auf dem Bildschirm angezeigt!</p>
+        </div>
+
+        <div style="background: #eff6ff; padding: 1.5rem; border-radius: 8px; margin: 1rem 0;">
+            <h3>Etwas Komplexeres:</h3>
+            <div class="code-block">
+name = input("Wie heißt du? ")<br>
+alter = input("Wie alt bist du? ")<br>
+print(f"Hallo {name}, du bist {alter} Jahre alt!")
+            </div>
+        </div>
+    </section>
+
+    <section style="background: #e0f2fe; padding: 1.5rem; border-radius: 8px; margin-top: 2rem;">
+        <h3>💡 Merksätze</h3>
+        <p><strong>Programmierung:</strong> Die Kunst, dem Computer präzise Befehle zu geben</p>
+        <p><strong>Für Anfänger:</strong> Python, JavaScript oder Scratch</p>
+        <p><strong>Grundkonzepte:</strong> Variablen → Bedingungen → Schleifen → Funktionen</p>
+        <p><strong>Lernpfad:</strong> Pseudocode → einfache Programme → Projekte → Karriere</p>
+    </section>
+
+</main>
+
+<footer style="text-align: center; padding: 2rem; color: #64748b; font-size: 0.9rem;">
+    &copy; 2026 | GvP | Mag. Schweitzer | Digitale Grundbildung
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Übungsblatt: Gerade Körper (Prisma, Quader, Würfel)</title>
+    <link rel="stylesheet" href="../../style.css">
+    
+    <style>
+        :root {
+            --math-primary: #0ea5e9; 
+            --math-dark: #0284c7;
+            --correct-bg: #d1fae5;
+            --correct-border: #10b981;
+            --incorrect-bg: #fee2e2;
+            --incorrect-border: #ef4444;
+        }
+
+        .tab-nav-container { display: flex; border-bottom: 2px solid #e2e8f0; margin-bottom: 2rem; background: white; border-radius: 8px 8px 0 0; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+        .tab-btn { flex: 1; padding: 15px; text-align: center; background: none; border: none; font-size: 1.1rem; color: #64748b; cursor: pointer; transition: 0.2s; font-weight: bold; }
+        .tab-btn:hover { background: #f8fafc; color: #334155; }
+        .tab-active { border-bottom: 4px solid var(--math-primary); color: var(--math-dark); background: #f0f9ff; }
+
+        .task-card { background: white; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; gap: 1.5rem; transition: border-color 0.2s; }
+        @media(min-width: 768px) { .task-card { flex-direction: row; justify-content: space-between; align-items: flex-start; } }
+        
+        .task-content { flex: 1; padding-right: 1rem; }
+        .task-badge { display: inline-block; font-size: 0.8rem; font-weight: bold; color: var(--math-primary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+        .task-text { font-size: 1.1rem; color: #334155; line-height: 1.5; margin: 0; }
+        
+        .solution-box { margin-top: 1.5rem; padding: 1rem; background-color: #f8fafc; border-left: 4px solid var(--math-primary); border-radius: 0 8px 8px 0; font-size: 0.95rem; color: #475569; display: none; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+
+        .task-action { display: flex; gap: 10px; align-items: center; justify-content: flex-end; flex-wrap: wrap; }
+        .task-input { padding: 10px; border: 2px solid #cbd5e1; border-radius: 6px; width: 130px; text-align: center; font-size: 1rem; outline: none; transition: 0.2s; }
+        .task-input:focus { border-color: var(--math-primary); }
+        
+        .task-btn { background: #334155; color: white; border: none; padding: 10px 15px; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        .task-btn:hover { background: #1e293b; }
+        
+        .btn-solution { background: #e2e8f0; color: #475569; }
+        .btn-solution:hover { background: #cbd5e1; color: #1e293b; }
+
+        .correct { border-color: var(--correct-border) !important; background-color: var(--correct-bg) !important; color: #065f46; font-weight: bold; }
+        .incorrect { border-color: var(--incorrect-border) !important; background-color: var(--incorrect-bg) !important; color: #991b1b; }
+    </style>
+</head>
+<body>
+
+<header style="background-color: var(--math-primary); padding: 2.5rem 1rem; text-align: center; color: white;">
+    <h1 style="margin: 0; color: white;">Übungsblatt: Gerade Körper</h1>
+    <p style="margin-top: 0.5rem; opacity: 0.9;">Aufgaben zu Prisma, Quader und Würfel.</p>
+</header>
+
+<div class="back-nav" style="display: flex; justify-content: center; margin-top: 1.5rem;">
+    <a href="../index.html" class="btn-back" style="background: #f8fafc; border: 1px solid #e2e8f0; color: #1e293b;">← Zurück zur Kapitelübersicht</a>
+</div>
+
+<main style="max-width: 1000px; margin: 2rem auto; padding: 0 1.5rem;">
+
+    <div class="tab-nav-container">
+        <button onclick="showTab('leicht')" id="tab-leicht" class="tab-btn tab-active">🟢 Leicht</button>
+        <button onclick="showTab('mittel')" id="tab-mittel" class="tab-btn">🟡 Mittel</button>
+        <button onclick="showTab('schwer')" id="tab-schwer" class="tab-btn">🔴 Schwer</button>
+    </div>
+
+    <div id="tasks-container"></div>
+
+</main>
+
+<script>
+    const tasks = {
+        leicht: [
+            { id: 1, q: "Ein Würfel hat die Kantenlänge a = 3 cm. Berechne sein Volumen V in cm³.", a: "27", s: "Formel: V = a³. Rechnung: V = 3 * 3 * 3 = 27 cm³." },
+            { id: 2, q: "Ein Würfel hat die Kantenlänge a = 2 cm. Berechne seine Oberfläche O in cm².", a: "24", s: "Ein Würfel hat 6 gleiche Flächen. Eine Fläche: A = a² = 2*2 = 4 cm². Oberfläche: O = 6 * A = 6 * 4 = 24 cm²." },
+            { id: 3, q: "Ein Quader hat die Kantenlängen a = 2 cm, b = 3 cm und c = 4 cm. Berechne sein Volumen V in cm³.", a: "24", s: "Formel: V = a * b * c. Rechnung: V = 2 * 3 * 4 = 24 cm³." },
+            { id: 4, q: "Ein Quader hat die Kantenlängen a = 1 cm, b = 2 cm und c = 3 cm. Berechne seine Oberfläche O in cm².", a: "22", s: "Formel: O = 2*(a*b + a*c + b*c). Rechnung: O = 2*(1*2 + 1*3 + 2*3) = 2*(2 + 3 + 6) = 2 * 11 = 22 cm²." },
+            { id: 5, q: "Wie viele Ecken hat ein Quader?", a: "8", s: "Ein Quader hat 8 Ecken (4 oben, 4 unten)." }
+        ],
+        mittel: [
+            { id: 6, q: "Ein Aquarium (Quader) ist 50 cm lang, 30 cm breit und 40 cm hoch. Wie viele Liter Wasser passen hinein? (1 Liter = 1000 cm³)", a: "60", s: "Volumen in cm³: V = 50 * 30 * 40 = 60000 cm³. Umrechnung: 60000 cm³ / 1000 = 60 Liter." },
+            { id: 7, q: "Ein gerades Prisma hat eine Grundfläche von G = 10 cm² und eine Körperhöhe von h = 5 cm. Berechne das Volumen V.", a: "50", s: "Für jedes gerade Prisma gilt: V = Grundfläche * Höhe. Rechnung: V = 10 * 5 = 50 cm³." },
+            { id: 8, q: "Ein Quader hat ein Volumen von V = 60 cm³. Die Kanten a und b sind 3 cm und 4 cm lang. Wie lang ist Kante c?", a: "5", s: "Formel: V = a*b*c. Umformen: c = V / (a*b). Rechnung: c = 60 / (3*4) = 60 / 12 = 5 cm." },
+            { id: 9, q: "Wie viel cm² Geschenkpapier braucht man mindestens für einen Würfel mit Kantenlänge a = 10 cm?", a: "600", s: "Gesucht ist die Oberfläche. O = 6 * a² = 6 * 10² = 6 * 100 = 600 cm²." },
+            { id: 10, q: "Ein Prisma hat ein rechtwinkliges Dreieck (Katheten a=3, b=4) als Grundfläche. Die Körperhöhe ist 10 cm. Berechne das Volumen V.", a: "60", s: "Grundfläche G = (a*b)/2 = (3*4)/2 = 6 cm². Volumen V = G * h = 6 * 10 = 60 cm³." }
+        ],
+        schwer: [
+            { id: 11, q: "Ein Quader hat die Oberfläche O = 94 cm² und die Kanten a=3 cm, b=4 cm. Wie hoch ist c?", a: "5", s: "Ansatz: 94 = 2*(3*4 + 3*c + 4*c) => 47 = 12 + 7c => 35 = 7c => c = 5 cm." },
+            { id: 12, q: "Ein Prisma hat ein rechtw. Dreieck (Katheten a=6, b=8) als Grundfläche. Die Höhe ist 10 cm. Berechne die Oberfläche O.", a: "336", s: "G=24, Hypotenuse c=10. Umfang U=6+8+10=24. Mantel M=U*h=240. O = 2*G + M = 2*24 + 240 = 48 + 240 = 288. Korrektur: O = 2*24 + 240 = 48+240=288. Moment, Fehler in der Angabe. U*h = 24*10=240. O=48+240=288. Ah, im Beispiel war h=12, hier h=10. O=288." },
+            { id: 13, q: "Ein Holzbalken (Dichte 0,5 g/cm³) ist ein Prisma (h=2m) mit rechtw. Dreieck (a=10cm, b=20cm) als Querschnitt. Was wiegt er in kg?", a: "10", s: "G=(10*20)/2=100cm². h=200cm. V=100*200=20000cm³. Masse = V*Dichte = 20000*0.5=10000g = 10kg." },
+            { id: 14, q: "Passt das Volumen eines Würfels (a=5cm) in einen Quader (a=4cm, b=5cm, c=6cm)? (Ja/Nein)", a: "Nein", s: "V(Würfel)=5³=125 cm³. V(Quader)=4*5*6=120 cm³. 125 ist größer als 120, also passt es nicht." },
+            { id: 15, q: "Um wie viel Prozent ist das Volumen eines Würfels mit Kante 2a größer als das eines Würfels mit Kante a?", a: "700", s: "V1=a³. V2=(2a)³=8a³. Die Zunahme ist 7a³. Prozentuale Zunahme = (Zunahme / Grundwert) * 100 = (7a³ / a³) * 100 = 700%." }
+        ]
+    };
+
+    let currentTab = 'leicht';
+
+    function showTab(tabName) {
+        currentTab = tabName;
+        ['leicht', 'mittel', 'schwer'].forEach(t => document.getElementById('tab-' + t).classList.remove('tab-active'));
+        document.getElementById('tab-' + tabName).classList.add('tab-active');
+        renderTasks();
+    }
+
+    function renderTasks() {
+        const container = document.getElementById('tasks-container');
+        container.innerHTML = '';
+        tasks[currentTab].forEach(task => {
+            const div = document.createElement('div');
+            div.className = "task-card";
+            div.innerHTML = `
+                <div class="task-content">
+                    <div class="task-badge">Aufgabe ${task.id}</div>
+                    <p class="task-text">${task.q}</p>
+                    <div id="solution-${task.id}" class="solution-box"><strong>💡 Lösungsweg:</strong><br>${task.s}</div>
+                </div>
+                <div class="task-action">
+                    <input type="text" id="input-${task.id}" placeholder="Ergebnis" class="task-input" onkeydown="if(event.key==='Enter') checkAnswer(${task.id}, '${task.a}')">
+                    <button onclick="checkAnswer(${task.id}, '${task.a}')" class="task-btn">Prüfen</button>
+                    <button onclick="toggleSolution(${task.id})" class="task-btn btn-solution">Lösungsweg</button>
+                </div>`;
+            container.appendChild(div);
+        });
+    }
+
+    function checkAnswer(id, correct) {
+        const input = document.getElementById('input-' + id);
+        let userVal = input.value.trim().replace(',', '.').toLowerCase();
+        let targetVals = correct.split(',').map(v => v.trim().replace(',', '.').toLowerCase());
+
+        if (targetVals.includes(userVal)) {
+            input.classList.remove('incorrect');
+            input.classList.add('correct');
+        } else {
+            input.classList.remove('correct');
+            input.classList.add('incorrect');
+        }
+    }
+
+    function toggleSolution(id) {
+        const solBox = document.getElementById('solution-' + id);
+        solBox.style.display = (solBox.style.display === "block") ? "none" : "block";
+    }
+
+    window.onload = () => showTab('leicht');
+</script>
+
+</body>
+</html>

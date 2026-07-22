@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>7.4 & 7.5 Der Drehkegel | Prof. Schweitzer</title>
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+        .explanation-box {
+            background: #eff6ff;
+            border-left: 4px solid var(--primary, #2563eb);
+            padding: 1.5rem;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+        .highlight-box {
+            background: #fffbeb;
+            border: 1px solid #fef3c7;
+            padding: 1.2rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        
+        .interactive-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-top: 1.5rem;
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border: 1px solid #cbd5e1;
+        }
+        .controls {
+            flex: 1;
+            min-width: 280px;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+        .canvas-container {
+            flex: 1;
+            min-width: 280px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+        }
+        canvas {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .slider-group {
+            background: #f8fafc;
+            padding: 0.8rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+        }
+        .slider-group label {
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        input[type="range"] { width: 100%; cursor: pointer; }
+
+        .live-solution {
+            background: #fafafa;
+            border: 1px solid #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* Ausklappbare Beispiele - NEUE LOGIK (wie bei Zylinder) */
+        .example-box {
+            background: white;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+        .example-header {
+            background: #f1f5f9;
+            padding: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+        }
+        .example-header:hover {
+            background: #e2e8f0;
+        }
+        
+        /* Das ist der Trick: CSS steuert das Ein/Ausblenden! */
+        .example-content {
+            padding: 1.5rem;
+            display: none; /* Standardmäßig versteckt */
+            border-top: 1px solid #cbd5e1;
+            line-height: 1.6;
+        }
+        .example-content.open {
+            display: block; /* Wird durch JS hinzugefügt */
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Kapitel 7.4 & 7.5</h1>
+    <p>Eigenschaften und Rauminhalt (Volumen) des Drehkegels</p>
+    <div class="back-nav">
+        <a href="../index.html" class="btn-back">⬅ Zurück zur Übersicht</a>
+    </div>
+</header>
+
+<main>
+    <div class="subject-group">
+        <div class="subject-header">
+            <span class="subject-badge bg-math">Eigenschaften</span>
+            <h2 style="margin: 0; color: var(--primary);">Wie entsteht ein Drehkegel?</h2>
+        </div>
+
+        <div class="explanation-box">
+            <p>Stell dir ein rechtwinkliges Dreieck vor. Wenn du dieses Dreieck rasend schnell um eine seiner beiden Katheten (die Seiten am rechten Winkel) im Kreis drehst, entsteht ein <strong>Drehkegel</strong>!</p>
+            <p>Ein Drehkegel besitzt folgende geometrische Eigenschaften:</p>
+            <ul>
+                <li><strong>Grundfläche (<i>G</i>):</strong> Im Gegensatz zum Zylinder hat der Kegel nur <em>eine</em> Kreisfläche als Boden. Dieser Kreis hat den Radius <i>r</i>.</li>
+                <li><strong>Spitze (<i>S</i>):</strong> Oben läuft der Körper in einem einzigen Punkt, der Spitze, zusammen.</li>
+                <li><strong>Körperhöhe (<i>h<sub>k</sub></i>):</strong> Der normale (senkrechte) Abstand von der Grundfläche hinauf bis genau zur Spitze.</li>
+            </ul>
+        </div>
+
+        <div class="highlight-box">
+            <h4 style="margin-top: 0; color: #b45309;">💡 Das Geheimnis des Volumens: Die Drittel-Regel</h4>
+            <p style="margin-bottom: 0;">
+                Wenn ein Zylinder und ein Kegel denselben Radius <i>r</i> und dieselbe Höhe <i>h<sub>k</sub></i> haben, dann passt der Inhalt des Kegels exakt <strong>dreimal</strong> in den Zylinder!<br><br>
+                Deshalb ist die Volumenformel für den Kegel einfach die Zylinderformel, dividiert durch 3:<br><br>
+                <span style="font-size: 1.2rem;">
+                <strong><i>V</i> = (<i>G</i> &middot; <i>h<sub>k</sub></i>) / 3</strong> <br>
+                <i>V</i> = (&pi; &middot; <i>r<sup>2</sup></i> &middot; <i>h<sub>k</sub></i>) / 3
+                </span>
+            </p>
+        </div>
+    </div>
+
+    <div class="subject-group">
+        <div class="subject-header">
+            <span class="subject-badge bg-math">Interaktiv</span>
+            <h2 style="margin: 0; color: var(--primary);">Der Volumen-Rechner für Kegel</h2>
+        </div>
+        
+        <p>Verändere den Radius <strong><i>r</i></strong> und die Körperhöhe <strong><i>h<sub>k</sub></i></strong>. Beobachte, wie sich der Kegel formt und wie das Volumen (die Füllmenge) in der Live-Musterlösung berechnet wird.</p>
+
+        <div class="interactive-container">
+            <div class="controls">
+                <div class="slider-group">
+                    <label for="sliderR">Radius <i>r</i>: <span id="valR">3,0</span> cm</label>
+                    <input type="range" id="sliderR" min="1" max="6" step="0.5" value="3">
+                </div>
+
+                <div class="slider-group">
+                    <label for="sliderH">Körperhöhe <i>h<sub>k</sub></i>: <span id="valH">8,0</span> cm</label>
+                    <input type="range" id="sliderH" min="2" max="14" step="0.5" value="8">
+                </div>
+            </div>
+
+            <div class="canvas-container">
+                <canvas id="coneCanvas" width="220" height="240"></canvas>
+            </div>
+
+            <div class="live-solution" id="solutionOutput">
+                Rechner wird geladen...
+            </div>
+        </div>
+    </div>
+
+    <div class="subject-group">
+        <div class="subject-header">
+            <span class="subject-badge bg-math">Übung</span>
+            <h2 style="margin: 0; color: var(--primary);">Typische Schularbeiten-Aufgaben</h2>
+        </div>
+
+        <div class="example-box">
+            <div class="example-header">
+                <span>🍦 Aufgabe 1: Das Eis in der Stanitzel</span>
+                <span class="arrow">▼</span>
+            </div>
+            <div class="example-content">
+                <p><strong>Aufgabe:</strong> Eine Eistüte (Stanitzel) in Form eines Drehkegels hat oben eine Öffnung mit einem Durchmesser von <i>d</i> = 5 cm. Sie ist innen <i>h<sub>k</sub></i> = 12 cm tief. Wie viel Milliliter (ml) flüssiges Eis passen genau hinein?</p>
+                <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 10px 0;">
+                <strong>Schritt 1: Radius bestimmen</strong><br>
+                Wir haben den Durchmesser <i>d</i> gegeben, brauchen aber den Radius <i>r</i>:<br>
+                <i>r = d / 2 = 5 / 2 = 2,5 cm</i>
+                <br><br>
+                <strong>Schritt 2: Grundfläche G berechnen</strong><br>
+                <i>G = &pi; &middot; r<sup>2</sup></i><br>
+                <i>G = &pi; &middot; 2,5<sup>2</sup> = &pi; &middot; 6,25 &approx; 19,63 cm<sup>2</sup></i>
+                <br><br>
+                <strong>Schritt 3: Volumen V berechnen (Achtung: Division durch 3 nicht vergessen!)</strong><br>
+                <i>V = (G &middot; h<sub>k</sub>) / 3</i><br>
+                <i>V = (19,63 &middot; 12) / 3</i><br>
+                <i>V = 235,56 / 3 &approx; 78,52 cm<sup>3</sup></i>
+                <br><br>
+                <strong>Schritt 4: In Milliliter umrechnen</strong><br>
+                Da 1 cm<sup>3</sup> genau 1 ml ist:<br>
+                <i>78,52 cm<sup>3</sup> = <strong>78,52 ml</strong></i>
+            </div>
+        </div>
+
+        <div class="example-box">
+            <div class="example-header">
+                <span>⛰️ Aufgabe 2: Umkehraufgabe (Sandhaufen)</span>
+                <span class="arrow">▼</span>
+            </div>
+            <div class="example-content">
+                <p><strong>Aufgabe:</strong> Ein kegelförmiger Sandhaufen auf einer Baustelle besteht aus <i>V</i> = 4,5 m<sup>3</sup> Sand. Der Haufen hat einen Radius von <i>r</i> = 1,5 m. Wie hoch (<i>h<sub>k</sub></i>) ist der Sandhaufen?</p>
+                <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 10px 0;">
+                <strong>Schritt 1: Grundfläche G berechnen</strong><br>
+                <i>G = &pi; &middot; r<sup>2</sup></i><br>
+                <i>G = &pi; &middot; 1,5<sup>2</sup> = &pi; &middot; 2,25 &approx; 7,07 m<sup>2</sup></i>
+                <br><br>
+                <strong>Schritt 2: Volumenformel umformen</strong><br>
+                Die Formel lautet: <i>V = (G &middot; h<sub>k</sub>) / 3</i><br>
+                Wir multiplizieren zuerst mit 3:<br>
+                <i>3 &middot; V = G &middot; h<sub>k</sub></i><br>
+                Dann dividieren wir durch G:<br>
+                <i>h<sub>k</sub> = (3 &middot; V) / G</i>
+                <br><br>
+                <strong>Schritt 3: Werte einsetzen und berechnen</strong><br>
+                <i>h<sub>k</sub> = (3 &middot; 4,5) / 7,07</i><br>
+                <i>h<sub>k</sub> = 13,5 / 7,07 &approx; 1,91 m</i>
+                <br><br>
+                <strong>Antwort:</strong> Der Sandhaufen ist ungefähr 1,91 Meter hoch.
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+
+        // --- 1. Logik für die aufklappbaren Boxen (Die Zylinder-Methode) ---
+        const headers = document.querySelectorAll(".example-header");
+        
+        headers.forEach(function(header) {
+            header.addEventListener("click", function() {
+                // Finde den Inhalts-Bereich, der genau unter diesem Header liegt
+                const content = this.nextElementSibling;
+                const arrow = this.querySelector(".arrow");
+                
+                // Wir fügen die CSS-Klasse "open" hinzu oder entfernen sie
+                content.classList.toggle("open");
+                
+                // Pfeil anpassen
+                if (content.classList.contains("open")) {
+                    arrow.textContent = "▲";
+                } else {
+                    arrow.textContent = "▼";
+                }
+            });
+        });
+
+
+        // --- 2. Logik für den Kegel-Rechner ---
+        const sliderR = document.getElementById("sliderR");
+        const sliderH = document.getElementById("sliderH");
+        const valR = document.getElementById("valR");
+        const valH = document.getElementById("valH");
+        const solutionOutput = document.getElementById("solutionOutput");
+        const canvas = document.getElementById("coneCanvas");
+        
+        // Sicherheits-Check
+        if (!canvas || !sliderR || !sliderH) return;
+        
+        const ctx = canvas.getContext("2d");
+
+        // Formatierungs-Funktion
+        function formatNum(num) {
+            return parseFloat(num).toFixed(2).replace('.', ',');
+        }
+
+        // Zeichenfunktion für den Kegel
+        function drawCone(r, h) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.strokeStyle = "#2563eb"; 
+            ctx.lineWidth = 2;
+            
+            const scaleX = 14; 
+            const scaleY = 5; 
+            const scaleH = 13;
+            
+            const cx = canvas.width / 2;
+            const rx = r * scaleX;
+            const ry = r * scaleY;
+            const ch = h * scaleH;
+            
+            const bottomY = canvas.height - 40; 
+            const topY = bottomY - ch;
+
+            // Hinterer Bodenbogen (gestrichelt)
+            ctx.beginPath();
+            ctx.ellipse(cx, bottomY, rx, ry, 0, Math.PI, 2 * Math.PI);
+            ctx.setLineDash([4, 4]);
+            ctx.stroke();
+
+            // Vorderer Bodenbogen (durchgezogen und leicht gefüllt)
+            ctx.beginPath();
+            ctx.ellipse(cx, bottomY, rx, ry, 0, 0, Math.PI);
+            ctx.fillStyle = "rgba(37, 99, 235, 0.05)";
+            ctx.fill();
+            ctx.setLineDash([]);
+            ctx.stroke();
+
+            // Mantellinien (von Rand zur Spitze)
+            ctx.beginPath();
+            ctx.moveTo(cx - rx, bottomY); ctx.lineTo(cx, topY);
+            ctx.moveTo(cx + rx, bottomY); ctx.lineTo(cx, topY);
+            ctx.stroke();
+
+            // Körperhöhe (Grün)
+            ctx.beginPath();
+            ctx.strokeStyle = "#16a34a";
+            ctx.setLineDash([3, 3]);
+            ctx.moveTo(cx, bottomY);
+            ctx.lineTo(cx, topY);
+            ctx.stroke();
+
+            // Radius (Orange)
+            ctx.beginPath();
+            ctx.strokeStyle = "#ea580c";
+            ctx.setLineDash([]);
+            ctx.moveTo(cx, bottomY);
+            ctx.lineTo(cx + rx, bottomY);
+            ctx.stroke();
+
+            // Beschriftung
+            ctx.fillStyle = "#16a34a";
+            ctx.font = "bold 12px sans-serif";
+            ctx.fillText("h", cx + 5, topY + (ch/2));
+            
+            ctx.fillStyle = "#ea580c";
+            ctx.fillText("r", cx + (rx/2) - 5, bottomY + 15);
+        }
+
+        // Berechnungs- und Updatefunktion
+        function calculateAndUpdate() {
+            const r = parseFloat(sliderR.value);
+            const h = parseFloat(sliderH.value);
+
+            if (valR) valR.textContent = r.toFixed(1).replace('.', ',');
+            if (valH) valH.textContent = h.toFixed(1).replace('.', ',');
+
+            drawCone(r, h);
+
+            const pi = Math.PI;
+            const g = pi * r * r;
+            const v = (g * h) / 3;
+
+            if (solutionOutput) {
+                solutionOutput.innerHTML = 
+                    "<strong>DYNAMISCHE MUSTERLÖSUNG (r = " + formatNum(r) + " cm, h<sub>k</sub> = " + formatNum(h) + " cm):</strong><br><br>" +
+                    "<strong>1. Grundfläche G berechnen (Kreisfläche):</strong><br>" +
+                    "Formel:  G = &pi; &middot; r<sup>2</sup><br>" +
+                    "Rechnung: G = &pi; &middot; " + formatNum(r) + "<sup>2</sup> = &pi; &middot; " + formatNum(r*r) + " &approx; <strong>" + formatNum(g) + " cm<sup>2</sup></strong><br><br>" +
+                    "<strong>2. Rauminhalt V berechnen (Drittel-Regel!):</strong><br>" +
+                    "Formel:  V = (G &middot; h<sub>k</sub>) / 3<br>" +
+                    "Rechnung: V = (" + formatNum(g) + " &middot; " + formatNum(h) + ") / 3<br>" +
+                    "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;V = " + formatNum(g*h) + " / 3 &approx; <strong>" + formatNum(v) + " cm<sup>3</sup></strong>";
+            }
+        }
+
+        // Event-Listener an die Regler binden (Sicherheits-Schleife)
+        ['input', 'change'].forEach(function(evt) {
+            sliderR.addEventListener(evt, calculateAndUpdate);
+            sliderH.addEventListener(evt, calculateAndUpdate);
+        });
+
+        // Einmaliges Aufrufen beim Laden der Seite
+        calculateAndUpdate();
+    });
+</script>
+
+</body>
+</html>

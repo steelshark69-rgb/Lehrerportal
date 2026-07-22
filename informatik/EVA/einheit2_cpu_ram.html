@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Einheit 2: CPU & RAM</title>
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+        :root { --it-primary: #107c41; --it-dark: #064e3b; --bg-gray: #f8fafc; }
+        .module-container { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem; }
+        .hardware-box { background: white; border: 1px solid #e2e8f0; border-left: 5px solid var(--it-primary); padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; }
+        .sim-container { background: #1e293b; color: white; padding: 2rem; border-radius: 12px; text-align: center; margin-top: 2rem; }
+        .slider { width: 100%; max-width: 400px; margin: 10px 0; accent-color: var(--it-primary); }
+        .status-bar { height: 20px; background: #334155; border-radius: 10px; overflow: hidden; margin-top: 5px; }
+        .status-fill { height: 100%; background: #10b981; width: 0%; transition: width 0.3s; }
+        .bottleneck-alert { color: #ef4444; font-weight: bold; min-height: 24px; margin-top: 15px; }
+    </style>
+</head>
+<body>
+
+<header style="background-color: var(--it-primary); color: white; padding: 2rem 1rem; text-align: center;">
+    <h1 style="color: white; margin: 0; font-size: 2.5rem;">Mission 2: CPU & RAM</h1>
+    <p style="color: #f0fdf4; margin-top: 10px; font-size: 1.1rem;">Das Gehirn und sein Schreibtisch</p>
+</header>
+
+<div class="back-nav"><a href="einheit1_eva.html" class="btn-back">← Zurück zu Einheit 1</a></div>
+
+<main class="module-container">
+    <h2 style="color: var(--it-dark);">Die Zentraleinheit</h2>
+    
+    
+
+[Image of computer motherboard with CPU and RAM slots]
+
+
+    <div class="hardware-box">
+        <h3>🧠 Die CPU (Prozessor) - Das Gehirn</h3>
+        <p>Die <strong>C</strong>entral <strong>P</strong>rocessing <strong>U</strong>nit ist das Herzstück. Sie führt alle Berechnungen durch. Ihre Geschwindigkeit wird in <strong>Gigahertz (GHz)</strong> gemessen. Je mehr Kerne und GHz eine CPU hat, desto schneller kann sie denken.</p>
+    </div>
+
+    <div class="hardware-box" style="border-left-color: #0ea5e9;">
+        <h3>🗄️ Der RAM (Arbeitsspeicher) - Der Schreibtisch</h3>
+        <p>Der <strong>R</strong>andom <strong>A</strong>ccess <strong>M</strong>emory ist das Kurzzeitgedächtnis. Hier liegen alle Programme, die <em>gerade im Moment</em> geöffnet sind (z.B. deine 50 Google Chrome Tabs). Ist der RAM voll, wird der PC quälend langsam.</p>
+    </div>
+
+    <div class="sim-container">
+        <h3>💻 Der Flaschenhals-Simulator (Bottleneck)</h3>
+        <p style="font-size: 0.9rem; color: #94a3b8;">Eine super-schnelle CPU bringt nichts, wenn der RAM zu klein ist. Finde die richtige Balance für das Spiel "Cyberpunk 2077"!</p>
+        
+        <div style="margin-top: 2rem;">
+            <label style="font-weight: bold;">CPU-Geschwindigkeit: <span id="cpu-val">2.0</span> GHz</label><br>
+            <input type="range" id="cpu-slider" class="slider" min="1" max="5" step="0.1" value="2.0" oninput="updateSim()">
+            <div class="status-bar"><div class="status-fill" id="cpu-bar"></div></div>
+        </div>
+
+        <div style="margin-top: 2rem;">
+            <label style="font-weight: bold;">RAM-Größe: <span id="ram-val">4</span> GB</label><br>
+            <input type="range" id="ram-slider" class="slider" min="4" max="32" step="4" value="4" oninput="updateSim()">
+            <div class="status-bar"><div class="status-fill" id="ram-bar" style="background: #0ea5e9;"></div></div>
+        </div>
+
+        <div id="bottleneck-msg" class="bottleneck-alert">Der RAM ist komplett voll! Die CPU muss warten (Ruckeln).</div>
+        <div id="fps-msg" style="font-size: 1.5rem; font-weight: bold; margin-top: 10px; color: #10b981;">12 FPS (Unspielbar)</div>
+    </div>
+
+    <div style="text-align: right; margin-top: 2rem;">
+        <a href="einheit3_gpu_ssd.html" style="color: var(--it-primary); font-weight: bold; text-decoration: none;">Weiter zu Einheit 3 ➔</a>
+    </div>
+</main>
+
+<footer style="margin-top: 5rem; padding: 2rem 1rem; background-color: #f8fafc; border-top: 1px solid #e2e8f0; color: #64748b; font-size: 0.9rem; text-align: center;">
+    &copy; 2026 | GvP | Mag. Schweitzer | DSGVO-konform & lokal
+</footer>
+
+<script>
+    function updateSim() {
+        let cpu = parseFloat(document.getElementById('cpu-slider').value);
+        let ram = parseInt(document.getElementById('ram-slider').value);
+        
+        document.getElementById('cpu-val').innerText = cpu.toFixed(1);
+        document.getElementById('ram-val').innerText = ram;
+
+        let cpuPercent = (cpu / 5) * 100;
+        let ramPercent = (ram / 32) * 100;
+        
+        document.getElementById('cpu-bar').style.width = cpuPercent + '%';
+        document.getElementById('ram-bar').style.width = ramPercent + '%';
+
+        let msg = document.getElementById('bottleneck-msg');
+        let fpsMsg = document.getElementById('fps-msg');
+        
+        let fps = 0;
+
+        if (ram < 16) {
+            msg.innerText = "⚠️ Flaschenhals! Der RAM ist zu klein. Die starke CPU langweilt sich und wartet auf Daten.";
+            msg.style.color = "#ef4444";
+            fps = ram * 3 + (cpu * 2);
+            fpsMsg.style.color = "#ef4444";
+        } else if (cpu < 3.0 && ram >= 16) {
+            msg.innerText = "⚠️ Flaschenhals! Genug RAM ist da, aber die CPU ist zu schwach, um alles zu berechnen.";
+            msg.style.color = "#ef4444";
+            fps = (cpu * 10) + 15;
+            fpsMsg.style.color = "#f59e0b";
+        } else {
+            msg.innerText = "✅ Perfekte Balance! Die Komponenten arbeiten optimal zusammen.";
+            msg.style.color = "#10b981";
+            fps = (cpu * 15) + (ram * 1.5);
+            fpsMsg.style.color = "#10b981";
+        }
+
+        fpsMsg.innerText = Math.round(fps) + " FPS";
+    }
+    updateSim();
+</script>
+</body>
+</html>

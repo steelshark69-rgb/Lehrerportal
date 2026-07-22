@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>7.2 & 7.3 Der Drehzylinder | Prof. Schweitzer</title>
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+        .explanation-box {
+            background: #eff6ff;
+            border-left: 4px solid var(--primary, #2563eb);
+            padding: 1.5rem;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+        .highlight-box {
+            background: #fffbeb;
+            border: 1px solid #fef3c7;
+            padding: 1.2rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        
+        /* Interaktiver Container */
+        .interactive-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-top: 1.5rem;
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border: 1px solid #cbd5e1;
+        }
+        .controls {
+            flex: 1;
+            min-width: 280px;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+        .canvas-container {
+            flex: 1;
+            min-width: 280px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+        }
+        canvas {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .slider-group {
+            background: #f8fafc;
+            padding: 0.8rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+        }
+        .slider-group label {
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        input[type="range"] { width: 100%; cursor: pointer; }
+
+        .live-solution {
+            background: #fafafa;
+            border: 1px solid #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* Ausklappbare Beispiele */
+        .example-box {
+            background: white;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+        .example-header {
+            background: #f1f5f9;
+            padding: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+            transition: background 0.2s;
+        }
+        .example-header:hover {
+            background: #e2e8f0;
+        }
+        .example-content {
+            padding: 1.5rem;
+            display: none;
+            border-top: 1px solid #cbd5e1;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Kapitel 7.2 & 7.3</h1>
+    <p>Eigenschaften, Rauminhalt und Oberfläche des Drehzylinders</p>
+    <div class="back-nav">
+        <a href="../index.html" class="btn-back">⬅ Zurück zur Übersicht</a>
+    </div>
+</header>
+
+<main>
+    <div class="subject-group">
+        <div class="subject-header">
+            <span class="subject-badge bg-math">Eigenschaften</span>
+            <h2 style="margin: 0; color: var(--primary);">Wie entsteht ein Drehzylinder?</h2>
+        </div>
+
+        <div class="explanation-box">
+            <p>Stell dir ein Rechteck vor, das sich superschnell um eine seiner Seiten im Kreis dreht (rotiert). Der Raum, den dieses Rechteck dabei beschreibt, ist ein <strong>Drehzylinder</strong>. Deshalb gehört er zur Familie der Rotationskörper.</p>
+            <p>Ein Drehzylinder besitzt folgende wichtige Merkmale:</p>
+            <ul>
+                <li><strong>Grund- und Deckfläche (<i>G</i> und <i>D</i>):</strong> Zwei parallel liegende Kreise, die absolut deckungsgleich (kongruent) sind. Sie haben den Radius <i>r</i>.</li>
+                <li><strong>Körperhöhe (<i>h<sub>k</sub></i>):</strong> Der normale (senkrechte) Abstand zwischen der Grundfläche und der Deckfläche.</li>
+                <li><strong>Mantelfläche (<i>M</i>):</strong> Die gekrümmte Seitenwand. Wenn man den Mantel aufrollt und flach hinlegt, entsteht ein perfektes <strong>Rechteck</strong>! Die Länge dieses Rechtecks entspricht genau dem Umfang des Grundkreises (<i>U<sub>G</sub> = 2 &middot; &pi; &middot; r</i>), die Breite entspricht der Körperhöhe <i>h<sub>k</sub></i>.</li>
+            </ul>
+        </div>
+
+        <div class="highlight-box">
+            <h4 style="margin-top: 0; color: #b45309;">📐 Die Kernformeln des Zylinders</h4>
+            <p style="margin-bottom: 0;">
+                &bull; <strong>Grundfläche (Kreis):</strong> <i>G = &pi; &middot; r<sup>2</sup></i><br>
+                &bull; <strong>Mantelfläche (Rechteck):</strong> <i>M = 2 &middot; &pi; &middot; r &middot; h<sub>k</sub></i><br>
+                &bull; <strong>Gesamtoberfläche:</strong> <i>O = 2 &middot; G + M</i>  (Grundfläche + Deckfläche + Mantel)<br>
+                &bull; <strong>Rauminhalt (Volumen):</strong> <i>V = G &middot; h<sub>k</sub> = &pi; &middot; r<sup>2</sup> &middot; h<sub>k</sub></i>
+            </p>
+        </div>
+    </div>
+
+    <div class="subject-group">
+        <div class="subject-header">
+            <span class="subject-badge bg-math">Interaktiv</span>
+            <h2 style="margin: 0; color: var(--primary);">Zylinder-Explorer mit dynamischer Musterlösung</h2>
+        </div>
+        
+        <p>Bewege die Schieberegler für den Radius <strong><i>r</i></strong> und die Körperhöhe <strong><i>h<sub>k</sub></i></strong>. Der gezeichnete Zylinder verändert sich live und die mathematische Musterlösung rechnet sofort mit deinen Werten mit!</p>
+
+        <div class="interactive-container">
+            <div class="controls">
+                <div class="slider-group">
+                    <label for="sliderR">Radius <i>r</i>: <span id="valR">3,0</span> cm</label>
+                    <input type="range" id="sliderR" min="1" max="6" step="0.5" value="3">
+                </div>
+
+                <div class="slider-group">
+                    <label for="sliderH">Körperhöhe <i>h<sub>k</sub></i>: <span id="valH">6,0</span> cm</label>
+                    <input type="range" id="sliderH" min="2" max="12" step="0.5" value="6">
+                </div>
+            </div>
+
+            <div class="canvas-container">
+                <canvas id="cylinderCanvas" width="220" height="240"></canvas>
+            </div>
+
+            <div class="live-solution" id="solutionOutput">
+                Lade Rechner...
+            </div>
+        </div>
+    </div>
+
+    <div class="subject-group">
+        <div class="subject-header">
+            <span class="subject-badge bg-math">Übung</span>
+            <h2 style="margin: 0; color: var(--primary);">Typische Schularbeiten-Aufgaben</h2>
+        </div>
+        
+        <p>Rechne die Aufgaben zuerst auf einem Zettel durch und klappe die Musterlösung zur Kontrolle auf.</p>
+
+        <div class="example-box">
+            <div class="example-header">
+                <span>🥫 Aufgabe 1: Das Volumen einer Konservendose (Direktes Einsetzen)</span>
+                <span class="arrow">▼</span>
+            </div>
+            <div class="example-content">
+                <p><strong>Aufgabe:</strong> Eine klassische Suppendose hat einen Durchmesser von <i>d</i> = 8 cm und eine Körperhöhe von <i>h<sub>k</sub></i> = 11,5 cm. Wie viel Milliliter (ml) Suppe passen maximal in die Dose?</p>
+                <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 10px 0;">
+                <strong>Schritt 1: Radius bestimmen</strong><br>
+                Gegeben ist der Durchmesser <i>d</i>. Für die Formeln brauchen wir den Radius <i>r</i>:<br>
+                <i>r = d / 2 = 8 / 2 = 4 cm</i>
+                <br><br>
+                <strong>Schritt 2: Grundfläche G berechnen</strong><br>
+                <i>G = &pi; &middot; r<sup>2</sup></i><br>
+                <i>G = &pi; &middot; 4<sup>2</sup> = &pi; &middot; 16 &approx; 50,27 cm<sup>2</sup></i>
+                <br><br>
+                <strong>Schritt 3: Volumen V berechnen</strong><br>
+                <i>V = G &middot; h<sub>k</sub></i><br>
+                <i>V = 50,27 &middot; 11,5 &approx; 578,11 cm<sup>3</sup></i>
+                <br><br>
+                <strong>Schritt 4: In Milliliter umrechnen</strong><br>
+                Wir wissen, dass 1 Kubikzentimeter (cm<sup>3</sup>) genau 1 Milliliter (ml) entspricht.<br>
+                <i>578,11 cm<sup>3</sup> = <strong>578,11 ml</strong></i>
+                <br><br>
+                <strong>Antwort:</strong> In die Konservendose passen maximal rund 578 ml Suppe.
+            </div>
+        </div>
+
+        <div class="example-box">
+            <div class="example-header">
+                <span>🔄 Aufgabe 2: Umkehraufgabe (Gesucht ist der Radius)</span>
+                <span class="arrow">▼</span>
+            </div>
+            <div class="example-content">
+                <p><strong>Aufgabe:</strong> Ein zylinderförmiges Regenfass hat ein Fassungsvermögen von <i>V</i> = 400 Litern. Das Fass ist genau <i>h<sub>k</sub></i> = 1,20 m hoch. Welchen Radius <i>r</i> hat das Fass?</p>
+                <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 10px 0;">
+                <strong>Schritt 1: Einheiten harmonisieren!</strong><br>
+                Das ist die größte Fehlerquelle bei Schularbeiten. Wir wandeln alles in Dezimeter (dm) um, da 1 Liter = 1 dm<sup>3</sup> ist:<br>
+                <i>V</i> = 400 Liter = 400 dm<sup>3</sup><br>
+                <i>h<sub>k</sub></i> = 1,20 m = 12 dm
+                <br><br>
+                <strong>Schritt 2: Volumenformel aufstellen und nach r<sup>2</sup> umformen</strong><br>
+                <i>V = &pi; &middot; r<sup>2</sup> &middot; h<sub>k</sub></i><br>
+                Wir dividieren durch &pi; und durch <i>h<sub>k</sub></i>:<br>
+                <i>r<sup>2</sup> = V / (&pi; &middot; h<sub>k</sub>)</i>
+                <br><br>
+                <strong>Schritt 3: Werte einsetzen und r<sup>2</sup> ausrechnen</strong><br>
+                <i>r<sup>2</sup> = 400 / (&pi; &middot; 12)</i><br>
+                <i>r<sup>2</sup> = 400 / 37,70 &approx; 10,61 dm<sup>2</sup></i>
+                <br><br>
+                <strong>Schritt 4: Die Quadratwurzel ziehen</strong><br>
+                <i>r = &radic;10,61 &approx; 3,26 dm</i>
+                <br><br>
+                <strong>Antwort:</strong> Das Regenfass hat einen Radius von ca. 3,26 dm (das sind umgerechnet <strong>32,6 cm</strong>).
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        // --- 1. Event Listener für die ausklappbaren Beispiele binden ---
+        const exampleHeaders = document.querySelectorAll(".example-header");
+        
+        exampleHeaders.forEach(header => {
+            header.addEventListener("click", () => {
+                const content = header.nextElementSibling;
+                const arrow = header.querySelector(".arrow");
+                
+                // Wir prüfen den aktuell berechneten Style, um Fehler zu vermeiden
+                const isHidden = window.getComputedStyle(content).display === "none";
+                
+                if (isHidden) {
+                    content.style.display = "block";
+                    if (arrow) arrow.textContent = "▲";
+                } else {
+                    content.style.display = "none";
+                    if (arrow) arrow.textContent = "▼";
+                }
+            });
+        });
+
+        // --- 2. Zylinder Explorer Logik ---
+        const sliderR = document.getElementById("sliderR");
+        const sliderH = document.getElementById("sliderH");
+        const valR = document.getElementById("valR");
+        const valH = document.getElementById("valH");
+        const solutionOutput = document.getElementById("solutionOutput");
+        const canvas = document.getElementById("cylinderCanvas");
+        
+        // Sicherheits-Check, falls das Canvas nicht geladen ist
+        if (!canvas || !sliderR || !sliderH) return;
+        
+        const ctx = canvas.getContext("2d");
+
+        // Formatierungs-Funktion für Zahlen
+        function formatNum(num) {
+            return Number(num).toFixed(2).replace('.', ',');
+        }
+
+        // Zeichen-Funktion für den Zylinder
+        function drawCylinder(r, h) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.strokeStyle = "#2563eb"; // var(--primary)
+            ctx.lineWidth = 2;
+            
+            // Skalierung für die Grafik im Canvas
+            const scaleX = 14; 
+            const scaleY = 6;  // Flachere Ellipse für Perspektive
+            const scaleH = 13;
+            
+            const cx = canvas.width / 2;
+            const rx = r * scaleX;
+            const ry = r * scaleY;
+            const ch = h * scaleH;
+            
+            const topY = 40 + (12 * scaleH - ch) / 2; // Höhe im Canvas zentrieren
+            const bottomY = topY + ch;
+
+            // Deckfläche (Obere Ellipse komplett durchgezogen)
+            ctx.beginPath();
+            ctx.ellipse(cx, topY, rx, ry, 0, 0, 2 * Math.PI);
+            ctx.fillStyle = "rgba(37, 99, 235, 0.03)";
+            ctx.fill();
+            ctx.stroke();
+
+            // Grundfläche (Hinterer Teil gestrichelt)
+            ctx.beginPath();
+            ctx.ellipse(cx, bottomY, rx, ry, 0, Math.PI, 2 * Math.PI);
+            ctx.setLineDash([4, 4]);
+            ctx.stroke();
+
+            // Grundfläche (Vorderer Teil durchgezogen)
+            ctx.beginPath();
+            ctx.ellipse(cx, bottomY, rx, ry, 0, 0, Math.PI);
+            ctx.setLineDash([]);
+            ctx.stroke();
+
+            // Seitenlinien
+            ctx.beginPath();
+            ctx.moveTo(cx - rx, topY); ctx.lineTo(cx - rx, bottomY);
+            ctx.moveTo(cx + rx, topY); ctx.lineTo(cx + rx, bottomY);
+            ctx.stroke();
+
+            // Hilfslinien Radius
+            ctx.beginPath();
+            ctx.strokeStyle = "#ea580c"; // Orange
+            ctx.moveTo(cx, topY);
+            ctx.lineTo(cx + rx, topY);
+            ctx.stroke();
+
+            // Hilfslinien Höhe
+            ctx.beginPath();
+            ctx.strokeStyle = "#16a34a"; // Grün
+            ctx.moveTo(cx - rx - 15, topY);
+            ctx.lineTo(cx - rx - 15, bottomY);
+            ctx.stroke();
+            
+            // Querstrich-Begrenzungen
+            ctx.beginPath();
+            ctx.moveTo(cx - rx - 20, topY); ctx.lineTo(cx - rx - 10, topY);
+            ctx.moveTo(cx - rx - 20, bottomY); ctx.lineTo(cx - rx - 10, bottomY);
+            ctx.stroke();
+        }
+
+        // Update-Funktion für Berechnungen & Canvas
+        function update() {
+            const r = parseFloat(sliderR.value);
+            const h = parseFloat(sliderH.value);
+
+            valR.textContent = r.toFixed(1).replace('.', ',');
+            valH.textContent = h.toFixed(1).replace('.', ',');
+
+            drawCylinder(r, h);
+
+            // Mathematische Berechnungen (Echtzeit)
+            const pi = Math.PI;
+            const g = pi * r * r;
+            const u = 2 * pi * r;
+            const m = u * h;
+            const o = 2 * g + m;
+            const v = g * h;
+
+            solutionOutput.innerHTML = `
+<strong>DYNAMISCHE MUSTERLÖSUNG (r = ${formatNum(r)} cm, h<sub>k</sub> = ${formatNum(h)} cm):</strong><br>
+<br>
+<strong>1. Grundfläche G (Kreisfläche):</strong><br>
+Formel:  G = &pi; &middot; r<sup>2</sup><br>
+Rechnung: G = &pi; &middot; ${formatNum(r)}<sup>2</sup> = &pi; &middot; ${formatNum(r*r)} &approx; <strong>${formatNum(g)} cm<sup>2</sup></strong><br>
+<br>
+<strong>2. Mantelfläche M (Rechteck aus Kreisumfang &middot; Höhe):</strong><br>
+Formel:  M = 2 &middot; &pi; &middot; r &middot; h<sub>k</sub><br>
+Rechnung: M = 2 &middot; &pi; &middot; ${formatNum(r)} &middot; ${formatNum(h)} = ${formatNum(u)} &middot; ${formatNum(h)} &approx; <strong>${formatNum(m)} cm<sup>2</sup></strong><br>
+<br>
+<strong>3. Gesamtoberfläche O (2 &middot; Grundfläche + Mantel):</strong><br>
+Formel:  O = 2 &middot; G + M<br>
+Rechnung: O = 2 &middot; ${formatNum(g)} + ${formatNum(m)} = ${formatNum(2*g)} + ${formatNum(m)} &approx; <strong>${formatNum(o)} cm<sup>2</sup></strong><br>
+<br>
+<strong>4. Rauminhalt / Volumen V (Grundfläche &middot; Höhe):</strong><br>
+Formel:  V = G &middot; h<sub>k</sub><br>
+Rechnung: V = ${formatNum(g)} &middot; ${formatNum(h)} &approx; <strong>${formatNum(v)} cm<sup>3</sup></strong>
+            `;
+        }
+
+        // Sicherstellen, dass auf jedem Gerät auf Bewegung reagiert wird (input & change)
+        ['input', 'change'].forEach(evt => {
+            sliderR.addEventListener(evt, update);
+            sliderH.addEventListener(evt, update);
+        });
+
+        // Einmaliges Ausführen zum Start
+        update(); 
+    });
+</script>
+
+</body>
+</html>

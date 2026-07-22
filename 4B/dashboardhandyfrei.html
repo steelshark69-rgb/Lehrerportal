@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projekt Handyfrei - 21 Tage Fokus</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .blue-light-sim {
+            height: 150px;
+            background: linear-gradient(to right, #ff0000, #ffff00, #00ff00, #00ffff, #0000ff);
+            position: relative;
+            border-radius: 12px;
+        }
+
+        .pulse {
+            animation: pulse-animation 2s infinite;
+        }
+
+        @keyframes pulse-animation {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .notification-dot {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background-color: #ef4444;
+            border-radius: 50%;
+        }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        
+        .check-item:hover .check-box {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900">
+
+    <!-- Header -->
+    <header class="gradient-bg text-white py-16 px-6 text-center shadow-xl">
+        <div class="max-w-4xl mx-auto">
+            <h1 class="text-5xl md:text-6xl font-extrabold mb-4 tracking-tight text-white">Projekt Handyfrei</h1>
+            <p class="text-xl md:text-2xl opacity-90 font-light italic text-blue-100">"Ersetze Screen-Time durch Life-Time."</p>
+            <div class="mt-8 inline-flex items-center bg-white/20 px-4 py-2 rounded-full text-sm backdrop-blur-sm text-white">
+                <span class="mr-2">🚀</span> Fokus-Wochen für AHS-Klassen
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-4 py-12">
+        
+       <!-- Sektion 1: Tracking & Checkliste -->
+        <div class="grid md:grid-cols-3 gap-8 mb-12">
+            <!-- Tracker -->
+            <section class="md:col-span-2 bg-white p-8 rounded-3xl shadow-sm border border-slate-100">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+                    <h2 class="text-2xl font-bold flex items-center text-slate-800">
+                        <span class="bg-blue-100 p-2 rounded-lg mr-3">🗓️</span> 21-Tage Tracker
+                    </h2>
+                    <div id="streak-info" class="bg-blue-50 text-blue-700 px-4 py-2 rounded-full font-bold text-sm">
+                        0 Tage geschafft
+                    </div>
+                </div>
+                <div class="grid grid-cols-7 gap-2 md:gap-3 mb-6" id="tracker-grid">
+                    <!-- Days generated via JS -->
+                </div>
+                <div class="flex justify-between items-center text-xs text-slate-400">
+                    <p id="tracker-status">Markiere jeden erfolgreichen Tag.</p>
+                    <button onclick="resetTracker()" class="text-blue-600 hover:underline">Reset</button>
+                </div>
+            </section>
+
+            <!-- Checkliste Woche 1 -->
+            <section class="bg-white p-8 rounded-3xl shadow-sm border border-slate-100">
+                <h3 class="text-xl font-bold mb-6 text-slate-800 flex items-center">
+                    <span class="bg-green-100 p-2 rounded-lg mr-3 text-sm">✅</span> Woche 1 Check
+                </h3>
+                <div class="space-y-4 text-sm text-slate-600">
+                    <label class="flex items-start gap-3 cursor-pointer group">
+                        <input type="checkbox" class="mt-1 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                        <span class="group-hover:text-slate-900 transition">Geht das Einschlafen schneller?</span>
+                    </label>
+                    <label class="flex items-start gap-3 cursor-pointer group">
+                        <input type="checkbox" class="mt-1 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                        <span class="group-hover:text-slate-900 transition">Brennen die Augen weniger?</span>
+                    </label>
+                    <label class="flex items-start gap-3 cursor-pointer group">
+                        <input type="checkbox" class="mt-1 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                        <span class="group-hover:text-slate-900 transition">Längerer Fokus bei Mathe-HÜ?</span>
+                    </label>
+                    <label class="flex items-start gap-3 cursor-pointer group">
+                        <input type="checkbox" class="mt-1 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                        <span class="group-hover:text-slate-900 transition">Pausen ohne "Schutzschild"?</span>
+                    </label>
+                </div>
+                <div class="mt-8 p-4 bg-blue-50 rounded-xl border border-blue-100">
+                    <p class="text-[11px] text-blue-700 leading-tight"><strong>Mathematik-Check:</strong> 3h/Tag = <strong>63 Stunden</strong> Zeitgewinn in 21 Tagen!</p>
+                </div>
+            </section>
+        </div>
+
+        <!-- Sektion 2: Blaulicht & Biologie (Integrierter neuer Code) -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold mb-8 text-center text-slate-800">Biologie des Lichts: Das Problem Blaulicht</h2>
+            <div class="grid md:grid-cols-2 gap-8 mb-8 text-slate-800">
+                <!-- Blaulicht Erläuterung -->
+                <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 relative overflow-hidden">
+                    <h3 class="text-xl font-bold text-blue-800 mb-6">Hochenergetisches HEV-Licht</h3>
+                    <p class="text-slate-600 mb-6 leading-relaxed">
+                        Smartphones strahlen Licht mit einer Wellenlänge von ca. <strong>400-490 nm</strong> aus. In der Natur signalisiert dieses Spektrum dem Gehirn: <em>"Es ist Mittag!"</em>
+                    </p>
+                    <div class="grid grid-cols-1 gap-4">
+                        <div class="flex items-center gap-4 p-3 bg-indigo-50 rounded-xl">
+                            <span class="text-2xl">🌙</span>
+                            <div>
+                                <p class="font-bold text-sm">Wirkung am Abend</p>
+                                <p class="text-xs text-slate-600 italic text-indigo-900">Melatonin-Stopp & flacher Schlaf (weniger Tiefschlaf).</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4 p-3 bg-blue-50 rounded-xl">
+                            <span class="text-2xl">👁️</span>
+                            <div>
+                                <p class="font-bold text-sm">Wirkung auf die Augen</p>
+                                <p class="text-xs text-slate-600 italic text-blue-900">Digital Eye Strain & Akkommodationsstress (Muskelermüdung).</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Melatonin Diagramm -->
+                <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 flex flex-col items-center">
+                    <h3 class="text-xl font-bold text-slate-800 mb-8 self-start italic">Hormon-Vergleich: Melatoninspiegel</h3>
+                    <div class="w-full flex items-end justify-around h-48 border-b-2 border-l-2 border-slate-200 px-4 relative">
+                        <!-- Bar 1 -->
+                        <div class="w-12 bg-purple-600 rounded-t-lg relative group bar-transition shadow-lg" style="height: 90%;">
+                            <span class="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] font-bold text-purple-600">90%</span>
+                            <span class="absolute -bottom-7 left-1/2 -translate-x-1/2 text-[10px] whitespace-nowrap font-medium">Natur</span>
+                        </div>
+                        <!-- Bar 2 -->
+                        <div class="w-12 bg-purple-400 rounded-t-lg relative group bar-transition shadow-lg" style="height: 30%;">
+                            <span class="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] font-bold text-purple-400">30%</span>
+                            <span class="absolute -bottom-7 left-1/2 -translate-x-1/2 text-[10px] whitespace-nowrap font-medium">Handy</span>
+                        </div>
+                        <!-- Bar 3 -->
+                        <div class="w-12 bg-slate-300 rounded-t-lg relative group bar-transition" style="height: 10%;">
+                            <span class="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] font-bold text-slate-400">10%</span>
+                            <span class="absolute -bottom-7 left-1/2 -translate-x-1/2 text-[10px] whitespace-nowrap font-medium">Tag</span>
+                        </div>
+                    </div>
+                    <div class="mt-12 text-[11px] text-slate-500 text-center leading-tight">
+                        *Die violetten Balken zeigen das Level an Melatonin (Schlafhormon). Weniger Melatonin = deutlich schwereres Einschlafen.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+       
+
+        <!-- NEU Sektion: Erwartungen & Ängste (Qualitative Daten) -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold mb-8 text-center text-slate-800">Was uns bewegt: Erwartungen vs. Ängste</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                
+                <!-- Erwartungen -->
+                <div class="bg-white p-8 rounded-3xl shadow-sm border-t-8 border-green-500 relative overflow-hidden">
+                    <div class="absolute top-4 right-4 text-4xl opacity-10">✨</div>
+                    <h3 class="text-xl font-bold text-green-700 mb-6 flex items-center">
+                        <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                        Was wir gewinnen wollen
+                    </h3>
+                    <ul class="space-y-4">
+                        <li class="flex items-start">
+                            <span class="bg-green-100 text-green-600 rounded-full p-1 mr-3 mt-1">✓</span>
+                            <div>
+                                <p class="font-bold text-slate-800">Mehr Lebenszeit</p>
+                                <p class="text-sm text-slate-600">Zeit für echte Hobbys, Freunde, Familie und Natur ohne ständige Unterbrechung.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="bg-green-100 text-green-600 rounded-full p-1 mr-3 mt-1">✓</span>
+                            <div>
+                                <p class="font-bold text-slate-800">Bessere Gesundheit</p>
+                                <p class="text-sm text-slate-600">Tieferer Schlaf, weniger Kopfschmerzen durch Blaulicht und sinkendes Stresslevel.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="bg-green-100 text-green-600 rounded-full p-1 mr-3 mt-1">✓</span>
+                            <div>
+                                <p class="font-bold text-slate-800">Mentaler Stolz</p>
+                                <p class="text-sm text-slate-600">Das Gefühl, wieder die Kontrolle über die eigene Aufmerksamkeit gewonnen zu haben.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Ängste -->
+                <div class="bg-white p-8 rounded-3xl shadow-sm border-t-8 border-red-500 relative overflow-hidden">
+                    <div class="absolute top-4 right-4 text-4xl opacity-10">⚠️</div>
+                    <h3 class="text-xl font-bold text-red-700 mb-6 flex items-center">
+                        <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                        Unsere größten Bedenken
+                    </h3>
+                    <ul class="space-y-4">
+                        <li class="flex items-start">
+                            <span class="bg-red-100 text-red-600 rounded-full p-1 mr-3 mt-1">!</span>
+                            <div>
+                                <p class="font-bold text-slate-800">FOMO (Fear of missing out)</p>
+                                <p class="text-sm text-slate-600">Die Angst, wichtige Infos in Gruppenchats oder den Kontakt zu Freunden zu verlieren.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="bg-red-100 text-red-600 rounded-full p-1 mr-3 mt-1">!</span>
+                            <div>
+                                <p class="font-bold text-slate-800">Verlust von "Streaks"</p>
+                                <p class="text-sm text-slate-600">Snapchat-Flammen oder Duolingo-Erfolge, die über Monate aufgebaut wurden.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="bg-red-100 text-red-600 rounded-full p-1 mr-3 mt-1">!</span>
+                            <div>
+                                <p class="font-bold text-slate-800">Langeweile & Leere</p>
+                                <p class="text-sm text-slate-600">Das unangenehme Gefühl, nicht zu wissen, was man mit der plötzlichen Zeit tun soll.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mt-6 text-center text-xs text-slate-400 italic">
+                * Diese Daten basieren auf euren anonymen Einsendungen aus der Klasse.
+            </div>
+        </section>
+
+        <!-- Sektion 2: Der "Brain Drain" Effekt (Psychologie) -->
+        <section class="mb-16 grid md:grid-cols-3 gap-8">
+            <div class="md:col-span-2 bg-white p-8 rounded-3xl border border-slate-100 shadow-sm">
+                <h2 class="text-3xl font-bold mb-6 text-slate-800">Der "Brain Drain" Effekt</h2>
+                <p class="text-slate-600 mb-6 leading-relaxed">
+                    Wusstest du, dass allein die <strong>Anwesenheit</strong> deines Handys auf dem Tisch deine Konzentrationsleistung um bis zu 20% senkt? Dein Gehirn muss aktiv Energie aufwenden, um den Impuls zu unterdrücken, das Handy zu checken.
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="p-4 bg-red-50 rounded-xl border border-red-100">
+                        <span class="block font-bold text-red-700">Phone-on-Table</span>
+                        <span class="text-xs text-red-600">Niedrigste kognitive Kapazität</span>
+                    </div>
+                    <div class="p-4 bg-green-50 rounded-xl border border-green-100">
+                        <span class="block font-bold text-green-700">Phone-in-Other-Room</span>
+                        <span class="text-xs text-green-600">Maximale mentale Power</span>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-indigo-900 text-white p-8 rounded-3xl flex flex-col justify-center">
+                <h3 class="text-xl font-bold mb-4">DGB Challenge:</h3>
+                <p class="text-sm opacity-80 mb-6">Probiere es bei der nächsten Mathe-HÜ: Leg das Handy in einen <strong>anderen Raum</strong>. Miss die Zeit, die du für die Beispiele brauchst.</p>
+                <div class="text-xs p-3 bg-white/10 rounded-lg">
+                    Link zu <em>Mathematik verstehen</em>: Vergleiche die Zeiten mittels Boxplot in der Klasse!
+                </div>
+            </div>
+        </section>
+
+        <!-- Sektion 3: Gesundheit - Dein Körper (Biologie) -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold mb-8 text-center text-slate-800">Gesundheits-Check: Kopf & Augen</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Handynacken -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex gap-4">
+                    <div class="bg-orange-100 p-4 rounded-xl h-fit">
+                        <svg class="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-lg mb-2 text-slate-800">Der "Handynacken"</h4>
+                        <p class="text-sm text-slate-600">Bei einer Neigung von 60° wirken <strong>27 kg</strong> Gewicht auf deine Halswirbelsäule. Das ist so, als würde ein 7-jähriges Kind auf deinem Nacken sitzen.</p>
+                    </div>
+                </div>
+                <!-- 20-20-20 Regel -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex gap-4">
+                    <div class="bg-blue-100 p-4 rounded-xl h-fit">
+                        <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-lg mb-2 text-slate-800">20-20-20 Regel</h4>
+                        <p class="text-sm text-slate-600">Alle 20 Minuten für 20 Sekunden ein Objekt in 20 Fuß (~6 Meter) Entfernung fixieren. Das entspannt die Augenmuskulatur sofort.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sektion 4: Mathematik & Dopamin -->
+        <section class="mb-16 bg-slate-900 text-white p-8 rounded-3xl overflow-hidden relative">
+            <div class="grid md:grid-cols-2 gap-10 relative z-10">
+                <div>
+                    <h2 class="text-3xl font-bold mb-4 italic text-white">DGB Lab: Dopamin-Detox</h2>
+                    <p class="text-slate-300 mb-6">Apps nutzen das "belohnende" Gefühl von roten Punkten. Wir schlagen das System mit seinen eigenen Waffen.</p>
+                    <div class="space-y-4">
+                        <button onclick="startDopamineTest()" class="w-full bg-blue-600 hover:bg-blue-500 py-3 rounded-xl font-bold transition flex justify-center items-center text-white">
+                            <span>Test: Reaktions-Falle</span>
+                        </button>
+                        <div id="dopamine-area" class="h-32 bg-slate-950 rounded-xl relative overflow-hidden border border-slate-800 group">
+                            <p id="dopamine-msg" class="text-center mt-12 text-xs text-slate-600 italic">Klicke oben, um den Test zu starten...</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white/5 p-6 rounded-2xl border border-white/10 backdrop-blur-md">
+                    <h3 class="font-bold text-xl mb-4 text-blue-400">Mathe-Quickcheck</h3>
+                    <div class="space-y-4 text-white">
+                        <p class="text-sm opacity-80">Gib deine tägliche Screen-Time ein:</p>
+                        <div class="flex gap-4">
+                            <input type="number" id="dailyHours" value="4" step="0.5" oninput="calculateTime()" class="bg-slate-800 border-none text-white p-3 rounded-lg w-24 focus:ring-2 focus:ring-blue-500">
+                            <span class="flex items-center">Std. / Tag</span>
+                        </div>
+                        <div class="pt-4 border-t border-white/10">
+                            <p class="text-xs uppercase tracking-widest text-slate-400 mb-1">Gewonnene Zeit in 21 Tagen:</p>
+                            <div class="text-4xl font-mono font-bold text-white"><span id="totalHoursDisplay">84</span> h</div>
+                            <p class="text-xs mt-2 text-blue-300" id="math-hint">Das entspricht etwa 10,5 Arbeitstagen eines Erwachsenen!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sektion 5: Toolbox & Strategien -->
+        <section class="mb-16">
+            <div class="flex border-b border-slate-200 mb-8 overflow-x-auto">
+                <button onclick="openTab('strategien')" id="defaultTab" class="tab-btn py-4 px-6 font-bold border-b-4 border-blue-600 text-blue-600 whitespace-nowrap">Strategien</button>
+                <button onclick="openTab('tech')" class="tab-btn py-4 px-6 font-bold text-slate-400 whitespace-nowrap">Tech-Hacks</button>
+                <button onclick="openTab('soziales')" class="tab-btn py-4 px-6 font-bold text-slate-400 whitespace-nowrap">Soziales & Phubbing</button>
+            </div>
+
+            <div id="strategien" class="tab-content active">
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+                        <div class="text-3xl mb-4">🧱</div>
+                        <h4 class="font-bold mb-2 text-slate-800">Physische Barrieren</h4>
+                        <p class="text-sm text-slate-600">Nutze "Handy-Gefängnisse" oder leg das Gerät in eine Box im Flur, sobald du nach Hause kommst.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+                        <div class="text-3xl mb-4">⏰</div>
+                        <h4 class="font-bold mb-2 text-slate-800">Time-Boxing</h4>
+                        <p class="text-sm text-slate-600">Erlaube dir feste "Check-Zeiten" (z.B. 10 Min. nach dem Mittagessen), anstatt alle 5 Min. zu schauen.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+                        <div class="text-3xl mb-4">🌙</div>
+                        <h4 class="font-bold mb-2 text-slate-800">Analoger Abend</h4>
+                        <p class="text-sm text-slate-600">Kein Bildschirm 60 Min. vor dem Schlafengehen. Lies ein echtes Buch aus Papier.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tech" class="tab-content">
+                <div class="bg-slate-50 p-8 rounded-3xl border border-slate-200">
+                    <h3 class="text-xl font-bold mb-6 text-slate-800 text-white">Programmiere dein Handy um</h3>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="flex items-start gap-4">
+                            <div class="bg-gray-200 p-2 rounded text-lg">🌑</div>
+                            <div>
+                                <h5 class="font-bold text-slate-800">Graustufen-Modus</h5>
+                                <p class="text-sm text-slate-600">Stell dein Display auf Schwarz-Weiß. Das entzieht Instagram und TikTok die visuelle Anziehungskraft.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="bg-gray-200 p-2 rounded text-lg">🔕</div>
+                            <div>
+                                <h5 class="font-bold text-slate-800">Push-Abbau</h5>
+                                <p class="text-sm text-slate-600">Deaktiviere ALLE Benachrichtigungen außer Anrufen und direkten Nachrichten von echten Menschen.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="soziales" class="tab-content">
+                <div class="bg-indigo-50 p-8 rounded-3xl border border-indigo-100">
+                    <h3 class="text-xl font-bold text-indigo-900 mb-4">Was ist "Phubbing"?</h3>
+                    <p class="text-indigo-800 mb-6 italic">Phubbing = Phone + Snubbing (jemanden vor den Kopf stoßen).</p>
+                    <div class="bg-white p-6 rounded-2xl shadow-sm">
+                        <h5 class="font-bold mb-3 text-slate-800">Die Klassen-Regel:</h5>
+                        <ul class="space-y-3 text-sm">
+                            <li class="flex items-center gap-2"><span class="text-green-500 font-bold">✔</span> In den Pausen: Blickkontakt statt Screen-Kontakt.</li>
+                            <li class="flex items-center gap-2"><span class="text-green-500 font-bold">✔</span> "Phone-Stacking" beim Treffen: Wer zuerst zum Handy greift, bekommt eine extra Mathe-Aufgabe.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-900 text-white py-12 px-6 text-center">
+        <div class="max-w-4xl mx-auto opacity-70">
+            <p class="text-sm font-semibold uppercase tracking-widest mb-2 text-white">Projekt Handyfrei | Informatik & Mathematik</p>
+            <p class="text-xs text-white">Wissenschaftlich fundierte Inhalte für die AHS. Quellen: Dr. James Roberts (Phubbing), Stanford University (Brain Drain Study).</p>
+        </div>
+    </footer>
+
+    <script>
+        // Tab Logik
+        function openTab(tabName) {
+            const contents = document.getElementsByClassName("tab-content");
+            const btns = document.getElementsByClassName("tab-btn");
+            for (let x of contents) x.classList.remove("active");
+            for (let b of btns) {
+                b.classList.remove("border-b-4", "border-blue-600", "text-blue-600");
+                b.classList.add("text-slate-400");
+            }
+            document.getElementById(tabName).classList.add("active");
+            event.currentTarget.classList.add("border-b-4", "border-blue-600", "text-blue-600");
+            event.currentTarget.classList.remove("text-slate-400");
+        }
+
+        // Mathematik Rechner
+        function calculateTime() {
+            const h = parseFloat(document.getElementById('dailyHours').value) || 0;
+            const total = (h * 21).toFixed(1);
+            document.getElementById('totalHoursDisplay').innerText = total;
+            
+            const workDays = (total / 8).toFixed(1);
+            document.getElementById('math-hint').innerText = `Das entspricht etwa ${workDays} Arbeitstagen eines Erwachsenen!`;
+        }
+
+        // Tracker Setup
+        function initTracker() {
+            const grid = document.getElementById('tracker-grid');
+            const saved = JSON.parse(localStorage.getItem('handyfrei-progress-v3') || '[]');
+            
+            for (let i = 1; i <= 21; i++) {
+                const day = document.createElement('div');
+                const isSelected = saved.includes(i);
+                day.className = `h-12 flex items-center justify-center rounded-lg cursor-pointer transition-all border-2 ${isSelected ? 'bg-blue-600 border-blue-600 text-white shadow-lg' : 'bg-white border-slate-200 text-slate-400 hover:border-blue-300'}`;
+                day.innerText = i;
+                day.onclick = () => toggleDay(i, day);
+                grid.appendChild(day);
+            }
+            updateStreakDisplay(saved.length);
+        }
+
+        function toggleDay(i, el) {
+            let saved = JSON.parse(localStorage.getItem('handyfrei-progress-v3') || '[]');
+            if (saved.includes(i)) {
+                saved = saved.filter(d => d !== i);
+                el.className = "h-12 flex items-center justify-center rounded-lg cursor-pointer transition-all border-2 bg-white border-slate-200 text-slate-400 hover:border-blue-300";
+            } else {
+                saved.push(i);
+                el.className = "h-12 flex items-center justify-center rounded-lg cursor-pointer transition-all border-2 bg-blue-600 border-blue-600 text-white shadow-lg scale-105";
+            }
+            localStorage.setItem('handyfrei-progress-v3', JSON.stringify(saved));
+            updateStreakDisplay(saved.length);
+        }
+
+        function updateStreakDisplay(len) {
+            document.getElementById('streak-info').innerText = `${len} Tage geschafft`;
+            document.getElementById('tracker-status').innerText = len >= 21 ? "Herzlichen Glückwunsch! Challenge gemeistert." : "Klicke auf die Tage, um deinen Erfolg zu markieren.";
+        }
+
+        function resetTracker() {
+            if(confirm("Möchtest du deinen Fortschritt wirklich löschen?")) {
+                localStorage.removeItem('handyfrei-progress-v3');
+                location.reload();
+            }
+        }
+
+        // Dopamin Test Simulator
+        let testActive = false;
+        function startDopamineTest() {
+            if (testActive) return;
+            testActive = true;
+            const area = document.getElementById('dopamine-area');
+            const msg = document.getElementById('dopamine-msg');
+            area.innerHTML = '';
+            msg.style.display = 'none';
+
+            let count = 0;
+            const testDuration = 5000; // 5 Sekunden
+            const interval = setInterval(() => {
+                const dot = document.createElement('div');
+                dot.className = "notification-dot cursor-pointer hover:scale-150 transition-transform pulse";
+                dot.style.left = Math.random() * 90 + '%';
+                dot.style.top = Math.random() * 70 + '%';
+                dot.style.display = 'block';
+                dot.onclick = () => {
+                    dot.remove();
+                    count++;
+                };
+                area.appendChild(dot);
+                
+                // Dots verschwinden nach 1 Sekunde wieder
+                setTimeout(() => { if(dot.parentNode) dot.remove(); }, 1200);
+            }, 500);
+
+            setTimeout(() => {
+                clearInterval(interval);
+                testActive = false;
+                area.innerHTML = `<div class="text-center mt-10">
+                    <p class="text-sm text-blue-400 font-bold">Test beendet!</p>
+                    <p class="text-[10px] opacity-70">Geklickt: ${count} "Kicks". Jedes Mal wurde Dopamin ausgeschüttet.</p>
+                    <button onclick="startDopamineTest()" class="text-[10px] underline mt-1 text-white">Nochmal</button>
+                </div>`;
+            }, testDuration);
+        }
+
+        window.onload = () => {
+            initTracker();
+            calculateTime();
+        };
+    </script>
+</body>
+</html>

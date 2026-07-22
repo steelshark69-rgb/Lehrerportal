@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mission: Das Internet verstehen | 100 Minuten</title>
+    <link rel="stylesheet" href="../../style.css">
+    
+    <style>
+        :root {
+            --it-primary: #107c41; /* Informatik Grün */
+            --it-dark: #064e3b;
+            --step-color: #0ea5e9;
+            --terminal-bg: #0f172a;
+            --terminal-text: #10b981;
+        }
+
+        body { counter-reset: step-counter; }
+
+        .mission-step {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 2rem 2rem 2rem 4rem;
+            margin: 3rem 0;
+            position: relative;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+        }
+
+        .mission-step::before {
+            counter-increment: step-counter;
+            content: counter(step-counter);
+            position: absolute;
+            left: -20px;
+            top: 20px;
+            background: var(--step-color);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(14, 165, 233, 0.3);
+            border: 4px solid white;
+        }
+
+        /* Terminal Styles */
+        .terminal {
+            background: var(--terminal-bg);
+            color: var(--terminal-text);
+            font-family: 'Courier New', Courier, monospace;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+            border: 1px solid #334155;
+        }
+        .terminal-header { color: #64748b; margin-bottom: 10px; font-size: 0.85rem; border-bottom: 1px solid #334155; padding-bottom: 5px; }
+        .terminal-input-row { display: flex; margin-top: 10px; }
+        .terminal-prompt { color: #38bdf8; margin-right: 10px; }
+        .terminal-input {
+            background: transparent;
+            border: none;
+            color: white;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1rem;
+            flex-grow: 1;
+            outline: none;
+        }
+        .terminal-output { white-space: pre-wrap; margin-top: 10px; line-height: 1.4; color: #cbd5e1; }
+
+        /* Video/Link Box */
+        .resource-box {
+            display: flex;
+            align-items: center;
+            background: #f8fafc;
+            border-left: 4px solid var(--it-primary);
+            padding: 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+            text-decoration: none;
+            color: #334155;
+            transition: 0.2s;
+        }
+        .resource-box:hover { background: #f1f5f9; transform: translateX(5px); }
+        .resource-icon { font-size: 2rem; margin-right: 15px; }
+
+        /* Infografik & Tabellen */
+        .infographic {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin: 1.5rem 0;
+        }
+        
+        .ip-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .ip-table th, .ip-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .ip-table th { background: #f8fafc; color: #334155; }
+        .row-ipv4 { background: #fffbeb; border-left: 4px solid #f59e0b; }
+        .row-ipv6 { background: #f0fdf4; border-left: 4px solid #10b981; }
+
+        /* Quiz Styles */
+        .quiz-question { background: #f1f5f9; padding: 1.5rem; border-radius: 8px; margin-bottom: 1rem; border-left: 4px solid var(--it-primary); }
+        .quiz-select { padding: 10px; font-size: 1rem; border: 2px solid #cbd5e1; border-radius: 4px; width: 100%; max-width: 400px; margin-top: 10px; cursor: pointer; }
+        .btn-check { background: var(--it-primary); color: white; border: none; padding: 10px 20px; font-size: 1rem; font-weight: bold; border-radius: 4px; cursor: pointer; margin-top: 10px; transition: 0.2s; }
+        .btn-check:hover { background: var(--it-dark); }
+        
+        .feedback { display: none; font-weight: bold; margin-top: 10px; padding: 15px; border-radius: 4px; text-align: center; border: 1px solid transparent; }
+        .fb-correct { background: #d1fae5 !important; color: #065f46 !important; border-color: #10b981 !important; }
+        .fb-wrong { background: #fee2e2 !important; color: #991b1b !important; border-color: #ef4444 !important; }
+        .fb-warning { background: #fffbeb !important; color: #92400e !important; border-color: #f59e0b !important; }
+
+        /* Ticket Styles */
+        .ticket-container {
+            display: none;
+            background: linear-gradient(135deg, #064e3b, #10b981);
+            color: white;
+            padding: 3rem;
+            border-radius: 16px;
+            text-align: center;
+            margin-top: 2rem;
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+        .ticket-watermark { position: absolute; top: -20px; right: -20px; font-size: 8rem; opacity: 0.1; transform: rotate(15deg); }
+        .ticket-score { font-size: 3rem; font-weight: bold; margin: 1rem 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        .ticket-details { background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px; font-family: monospace; font-size: 1.2rem; text-align: left; display: inline-block; }
+    </style>
+</head>
+<body>
+
+<header style="background-color: var(--it-primary); color: white; padding: 2rem 1rem; text-align: center;">
+    <h1 style="margin: 0;">Mission: Wie funktioniert das Internet?</h1>
+    <p style="margin-top: 10px; font-size: 1.1rem; color: #dcfce7;">Infrastruktur, Protokolle und Netzwerke (Dauer: 100 Minuten)</p>
+</header>
+<div class="back-nav">
+    <a href="../index.html" class="btn-back">← Zurück zur Übersicht</a>
+</div>
+<main style="max-width: 900px; margin: 0 auto; padding: 0 1.5rem;">
+
+    <div style="background: #fffbeb; border-left: 4px solid #f59e0b; padding: 1.5rem; border-radius: 4px; margin-top: 2rem;">
+        <strong>🎯 Dein Arbeitsauftrag für diese Doppelstunde:</strong>
+        <p style="margin-bottom: 0;">Studiere die Infografik, lies dir die Erklärungen durch und probiere die Befehle in den Terminals aus. Am Ende absolvierst du den Security-Check (Quiz). <strong>Zeige Prof. Schweitzer am Ende der Stunde dein generiertes Cyber-Zertifikat am Bildschirm!</strong></p>
+    </div>
+
+    <img src="internet.jpeg" alt="Infografik: Wie das Internet funktioniert" class="infographic">
+    <p style="text-align: center; font-size: 0.9rem; color: #64748b; margin-top: -10px; margin-bottom: 3rem;">Die grundlegenden Mechanismen des Internets auf einen Blick.</p>
+
+    <div class="mission-step">
+        <h2 style="margin-top: 0; color: var(--it-dark);">Einheit 1: Adressierung (Das Telefonbuch des Webs)</h2>
+        <p>Jedes Gerät im Netzwerk benötigt eine <strong>eindeutige Kennung (IP-Adresse)</strong>, um identifiziert und lokalisiert zu werden. Wenn du <code>www.code.org</code> in deinen Browser eintippst, weiß dein Computer absolut nicht, wo das liegt.</p>
+        
+        <p>Deshalb gibt es das <strong>DNS (Domain Name System)</strong>. Das ist das Telefonbuch des Internets. Es übersetzt Web-Namen in computerlesbare IP-Adressen (z.B. <code>192.0.2.1</code>).</p>
+
+        <div style="margin: 2rem 0; padding: 1.5rem; background: #f8fafc; border-radius: 8px; border: 1px solid #cbd5e1;">
+            <h3 style="margin-top: 0; color: #334155;">Der Wechsel von IPv4 zu IPv6</h3>
+            <p style="font-size: 0.95rem;">Lange Zeit nutzte das Internet den Standard <strong>IPv4</strong>. Weil heute aber fast jeder Mensch ein Smartphone, einen Laptop und vielleicht sogar einen smarten Kühlschrank besitzt, gehen uns die Adressen schlichtweg aus! Die Lösung heißt <strong>IPv6</strong>.</p>
+            
+            <table class="ip-table">
+                <tr>
+                    <th>Protokoll-Version</th>
+                    <th>Bit-Länge</th>
+                    <th>Anzahl der Adressen</th>
+                </tr>
+                <tr class="row-ipv4">
+                    <td><strong>IPv4</strong> (Der alte Standard)</td>
+                    <td>32-bit</td>
+                    <td>ca. 4 Milliarden</td>
+                </tr>
+                <tr class="row-ipv6">
+                    <td><strong>IPv6</strong> (Der neue Standard)</td>
+                    <td>128-bit</td>
+                    <td>über 340 Undezillionen <br><span style="font-size: 0.8rem; color: #64748b;">(Genug für jedes Sandkorn der Erde!)</span></td>
+                </tr>
+            </table>
+        </div>
+        
+        <a href="https://www.youtube.com/watch?v=5o8CwafCxnU" target="_blank" class="resource-box">
+            <span class="resource-icon">📺</span>
+            <div>
+                <strong>Video-Empfehlung: DNS & IP-Adressen</strong><br>
+                <span style="font-size: 0.9rem;">Schau dir dieses kurze Video von Code.org an (englischer Ton, deutsche Untertitel aktivierbar), um das Konzept im Detail zu verstehen.</span>
+            </div>
+        </a>
+
+        <h3>💻 Terminal-Labor: Spiele den DNS-Server</h3>
+        <p>Finde heraus, welche IP-Adresse hinter bekannten Webseiten steckt! Tippe den Befehl <code>ping name-der-website.at</code> in das Terminal ein und drücke Enter.</p>
+        <p style="font-size: 0.9rem; color: #64748b;"><em>Beispiele zum Testen: google.com, orf.at, netflix.com, schule.at</em></p>
+
+        <div class="terminal" id="term1">
+            <div class="terminal-header">User@AHS-Network:~/dns-tools$</div>
+            <div class="terminal-output" id="out1">Bereit für Befehle...</div>
+            <div class="terminal-input-row">
+                <span class="terminal-prompt">&gt;</span>
+                <input type="text" id="in1" class="terminal-input" placeholder="ping google.com" onkeydown="if(event.key === 'Enter') runPing()">
+            </div>
+        </div>
+    </div>
+
+    <div class="mission-step">
+        <h2 style="margin-top: 0; color: var(--it-dark);">Einheit 2: Paketvermittlung & Zuverlässigkeit</h2>
+        
+        <p>Das Internet verschickt große Dateien niemals am Stück. Es nutzt das Prinzip der <strong>Zerlegung in Datenpakete</strong>. Diese kleinen Pakete können völlig unabhängig voneinander verschiedene Wege durch das Netzwerk nehmen.</p>
+
+        <ul style="line-height: 1.6;">
+            <li><strong>Intelligentes Routing:</strong> Router sind die Postämter im Internet. Sie leiten Pakete immer über den effizientesten Pfad weiter und können dabei Netzwerk-Überlastungen oder defekte Kabel (Ausfälle) dynamisch umgehen.</li>
+            <li><strong>TCP (Transmission Control Protocol) garantiert die Zustellung:</strong> Am Zielort kommt TCP ins Spiel. Das Protokoll bestätigt den Erhalt jedes Pakets. Wenn ein Paket (z.B. Paket 2/X) unterwegs verloren geht, merkt TCP das und <strong>fordert fehlende Teile automatisch neu an</strong>.</li>
+        </ul>
+
+        <a href="https://www.youtube.com/watch?v=AYdF7b3nMto" target="_blank" class="resource-box">
+            <span class="resource-icon">📺</span>
+            <div>
+                <strong>Video-Empfehlung: Packets, Routing & Reliability</strong><br>
+                <span style="font-size: 0.9rem;">Wie finden die Datenpakete ihren Weg durch das Chaos der weltweiten Kabel und Router?</span>
+            </div>
+        </a>
+
+        <h3>💻 Terminal-Labor: Verfolge ein Datenpaket</h3>
+        <p>Mit dem Befehl <code>traceroute</code> können wir jeden einzelnen Router (Knotenpunkt) auf der Welt sichtbar machen, den unser Datenpaket passiert, um zum Ziel zu kommen. Tippe z.B. <code>traceroute orf.at</code> ein.</p>
+
+        <div class="terminal" id="term2">
+            <div class="terminal-header">User@AHS-Network:~/routing$</div>
+            <div class="terminal-output" id="out2">Bereit für Befehle...</div>
+            <div class="terminal-input-row">
+                <span class="terminal-prompt">&gt;</span>
+                <input type="text" id="in2" class="terminal-input" placeholder="traceroute orf.at" onkeydown="if(event.key === 'Enter') runTrace()">
+            </div>
+        </div>
+    </div>
+
+    <div class="mission-step">
+        <h2 style="margin-top: 0; color: var(--it-dark);">Der Security-Check (Wissenstest)</h2>
+        <p>Löse die <strong>6 Fragen</strong>, um zu beweisen, dass du die Infrastruktur des Internets verstanden hast.</p>
+
+        <div class="quiz-question" id="q1-box">
+            <p><strong>1. Welche Aufgabe hat das DNS (Domain Name System)?</strong></p>
+            <select id="q1-ans" class="quiz-select">
+                <option value="0">-- Bitte wählen --</option>
+                <option value="wrong1">Es schützt meinen PC vor Viren aus dem Internet.</option>
+                <option value="correct">Es übersetzt Webadressen (wie google.com) in computerlesbare IP-Adressen.</option>
+                <option value="wrong2">Es zerteilt große Dateien in kleine Datenpakete.</option>
+            </select>
+        </div>
+
+        <div class="quiz-question" id="q2-box">
+            <p><strong>2. Warum wechselt das Internet derzeit vom alten IPv4 auf den IPv6 Standard?</strong></p>
+            <select id="q2-ans" class="quiz-select">
+                <option value="0">-- Bitte wählen --</option>
+                <option value="correct">Weil die ca. 4 Milliarden IPv4-Adressen fast aufgebraucht sind.</option>
+                <option value="wrong1">Weil IPv6 viel weniger Strom auf den Smartphones verbraucht.</option>
+                <option value="wrong2">Weil IPv4 das Streaming von Netflix-Videos nicht mehr unterstützt.</option>
+            </select>
+        </div>
+
+        <div class="quiz-question" id="q3-box">
+            <p><strong>3. Wie werden Daten (z.B. große Bilder) im Internet transportiert?</strong></p>
+            <select id="q3-ans" class="quiz-select">
+                <option value="0">-- Bitte wählen --</option>
+                <option value="correct">Sie werden in viele kleine Datenpakete zerlegt, die unabhängig voneinander reisen.</option>
+                <option value="wrong1">Sie werden als eine einzige, gigantische Datei über ein exklusives Kabel geschickt.</option>
+                <option value="wrong2">Sie werden per Funk über spezielle Internet-Satelliten direkt zum Empfänger gestrahlt.</option>
+            </select>
+        </div>
+
+        <div class="quiz-question" id="q4-box">
+            <p><strong>4. Was macht ein Router beim sogenannten "Intelligenten Routing"?</strong></p>
+            <select id="q4-ans" class="quiz-select">
+                <option value="0">-- Bitte wählen --</option>
+                <option value="wrong1">Er wandelt Webseiten-Codes in sichtbare Bilder um.</option>
+                <option value="correct">Er leitet Pakete über den effizientesten Pfad weiter und umgeht dabei Überlastungen.</option>
+                <option value="wrong2">Er prüft jedes Paket auf Computerviren, bevor es das Haus verlässt.</option>
+            </select>
+        </div>
+
+        <div class="quiz-question" id="q5-box">
+            <p><strong>5. Was passiert, wenn auf dem Weg ein Kabel reißt oder ein Knotenpunkt ausfällt?</strong></p>
+            <select id="q5-ans" class="quiz-select">
+                <option value="0">-- Bitte wählen --</option>
+                <option value="wrong1">Das Internet bricht weltweit für einige Minuten zusammen.</option>
+                <option value="correct">Die Router leiten die restlichen Datenpakete automatisch über einen anderen Weg um.</option>
+                <option value="wrong2">Die Datei wird am Ziel sofort gelöscht.</option>
+            </select>
+        </div>
+
+        <div class="quiz-question" id="q6-box">
+            <p><strong>6. Wofür ist das Protokoll "TCP" zuständig?</strong></p>
+            <select id="q6-ans" class="quiz-select">
+                <option value="0">-- Bitte wählen --</option>
+                <option value="wrong1">Es verschlüsselt meine Passwörter für das Online-Banking.</option>
+                <option value="correct">Es bestätigt den Erhalt der Pakete am Ziel und fordert fehlende Teile automatisch neu an.</option>
+                <option value="wrong2">Es ist die Abkürzung für den neuen WLAN-Standard.</option>
+            </select>
+        </div>
+
+        <button class="btn-check" style="width: 100%; margin-top: 1.5rem; padding: 15px; font-size: 1.1rem;" onclick="evaluateQuiz()">Gesamtes Quiz auswerten</button>
+        <div id="global-quiz-feedback" class="feedback"></div>
+    </div>
+
+    <div class="mission-step" id="ticket-generator-section" style="border-color: var(--it-primary); background: #f0fdf4;">
+        <h2 style="margin-top: 0; color: var(--it-dark);">Abschluss-Zertifikat</h2>
+        <p>Hast du alle 6 Fragen richtig beantwortet? Dann hol dir jetzt dein Zertifikat!</p>
+        
+        <input type="text" id="student-name" class="terminal-input" style="width: 250px; background: white; color: black; border: 2px solid #cbd5e1; padding: 10px; border-radius: 4px;" placeholder="Vorname + Nachname">
+        <button class="btn-check" style="background: var(--it-primary);" onclick="generateTicket()">Zertifikat erstellen</button>
+        <p id="ticket-error" style="color: #ef4444; font-weight: bold; display: none; margin-top: 10px;">Du hast noch nicht alle Fragen richtig gelöst oder keinen Namen eingegeben!</p>
+
+        <div id="certificate" class="ticket-container">
+            <div class="ticket-watermark">IT</div>
+            <h2 style="margin: 0; color: #a7f3d0;">NETZWERK-TECHNIKER/IN</h2>
+            <div class="ticket-score">PASSED</div>
+            <div class="ticket-details">
+                <span style="color: #6ee7b7;">Name:</span> <span id="cert-name"></span><br>
+                <span style="color: #6ee7b7;">Modul:</span> TCP/IP & DNS (100 Min)<br>
+                <span style="color: #6ee7b7;">Zeit:</span> <span id="cert-date"></span><br>
+                <span style="color: #6ee7b7;">Hash:</span> <span id="cert-hash" style="color: #cbd5e1; font-size: 0.9rem;"></span>
+            </div>
+            <p style="margin-top: 20px; font-size: 0.9rem; font-weight: bold;">Bitte zeige diesen Bildschirm jetzt Prof. Schweitzer.</p>
+        </div>
+    </div>
+
+</main>
+
+<footer style="margin-top: 5rem; padding: 2rem 1rem; background-color: #f8fafc; border-top: 1px solid #e2e8f0; color: #64748b; font-size: 0.9rem;">
+    <div style="max-width: 800px; margin: 0 auto 2rem auto; text-align: left; background: white; padding: 1.5rem; border: 1px solid #cbd5e1; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+        <h4 style="margin-top: 0; color: #334155; font-size: 1.1rem;">Datenschutzhinweis (DSGVO)</h4>
+        <p style="margin-bottom: 10px; line-height: 1.5;">Die Nutzung dieses Portals ist absolut datenschutzkonform. Es werden keine Eingaben (weder Quiz-Antworten noch Namen für das Zertifikat) an einen Server gesendet. Alles passiert lokal im Browser.</p>
+    </div>
+    <div style="text-align: center; font-weight: bold;">
+        &copy; 2026 | GvP | Mag. Schweitzer | Mathematik & Informatik
+    </div>
+</footer>
+
+<script>
+    // --- Terminal 1: Ping (DNS Simulation) ---
+    const ipDB = {
+        "google.com": "142.250.185.195",
+        "orf.at": "194.232.104.139",
+        "netflix.com": "54.237.226.164",
+        "schule.at": "193.170.252.170",
+        "code.org": "192.0.2.1"
+    };
+
+    function runPing() {
+        let inputField = document.getElementById('in1');
+        let outField = document.getElementById('out1');
+        let cmd = inputField.value.trim().toLowerCase();
+        
+        if (!cmd.startsWith("ping ")) {
+            outField.innerText = "Befehl nicht gefunden. Bitte tippe z.B.: ping google.com";
+            inputField.value = "";
+            return;
+        }
+
+        let domain = cmd.split(" ")[1];
+        let ip = ipDB[domain] || (Math.floor(Math.random()*200)+20) + "." + (Math.floor(Math.random()*255)) + ".12.88";
+        
+        outField.innerHTML = `Löse Hostnamen ${domain} auf...<br>`;
+        outField.innerHTML += `DNS Server meldet: IP ist ${ip}<br><br>`;
+        outField.innerHTML += `Sende 32 Bytes an Daten zu ${ip}...<br>`;
+        
+        setTimeout(() => { outField.innerHTML += `Antwort von ${ip}: Zeit=14ms TTL=116<br>`; }, 600);
+        setTimeout(() => { outField.innerHTML += `Antwort von ${ip}: Zeit=15ms TTL=116<br>`; }, 1200);
+        setTimeout(() => { outField.innerHTML += `Antwort von ${ip}: Zeit=13ms TTL=116<br><br>Ping-Statistik: Gesendet = 3, Empfangen = 3, Verloren = 0 (0% Verlust).`; }, 1800);
+        
+        inputField.value = "";
+    }
+
+    // --- Terminal 2: Traceroute Simulation ---
+    const cities = ["Wien (AT)", "Frankfurt (DE)", "Amsterdam (NL)", "London (UK)", "New York (US)", "Ashburn (US)"];
+    
+    function runTrace() {
+        let inputField = document.getElementById('in2');
+        let outField = document.getElementById('out2');
+        let cmd = inputField.value.trim().toLowerCase();
+        
+        if (!cmd.startsWith("traceroute ")) {
+            outField.innerText = "Befehl nicht gefunden. Bitte tippe z.B.: traceroute orf.at";
+            inputField.value = "";
+            return;
+        }
+
+        let domain = cmd.split(" ")[1];
+        outField.innerHTML = `Verfolge Route zu ${domain} über maximal 30 Hops:<br><br>`;
+        
+        let hops = Math.floor(Math.random() * 4) + 4; // 4 to 7 hops
+        let currentHop = 1;
+
+        function doHop() {
+            if (currentHop > hops) {
+                outField.innerHTML += `<br>Ablaufverfolgung beendet. Paket ist am Ziel angekommen!`;
+                return;
+            }
+            
+            let time = Math.floor(Math.random() * 40) + 10;
+            let city = cities[Math.min(currentHop - 1, cities.length - 1)];
+            let ip = `192.168.${currentHop}.${Math.floor(Math.random()*100)}`;
+            
+            outField.innerHTML += `  ${currentHop}    ${time} ms    ${city} Router [${ip}]<br>`;
+            currentHop++;
+            setTimeout(doHop, 800);
+        }
+        
+        setTimeout(doHop, 500);
+        inputField.value = "";
+    }
+
+    // --- Quiz Logik (Global) ---
+    let allQuestionsCorrect = false;
+
+    function evaluateQuiz() {
+        let globalFeedback = document.getElementById('global-quiz-feedback');
+        let unansweredCount = 0;
+        let errorCount = 0;
+
+        // 1. Prüfen, ob alle Fragen eine Antwort haben
+        for (let i = 1; i <= 6; i++) {
+            let selectElement = document.getElementById('q' + i + '-ans');
+            if (selectElement.value === '0') {
+                unansweredCount++;
+            } else if (selectElement.value !== 'correct') {
+                errorCount++;
+            }
+        }
+
+        // 2. Wenn Fragen fehlen -> Abbrechen und Warnung zeigen
+        if (unansweredCount > 0) {
+            globalFeedback.innerHTML = `⚠️ Halt! Du hast noch ${unansweredCount} Fragen nicht beantwortet. Bitte wähle überall eine Antwort aus.`;
+            globalFeedback.className = "feedback fb-warning";
+            globalFeedback.style.display = "block";
+            allQuestionsCorrect = false;
+            return; // Beendet die Funktion hier, zählt noch keine Fehler!
+        }
+
+        // 3. Wenn alles beantwortet wurde -> Fehler zählen
+        if (errorCount === 0) {
+            globalFeedback.innerHTML = "✅ Hervorragend! Alle 6 Fragen sind richtig beantwortet. Du kannst nun dein Zertifikat generieren.";
+            globalFeedback.className = "feedback fb-correct";
+            globalFeedback.style.display = "block";
+            allQuestionsCorrect = true;
+        } else {
+            globalFeedback.innerHTML = `❌ Das stimmt noch nicht ganz. Du hast ${errorCount} Frage(n) falsch beantwortet.`;
+            globalFeedback.className = "feedback fb-wrong";
+            globalFeedback.style.display = "block";
+            allQuestionsCorrect = false;
+        }
+    }
+
+    // --- Ticket Generator ---
+    function generateTicket() {
+        let name = document.getElementById('student-name').value.trim();
+        let errorMsg = document.getElementById('ticket-error');
+
+        if (!allQuestionsCorrect || name === "") {
+            errorMsg.style.display = "block";
+            return;
+        }
+
+        errorMsg.style.display = "none";
+        
+        document.getElementById('cert-name').innerText = name;
+        
+        let now = new Date();
+        let timeString = now.toLocaleDateString('de-AT') + " | " + now.toLocaleTimeString('de-AT');
+        document.getElementById('cert-date').innerText = timeString;
+
+        let hash = "SEC-" + (name.length * 12) + "-" + now.getHours() + now.getMinutes() + "-SYS";
+        document.getElementById('cert-hash').innerText = hash;
+
+        document.getElementById('certificate').style.display = "block";
+        document.getElementById('certificate').scrolltoView({ behavior: 'smooth' });
+    }
+</script>
+
+</body>
+</html>

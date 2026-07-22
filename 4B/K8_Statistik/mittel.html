@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lagemaße: Mittelwert, Median & Modus</title>
+    <link rel="stylesheet" href="../../style.css">
+    
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+
+<header>
+    <h1>Lagemaße in der Statistik</h1>
+    <p>Zentrum von Datenreihen beschreiben und interpretieren</p>
+</header>
+
+<div class="back-nav">
+    <a href="../index.html" class="btn-back">← Zurück zur Übersicht</a>
+</div>
+
+<main>
+    <section class="subject-group" id="mean">
+        <div class="subject-header">
+            <span class="subject-badge bg-math">Kapitel 8.1</span>
+            <h2 style="margin: 0; color: var(--primary);">1. Das arithmetische Mittel (Durchschnitt)</h2>
+        </div>
+        <p>Das arithmetische Mittel ist der klassische Durchschnitt. Er berechnet sich, indem man alle erhobenen Werte addiert und durch die Gesamtzahl der Werte dividiert.</p>
+        
+        <div style="background: var(--card-bg); border: 1px solid #e2e8f0; padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem;">
+            <h4 style="margin-top: 0;">Formel</h4>
+            <div style="text-align: center; font-size: 1.2rem; margin: 15px 0;">
+                \(\bar{x} = \frac{x_1 + x_2 + x_3 + ... + x_n}{n}\)
+            </div>
+            <p><strong>Beispiel:</strong> Eine Schülerin schreibt in Mathematik folgende Noten: 2, 3, 1, 4, 2.</p>
+            <ul>
+                <li>Summe der Werte: \(2 + 3 + 1 + 4 + 2 = 12\)</li>
+                <li>Anzahl der Werte (\(n\)): 5</li>
+                <li>\(\bar{x} = \frac{12}{5} = 2,4\)</li>
+            </ul>
+            <p style="color: var(--pdf-red); font-weight: bold; margin-bottom: 0;">Achtung: Das arithmetische Mittel ist sehr anfällig für Ausreißer (extrem hohe oder niedrige Werte)!</p>
+        </div>
+    </section>
+
+    <section class="subject-group" id="weighted-mean">
+        <div class="subject-header">
+            <span class="subject-badge bg-math">Kapitel 8.1</span>
+            <h2 style="margin: 0; color: var(--primary);">2. Das gewichtete arithmetische Mittel</h2>
+        </div>
+        <p>Oft kommen in einer Datenreihe gleiche Werte mehrfach vor (z. B. bei der Notenverteilung einer Schularbeit). Statt alle Werte einzeln aufzuschreiben, verwendet man das <strong>gewichtete (oder gewogene) arithmetische Mittel</strong>. Die Häufigkeit eines Wertes ist dabei sein "Gewicht".</p>
+        
+        <div style="background: var(--card-bg); border: 1px solid #e2e8f0; padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem;">
+            <h4 style="margin-top: 0;">Formel</h4>
+            <div style="text-align: center; font-size: 1.2rem; margin: 15px 0;">
+                \(\bar{x} = \frac{x_1 \cdot h_1 + x_2 \cdot h_2 + ... + x_k \cdot h_k}{h_1 + h_2 + ... + h_k}\)
+            </div>
+            <p><em>(\(x\) = der jeweilige Wert, \(h\) = die absolute Häufigkeit / das Gewicht dieses Wertes)</em></p>
+            
+            <div style="background: var(--bg); border: 1px solid #e2e8f0; padding: 1.5rem; border-radius: 8px; margin-top: 1.5rem;">
+                <h4 style="margin-top: 0; color: var(--primary);">Interaktives Beispiel: Notendurchschnitt einer Schularbeit</h4>
+                <p>Trage ein, wie oft jede Note bei einer fiktiven Schularbeit vorkam, um den Klassendurchschnitt zu berechnen:</p>
+                
+                <table style="width: 100%; text-align: left; border-collapse: collapse; margin-bottom: 1rem; background: white;">
+                    <tr style="border-bottom: 2px solid #e2e8f0; background: var(--bg);">
+                        <th style="padding: 10px;">Note (\(x\))</th>
+                        <th style="padding: 10px;">Anzahl (\(h\))</th>
+                        <th style="padding: 10px;">Produkt (\(x \cdot h\))</th>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #e2e8f0;">
+                        <td style="padding: 10px; font-weight: bold;">Sehr gut (1)</td>
+                        <td style="padding: 10px;"><input type="number" id="w_n1" value="4" min="0" style="width: 60px; padding: 5px;"></td>
+                        <td style="padding: 10px; color: var(--text-muted);" id="p_n1">-</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #e2e8f0;">
+                        <td style="padding: 10px; font-weight: bold;">Gut (2)</td>
+                        <td style="padding: 10px;"><input type="number" id="w_n2" value="7" min="0" style="width: 60px; padding: 5px;"></td>
+                        <td style="padding: 10px; color: var(--text-muted);" id="p_n2">-</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #e2e8f0;">
+                        <td style="padding: 10px; font-weight: bold;">Befriedigend (3)</td>
+                        <td style="padding: 10px;"><input type="number" id="w_n3" value="8" min="0" style="width: 60px; padding: 5px;"></td>
+                        <td style="padding: 10px; color: var(--text-muted);" id="p_n3">-</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #e2e8f0;">
+                        <td style="padding: 10px; font-weight: bold;">Genügend (4)</td>
+                        <td style="padding: 10px;"><input type="number" id="w_n4" value="3" min="0" style="width: 60px; padding: 5px;"></td>
+                        <td style="padding: 10px; color: var(--text-muted);" id="p_n4">-</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; font-weight: bold;">Nicht genügend (5)</td>
+                        <td style="padding: 10px;"><input type="number" id="w_n5" value="1" min="0" style="width: 60px; padding: 5px;"></td>
+                        <td style="padding: 10px; color: var(--text-muted);" id="p_n5">-</td>
+                    </tr>
+                </table>
+                
+                <button class="nav-toggle active" onclick="calculateWeighted()" style="border: none;">Durchschnitt berechnen</button>
+                
+                <div id="resWeighted" style="display: none; margin-top: 1rem; padding: 1rem; background: #e0f2fe; border: 1px solid var(--doc-blue); border-radius: 8px;">
+                    </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="subject-group" id="median">
+        <div class="subject-header">
+            <span class="subject-badge bg-math">Kapitel 8.1</span>
+            <h2 style="margin: 0; color: var(--primary);">3. Der Median (Zentralwert)</h2>
+        </div>
+        <p>Der Median halbiert eine geordnete Datenreihe. Genau die Hälfte der Werte ist kleiner oder gleich dem Median, die andere Hälfte ist größer oder gleich.</p>
+        
+        <div style="background: var(--card-bg); border: 1px solid #e2e8f0; padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem;">
+            <h4 style="margin-top: 0;">So findest du den Median:</h4>
+            <ol>
+                <li>Ordne alle Werte der Größe nach (von klein nach groß).</li>
+                <li>Suche den Wert in der genauen Mitte.</li>
+            </ol>
+            
+            <p><strong>Fall A: Ungerade Anzahl an Werten</strong><br>
+            Die Notenreihe geordnet: 1, 2, <strong style="color: var(--doc-blue);">2</strong>, 3, 4<br>
+            Der Wert in der Mitte ist die 2. Der Median ist also <strong>2</strong>.</p>
+            
+            <p style="margin-bottom: 0;"><strong>Fall B: Gerade Anzahl an Werten</strong><br>
+            Kommt eine weitere Note (z.B. ein 5er) hinzu: 1, 2, <strong style="color: var(--doc-blue);">2, 3</strong>, 4, 5<br>
+            Nun stehen zwei Werte in der Mitte (2 und 3). Der Median ist das arithmetische Mittel dieser beiden Werte: \(\frac{2 + 3}{2} = 2,5\).</p>
+        </div>
+    </section>
+
+    <section class="subject-group" id="mode">
+        <div class="subject-header">
+            <span class="subject-badge bg-math">Kapitel 8.1</span>
+            <h2 style="margin: 0; color: var(--primary);">4. Der Modus (Modalwert)</h2>
+        </div>
+        <p>Der Modus ist der Wert, der in einer Datenreihe <strong>am häufigsten</strong> vorkommt.</p>
+        
+        <div style="background: var(--card-bg); border: 1px solid #e2e8f0; padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem;">
+            <p><strong>Beispiel:</strong> Gegebene Noten: 2, 3, 1, 4, 2</p>
+            <p>Die Note 2 kommt zweimal vor, alle anderen nur einmal. Der Modus ist daher <strong>2</strong>.</p>
+            <p style="margin-bottom: 0; color: var(--text-muted); font-size: 0.9rem;"><em>Hinweis:</em> Es kann auch mehrere Modalwerte geben (wenn z.B. die 2 und die 3 gleich oft am häufigsten vorkommen) oder gar keinen (wenn alle Werte gleich oft auftreten).</p>
+        </div>
+    </section>
+
+    <section class="subject-group" id="labor">
+        <div class="subject-header">
+            <span class="subject-badge bg-info">Labor</span>
+            <h2 style="margin: 0; color: var(--primary);">Interaktives Daten-Labor (Rohdaten)</h2>
+        </div>
+        <p>Probiere es selbst aus! Gib eine beliebige Reihe von einzelnen Zahlen ein (durch Kommas getrennt). Beobachte, was passiert, wenn du einen extrem hohen Wert (Ausreißer) hinzufügst.</p>
+        
+        <div style="background: white; border: 2px solid var(--primary); padding: 1.5rem; border-radius: 12px;">
+            <div style="margin-bottom: 1.5rem;">
+                <label for="dataInput" style="font-weight: bold; display: block; margin-bottom: 0.5rem;">Deine Datenreihe:</label>
+                <input type="text" id="dataInput" value="2, 3, 1, 4, 2" placeholder="z.B. 1, 5, 4, 3, 2" style="width: 100%; box-sizing: border-box; padding: 0.8rem; font-size: 1rem; border: 1px solid #e2e8f0; border-radius: 8px; font-family: inherit;">
+            </div>
+            
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <button class="nav-toggle active" onclick="calculateStats()" style="border: none;">Lagemaße berechnen</button>
+                <button class="nav-toggle" onclick="addOutlier()" style="border-color: var(--pdf-red); color: var(--pdf-red);">Ausreißer (+100) hinzufügen</button>
+            </div>
+
+            <div id="results" style="display: none; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #e2e8f0;">
+                <h4 style="margin-top: 0; color: var(--text-muted);">1. Sortierte Datenreihe:</h4>
+                <div id="sortedData" style="font-family: monospace; font-size: 1.2rem; background: var(--bg); padding: 1rem; border-radius: 8px; text-align: center; margin-bottom: 1.5rem;"></div>
+                
+                <h4 style="color: var(--text-muted);">2. Ergebnisse:</h4>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; text-align: center;">
+                    <div style="background: var(--bg); border: 1px solid #e2e8f0; padding: 1rem; border-radius: 8px;">
+                        <span style="color: var(--text-muted); font-size: 0.9rem;">Arithm. Mittel (\(\bar{x}\))</span>
+                        <strong style="display: block; font-size: 1.8rem; color: var(--primary); margin-top: 0.5rem;" id="resMean">-</strong>
+                    </div>
+                    <div style="background: var(--bg); border: 1px solid #e2e8f0; padding: 1rem; border-radius: 8px;">
+                        <span style="color: var(--text-muted); font-size: 0.9rem;">Median</span>
+                        <strong style="display: block; font-size: 1.8rem; color: var(--doc-blue); margin-top: 0.5rem;" id="resMedian">-</strong>
+                    </div>
+                    <div style="background: var(--bg); border: 1px solid #e2e8f0; padding: 1rem; border-radius: 8px;">
+                        <span style="color: var(--text-muted); font-size: 0.9rem;">Modus</span>
+                        <strong style="display: block; font-size: 1.8rem; color: var(--xls-green); margin-top: 0.5rem;" id="resMode">-</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <p>Mathematik verstehen 4 | Beschreibende Statistik</p>
+</footer>
+
+<script>
+    // --- SKRIPT FÜR GEWICHTETES MITTEL (Noten) ---
+    function calculateWeighted() {
+        let summeWerte = 0;
+        let summeAnzahl = 0;
+
+        for (let note = 1; note <= 5; note++) {
+            let anzahl = parseInt(document.getElementById('w_n' + note).value) || 0;
+            let produkt = note * anzahl;
+            
+            document.getElementById('p_n' + note).innerText = produkt;
+            
+            summeWerte += produkt;
+            summeAnzahl += anzahl;
+        }
+
+        let ergebnisBox = document.getElementById('resWeighted');
+        ergebnisBox.style.display = 'block';
+
+        if (summeAnzahl === 0) {
+            ergebnisBox.innerHTML = "<strong style='color: var(--pdf-red);'>Fehler: Es wurden keine Noten eingegeben.</strong>";
+            return;
+        }
+
+        let schnitt = summeWerte / summeAnzahl;
+        
+        ergebnisBox.innerHTML = `
+            <strong>Berechnung:</strong><br>
+            Summe aller Notenwerte: ${summeWerte}<br>
+            Anzahl aller Schüler: ${summeAnzahl}<br><br>
+            <strong style="font-size: 1.2rem; color: var(--doc-blue);">Klassendurchschnitt (\(\\bar{x}\)): ${schnitt.toFixed(2).replace('.', ',')}</strong>
+        `;
+
+        if (typeof MathJax !== 'undefined') {
+            MathJax.typesetPromise ? MathJax.typesetPromise() : MathJax.typeset();
+        }
+    }
+
+    // --- SKRIPT FÜR LABOR (ROHDATEN) ---
+    function parseData(inputStr) {
+        let rawArr = inputStr.split(',');
+        let numArr = [];
+        for(let i=0; i<rawArr.length; i++) {
+            let val = parseFloat(rawArr[i].trim());
+            if(!isNaN(val)) {
+                numArr.push(val);
+            }
+        }
+        return numArr;
+    }
+
+    function calculateStats() {
+        const inputStr = document.getElementById('dataInput').value;
+        let data = parseData(inputStr);
+        
+        if(data.length === 0) {
+            alert("Bitte gib gültige Zahlen ein, getrennt durch Kommata.");
+            return;
+        }
+
+        data.sort((a, b) => a - b);
+        
+        let sum = data.reduce((a, b) => a + b, 0);
+        let mean = sum / data.length;
+
+        let median = 0;
+        let mid = Math.floor(data.length / 2);
+        let medianHtml = "";
+        
+        if (data.length % 2 === 0) {
+            median = (data[mid - 1] + data[mid]) / 2;
+            let arrCopy = [...data];
+            arrCopy[mid - 1] = `<strong style="color: var(--doc-blue); font-size: 1.4rem;">${arrCopy[mid - 1]}</strong>`;
+            arrCopy[mid] = `<strong style="color: var(--doc-blue); font-size: 1.4rem;">${arrCopy[mid]}</strong>`;
+            medianHtml = arrCopy.join(" | ");
+        } else {
+            median = data[mid];
+            let arrCopy = [...data];
+            arrCopy[mid] = `<strong style="color: var(--doc-blue); font-size: 1.4rem;">${arrCopy[mid]}</strong>`;
+            medianHtml = arrCopy.join(" | ");
+        }
+
+        let frequency = {};
+        let maxFreq = 0;
+        let modes = [];
+        
+        data.forEach(val => {
+            frequency[val] = (frequency[val] || 0) + 1;
+            if (frequency[val] > maxFreq) {
+                maxFreq = frequency[val];
+            }
+        });
+        
+        for (const val in frequency) {
+            if (frequency[val] === maxFreq) {
+                modes.push(val);
+            }
+        }
+        
+        let modeStr = (maxFreq === 1 && data.length > 1) ? "Keiner" : modes.join(", ");
+
+        document.getElementById('sortedData').innerHTML = medianHtml;
+        document.getElementById('resMean').innerText = Number.isInteger(mean) ? mean : mean.toFixed(2).replace('.', ',');
+        document.getElementById('resMedian').innerText = Number.isInteger(median) ? median : median.toFixed(2).replace('.', ',');
+        document.getElementById('resMode').innerText = modeStr;
+        
+        document.getElementById('results').style.display = 'block';
+        
+        if (typeof MathJax !== 'undefined') {
+            MathJax.typesetPromise ? MathJax.typesetPromise() : MathJax.typeset();
+        }
+    }
+
+    function addOutlier() {
+        let inputField = document.getElementById('dataInput');
+        if(inputField.value.trim() !== "") {
+            inputField.value += ", 100";
+            calculateStats();
+        }
+    }
+</script>
+
+</body>
+</html>

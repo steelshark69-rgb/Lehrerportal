@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excel | Oberfläche & Tabellenblatt</title>
+    <style>
+        :root {
+            --excel-green: #107c41;
+            --excel-green-dark: #0b5c30;
+            --excel-header: #e1dfdd;
+            --excel-border: #d2d2d2;
+            --bg-color: #f3f4f6;
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: var(--excel-green);
+            color: white;
+            padding: 3rem 1rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 1rem auto 0;
+        }
+
+        main {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        h2 {
+            color: var(--excel-green-dark);
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 0.5rem;
+            margin-top: 2.5rem;
+        }
+
+        /* Grid für Erklärungen */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border-left: 4px solid var(--excel-green);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+        }
+
+        .card h3 {
+            margin-top: 0;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Mini Excel Mockup */
+        .excel-mockup {
+            background: white;
+            border: 1px solid var(--excel-border);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 2rem 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            font-family: 'Calibri', 'Segoe UI', sans-serif;
+        }
+
+        .mockup-formula-bar {
+            display: flex;
+            border-bottom: 1px solid var(--excel-border);
+            background: #f9f9f9;
+            padding: 0.5rem;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .name-box {
+            background: white;
+            border: 1px solid var(--excel-border);
+            padding: 0.2rem 0.5rem;
+            width: 60px;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        .formula-input {
+            background: white;
+            border: 1px solid var(--excel-border);
+            padding: 0.2rem 0.5rem;
+            flex-grow: 1;
+            font-size: 0.9rem;
+            color: var(--text-main);
+        }
+
+        .mockup-fx {
+            font-style: italic;
+            color: var(--text-muted);
+            font-weight: bold;
+        }
+
+        .excel-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .excel-table th, .excel-table td {
+            border: 1px solid var(--excel-border);
+            padding: 0.5rem;
+            text-align: center;
+            min-width: 60px;
+        }
+
+        .excel-table th {
+            background-color: var(--excel-header);
+            color: var(--text-main);
+            font-weight: normal;
+            font-size: 0.9rem;
+            user-select: none;
+        }
+
+        .excel-table .row-number {
+            background-color: var(--excel-header);
+            width: 30px;
+            color: var(--text-main);
+        }
+
+        .excel-table td {
+            height: 24px;
+        }
+
+        /* Aktive Zelle im Mockup */
+        .active-cell {
+            border: 2px solid var(--excel-green) !important;
+            box-shadow: inset 0 0 0 1px white;
+            position: relative;
+            background-color: #f0fdf4;
+            font-weight: bold;
+        }
+
+        .active-cell::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            right: -3px;
+            width: 6px;
+            height: 6px;
+            background-color: var(--excel-green);
+            border: 1px solid white;
+        }
+
+        .highlight-col { background-color: #e2e8f0; }
+        .highlight-row { background-color: #e2e8f0; }
+
+        /* Zurück Button */
+        .back-btn-container {
+            text-align: center;
+            margin-top: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .back-btn {
+            display: inline-block;
+            background-color: var(--excel-green);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .back-btn:hover {
+            background-color: var(--excel-green-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 1rem;
+            border-top: 1px solid #e5e7eb;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Excel: Oberfläche & Aufbau</h1>
+        <p>Bevor wir rechnen, müssen wir uns orientieren. Lerne die wichtigsten Bereiche des Excel-Fensters und den Aufbau eines Datenblattes kennen.</p>
+    </header>
+
+    <main>
+        <section>
+            <h2>Die wichtigsten Bereiche des Fensters</h2>
+            <p>Wenn du Excel öffnest, siehst du viele verschiedene Leisten und Schaltflächen. Hier sind die wichtigsten, die du für den Unterricht brauchst:</p>
+            
+            <div class="grid-container">
+                <div class="card">
+                    <h3>🎀 Das Menüband (Ribbon)</h3>
+                    <p>Hier findest du alle Werkzeuge. Es ist in <strong>Registerkarten</strong> unterteilt (z.B. Start, Einfügen, Seitenlayout). Unter "Start" findest du alles Wichtige für Schriftarten und Farben.</p>
+                </div>
+
+                <div class="card">
+                    <h3>📍 Das Namenfeld</h3>
+                    <p>Befindet sich oben links über der Tabelle. Es zeigt dir immer an, in welcher Zelle du dich gerade befindest (z.B. <strong>A1</strong> oder <strong>C4</strong>). Du kannst hier auch einen Zellennamen eingeben, um direkt dorthin zu springen.</p>
+                </div>
+
+                <div class="card">
+                    <h3>✍️ Die Bearbeitungsleiste</h3>
+                    <p>Das lange weiße Eingabefeld neben dem <em>fx</em>. Hier siehst du, was <strong>wirklich</strong> in einer Zelle steht. Wenn eine Zelle ein Ergebnis anzeigt, siehst du hier die <strong>Formel</strong>, die dahintersteckt.</p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Der Aufbau eines Datenblattes</h2>
+            <p>Ein Excel-Datenblatt ist wie ein riesiges Schachbrett oder ein Koordinatensystem aufgebaut. Jedes Kästchen hat eine eindeutige Adresse.</p>
+
+            <div class="excel-mockup">
+                <!-- Mockup Bearbeitungsleiste -->
+                <div class="mockup-formula-bar">
+                    <div class="name-box">B2</div>
+                    <div class="mockup-fx">fx</div>
+                    <div class="formula-input">Informatik ist super!</div>
+                </div>
+
+                <!-- Mockup Tabelle -->
+                <table class="excel-table">
+                    <tr>
+                        <th style="width: 30px;"></th>
+                        <th>A</th>
+                        <th class="highlight-col">B (Spalte)</th>
+                        <th>C</th>
+                        <th>D</th>
+                    </tr>
+                    <tr>
+                        <th class="row-number">1</th>
+                        <td></td>
+                        <td class="highlight-col"></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th class="row-number highlight-row">2 (Zeile)</th>
+                        <td class="highlight-row"></td>
+                        <td class="active-cell">Informatik ist super!</td>
+                        <td class="highlight-row"></td>
+                        <td class="highlight-row"></td>
+                    </tr>
+                    <tr>
+                        <th class="row-number">3</th>
+                        <td></td>
+                        <td class="highlight-col"></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="grid-container">
+                <div class="card">
+                    <h3>⬇️ Spalten (Buchstaben)</h3>
+                    <p>Spalten verlaufen von oben nach unten (senkrecht). Sie sind mit <strong>Buchstaben</strong> beschriftet (A, B, C, D...). Im Beispiel oben ist die Spalte B hervorgehoben.</p>
+                </div>
+
+                <div class="card">
+                    <h3>➡️ Zeilen (Zahlen)</h3>
+                    <p>Zeilen verlaufen von links nach rechts (waagrecht). Sie sind mit <strong>Zahlen</strong> durchnummeriert (1, 2, 3, 4...). Im Beispiel oben ist die Zeile 2 hervorgehoben.</p>
+                </div>
+
+                <div class="card">
+                    <h3>🎯 Die Zelle (Schnittpunkt)</h3>
+                    <p>Das einzelne Kästchen nennt man Zelle. Die Adresse ergibt sich aus dem Spaltenbuchstaben und der Zeilenzahl. Die aktive Zelle oben hat also die Adresse <strong>B2</strong>.</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="back-btn-container">
+            <a href="../index.html" class="back-btn">⬅ Zurück zur Übersicht</a>
+        </div>
+    </main>
+
+    <footer>
+        &copy; 2026 | GvP | Mag. Schweitzer | Mathematik & Informatik
+    </footer>
+
+</body>
+</html>

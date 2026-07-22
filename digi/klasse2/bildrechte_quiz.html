@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bildrechte Quiz | Digitale Grundbildung</title>
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+        .quiz-container {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            padding: 2rem;
+            border-radius: 10px;
+            color: white;
+            max-width: 800px;
+            margin: 2rem auto;
+        }
+        .quiz-card {
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+            padding: 2rem;
+            border-radius: 8px;
+        }
+        .question-text {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            color: #1f2937;
+        }
+        .license-box {
+            background: #f3f4f6;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1rem 0;
+            border-left: 4px solid #f59e0b;
+        }
+        .license-name {
+            font-weight: bold;
+            color: #f59e0b;
+            font-size: 1.1rem;
+        }
+        .answer-btn {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            background: #e5e7eb;
+            border: 2px solid #999;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: left;
+            font-size: 1rem;
+            transition: 0.2s;
+        }
+        .answer-btn:hover {
+            background: #d1d5db;
+        }
+        .answer-btn.correct {
+            background: #dcfce7;
+            border-color: #10b981;
+            color: #065f46;
+        }
+        .answer-btn.wrong {
+            background: #fee2e2;
+            border-color: #ef4444;
+            color: #991b1b;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>📸 Bildrechte & Creative Commons Quiz</h1>
+    <p>2. Klasse | Digitale Grundbildung</p>
+    <div class="back-nav">
+        <a href="index.html" class="btn-back">⬅ Zurück</a>
+    </div>
+</header>
+
+<main style="max-width: 900px; margin: 0 auto; padding: 2rem 1rem;">
+
+    <section style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 1.5rem; border-radius: 5px; margin-bottom: 2rem;">
+        <h2>🎨 Bildrechte verstehen!</h2>
+        <p>Nicht jedes Bild darfst du einfach benutzen! Hier lernst du die verschiedenen Lizenztypen kennen.</p>
+    </section>
+
+    <section style="background: white; padding: 2rem; border-radius: 8px; margin-bottom: 2rem;">
+        <h2>📋 Creative Commons Lizenzen</h2>
+        
+        <div class="license-box">
+            <div class="license-name">🔓 CC0 - Public Domain</div>
+            <p><strong>Bedeutung:</strong> Komplett frei! Du darfst es für alles nutzen, bearbeiten, verkaufen...</p>
+            <p><strong>Bedingung:</strong> Keine - völlig kostenlos!</p>
+        </div>
+
+        <div class="license-box">
+            <div class="license-name">CC-BY - Attribution</div>
+            <p><strong>Bedeutung:</strong> Du darfst es benutzen und bearbeiten</p>
+            <p><strong>Bedingung:</strong> ⚠️ Du MUSST den Künstler nennen!</p>
+        </div>
+
+        <div class="license-box">
+            <div class="license-name">CC-BY-SA - Attribution-ShareAlike</div>
+            <p><strong>Bedeutung:</strong> Du darfst es benutzen und ändern</p>
+            <p><strong>Bedingung:</strong> ⚠️ Künstler nennen UND dein Werk unter gleicher Lizenz teilen</p>
+        </div>
+
+        <div class="license-box">
+            <div class="license-name">CC-BY-NC - Attribution-NonCommercial</div>
+            <p><strong>Bedeutung:</strong> Du darfst es nur privat nutzen</p>
+            <p><strong>Bedingung:</strong> ⚠️ Keine kommerzielle Nutzung! Künstler nennen!</p>
+        </div>
+
+        <div class="license-box">
+            <div class="license-name">© - Urheberrecht (Alle Rechte vorbehalten)</div>
+            <p><strong>Bedeutung:</strong> Du darfst es NICHT benutzen!</p>
+            <p><strong>Bedingung:</strong> 🚫 Der Künstler muss explizit erlauben!</p>
+        </div>
+    </section>
+
+    <div class="quiz-container">
+        <h2 style="text-align: center; margin-top: 0;">❓ Bildrechte Quiz</h2>
+        
+        <div class="quiz-card" id="quizContainer">
+            <div id="quizContent"></div>
+            <button id="nextBtn" onclick="nextQuestion()" style="width: 100%; display: none; margin-top: 1rem; padding: 12px; background: #f59e0b; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">Nächste Frage →</button>
+            <button id="restartBtn" onclick="restartQuiz()" style="width: 100%; display: none; margin-top: 1rem; padding: 12px; background: #f59e0b; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">Nochmal spielen</button>
+        </div>
+    </div>
+
+    <section style="background: #fee2e2; border-left: 4px solid #ef4444; padding: 1.5rem; border-radius: 5px; margin-top: 2rem;">
+        <h2>⚠️ Häufige Fehler</h2>
+        <ul style="line-height: 1.8;">
+            <li><strong>Google Bilder = Kostenlos:</strong> FALSCH! Auch Bilder von Google sind oft urheberrechtlich geschützt!</li>
+            <li><strong>Bilder im Internet = Public Domain:</strong> FALSCH! Nur weil es online ist, heißt das nicht, dass du es benutzen darfst!</li>
+            <li><strong>Künstler nennen = Alles ok:</strong> FALSCH! Der Name hilft, aber nicht bei allen Lizenzen!</li>
+            <li><strong>Kleine Projekte = ok zu kopieren:</strong> FALSCH! Auch deine Schularbeit schützt Urheberrechte!</li>
+        </ul>
+    </section>
+
+    <section style="background: #dcfce7; border-left: 4px solid #10b981; padding: 1.5rem; border-radius: 5px; margin-top: 2rem;">
+        <h2>✅ So findest du legale Bilder</h2>
+        <ul style="line-height: 1.8;">
+            <li><strong>Unsplash.com:</strong> Kostenlose CC0 Fotos</li>
+            <li><strong>Pexels.com:</strong> Kostenlose Bilder (CC0)</li>
+            <li><strong>Pixabay.com:</strong> Kostenlos, verschiedene Lizenzen</li>
+            <li><strong>Wikimedia Commons:</strong> Wikipedia-Bilder mit Lizenzinfos</li>
+            <li><strong>Google Bilder → Filterung:</strong> "Nutzungsrechte" → "Mit der Option zum Teilen und Nutzen" wählen!</li>
+            <li><strong>Flickr:</strong> Viele Creative Commons Bilder mit guter Suchfunktion</li>
+        </ul>
+    </section>
+
+</main>
+
+<footer style="margin-top: 5rem; padding: 2rem 1rem; background-color: #f8fafc; border-top: 1px solid #e2e8f0; color: #64748b; font-size: 0.9rem; text-align: center;">
+    &copy; 2026 | GvP | Mag. Schweitzer | Digitale Grundbildung
+</footer>
+
+<script>
+    const questions = [
+        {
+            question: "Du findest ein schönes Foto auf Google. Was darfst du tun?",
+            answers: [
+                { text: "Es einfach in deiner Schularbeit verwenden", correct: false },
+                { text: "Erst nach der Lizenz suchen und fragen", correct: true },
+                { text: "Es in Originalauflösung runterladen und auf Instagram posten", correct: false },
+                { text: "Es bearbeiten und als dein eigenes Werk ausgeben", correct: false }
+            ]
+        },
+        {
+            question: "Was bedeutet CC-BY?",
+            answers: [
+                { text: "Du darfst alles machen", correct: false },
+                { text: "Du darfst es nutzen, aber musst den Künstler nennen", correct: true },
+                { text: "Du darfst es überhaupt nicht benutzen", correct: false },
+                { text: "Du darfst es nur privat kopieren", correct: false }
+            ]
+        },
+        {
+            question: "Ein Bild hat die Lizenz © (Urheberrecht). Was tust du?",
+            answers: [
+                { text: "Der Namen ist geheim, daher darfst du es nutzen", correct: false },
+                { text: "Nur mit ausdrücklicher Erlaubnis des Künstlers", correct: true },
+                { text: "Du darfst es überall benutzen", correct: false },
+                { text: "Du darfst es bearbeiten aber nicht teilen", correct: false }
+            ]
+        },
+        {
+            question: "Wofür ist CC0 perfekt?",
+            answers: [
+                { text: "Nur für kommerzielle Websites", correct: false },
+                { text: "Für alles - es ist komplett frei!", correct: true },
+                { text: "Nur für Wikipedia", correct: false },
+                { text: "Nur für private Nutzung", correct: false }
+            ]
+        },
+        {
+            question: "Du postest ein Bild auf Instagram mit CC-BY Lizenz. Was musst du tun?",
+            answers: [
+                { text: "Nichts - Instagram kümmert sich darum", correct: false },
+                { text: "Den Künstler in der Bildbeschreibung nennen", correct: true },
+                { text: "Das Bild sofort löschen", correct: false },
+                { text: "Den Künstler um Erlaubnis fragen", correct: false }
+            ]
+        },
+        {
+            question: "Welche Website hat garantiert legale Bilder?",
+            answers: [
+                { text: "Google Bilder", correct: false },
+                { text: "Unsplash.com", correct: true },
+                { text: "Instagram", correct: false },
+                { text: "Facebook", correct: false }
+            ]
+        }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+    let answered = false;
+
+    function loadQuestion() {
+        const q = questions[currentQuestion];
+        let html = `
+            <div class="question-text">Frage ${currentQuestion + 1} von ${questions.length}</div>
+            <p style="font-size: 1.05rem; margin-bottom: 1.5rem;">${q.question}</p>
+        `;
+        
+        q.answers.forEach((answer, index) => {
+            html += `<button class="answer-btn" onclick="checkAnswer(${index})">${answer.text}</button>`;
+        });
+        
+        document.getElementById('quizContent').innerHTML = html;
+        document.getElementById('nextBtn').style.display = 'none';
+        answered = false;
+    }
+
+    function checkAnswer(index) {
+        if (answered) return;
+        answered = true;
+        
+        const q = questions[currentQuestion];
+        const btns = document.querySelectorAll('.answer-btn');
+        
+        btns.forEach((btn, i) => {
+            if (q.answers[i].correct) {
+                btns[i].classList.add('correct');
+            }
+        });
+        
+        if (q.answers[index].correct) {
+            score++;
+            btns[index].classList.add('correct');
+        } else {
+            btns[index].classList.add('wrong');
+        }
+        
+        if (currentQuestion < questions.length - 1) {
+            document.getElementById('nextBtn').style.display = 'block';
+        } else {
+            document.getElementById('restartBtn').style.display = 'block';
+            showScore();
+        }
+    }
+
+    function nextQuestion() {
+        currentQuestion++;
+        loadQuestion();
+    }
+
+    function showScore() {
+        let message = score === questions.length ? '🌟 Perfekt!' : score >= 5 ? '👍 Sehr gut!' : '✓ Gut gemacht!';
+        document.getElementById('quizContent').innerHTML = `
+            <div style="text-align: center; padding: 2rem;">
+                <h2>${message}</h2>
+                <p style="font-size: 1.2rem;">${score} von ${questions.length} Fragen richtig!</p>
+            </div>
+        `;
+    }
+
+    function restartQuiz() {
+        currentQuestion = 0;
+        score = 0;
+        answered = false;
+        document.getElementById('restartBtn').style.display = 'none';
+        loadQuestion();
+    }
+
+    loadQuestion();
+</script>
+
+</body>
+</html>

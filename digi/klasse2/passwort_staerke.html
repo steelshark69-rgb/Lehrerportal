@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Passwort-Stärke-Tester | Digitale Grundbildung</title>
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+        .tester-container {
+            background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+            padding: 2rem;
+            border-radius: 10px;
+            color: white;
+            max-width: 700px;
+            margin: 2rem auto;
+        }
+        .input-box {
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        .input-box label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #1f2937;
+        }
+        .input-box input {
+            width: 100%;
+            padding: 12px;
+            font-size: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-family: monospace;
+        }
+        .strength-bar {
+            width: 100%;
+            height: 30px;
+            background: #e5e7eb;
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+        .strength-fill {
+            height: 100%;
+            background: #ef4444;
+            width: 0%;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        .strength-level {
+            text-align: center;
+            margin: 1rem 0;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+        .criteria-list {
+            list-style: none;
+            padding: 0;
+            margin: 1rem 0;
+        }
+        .criteria-item {
+            padding: 8px;
+            margin: 0.5rem 0;
+            border-radius: 5px;
+            background: #f3f4f6;
+            color: #999;
+            transition: 0.2s;
+        }
+        .criteria-item.met {
+            background: #dcfce7;
+            color: #065f46;
+            font-weight: bold;
+        }
+        .example-box {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px dashed white;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1rem 0;
+        }
+        .example-item {
+            padding: 0.5rem 0;
+            margin: 0.5rem 0;
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-left: 0.5rem;
+        }
+        .badge-bad {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        .badge-good {
+            background: #dcfce7;
+            color: #065f46;
+        }
+        .badge-excellent {
+            background: #c7d2fe;
+            color: #3730a3;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>🔐 Passwort-Stärke-Tester</h1>
+    <p>2. Klasse | Digitale Grundbildung</p>
+    <div class="back-nav">
+        <a href="index.html" class="btn-back">⬅ Zurück</a>
+    </div>
+</header>
+
+<main style="max-width: 900px; margin: 0 auto; padding: 2rem 1rem;">
+
+    <section style="background: #dbeafe; border-left: 4px solid #3b82f6; padding: 1.5rem; border-radius: 5px; margin-bottom: 2rem;">
+        <h2>🔒 Teste dein Passwort!</h2>
+        <p>Gib ein Passwort ein und sieh, wie stark es ist. Probiere verschiedene Kombinationen aus!</p>
+    </section>
+
+    <div class="tester-container">
+        <div class="input-box">
+            <label for="password">Passwort eingeben:</label>
+            <input type="password" id="password" placeholder="Gib ein Passwort ein..." oninput="checkPassword()">
+            <input type="checkbox" id="togglePassword" onchange="togglePasswordVisibility()" style="margin-top: 0.5rem; cursor: pointer;">
+            <label for="togglePassword" style="display: inline; margin-left: 0.5rem;">Passwort anzeigen</label>
+        </div>
+
+        <div class="strength-bar">
+            <div class="strength-fill" id="strengthFill"></div>
+        </div>
+
+        <div class="strength-level" id="strengthLevel">Gib ein Passwort ein</div>
+
+        <div class="input-box">
+            <h3 style="margin-top: 0;">Anforderungen:</h3>
+            <ul class="criteria-list">
+                <li class="criteria-item" id="length">
+                    ○ Mindestens 8 Zeichen
+                </li>
+                <li class="criteria-item" id="uppercase">
+                    ○ Großbuchstaben (A-Z)
+                </li>
+                <li class="criteria-item" id="lowercase">
+                    ○ Kleinbuchstaben (a-z)
+                </li>
+                <li class="criteria-item" id="numbers">
+                    ○ Zahlen (0-9)
+                </li>
+                <li class="criteria-item" id="special">
+                    ○ Sonderzeichen (!@#$%^&*)
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <section style="background: white; padding: 2rem; border-radius: 8px; margin-top: 2rem;">
+        <h2>💡 Beispiele für Passwörter</h2>
+
+        <h3>❌ Schlechte Passwörter</h3>
+        <div style="background: #fee2e2; padding: 1.5rem; border-radius: 5px; margin-bottom: 2rem;">
+            <div class="example-item">
+                <strong>12345</strong> <span class="badge badge-bad">Zu kurz & simpel</span>
+            </div>
+            <div class="example-item">
+                <strong>hallo123</strong> <span class="badge badge-bad">Nur Kleinbuchstaben + Zahlen</span>
+            </div>
+            <div class="example-item">
+                <strong>Anna1990</strong> <span class="badge badge-bad">Dein Name + Geburtsjahr!</span>
+            </div>
+            <div class="example-item">
+                <strong>Passwort123</strong> <span class="badge badge-bad">Viel zu vorhersehbar</span>
+            </div>
+        </div>
+
+        <h3>✓ Mittelmäßige Passwörter</h3>
+        <div style="background: #fef3c7; padding: 1.5rem; border-radius: 5px; margin-bottom: 2rem;">
+            <div class="example-item">
+                <strong>BlueSky2024</strong> <span class="badge badge-good">Besser, aber kurz</span>
+            </div>
+            <div class="example-item">
+                <strong>K7$mP2!qX</strong> <span class="badge badge-good">Gut, aber 8 Zeichen</span>
+            </div>
+        </div>
+
+        <h3>✅ Starke Passwörter</h3>
+        <div style="background: #dcfce7; padding: 1.5rem; border-radius: 5px;">
+            <div class="example-item">
+                <strong>BibliotekMai#2013!</strong> <span class="badge badge-excellent">Sehr stark!</span>
+            </div>
+            <div class="example-item">
+                <strong>9xQrL@2nZf1kM3p</strong> <span class="badge badge-excellent">Perfekt!</span>
+            </div>
+            <div class="example-item">
+                <strong>SchokoladeBerg$77#Ultra</strong> <span class="badge badge-excellent">Ausgezeichnet!</span>
+            </div>
+        </div>
+    </section>
+
+    <section style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 1.5rem; border-radius: 5px; margin-top: 2rem;">
+        <h2>🎯 Tipps für sichere Passwörter</h2>
+        <ol style="line-height: 1.8;">
+            <li><strong>Mindestens 12 Zeichen:</strong> Je länger, desto besser!</li>
+            <li><strong>Gemischte Zeichen:</strong> Groß, klein, Zahlen, Symbole!</li>
+            <li><strong>Nie persönliche Daten:</strong> Name, Geburtsjahr, Adresse = Fehler!</li>
+            <li><strong>Keine Tastaturmuster:</strong> qwerty, asdfgh sind zu vorhersehbar!</li>
+            <li><strong>Kein gleiches Passwort überall:</strong> Wenn eine Seite gehackt wird, sind alle Konten in Gefahr!</li>
+            <li><strong>Passwort-Manager benutzen:</strong> Bitwarden, 1Password, LastPass speichern Passwörter sicher!</li>
+            <li><strong>Regelmäßig ändern:</strong> Alle 3-6 Monate aktualisieren!</li>
+            <li><strong>2-Faktor-Authentifizierung:</strong> Extra Schutzebene mit SMS/App!</li>
+        </ol>
+    </section>
+
+</main>
+
+<footer style="margin-top: 5rem; padding: 2rem 1rem; background-color: #f8fafc; border-top: 1px solid #e2e8f0; color: #64748b; font-size: 0.9rem; text-align: center;">
+    &copy; 2026 | GvP | Mag. Schweitzer | Digitale Grundbildung
+</footer>
+
+<script>
+    function checkPassword() {
+        const password = document.getElementById('password').value;
+        
+        // Kriterien prüfen
+        const hasLength = password.length >= 12;
+        const hasUppercase = /[A-Z]/.test(password);
+        const hasLowercase = /[a-z]/.test(password);
+        const hasNumbers = /[0-9]/.test(password);
+        const hasSpecial = /[!@#$%^&*()_+\-=\[\]{};:'",.<>?\/\\|`~]/.test(password);
+        
+        // UI aktualisieren
+        updateCriteria('length', hasLength);
+        updateCriteria('uppercase', hasUppercase);
+        updateCriteria('lowercase', hasLowercase);
+        updateCriteria('numbers', hasNumbers);
+        updateCriteria('special', hasSpecial);
+        
+        // Stärke berechnen
+        let strength = 0;
+        if (password.length >= 8) strength++;
+        if (password.length >= 12) strength++;
+        if (password.length >= 16) strength++;
+        if (hasUppercase) strength++;
+        if (hasLowercase) strength++;
+        if (hasNumbers) strength++;
+        if (hasSpecial) strength++;
+        
+        updateStrength(strength, password.length);
+    }
+
+    function updateCriteria(id, met) {
+        const element = document.getElementById(id);
+        if (met) {
+            element.classList.add('met');
+            element.innerHTML = element.innerHTML.replace('○', '✓');
+        } else {
+            element.classList.remove('met');
+            element.innerHTML = element.innerHTML.replace('✓', '○');
+        }
+    }
+
+    function updateStrength(strength, length) {
+        const fill = document.getElementById('strengthFill');
+        const level = document.getElementById('strengthLevel');
+        const percentage = (strength / 7) * 100;
+        
+        fill.style.width = percentage + '%';
+        
+        let color = '#ef4444';
+        let text = '❌ Sehr schwach';
+        
+        if (strength >= 6) {
+            color = '#10b981';
+            text = '✅ Sehr stark!';
+            fill.textContent = '100%';
+        } else if (strength >= 5) {
+            color = '#3b82f6';
+            text = '👍 Stark';
+            fill.textContent = Math.round(percentage) + '%';
+        } else if (strength >= 3) {
+            color = '#f59e0b';
+            text = '⚠️ Mittel';
+            fill.textContent = Math.round(percentage) + '%';
+        } else if (length > 0) {
+            color = '#ef4444';
+            text = '❌ Schwach';
+            fill.textContent = Math.round(percentage) + '%';
+        } else {
+            text = 'Gib ein Passwort ein';
+            fill.textContent = '';
+        }
+        
+        fill.style.background = color;
+        level.textContent = text;
+    }
+
+    function togglePasswordVisibility() {
+        const input = document.getElementById('password');
+        input.type = input.type === 'password' ? 'text' : 'password';
+    }
+</script>
+
+</body>
+</html>

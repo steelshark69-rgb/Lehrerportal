@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fotogalerie Wienwoche 4b</title>
+    <!-- Verweis auf die zentrale CSS-Datei (zwei Ebenen höher: Portal -> css -> style.css) -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <style>
+        :root {
+            --primary-color: #003366;
+            --accent-color: #c4121a;
+            --bg-light: #f4f4f9;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background-color: var(--bg-light);
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 20px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: var(--primary-color);
+            text-align: center;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        
+        /* DSGVO & Info Box */
+        .dsgvo-box {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 15px;
+            margin-bottom: 30px;
+            border-radius: 4px;
+            color: #856404;
+        }
+        .dsgvo-box strong {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+
+        /* Navigation / Zurück Button */
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            background-color: #e7f3ff;
+            color: var(--primary-color);
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            transition: background 0.2s;
+        }
+        .back-link:hover {
+            background-color: #cce5ff;
+        }
+
+        /* Fotogalerie Grid */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        /* Fotokarte (Link) */
+        .photo-card {
+            display: flex;
+            flex-direction: column;
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            overflow: hidden;
+            text-decoration: none;
+            color: inherit;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .photo-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            border-color: var(--primary-color);
+        }
+        .card-image-placeholder {
+            height: 160px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, #4a90e2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4em;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .card-content {
+            padding: 15px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .card-title {
+            font-weight: bold;
+            font-size: 1.1em;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+        .card-date {
+            font-size: 0.85em;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        .card-footer {
+            margin-top: auto;
+            font-size: 0.9em;
+            color: var(--accent-color);
+            font-weight: 500;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .container { padding: 15px; margin: 10px; }
+            .gallery-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <a href="../index.html" class="back-link">⬅ Zurück zum Programm der 4b</a>
+
+    <h1>📸 Fotogalerie Wienwoche</h1>
+
+    <div class="dsgvo-box">
+        <strong>🔒 Wichtiger Hinweis zum Datenschutz (DSGVO)</strong>
+        Diese Fotos sind eine schöne Erinnerung für unsere Klasse. Bitte beachtet das "Recht am eigenen Bild": 
+        Das Herunterladen, Weiterleiten oder Veröffentlichen dieser Fotos auf Social Media (Instagram, TikTok, WhatsApp-Status etc.) ist <strong>ohne ausdrückliche Erlaubnis der abgebildeten Personen strengstens verboten!</strong>
+    </div>
+
+    <p style="text-align: center; color: #555; margin-bottom: 30px;">
+        Klicke auf einen der Programmpunkte, um die entsprechenden Fotos anzusehen. <br>
+        
+    </p>
+
+    <div class="gallery-grid">
+         <!-- Sonstiges -->
+        <a href="fotos/gruppenfotos/index.html" class="photo-card">
+            <div class="card-image-placeholder" style="background: linear-gradient(135deg, var(--accent-color) 0%, #ff6b6b 100%);">📸</div>
+            <div class="card-content">
+                <div class="card-title">Gruppenfotos & Sonstiges</div>
+                <div class="card-date">Gesamte Woche</div>
+                <div class="card-footer">
+                    <span>Fotos ansehen</span>
+                    <span>→</span>
+                </div>
+            </div>
+        </a>
+        <!-- Montag -->
+        <a href="fotos/anreise_hostel/index.html" class="photo-card">
+            <div class="card-image-placeholder">🚆</div>
+            <div class="card-content">
+                <div class="card-title">Anreise & Hostel</div>
+                <div class="card-date">Montag, 20. April</div>
+                <div class="card-footer">
+                    <span>Fotos ansehen</span>
+                    <span>→</span>
+                </div>
+            </div>
+        </a>
+
+        <a href="fotos/naturhistorisches_museum/index.html" class="photo-card">
+            <div class="card-image-placeholder">🦖</div>
+            <div class="card-content">
+                <div class="card-title">Naturhistorisches Museum</div>
+                <div class="card-date">Montag, 20. April</div>
+                <div class="card-footer">
+                    <span>Fotos ansehen</span>
+                    <span>→</span>
+                </div>
+            </div>
+        </a>
+
+        <!-- Dienstag -->
+        <a href="fotos/haus_der_geschichte/index.html" class="photo-card">
+            <div class="card-image-placeholder">🏛️</div>
+            <div class="card-content">
+                <div class="card-title">Haus der Geschichte Österreich</div>
+                <div class="card-date">Dienstag, 21. April</div>
+                <div class="card-footer">
+                    <span>Fotos ansehen</span>
+                    <span>→</span>
+                </div>
+            </div>
+        </a>
+
+        <a href="fotos/stephansdom/index.html" class="photo-card">
+            <div class="card-image-placeholder">⛪</div>
+            <div class="card-content">
+                <div class="card-title">Stephansdom</div>
+                <div class="card-date">Dienstag, 21. April</div>
+                <div class="card-footer">
+                    <span>Fotos ansehen</span>
+                    <span>→</span>
+                </div>
+            </div>
+        </a>
+
+        <a href="fotos/ronacher_theater/index.html" class="photo-card">
+            <div class="card-image-placeholder">🎭</div>
+            <div class="card-content">
+                <div class="card-title">Theater: Maria Theresia</div>
+                <div class="card-date">Dienstag, 21. April</div>
+                <div class="card-footer">
+                    <span>Fotos ansehen</span>
+                    <span>→</span>
+                </div>
+            </div>
+        </a>
+
+        <!-- Mittwoch -->
+        <a href="fotos/parlament/index.html" class="photo-card">
+            <div class="card-image-placeholder">🇦🇹</div>
+            <div class="card-content">
+                <div class="card-title">Parlament</div>
+                <div class="card-date">Mittwoch, 22. April</div>
+                <div class="card-footer">
+                    <span>Fotos ansehen</span>
+                    <span>→</span>
+                </div>
+            </div>
+        </a>
+
+        <a href="fotos/tu_informatik/index.html" class="photo-card">
+            <div class="card-image-placeholder">💻</div>
+            <div class="card-content">
+                <div class="card-title">TU Institut für Informatik</div>
+                <div class="card-date">Mittwoch, 22. April</div>
+                <div class="card-footer">
+                    <span>Fotos ansehen</span>
+                    <span>→</span>
+                </div>
+            </div>
+        </a>
+
+        <!-- Donnerstag -->
+        <a href="fotos/schloss_schoenbrunn/index.html" class="photo-card">
+            <div class="card-image-placeholder">👑</div>
+            <div class="card-content">
+                <div class="card-title">Schloss Schönbrunn</div>
+                <div class="card-date">Donnerstag, 23. April</div>
+                <div class="card-footer">
+                    <span>Fotos ansehen</span>
+                    <span>→</span>
+                </div>
+            </div>
+        </a>
+
+        <a href="fotos/ringstrasse/index.html" class="photo-card">
+            <div class="card-image-placeholder">🚶‍♂️🚶‍♀️</div>
+            <div class="card-content">
+                <div class="card-title">Ringstraßen-Walk</div>
+                <div class="card-date">Donnerstag, 23. April</div>
+                <div class="card-footer">
+                    <span>Fotos ansehen</span>
+                    <span>→</span>
+                </div>
+            </div>
+        </a>
+
+       
+
+    </div>
+
+</div>
+
+</body>
+</html>

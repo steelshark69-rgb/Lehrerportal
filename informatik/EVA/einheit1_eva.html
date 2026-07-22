@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Einheit 1: Das EVA-Prinzip</title>
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+        :root { --it-primary: #107c41; --it-dark: #064e3b; --bg-gray: #f8fafc; }
+        .module-container { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem; }
+        .drag-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 2rem; }
+        .drop-zone { background: var(--bg-gray); border: 2px dashed #cbd5e1; border-radius: 8px; padding: 1.5rem; min-height: 150px; text-align: center; }
+        .drop-zone h3 { margin-top: 0; color: var(--it-primary); }
+        .item-pool { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 2rem; padding: 1.5rem; background: white; border: 1px solid #e2e8f0; border-radius: 8px; }
+        .drag-item { background: white; border: 2px solid var(--it-primary); color: var(--it-dark); padding: 10px 15px; border-radius: 6px; cursor: grab; font-weight: bold; user-select: none; }
+        .drag-item:active { cursor: grabbing; }
+        .btn-check { background: var(--it-primary); color: white; border: none; padding: 12px 24px; font-size: 1.1rem; font-weight: bold; border-radius: 6px; cursor: pointer; margin-top: 2rem; width: 100%; transition: 0.2s; }
+        .btn-check:hover { background: var(--it-dark); }
+        .feedback { display: none; text-align: center; font-weight: bold; padding: 15px; border-radius: 6px; margin-top: 15px; }
+    </style>
+</head>
+<body>
+
+<header style="background-color: var(--it-primary); color: white; padding: 2rem 1rem; text-align: center;">
+    <h1 style="color: white; margin: 0; font-size: 2.5rem;">Mission 1: Das EVA-Prinzip</h1>
+    <p style="color: #f0fdf4; margin-top: 10px; font-size: 1.1rem;">Wie Maschinen die Welt wahrnehmen</p>
+</header>
+
+<div class="back-nav"><a href="index.html" class="btn-back">← Zurück zur Übersicht</a></div>
+
+<main class="module-container">
+    <h2 style="color: var(--it-dark);">Die Grundregel der Informatik</h2>
+    <p>Egal ob ein riesiger Supercomputer, eine PlayStation oder der Chip in einer Waschmaschine – jedes IT-System der Welt funktioniert nach dem gleichen, simplen Prinzip: Dem <strong>EVA-Prinzip</strong>.</p>
+    
+    
+
+[Image of Von Neumann architecture]
+
+
+    <ul style="line-height: 1.6; font-size: 1.1rem;">
+        <li><strong>Eingabe (E):</strong> Der Computer erhält Daten aus der echten Welt (z.B. Tastendruck, Kamerabild, Temperatur-Sensor).</li>
+        <li><strong>Verarbeitung (V):</strong> Das "Gehirn" des Computers (der Prozessor) rechnet mit diesen Daten und trifft Entscheidungen.</li>
+        <li><strong>Ausgabe (A):</strong> Das Ergebnis wird wieder in die echte Welt zurückgegeben (z.B. Bild auf dem Monitor, Ton aus dem Lautsprecher).</li>
+    </ul>
+
+    <h3 style="margin-top: 3rem; color: var(--it-dark);">💻 Interaktives Labor: Sortiere die Hardware!</h3>
+    <p>Ziehe die Bauteile in die richtige Kategorie. Klicke danach auf Prüfen!</p>
+
+    <div class="drag-container">
+        <div class="drop-zone" id="zone-e" ondragover="allowDrop(event)" ondrop="drop(event, 'E')">
+            <h3>📥 Eingabe</h3>
+        </div>
+        <div class="drop-zone" id="zone-v" ondragover="allowDrop(event)" ondrop="drop(event, 'V')">
+            <h3>🧠 Verarbeitung</h3>
+        </div>
+        <div class="drop-zone" id="zone-a" ondragover="allowDrop(event)" ondrop="drop(event, 'A')">
+            <h3>📤 Ausgabe</h3>
+        </div>
+    </div>
+
+    <div class="item-pool" id="pool" ondragover="allowDrop(event)" ondrop="drop(event, 'pool')">
+        <div class="drag-item" id="item1" draggable="true" ondragstart="drag(event)" data-cat="E">Tastatur</div>
+        <div class="drag-item" id="item2" draggable="true" ondragstart="drag(event)" data-cat="A">Monitor</div>
+        <div class="drag-item" id="item3" draggable="true" ondragstart="drag(event)" data-cat="V">Prozessor (CPU)</div>
+        <div class="drag-item" id="item4" draggable="true" ondragstart="drag(event)" data-cat="E">Mikrofon</div>
+        <div class="drag-item" id="item5" draggable="true" ondragstart="drag(event)" data-cat="A">Drucker</div>
+        <div class="drag-item" id="item6" draggable="true" ondragstart="drag(event)" data-cat="E">Maus</div>
+    </div>
+
+    <button class="btn-check" onclick="checkEVA()">Sortierung prüfen</button>
+    <div id="feedback" class="feedback"></div>
+
+    <div style="text-align: right; margin-top: 2rem;">
+        <a href="einheit2_cpu_ram.html" style="color: var(--it-primary); font-weight: bold; text-decoration: none;">Weiter zu Einheit 2 ➔</a>
+    </div>
+</main>
+
+<footer style="margin-top: 5rem; padding: 2rem 1rem; background-color: #f8fafc; border-top: 1px solid #e2e8f0; color: #64748b; font-size: 0.9rem; text-align: center;">
+    &copy; 2026 | GvP | Mag. Schweitzer | DSGVO-konform & lokal
+</footer>
+
+<script>
+    function allowDrop(ev) { ev.preventDefault(); }
+    function drag(ev) { ev.dataTransfer.setData("text", ev.target.id); }
+    function drop(ev, targetZone) {
+        ev.preventDefault();
+        let data = ev.dataTransfer.getData("text");
+        let element = document.getElementById(data);
+        if (ev.target.classList.contains('drop-zone') || ev.target.id === 'pool') {
+            ev.target.appendChild(element);
+        } else if (ev.target.parentElement.classList.contains('drop-zone')) {
+            ev.target.parentElement.appendChild(element);
+        }
+    }
+
+    function checkEVA() {
+        let correct = true;
+        ['E', 'V', 'A'].forEach(cat => {
+            let zone = document.getElementById('zone-' + cat.toLowerCase());
+            let items = zone.querySelectorAll('.drag-item');
+            items.forEach(item => {
+                if (item.getAttribute('data-cat') !== cat) {
+                    correct = false;
+                    item.style.borderColor = "#ef4444";
+                    item.style.backgroundColor = "#fef2f2";
+                } else {
+                    item.style.borderColor = "#10b981";
+                    item.style.backgroundColor = "#ecfdf5";
+                }
+            });
+        });
+
+        let poolItems = document.getElementById('pool').querySelectorAll('.drag-item');
+        if (poolItems.length > 0) correct = false;
+
+        let fb = document.getElementById('feedback');
+        if (correct) {
+            fb.innerHTML = "✅ Perfekt! Alle Geräte sind korrekt zugeordnet. Du kannst zu Einheit 2 weitergehen.";
+            fb.style.backgroundColor = "#d1fae5"; fb.style.color = "#065f46"; fb.style.display = "block";
+        } else {
+            fb.innerHTML = "❌ Da stimmt etwas noch nicht ganz. Rote Geräte sind in der falschen Box!";
+            fb.style.backgroundColor = "#fee2e2"; fb.style.color = "#991b1b"; fb.style.display = "block";
+        }
+    }
+</script>
+</body>
+</html>
